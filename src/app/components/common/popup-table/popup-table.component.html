@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>{{header}}</h2>
+<mat-dialog-content>
+    <div *ngIf="dataSource?.length > 0" class="table-responsive table-scroll example-container">
+        <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
+            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                <th mat-header-cell *matHeaderCellDef [class.sticky-column]="stickyColumns.includes(column)">
+                    {{ column }}
+                </th>
+                <td mat-cell *matCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)">
+                    {{ row[column] }}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+    <div class="zero-records" *ngIf="dataSource?.length == 0">No records found</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

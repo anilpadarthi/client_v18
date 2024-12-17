@@ -1,0 +1,96 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Shops</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="filter-controls">
+            <div class="col-lg-12">
+                <button mat-icon-button (click)="loadData()" title="Refresh">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-form-field appearance="outline">
+                    <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+                        <mat-option [value]="0">All</mat-option>
+                        <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                            <span>{{ item.id }} - {{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Search Shop</mat-label>
+                    <input matInput #searchInput placeholder="Search Shop" [(ngModel)]="searchText"
+                        (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <button mat-icon-button title="Clear Filter" (mousedown)="onReset()">
+                    <mat-icon>clear_all</mat-icon>
+                </button>
+                <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
+                    <mat-icon>add</mat-icon>
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive table-scroll example-container">
+            <table mat-table [dataSource]="shopList" class="w-100 custom-table">
+
+                <ng-container matColumnDef="shopId">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.shopId }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="shopName">
+                    <th mat-header-cell *matHeaderCellDef>NAME</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.shopName }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="postCode">
+                    <th mat-header-cell *matHeaderCellDef>POST CODE</th>
+                    <td mat-cell *matCellDef="let element">{{ element.postCode }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef>ADDRESS</th>
+                    <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="areaName">
+                    <th mat-header-cell *matHeaderCellDef>AREA</th>
+                    <td mat-cell *matCellDef="let element">{{ element.area.areaName }}</td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>STATUS</th>
+                    <td mat-cell *matCellDef="let element">{{ element.status == 1 ? 'Active': 'InActive' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>
+                        ACTION
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="action-link">
+                        <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.shopId)">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                        <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.shopId)">
+                            <mat-icon>delete</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+        <div class="no-records" *ngIf="shopList?.length == 0">No records found</div>
+        <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+            [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+        </mat-paginator>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,119 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Commission Statements</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row justify-content-between">
+            <mat-form-field appearance="outline" class="col-sm-3">
+                <mat-label>From Month</mat-label>
+                <input matInput [(ngModel)]="fromDate" [matDatepicker]="fromPicker" placeholder="Choose a Month" />
+                <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+                <!-- <mat-datepicker #fromPicker startView="year" (monthSelected)=" onDateChange($event);fromPicker.close();"></mat-datepicker> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-sm-3">
+                <mat-label>To Month</mat-label>
+                <input matInput [(ngModel)]="toDate" [matDatepicker]="toPicker" placeholder="Choose a Month" />
+                <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-sm-3">
+                <mat-label>User</mat-label>
+                <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+                    <mat-option [value]=null>All</mat-option>
+                    <mat-option *ngFor="let item of userLookup" [value]="item.id">
+                        <span>{{ item.id }} - {{ item.name }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-sm-3">
+                <mat-label>Area</mat-label>
+                <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+                    <mat-option [value]=null>All</mat-option>
+                    <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                        <span>{{ item.id }} - {{ item.name }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-sm-3">
+                <mat-label>Shop</mat-label>
+                <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
+                    <mat-option [value]=null>All</mat-option>
+                    <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+                        <span>{{ item.id }} - {{ item.name }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-sm-12 col-lg-3">
+                <mat-checkbox [(ngModel)]="isOptedIn" color="primary">Opted for Cheques</mat-checkbox>
+            </div>
+            <div class="col-sm-12 col-lg-6 space-between-buttons">
+                <button mat-flat-button color="primary" (click)="loadData()">Submit
+                </button>
+                <button mat-flat-button color="primary" (click)="onReset()">Clear
+                </button>
+
+                <button mat-flat-button color="primary">Download
+                    <mat-icon>download</mat-icon>
+                </button>
+                <button mat-flat-button color="primary">Download VAT
+                    <mat-icon>download</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="commissionList?.length > 0" class="table-responsive table-scroll example-container">
+            <table mat-table [dataSource]="commissionList" class="w-100 custom-table">
+                
+                  <ng-container matColumnDef="UserName">
+                    <th mat-header-cell *matHeaderCellDef>User Name</th>
+                    <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+                  </ng-container>
+          
+                  <ng-container matColumnDef="AreaName">
+                    <th mat-header-cell *matHeaderCellDef>Area Name</th>
+                    <td mat-cell *matCellDef="let element">{{ element.areaName }}</td>
+                  </ng-container>
+          
+                  <ng-container matColumnDef="ShopId">
+                    <th mat-header-cell *matHeaderCellDef>Shop ID</th>
+                    <td mat-cell *matCellDef="let element">{{ element.shopId }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="ShopName">
+                    <th mat-header-cell *matHeaderCellDef>Shop Name</th>
+                    <td mat-cell *matCellDef="let element">{{ element.shopName }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="PostCode">
+                    <th mat-header-cell *matHeaderCellDef>PostCode</th>
+                    <td mat-cell *matCellDef="let element">{{ element.postCode }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="CommissionDate">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td mat-cell *matCellDef="let element">{{ element.commissionDate | date:'dd/MM/yyyy' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="CommissionAmount">
+                    <th mat-header-cell *matHeaderCellDef>Commission</th>
+                    <td mat-cell *matCellDef="let element">{{ element.commissionAmount | currency:'GBP' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="BonusAmount">
+                    <th mat-header-cell *matHeaderCellDef>Bonus</th>
+                    <td mat-cell *matCellDef="let element">{{ element.bonusAmount | currency:'GBP' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a mat-button>
+                            <mat-icon>download</mat-icon> Download
+                        </a>
+                    </td>
+                  </ng-container>           
+
+                <!-- Header and Row Declarations -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+            </table>
+        </div>
+        <div class="zero-records" *ngIf="commissionList?.length == 0">No records found</div>
+    </mat-card-content>
+</mat-card>

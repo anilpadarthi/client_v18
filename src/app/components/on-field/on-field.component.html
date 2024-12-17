@@ -1,0 +1,77 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title>On-Field</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <mat-label>Area</mat-label>
+          <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+            <mat-option [value]=null>All</mat-option>
+            <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+              <span>{{item.id}} - {{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <mat-label>Shop</mat-label>
+          <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
+            <mat-option [value]=null>All</mat-option>
+            <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+              <span>{{ item.id}} - {{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 text-end d-flex align-items-center justify-content-end">
+        <button mat-flat-button color="primary" (click)="onSubmit()">
+          Submit
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onActionClicked('EditShop')">Edit Shop</button>
+          <button mat-menu-item (click)="onActionClicked('ScanSims')">Allocate Sims</button>
+          <button mat-menu-item (click)="onActionClicked('ShopVisit')">Shop Visit</button>
+          <button mat-menu-item (click)="openShopVisitHistoryDialog()">Shop Visit History</button>
+          <button mat-menu-item (click)="openShopAgreementHistoryDialog()">Agreement History</button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<div *ngIf="selectedShopId > 0 && isMainSection">
+
+  <app-on-field-shop-wallet [selectedShopId]="selectedShopId"></app-on-field-shop-wallet>
+  <app-on-field-given-vs-activations></app-on-field-given-vs-activations>
+  <app-on-field-activations [selectedShopId]="selectedShopId"></app-on-field-activations>
+  <app-on-field-instant-activations [selectedShopId]="selectedShopId"></app-on-field-instant-activations>
+  <app-on-field-spam-activations [selectedShopId]="selectedShopId"></app-on-field-spam-activations>
+  <app-on-field-commissions [selectedShopId]="selectedShopId"></app-on-field-commissions>
+</div>
+
+<div *ngIf="selectedShopId > 0 && !isMainSection">
+  <div class="row col-lg-12">
+    <button mat-flat-button class="m-b-10" color="primary" (click)="displayMainSection()">
+      Back
+    </button>
+  </div>
+  <div *ngIf="action == 'ScanSims'">
+    <app-on-field-scan-sims [selectedShopId]="selectedShopId"></app-on-field-scan-sims>
+  </div>
+  <div *ngIf="action == 'EditShop'">
+    <app-shop-editor [selectedShopId]="selectedShopId"></app-shop-editor>
+  </div>
+  <div *ngIf="action == 'ShopVisit'">
+    <app-on-field-shop-visit [selectedShopId]="selectedShopId"></app-on-field-shop-visit>
+  </div>
+  
+
+</div>

@@ -1,0 +1,46 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title>Sim Allocation report</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row justify-content-between">
+      <div class="col-sm-3">
+        <mat-form-field appearance="outline">
+          <mat-label>Choose a Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="picker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-3">
+        <mat-form-field appearance="outline">
+          <mat-label>User</mat-label>
+          <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+            <mat-option [value]="0">All</mat-option>
+            <mat-option *ngFor="let item of userLookup" [value]="item.id">
+              <span>{{ item.id }} - {{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 space-between-buttons">
+        <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+        <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+      </div>
+    </div>
+
+    <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container ">
+      <table mat-table [dataSource]="activationList" class="w-100 custom-table">
+        <ng-container *ngFor=" let column of displayedColumns" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+
+        <!-- Header and Row Declarations -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; sticky: true"></tr>
+      </table>
+    </div>
+    <div class="zero-records" *ngIf="activationList?.length == 0">No records found</div>
+  </mat-card-content>
+</mat-card>

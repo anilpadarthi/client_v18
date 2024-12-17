@@ -1,0 +1,48 @@
+<div class="container">
+    <h2>Create Agreement Form</h2>
+  
+    <form [formGroup]="agreementForm" (ngSubmit)="onSubmit()">
+      <!-- Agreement Notes -->
+      <mat-form-field appearance="fill">
+        <mat-label>Agreement Notes</mat-label>
+        <textarea matInput formControlName="agreementNotes"></textarea>
+        <mat-error *ngIf="agreementForm.controls['agreementNotes'].hasError('required')">
+          Agreement notes are required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- From Date -->
+      <mat-form-field appearance="fill">
+        <mat-label>From Date</mat-label>
+        <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate" />
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker></mat-datepicker>
+        <mat-error *ngIf="agreementForm.controls['fromDate'].hasError('required')">
+          From Date is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- To Date -->
+      <mat-form-field appearance="fill">
+        <mat-label>To Date</mat-label>
+        <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" />
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker></mat-datepicker>
+        <mat-error *ngIf="agreementForm.controls['toDate'].hasError('required')">
+          To Date is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Image Upload -->
+      <mat-form-field appearance="fill">
+        <mat-label>Upload Agreement Image</mat-label>
+        <input type="file" (change)="onImageSelect($event)" formControlName="image" accept="image/*" />
+        <mat-error *ngIf="agreementForm.controls['image'].hasError('required')">
+          Image is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button type="submit" [disabled]="agreementForm.invalid">Submit</button>
+    </form>
+  </div>
+  

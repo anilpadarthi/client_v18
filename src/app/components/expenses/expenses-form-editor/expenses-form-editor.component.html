@@ -1,0 +1,86 @@
+<div class="container">
+    <h2>Create an Expense Report</h2>
+  
+    <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Expense Name -->
+      <mat-form-field appearance="fill">
+        <mat-label>Expense Name</mat-label>
+        <input matInput formControlName="expenseName" />
+        <mat-error *ngIf="expenseForm.controls['expenseName'].hasError('required')">
+          Expense name is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Amount -->
+      <mat-form-field appearance="fill">
+        <mat-label>Amount</mat-label>
+        <input matInput formControlName="amount" type="number" />
+        <mat-error *ngIf="expenseForm.controls['amount'].hasError('required')">
+          Amount is required.
+        </mat-error>
+        <mat-error *ngIf="expenseForm.controls['amount'].hasError('min')">
+          Amount must be greater than 0.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Category -->
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="expenseForm.controls['category'].hasError('required')">
+          Category is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Description -->
+      <mat-form-field appearance="fill">
+        <mat-label>Description (optional)</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+        <mat-error *ngIf="expenseForm.controls['description'].hasError('maxlength')">
+          Description cannot exceed 500 characters.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Date -->
+      <mat-form-field appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="expenseForm.controls['date'].hasError('required')">
+          Date is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- File Upload (Optional: Receipts) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Upload Receipts</mat-label>
+        <input type="file" (change)="onFileSelect($event)" multiple />
+        <mat-error *ngIf="expenseForm.controls['receipts'].hasError('required')">
+          At least one receipt is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <div *ngIf="selectedFiles.length > 0">
+        <h3>Selected Files:</h3>
+        <ul>
+          <li *ngFor="let file of selectedFiles; let i = index">
+            {{ file.name }}
+            <button mat-icon-button (click)="removeFile(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid">
+        Submit Expense
+      </button>
+    </form>
+  </div>
+  

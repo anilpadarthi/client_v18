@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Wallet History</h2>
+
+<mat-dialog-content>
+  <div *ngIf="walletHistoryList.length > 0" class="table-responsive table-scroll example-container">
+    <table mat-table [dataSource]="walletHistoryList" class="w-100 custom-table">
+
+      <ng-container matColumnDef="TRANSACTIONDATE">
+        <th mat-header-cell *matHeaderCellDef>TRANSACTION DATE</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.transactionDate | date:'MM/dd/yyyy'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="DESCRIPTION">
+        <th mat-header-cell *matHeaderCellDef>DESCRIPTION</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="REFERENCENUMBER">
+        <th mat-header-cell *matHeaderCellDef>REFERENCE NUMBER</th>
+        <td mat-cell *matCellDef="let element">{{ element.referenceNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="TRANSACTIONTYPE">
+        <th mat-header-cell *matHeaderCellDef>TRANSACTION TYPE</th>
+        <td mat-cell *matCellDef="let element">{{ element.transactionType }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="AMOUNT">
+        <th mat-header-cell *matHeaderCellDef>AMOUNT</th>
+        <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <div class="zero-records" *ngIf="walletHistoryList?.length == 0">No records found</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,52 @@
+<mat-expansion-panel [expanded]="true" class="m-b-30">
+    <mat-expansion-panel-header>
+        <mat-panel-title>Agent Activations </mat-panel-title>
+    </mat-expansion-panel-header>
+
+
+
+    <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container">
+        <table mat-table [dataSource]="activationList" class="w-100 custom-table">
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef>NAME</th>
+                <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+        
+              <ng-container matColumnDef="DailyActivations">
+                <th mat-header-cell *matHeaderCellDef>DAILY ACT.</th>
+                <td mat-cell *matCellDef="let element">{{ element.dailyActivations }}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    {{ getTotal('dailyActivations') }}
+                  </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="InstantActivations">
+                <th mat-header-cell *matHeaderCellDef>INSTANT ACT.</th>
+                <td mat-cell *matCellDef="let element">{{ element.instantActivations }}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    {{ getTotal('instantActivations') }}
+                  </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="LastActivated">
+                <th mat-header-cell *matHeaderCellDef>LAST ACTIVATED</th>
+                <td mat-cell *matCellDef="let element">{{ element.lastActivatedDate | date: 'dd/MM/yyyy'  }}</td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Total">
+                <th mat-header-cell *matHeaderCellDef>TOTAL</th>
+                <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    {{ getTotal('total') }}
+                  </td>
+              </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+        </table>
+    </div>
+    <div *ngIf="activationList?.length == 0" class="zero-records"> No records found </div>
+</mat-expansion-panel>

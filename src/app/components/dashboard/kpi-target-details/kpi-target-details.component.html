@@ -1,0 +1,41 @@
+<mat-card class="cardWithShadow">
+    <mat-card-header class="d-flex">
+      <mat-card-title>KPI TARGETS </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+<div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+    
+
+      <ng-container matColumnDef="network">
+        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">NETWORK</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.network }}
+        </td> 
+      </ng-container>
+
+      <ng-container matColumnDef="previousActivations">
+        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">PREV. ACT.</th>
+        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.previousActivations }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentActivations">
+        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">CURR. ACT.</th>
+        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.currentActivations }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastActivated">
+        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">LAST ACTIVATED</th>
+        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.lastActivated }}</td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">TOTAL</th>
+        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.total }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  </mat-card-content>
+</mat-card>

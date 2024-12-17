@@ -1,0 +1,59 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header class="d-flex">
+    <mat-card-title>Given Vs Activations </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    
+
+    <div *ngIf="mergedDataSource?.length > 0" class="table-responsive table-scroll example-container">
+      <table class="w-100 sticky-table">
+        <thead>
+          <th></th>
+          <th colspan="2">EE</th>
+          <th colspan="2">THREE</th>
+          <th colspan="2">O2</th>
+          <th colspan="2">LEBARA</th>
+          <th colspan="2">LYCA</th>
+          <th colspan="2">GIFGAF</th>
+          <th colspan="2">VODAFONE</th>
+          <th colspan="2">VOXI</th>
+          <th colspan="2">SMARTY</th>
+          <th colspan="2">TOTAL</th>
+        </thead>
+        <thead>
+          <th>Date</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+          <th>Giv</th>
+          <th>Act</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of mergedDataSource">
+            <td *ngFor="let column of dynamicColumns">
+              {{ column === 'AssignedDate' ? (row[column] | date: 'dd/MM/yyyy') : row[column] }}
+            </td>
+            <td> </td>
+            <td></td>
+        </tbody>
+      </table>
+    </div>
+    <div class="zero-records" *ngIf="mergedDataSource?.length == 0">No records found</div>
+  </mat-card-content>
+</mat-card>

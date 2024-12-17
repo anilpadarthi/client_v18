@@ -1,0 +1,44 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>{{ networkId != null ? 'Edit Network' : 'Create Network' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="col-lg-6">
+            <form [formGroup]="networkForm" (ngSubmit)="onSave()">
+                <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <mat-select formControlName="baseNetworkId" (selectionChange)="onSelectionChange($event)" placeholder="Select Network">
+                        <mat-option [value]="null">-Select-</mat-option>
+                        <mat-option *ngFor="let item of networkCodesLookup" [value]="item.id">
+                            <span>{{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Network Name</mat-label>
+                    <input matInput formControlName="networkName" placeholder="Enter your Network Name" />
+                    <mat-error *ngIf="networkForm.get('networkName')?.hasError('required')">
+                        Network Name is required.
+                    </mat-error>
+                    <mat-error *ngIf="networkForm.get('networkName')?.hasError('minlength')">
+                        Network Name must be at least 2 characters long.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>SKU CODE</mat-label>
+                    <input matInput formControlName="skuCode" placeholder="Enter SKU CODE" />
+                    <mat-error *ngIf="networkForm.get('skuCode')?.hasError('required')">
+                        SKU CODE is required.
+                    </mat-error>                   
+                </mat-form-field>
+                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                    Is Active
+                </mat-checkbox>
+
+                <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="networkForm.invalid">
+                    Save
+                </button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

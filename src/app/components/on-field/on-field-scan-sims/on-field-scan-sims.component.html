@@ -1,0 +1,55 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title>Allocate Sims</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-lg-12">
+        <mat-label>IMEI / PCNNO</mat-label>
+        <textarea rows="10" [(ngModel)]="searchText" matInput placeholder="Scan your sim cards here..."></textarea>
+      </mat-form-field>
+      <div class="col-lg-12 space-between-buttons">
+        <button mat-raised-button color="primary" (click)="onScanSims()">SCAN</button>
+        <button mat-raised-button color="primary" (click)="onAllocateSims()">ALLOCATE</button>
+        <button mat-raised-button color="primary" (click)="onDeAllocateSims()">DE-ALLOCATE</button>
+        <button mat-flat-button color="warn" (click)="onClear()">CANCEL</button>
+      </div>
+    </div>
+
+    <div *ngIf="dataSource?.length > 0" class="table-responsive table-scroll example-container m-t-15">
+      <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
+
+        <ng-container matColumnDef="SIMID">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.simId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="NETWORK">
+          <th mat-header-cell *matHeaderCellDef>NETWORK</th>
+          <td mat-cell *matCellDef="let element">{{ element.netWorkName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="IMEI">
+          <th mat-header-cell *matHeaderCellDef>IMEI</th>
+          <td mat-cell *matCellDef="let element">{{ element.imei }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="PCNNO">
+          <th mat-header-cell *matHeaderCellDef>PCNNO</th>
+          <td mat-cell *matCellDef="let element">{{ element.pcnno }}</td>
+        </ng-container>
+        <ng-container matColumnDef="STATUS">
+          <th mat-header-cell *matHeaderCellDef>STATUS</th>
+          <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <div class="zero-records" *ngIf="dataSource?.length == 0">No records found</div>
+  </mat-card-content>
+</mat-card>

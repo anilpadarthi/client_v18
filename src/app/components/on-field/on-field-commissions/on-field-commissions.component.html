@@ -1,0 +1,71 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header class="d-flex">
+    <mat-card-title>Commissions</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container">
+      <table mat-table [dataSource]="activationList" class="w-100 custom-table">
+
+        <ng-container matColumnDef="DATE">
+          <th mat-header-cell *matHeaderCellDef>DATE</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="EE">
+          <th mat-header-cell *matHeaderCellDef>EE</th>
+          <td mat-cell *matCellDef="let element">{{ element.ee }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="THREE">
+          <th mat-header-cell *matHeaderCellDef>THREE</th>
+          <td mat-cell *matCellDef="let element">{{ element.three }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="O2">
+          <th mat-header-cell *matHeaderCellDef>O2</th>
+          <td mat-cell *matCellDef="let element">{{ element.o2 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="LEBARA">
+          <th mat-header-cell *matHeaderCellDef>LEBARA</th>
+          <td mat-cell *matCellDef="let element">{{ element.lebara }}</td>
+        </ng-container>
+        <ng-container matColumnDef="GIFGAFF">
+          <th mat-header-cell *matHeaderCellDef>GIFGAFF</th>
+          <td mat-cell *matCellDef="let element">{{ element.gifgaf }}</td>
+        </ng-container>
+        <ng-container matColumnDef="VODAFONE">
+          <th mat-header-cell *matHeaderCellDef>VODAFONE</th>
+          <td mat-cell *matCellDef="let element">{{ element.vodafone }}</td>
+        </ng-container>
+        <ng-container matColumnDef="VOXI">
+          <th mat-header-cell *matHeaderCellDef>VOXI</th>
+          <td mat-cell *matCellDef="let element">{{ element.voxi }}</td>
+        </ng-container>
+        <ng-container matColumnDef="SMARTY">
+          <th mat-header-cell *matHeaderCellDef>SMARTY</th>
+          <td mat-cell *matCellDef="let element">{{ element.smarty }}</td>
+        </ng-container>
+        <ng-container matColumnDef="TOTAL">
+          <th mat-header-cell *matHeaderCellDef>TOTAL</th>
+          <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="CommissionAmount">
+          <th mat-header-cell *matHeaderCellDef>Commission</th>
+          <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="BonusAmount">
+          <th mat-header-cell *matHeaderCellDef>Bonus</th>
+          <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <div class="zero-records" *ngIf="activationList?.length == 0">No records found</div>
+  </mat-card-content>
+</mat-card>

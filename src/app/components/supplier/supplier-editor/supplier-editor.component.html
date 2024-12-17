@@ -1,0 +1,101 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>{{ supplierId != null ? 'Edit Supplier' : 'Create Supplier' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="col-lg-12">
+            <form [formGroup]="supplierForm" (ngSubmit)="onSave()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Supplier Name</mat-label>
+                    <input matInput formControlName="supplierName" placeholder="Enter your Supplier Name" />
+                    <mat-error *ngIf="supplierForm.get('supplierName')?.hasError('required')">
+                        Supplier Name is required.
+                    </mat-error>
+                    <mat-error *ngIf="supplierForm.get('supplierName')?.hasError('minlength')">
+                        Supplier Name must be at least 2 characters long.
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="row m-b-10">
+                    <div class="col-lg-10">
+                        <mat-card-title>Supplier Accounts</mat-card-title>
+                    </div>
+                    <div class="col-lg-2">
+                        <button mat-flat-button color="primary" (click)="addSupplierAccount()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="supplierAccounts.controls">
+                    <div formArrayName="supplierAccounts" *ngFor="let t of supplierAccounts.controls; let i = index">
+                        <div class="row" [formGroupName]="i">
+
+                            <mat-form-field appearance="outline" class="col-lg-4">
+                                <mat-label>Account Name</mat-label>
+                                <input formControlName='AccountName' id="{{'AccountName'+i}}" matInput isNumeric
+                                    required>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-4">
+                                <mat-label>Account Number</mat-label>
+                                <input formControlName='AccountNumber' id="{{'AccountNumber'+i}}" matInput isNumeric
+                                    required>
+                            </mat-form-field>
+                            <div class="col-lg-4">
+                                <button mat-raised-button color="primary" class="remove-button"
+                                    (click)="removeSupplierAccoount(i)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-b-10">
+                    <div class="col-lg-10">
+                        <mat-card-title>Supplier Networks</mat-card-title>
+                    </div>
+                    <div class="col-lg-2">
+                        <button mat-flat-button color="primary" (click)="addSupplierProduct()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="supplierProducts.controls">
+                    <div formArrayName="supplierProducts" *ngFor="let t of supplierProducts.controls; let i = index">
+                        <div class="row" [formGroupName]="i">
+                            <mat-form-field appearance="outline" class="col-lg-4">
+                                <mat-label>Product</mat-label>
+                                <mat-select formControlName="productId" placeholder="Select Product"
+                                    (optionSelected)="validate($event, i)">
+                                    <mat-option [value]="null">-Select-</mat-option>
+                                    <mat-option *ngFor="let item of networkLookup" [value]="item.id">
+                                        <span>{{ item.name }}</span>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-4">
+                                <mat-label>Price</mat-label>
+                                <input formControlName='productCost' id="{{'Price'+i}}" matInput isNumeric required>
+                            </mat-form-field>
+                            <div class="col-lg-4">
+                                <button mat-raised-button color="primary" class="remove-button"
+                                    (click)="removeSupplierProduct(i)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                    Is Active
+                </mat-checkbox>
+
+                <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="supplierForm.invalid">
+                    Save
+                </button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

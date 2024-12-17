@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-lg-4 col-sm-4 col-12">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
+      (click)="openShopWalletHistoryDialog('Commission')">
+      <mat-card-content class="p-32">
+        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+          Commission
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+          £ {{ commissionAmount | number:'1.2-2' }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-lg-4 col-sm-4 col-12">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
+      (click)="openShopWalletHistoryDialog('Bonus')">
+      <mat-card-content class="p-32">
+        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+          Bonus
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+          £ {{ bonusAmount | number:'1.2-2' }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-lg-4 col-sm-4 col-12">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
+      (click)="openShopWalletHistoryDialog('InstantBonus')">
+      <mat-card-content class="p-32">
+        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+          Instant Bonus
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+          £ {{ instantBonusAmount | number:'1.2-2' }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

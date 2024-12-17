@@ -1,0 +1,28 @@
+<div class="container">
+    <h2>Assign Shops to User</h2>
+  
+    <form [formGroup]="assignShopsForm" (ngSubmit)="onSubmit()">
+      <!-- User ID -->
+      <mat-form-field appearance="fill">
+        <mat-label>User ID</mat-label>
+        <input matInput formControlName="userId" placeholder="Enter User ID" />
+      </mat-form-field>
+  
+      <!-- Shop Selection -->
+      <mat-form-field appearance="fill">
+        <mat-label>Select Shops</mat-label>
+        <mat-select formControlName="shops" (selectionChange)="onShopChange($event)" multiple>
+          <mat-option *ngFor="let shop of availableShops" [value]="shop.id">
+            {{ shop.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div *ngIf="assignShopsForm.controls['shops'].hasError('required')">
+        <mat-error>Select at least one shop.</mat-error>
+      </div>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="assignShopsForm.invalid">Assign Shops</button>
+    </form>
+  </div>
+  

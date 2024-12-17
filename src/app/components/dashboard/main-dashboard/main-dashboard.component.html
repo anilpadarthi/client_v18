@@ -1,0 +1,109 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title>Dashboard</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-label>Choose a Month</mat-label>
+        <input matInput [(ngModel)]="selectedDate" [matDatepicker]="picker" placeholder="Choose a Month" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdmin">
+        <mat-label>Manager</mat-label>
+        <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="onManagerChanged()">
+          <mat-option [value]="0">All</mat-option>
+          <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+            <span>{{ item.id }} - {{ item.name }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdmin || isManager">
+        <mat-label>User</mat-label>
+        <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+          <mat-option [value]="0">All</mat-option>
+          <mat-option *ngFor="let item of userLookup" [value]="item.id">
+            <span>{{ item.id }} - {{ item.name }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="col-lg-3 d-flex align-items-center">
+        <button mat-flat-button color="primary" (click)="onSubmit()">Submit</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-3 col-12">
+        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+          <mat-card-content class="p-32">
+            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+              Assigned
+            </h4>
+            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+              {{ assignedCount }}
+            </h6>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+          <mat-card-content class="p-32">
+            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+              Given To Shop
+            </h4>
+            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+              {{ givenCount }}
+            </h6>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+          <mat-card-content class="p-32">
+            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+              Activations
+            </h4>
+            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+              {{ activationCount }}
+            </h6>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-12">
+        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+          <mat-card-content class="p-32">
+            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
+            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+              Instant Activations
+            </h4>
+            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+              {{ instantActivationCount }}
+            </h6>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<app-network-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType"></app-network-activations>
+
+<div *ngIf="dashboardViewMode == 'Admin' || dashboardViewMode == 'Manager' ">
+  <app-agent-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType" ></app-agent-activations>
+</div>
+
+<div *ngIf="dashboardViewMode == 'Agent'">
+  <app-area-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType"></app-area-activations>
+</div>
+
+
+<!-- <app-kpi-target-info [selectedDate]="selectedDate"></app-kpi-target-info>
+  <app-sim-allocation-info [selectedDate]="selectedDate"> </app-sim-allocation-info>
+  <app-network-activations [selectedDate]="selectedDate"></app-network-activations>
+-->
