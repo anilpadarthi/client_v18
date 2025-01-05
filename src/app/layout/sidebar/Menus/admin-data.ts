@@ -129,6 +129,21 @@ export const adminItems: NavItem[] = [
         iconName: 'fiber_manual_record',
         route: 'suppliers',
       },
+      {
+        displayName: 'Category',
+        iconName: 'fiber_manual_record',
+        route: 'categories',
+      },
+      {
+        displayName: 'Sub-Category',
+        iconName: 'fiber_manual_record',
+        route: 'sub-categories',
+      },
+      {
+        displayName: 'Product',
+        iconName: 'fiber_manual_record',
+        route: 'products',
+      },
 
     ],
   },

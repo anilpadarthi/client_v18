@@ -1,0 +1,97 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Products</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="filter-controls">
+            <div class="col-lg-12">
+                <button mat-icon-button (click)="loadData()" title="Refresh">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-form-field appearance="outline">
+                    <mat-label>Category</mat-label>
+                    <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange($event)">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                            <span>{{category.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Sub-Category</mat-label>
+                    <mat-select [(ngModel)]="subCategoryId" (selectionChange)="onSubCategoryChange($event)">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                            <span>{{subCategory.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="input-field">
+                    <mat-label>Search By Name</mat-label>
+                    <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
+                </mat-form-field>
+                <button mat-icon-button title="Clear Filter" (mousedown)="onReset()">
+                    <mat-icon>clear_all</mat-icon>
+                </button>
+                <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
+                    <mat-icon>add</mat-icon>
+                    Add
+                </button>
+                <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="m-l-5">
+                    <mat-icon>add</mat-icon>
+                    Add Bundle
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive table-scroll example-container">
+            <table mat-table [dataSource]="areaList" class="w-100 custom-table">
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let r">
+                        {{ r.productId }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef> NAME </th>
+                    <td mat-cell *matCellDef="let r"> {{ r.productName }} </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef> CODE </th>
+                    <td mat-cell *matCellDef="let r"> {{r.productCode}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Category">
+                    <th mat-header-cell *matHeaderCellDef> CATEGORY </th>
+                    <td mat-cell *matCellDef="let r"> {{r.category.categoryName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="SubCategory">
+                    <th mat-header-cell *matHeaderCellDef> SUB-CATEOGRY </th>
+                    <td mat-cell *matCellDef="let r"> {{r.subCategory.subCategoryName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="DisplayOrder">
+                    <th mat-header-cell *matHeaderCellDef> DISPLAY ORDER </th>
+                    <td mat-cell *matCellDef="let r"> {{r.displayOrder}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
+                    <td mat-cell *matCellDef="let r">
+                        <a class="m-r-10 cursor-pointer" (click)="addoreditclick(r.productId)">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                        <a class="m-r-10 cursor-pointer" (click)="deleteclick(r.productId)">
+                            <mat-icon>delete</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+        <div class="no-records" *ngIf="areaList?.length == 0">No records found</div>
+        <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+            [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+        </mat-paginator>
+    </mat-card-content>
+</mat-card>

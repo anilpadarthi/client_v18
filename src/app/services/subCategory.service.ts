@@ -3,44 +3,35 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICommonResponse } from '../models/common-response';
 
+
 @Injectable({
   providedIn: 'root'
 })
-
-export class AreaService {
+export class SubCategoryService {
 
   url: string;
 
   constructor(public http: HttpClient) {
-    this.url = `api/Area`
-  }
-
-  getAllAreasToAllocate(): Observable<any> {
-    return this.http.post<any>(this.url + '/GetAllAreasToAllocate', null);
+    this.url = `api/SubCategory`
   }
 
   getByPaging(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetByPaging', requestBody);
   }
 
-  getArea(id: number): Observable<ICommonResponse> {
+  getSubCategory(id: number): Observable<ICommonResponse> {
     return this.http.get<ICommonResponse>(this.url + `/GetById?id=${id}`);
   }
 
-  createArea(requestBody: any): Observable<ICommonResponse> {
+  createSubCategory(requestBody: any): Observable<ICommonResponse> {
     return this.http.post<ICommonResponse>(this.url + '/Create', requestBody);
   }
 
-  updateArea(requestBody: any): Observable<ICommonResponse> {
+  updateSubCategory(requestBody: any): Observable<ICommonResponse> {
     return this.http.put<ICommonResponse>(this.url + '/Update', requestBody);
   }
 
-  deleteArea(id: any): Observable<ICommonResponse> {
+  deleteSubCategory(id: any): Observable<ICommonResponse> {
     return this.http.delete<ICommonResponse>(this.url + `/Delete?id=${id}`);
   }
-
-  allocateAreasToAgent(requestBody: any):Observable<ICommonResponse> {
-    return this.http.post<ICommonResponse>(this.url + '/AllocateAreasToAgent', requestBody);
-  }
-
 }

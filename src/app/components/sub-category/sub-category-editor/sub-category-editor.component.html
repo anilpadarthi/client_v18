@@ -1,0 +1,47 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>{{ subCategoryId != null ? 'Edit Sub-Category' : 'Create Sub-Category' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="col-lg-6">
+            <form [formGroup]="subCategoryForm" (ngSubmit)="onSave()">
+                <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <mat-select formControlName="categoryId" placeholder="Select Category">
+                        <mat-option [value]="null">-Select-</mat-option>
+                        <mat-option *ngFor="let item of categoryLookup" [value]="item.id">
+                            <span>{{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Sub-Category Name</mat-label>
+                    <input matInput formControlName="subCategoryName" placeholder="Enter your Sub-Category name" />
+                    <mat-error *ngIf="subCategoryForm.get('subCategoryName')?.hasError('required')">
+                        Sub-Category Name is required.
+                    </mat-error>
+                    <mat-error *ngIf="subCategoryForm.get('subCategoryName')?.hasError('minlength')">
+                        Sub-Category Name must be at least 2 characters long.
+                    </mat-error>
+                </mat-form-field>
+                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                    Is Active
+                </mat-checkbox>
+
+                <div class="row col-lg-12">
+                    <div class="col-lg-12 image-preview rounded-image">
+                        <img *ngIf="subCtegoryImagePreview" [src]="subCtegoryImagePreview" class="rounded-image"
+                            alt="Image Preview"> <br />
+                    </div>
+                    <div appearance="fill" class="m-15">
+                        <input type="file" accept="image/*" (change)="imageUpload($event)" />
+                    </div>
+                </div>
+
+                <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="subCategoryForm.invalid">
+                    Save
+                </button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

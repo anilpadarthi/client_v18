@@ -1,0 +1,78 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Categories</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="filter-controls">
+            <div class="col-lg-12">
+                <button mat-icon-button (click)="loadData()" title="Refresh">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-form-field appearance="outline">
+                    <mat-label>Search Category</mat-label>
+                    <input matInput #searchInput placeholder="Search Category" [(ngModel)]="searchText"
+                        (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <button mat-icon-button title="Clear Filter" (mousedown)="onReset()">
+                    <mat-icon>clear_all</mat-icon>
+                </button>
+                <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
+                    <mat-icon>add</mat-icon>
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive table-scroll example-container">
+            <table mat-table [dataSource]="categoryList" class="w-100 custom-table">
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.categoryId }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef>NAME</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.categoryName }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="DisplayOrder">
+                    <th mat-header-cell *matHeaderCellDef>DISPLAY ORDER</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.categoryName }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>STATUS</th>
+                    <td mat-cell *matCellDef="let element">{{ element.status ? 'Active' : 'InActive' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef>
+                        ACTION
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="action-link">
+                        <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.categoryId)">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                        <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.categoryId)">
+                            <mat-icon>delete</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+        <div class="no-records" *ngIf="categoryList?.length == 0">No records found</div>
+        <mat-paginator *ngIf="categoryList.length > 0"  #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+            [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+        </mat-paginator>
+    </mat-card-content>
+</mat-card>

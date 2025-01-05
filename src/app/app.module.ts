@@ -86,6 +86,22 @@ import { PaySlipComponent } from './components/management/pay-slip/pay-slip.comp
 import { AttendanceReportComponent } from './components/management/attendance-report/attendance-report.component';
 import { ExpensesFormComponent } from './components/management/expenses-form/expenses-form.component';
 import { EditUserProfileComponent } from './components/user/edit-user-profile/edit-user-profile.component';
+import { CategoryListComponent } from './components/category/category-list/category-list.component';
+import { CategoryEditorComponent } from './components/category/category-editor/category-editor.component';
+import { SubCategoryEditorComponent } from './components/sub-category/sub-category-editor/sub-category-editor.component';
+import { SubCategoryListComponent } from './components/sub-category/sub-category-list/sub-category-list.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+import { ProductEditorComponent } from './components/product/product-editor/product-editor.component';
+import { OrderListComponent } from './components/order/order-list/order-list.component';
+import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
+import { OrderPaymentHistoryComponent } from './components/order/order-payment-history/order-payment-history.component';
+import { OrderPaymentEditorComponent } from './components/order/order-payment-editor/order-payment-editor.component';
+import { OrderDetailsComponent } from './components/order/order-details/order-details.component';
+import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
+import { ProductsViewComponent } from './components/shopping/products-view/products-view.component';
+import { CartItemsComponent } from './components/shopping/cart-items/cart-items.component';
+import { CheckoutComponent } from './components/shopping/checkout/checkout.component';
+import { CategoryViewComponent } from './components/shopping/category-view/category-view.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -154,7 +170,23 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     PaySlipComponent,
     AttendanceReportComponent,
     ExpensesFormComponent,
-    EditUserProfileComponent
+    EditUserProfileComponent,
+    CategoryListComponent,
+    CategoryEditorComponent,
+    SubCategoryEditorComponent,
+    SubCategoryListComponent,
+    ProductListComponent,
+    ProductEditorComponent,
+    OrderListComponent,
+    OrderHistoryComponent,
+    OrderPaymentHistoryComponent,
+    OrderPaymentEditorComponent,
+    OrderDetailsComponent,
+    ProductDetailComponent,
+    ProductsViewComponent,
+    CartItemsComponent,
+    CheckoutComponent,
+    CategoryViewComponent
   ],
   imports: [
     BrowserModule,

@@ -13,7 +13,8 @@
           </mat-expansion-panel-header>
           <div class="row col-lg-12">
             <div class="col-lg-12 image-preview rounded-image">
-              <img *ngIf="userImagePreview" [src]="userImagePreview" class="rounded-image" alt="User Image Preview"> <br />
+              <img *ngIf="userImagePreview" [src]="userImagePreview" class="rounded-image" alt="User Image Preview">
+              <br />
             </div>
             <div appearance="fill" class="m-15">
               <input type="file" accept="image/*" (change)="imageUpload($event)" />
@@ -171,7 +172,8 @@
 
                     <div class="row col-lg-12">
                       <div class="col-lg-12 image-preview rounded-image">
-                        <img *ngIf="getDocumentPreview(i)" [src]="getDocumentPreview(i)" class="rounded-image" alt="User Image Preview"> <br />
+                        <img *ngIf="getDocumentPreview(i)" [src]="getDocumentPreview(i)" class="rounded-image"
+                          alt="User Image Preview"> <br />
                       </div>
                       <div appearance="fill" class="m-15">
                         <input type="file" id="documentImage-{{ i }}" (change)="onDocumentImageSelected($event, i)" />

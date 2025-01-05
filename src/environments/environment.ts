@@ -7,7 +7,8 @@ export const environment = {
   host: 'http://localhost:5170',
   backend:  {
     //host: 'http://api.anglesims.co.uk'
-    host: 'http://localhost:5170'
+    host: 'https://localhost:51544'
+    //host: 'http://localhost:8084'
   },
   fromend:  {
     host: 'http://localhost:4200'  

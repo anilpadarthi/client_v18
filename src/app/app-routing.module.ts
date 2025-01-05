@@ -34,7 +34,12 @@ import { ExpensesComponent } from './components/management/expenses/expenses.com
 import { ExpensesFormComponent } from './components/management/expenses-form/expenses-form.component';
 import { AttendanceReportComponent } from './components/management/attendance-report/attendance-report.component';
 import { EditUserProfileComponent } from './components/user/edit-user-profile/edit-user-profile.component';
-
+import { CategoryListComponent } from './components/category/category-list/category-list.component';
+import { CategoryEditorComponent } from './components/category/category-editor/category-editor.component';
+import { SubCategoryListComponent } from './components/sub-category/sub-category-list/sub-category-list.component';
+import { SubCategoryEditorComponent } from './components/sub-category/sub-category-editor/sub-category-editor.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+import { ProductEditorComponent } from './components/product/product-editor/product-editor.component';
 
 
 const routes: Routes = [
@@ -65,6 +70,19 @@ const routes: Routes = [
       { path: 'suppliers', component: SupplierListComponent },
       { path: 'supplier/create', component: SupplierEditorComponent },
       { path: 'supplier/edit/:id', component: SupplierEditorComponent },
+
+      { path: 'categories', component: CategoryListComponent },
+      { path: 'category/create', component: CategoryEditorComponent },
+      { path: 'category/edit/:id', component: CategoryEditorComponent },
+
+      { path: 'sub-categories', component: SubCategoryListComponent },
+      { path: 'sub-category/create', component: SubCategoryEditorComponent },
+      { path: 'sub-category/edit/:id', component: SubCategoryEditorComponent },
+
+
+      { path: 'products', component: ProductListComponent },
+      { path: 'product/create', component: ProductEditorComponent },
+      { path: 'product/edit/:id', component: ProductEditorComponent },
 
 
       { path: 'onfield', component: OnFieldComponent },
