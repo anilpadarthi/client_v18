@@ -55,10 +55,8 @@ export class ProductListComponent implements OnInit {
   }
 
   onCategoryChange(event: any) {
-    this.pageNo = 0;
     if (event.value) {
       this.getSubCategoryLookup(event.value);
-      this.loadData();
     } else {
       this.subCategories = [];
     }
@@ -100,6 +98,8 @@ export class ProductListComponent implements OnInit {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
+      categoryId:this.categoryId,
+      subCategoryId:this.subCategoryId,
       searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null
     };
 

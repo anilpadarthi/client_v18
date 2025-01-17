@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebstorgeService } from '../services/web-storage.service';
 import { navItems } from './sidebar/sidebar-data';
-import { adminItems } from './sidebar/Menus/admin-data';
+import { adminItems,managerItems } from './sidebar/Menus/admin-data';
 import { agentItems } from './sidebar/Menus/agent-data';
 import { CoreService } from '../services/core.service';
 import { NavService } from '../services/nav.service';
@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit {
   navItems = navItems;
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav | any;
-
+  isDisplaySideMenu = true;
   //get options from service
   options:any;
   resView = false;
@@ -47,12 +47,14 @@ export class LayoutComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public navService: NavService,
     public webstorgeService: WebstorgeService,
+    private router: Router
   ) {
     this.options = this.settings.getOptions();
     this.htmlElement = document.querySelector('html')!;
     var userRole = this.webstorgeService.getUserInfo().userRoleId;
     switch (userRole) {
       case 2: this.navItems = adminItems; break;
+      case 3: this.navItems = managerItems; break;
       case 4: this.navItems = agentItems; break;
       default: this.navItems = navItems; break;
     }
@@ -75,6 +77,12 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this.webstorgeService.getUserInfo();
+    this.router.events.subscribe((event) => {
+      if(this.router.url.includes('create-order') || this.router.url.includes('edit-order')){
+        this.isDisplaySideMenu = false;
+      }
+      
+    });
   }
 
   ngOnDestroy() {

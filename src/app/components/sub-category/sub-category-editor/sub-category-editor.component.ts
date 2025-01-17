@@ -40,6 +40,7 @@ export class SubCategoryEditorComponent {
 
   ngOnInit(): void {
     this.subCategoryId = this.route.snapshot.paramMap.get('id');
+    this.subCtegoryImagePreview = '/assets/images/profile/user-1.jpg';
     this.getSubCategoryDetails();
     this.loadCategoryLookup();
   }

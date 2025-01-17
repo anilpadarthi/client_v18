@@ -13,7 +13,7 @@
   <!-- Vertical Sidebar -->
   <!-- ============================================================== -->
   @if (!options.horizontal) {
-  <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'"
+  <mat-sidenav *ngIf="isDisplaySideMenu" #leftsidenav [mode]="isOver ? 'over' : 'side'"
     [opened]="options.navPos === 'side' && options.sidenavOpened && !isOver && !resView"
     (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
     <div class="flex-layout">
@@ -35,7 +35,7 @@
           </div>
           <div class="m-l-auto">
             <a mat-icon-button (click)="logout()" class="d-flex justify-content-center">
-              <mat-icon>power</mat-icon>
+              <mat-icon>logout</mat-icon>
             </a>
           </div>
         </div>
@@ -48,7 +48,7 @@
   <!-- horizontal Sidebar -->
   <!-- ============================================================== -->
   @if (resView) {
-  <mat-sidenav #leftsidenav [mode]="'over'" [opened]="options.sidenavOpened && !isTablet"
+  <mat-sidenav *ngIf="isDisplaySideMenu" #leftsidenav [mode]="'over'" [opened]="options.sidenavOpened && !isTablet"
     (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
     <app-sidebar> </app-sidebar>
     <ng-scrollbar class="position-relative" style="height: 100%">

@@ -28,12 +28,19 @@ export class UserService {
   }
 
   updateUser(requestBody: any): Observable<ICommonResponse> {
-    return this.http.put<ICommonResponse>(this.url+ '/Update', requestBody);
+    return this.http.post<ICommonResponse>(this.url+ '/Update', requestBody);
   }
 
   deleteUser(id: number): Observable<ICommonResponse> {
-    return this.http.delete<ICommonResponse>(this.url +  `/Delete?id=${id}`);
+    return this.http.get<ICommonResponse>(this.url +  `/Delete?id=${id}`);
   }
 
+  getAllAgentsToAllocate(): Observable<any> {
+    return this.http.post<any>(this.url + '/GetAllAgentsToAllocate', null);
+  }
+
+  allocateAgentsToManager(requestBody: any):Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/AllocateAgentsToManager', requestBody);
+  }
  
 }

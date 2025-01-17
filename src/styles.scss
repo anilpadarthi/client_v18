@@ -95,12 +95,19 @@ mat-panel-title {
     font-size: 16px !important;
 }
 
+.theme-card {
+    margin-bottom: 20px !important;
+}
+
 
 .filter-controls {
     mat-form-field {
-        min-width: 20vm;
         margin-right: 1em;
     }
+}
+
+.filter-buttons{
+    margin-top:10px;
 }
 
 mat-expansion-panel {
@@ -227,4 +234,13 @@ mat-mdc-form-field-required-marker {
   video {
     border: 2px solid black;
     margin-bottom: 10px;
+  }
+
+  .required-asterisk {
+    color: red;
+    margin-left: 2px; /* Optional for spacing */
+  }
+  .mat-mdc-form-field-required-marker {
+    color: red;
+    margin-left: 2px; /* Optional spacing */
   }

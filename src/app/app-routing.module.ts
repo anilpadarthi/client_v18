@@ -40,10 +40,13 @@ import { SubCategoryListComponent } from './components/sub-category/sub-category
 import { SubCategoryEditorComponent } from './components/sub-category/sub-category-editor/sub-category-editor.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductEditorComponent } from './components/product/product-editor/product-editor.component';
+import { CreateOrderComponent } from './components/order/create-order/create-order.component';
+import { EditOrderComponent } from './components/order/edit-order/edit-order.component';
+import { OrderListComponent } from './components/order/order-list/order-list.component';
 
 
 const routes: Routes = [
-  
+
   {
     path: '',
     component: LayoutComponent,
@@ -111,6 +114,10 @@ const routes: Routes = [
 
 
 
+      { path: 'aceessories/sales', component: OrderListComponent },
+
+
+
 
 
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
@@ -118,6 +125,9 @@ const routes: Routes = [
 
     ],
   },
+  { path: 'aceessories/create-order/:id', component: CreateOrderComponent },
+  { path: 'aceessories/edit-order/:id', component: EditOrderComponent },
+
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '/login' }
 ];

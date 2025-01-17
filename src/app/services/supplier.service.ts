@@ -28,11 +28,11 @@ export class SupplierService {
   }
 
   updateSupplier(requestBody: any): Observable<ICommonResponse> {
-    return this.http.put<ICommonResponse>(this.url+ '/Update', requestBody);
+    return this.http.post<ICommonResponse>(this.url+ '/Update', requestBody);
   }
 
   deleteSupplier(id: number): Observable<ICommonResponse> {
-    return this.http.delete<ICommonResponse>(this.url + `/Delete?id=${id}`);
+    return this.http.get<ICommonResponse>(this.url + `/Delete?id=${id}`);
   }
 
 }

@@ -1,6 +1,9 @@
 import { NavItem } from "../nav-item/nav-item";
 
 
+
+
+
 export const agentItems: NavItem[] = [
 
   {
@@ -10,85 +13,100 @@ export const agentItems: NavItem[] = [
     children: [
       {
         displayName: 'Main',
-        iconName: 'point',
+        iconName: 'arrow_right',
         route: 'dashboard/main',
       },
       {
         displayName: 'Analytics',
-        iconName: 'point',
+        iconName: 'arrow_right',
         route: 'dashboard/analytics',
       },
     ],
   },
- 
   {
     displayName: 'IMEI',
-    iconName: 'file-description',
-    route: '/IMEI',
+    iconName: 'manage_search',
+    route: 'imei/search',
   },
   {
     displayName: 'OnField',
-    iconName: 'file-description',
-    route: '/onfield',
+    iconName: 'store',
+    route: 'onfield',
   },
   {
     displayName: 'Reports',
-    iconName: 'file-description',
+    iconName: 'monitoring',
     route: '',
     children: [
       {
         displayName: 'Monthly Activations',
-        iconName: 'point',
-        route: '/reports/monthlyactivations',
-      },
-      {
-        displayName: 'Historical Activations',
-        iconName: 'point',
-        route: '/reports/historicalactivations',
-      },
-      {
-        displayName: 'Network Reports',
-        iconName: 'point',
-        route: 'dashboard/analytics',
-      },
-      {
-        displayName: 'Sim Allocations',
-        iconName: 'file-description',
-        route: '/reports/simallocations',
+        iconName: 'arrow_right',
+        route: 'report/monthly/activations',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'file-description',
-        route: '/reports/simallocations',
+        iconName: 'arrow_right',
+        route: 'report/kpi-target',
       },
-      
+      {
+        displayName: 'Commission Statements',
+        iconName: 'arrow_right',
+        route: 'report/commission-statement',
+      },
     ],
   },
   {
     displayName: 'Setup',
-    iconName: 'file-description',
+    iconName: 'manage_accounts',
     route: '',
     children: [
       {
-        displayName: 'Areas',
-        iconName: 'point',
-        route: '/areas',
+        displayName: 'Area',
+        iconName: 'arrow_right',
+        route: 'areas',
       },
       {
-        displayName: 'Shops',
-        iconName: 'point',
-        route: '/shops',
+        displayName: 'Shop',
+        iconName: 'arrow_right',
+        route: 'shops',
+      },
+    ],
+  },
+
+  {
+    displayName: 'Payslip',
+    iconName: 'text_snippet',
+    route: 'payslip',
+  },
+  {
+    displayName: 'Chat',
+    iconName: 'chat',
+    route: 'chat',
+  },
+
+  {
+    displayName: 'Accessories',
+    iconName: 'point_of_sale',
+    route: '',
+    children: [
+      {
+        displayName: 'Sales',
+        iconName: 'arrow_right',
+        route: 'aceessories/sales',
+      },
+      {
+        displayName: 'Create Order',
+        iconName: 'arrow_right',
+        route: 'aceessories/create-order',
+        target: '_blank'
       },
     ],
   },
   {
-    displayName: 'Chat',
-    iconName: 'point',
-    route: 'dashboard/main',
-  },
-  {
     displayName: 'Edit Profile',
-    iconName: 'file-description',
-    route: '/profile/edit',
+    iconName: 'account_circle',
+    route: 'profile/edit',
   },
+
+
 ];

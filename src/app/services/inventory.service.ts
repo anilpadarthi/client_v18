@@ -28,10 +28,10 @@ export class InventoryService {
   }
 
   updateArea(requestBody: any): Observable<ICommonResponse> {
-    return this.http.put<ICommonResponse>(this.url, requestBody);
+    return this.http.post<ICommonResponse>(this.url, requestBody);
   }
 
   deleteArea(requestBody: any): Observable<ICommonResponse> {
-    return this.http.put<ICommonResponse>(this.url + "/UpdateStatus",requestBody);
+    return this.http.post<ICommonResponse>(this.url + "/UpdateStatus",requestBody);
   }
 }

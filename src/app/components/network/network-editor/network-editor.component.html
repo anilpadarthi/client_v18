@@ -6,9 +6,21 @@
         <div class="col-lg-6">
             <form [formGroup]="networkForm" (ngSubmit)="onSave()">
                 <mat-form-field appearance="outline" class="w-100 hide-hint">
-                    <mat-select formControlName="baseNetworkId" (selectionChange)="onSelectionChange($event)" placeholder="Select Network">
+                    <mat-label>
+                        Base Network
+                    </mat-label>
+                    <mat-select formControlName="baseNetworkId" placeholder="Select Network">
                         <mat-option [value]="null">-Select-</mat-option>
                         <mat-option *ngFor="let item of networkCodesLookup" [value]="item.id">
+                            <span>{{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select formControlName="supplierId" placeholder="Select Supplier">
+                        <mat-option [value]="null">-Select-</mat-option>
+                        <mat-option *ngFor="let item of supplierLookup" [value]="item.id">
                             <span>{{ item.name }}</span>
                         </mat-option>
                     </mat-select>
@@ -28,7 +40,7 @@
                     <input matInput formControlName="skuCode" placeholder="Enter SKU CODE" />
                     <mat-error *ngIf="networkForm.get('skuCode')?.hasError('required')">
                         SKU CODE is required.
-                    </mat-error>                   
+                    </mat-error>
                 </mat-form-field>
                 <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
                     Is Active

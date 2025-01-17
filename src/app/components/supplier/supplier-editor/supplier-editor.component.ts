@@ -178,7 +178,6 @@ export class SupplierEditorComponent {
 
   }
 
-
   get supplierAccounts(): FormArray {
     return <FormArray>this.supplierForm.get('supplierAccounts');
   }
@@ -187,7 +186,7 @@ export class SupplierEditorComponent {
     this.supplierAccounts.push(this.createSupplierAccount());
   }
 
-  removeSupplierAccoount(index: number) {
+  removeSupplierAccount(index: number) {
     this.supplierAccounts.removeAt(index);
   }
 

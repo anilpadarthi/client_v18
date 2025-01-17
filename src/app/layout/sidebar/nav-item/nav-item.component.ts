@@ -51,7 +51,15 @@ export class AppNavItemComponent implements OnChanges {
 
   onItemSelected(item: NavItem) {
     if (!item.children || !item.children.length) {
-      this.router.navigate([item.route]);
+      if(item.target){
+        const fullPath = this.router.serializeUrl(
+          this.router.createUrlTree([item.route])
+        );
+        window.open(fullPath, '_blank');
+      }
+      else{
+        this.router.navigate([item.route]);
+      }
 
     }
     if (item.children && item.children.length) {

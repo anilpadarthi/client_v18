@@ -38,6 +38,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   lycaSum: number = 0;
   voxiSum: number = 0;
   smartySum: number = 0;
+  totalSum: number = 0;
 
   displayedColumns: string[] = [
     'ID',
@@ -110,8 +111,14 @@ export class MonthlyActivationReportComponent implements OnInit {
         isInstantActivation: this.isInstantActivation,
       };
       this.reportService.getMonthlyActivations(requestBody).subscribe((res) => {
-        this.activationList = res.data;
-        this.calculateSums();
+        if (res.data) {
+          let result = res.data;
+          result.forEach((e: any) => {
+            e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
+          });
+          this.activationList = result;
+          this.calculateSums();
+        }
       });
     }
     else {
@@ -130,18 +137,24 @@ export class MonthlyActivationReportComponent implements OnInit {
     this.selectedMonth = null;
     this.selectedManagerId = null;
     this.isInstantActivation = false;
+    this.activationList = [];
   }
 
   calculateSums() {
     this.eeSum = this.activationList.reduce((sum: any, item: any) => sum + item.ee, 0);
     this.threeSum = this.activationList.reduce((sum: any, item: any) => sum + item.three, 0);
     this.o2Sum = this.activationList.reduce((sum: any, item: any) => sum + item.o2, 0);
-    this.gifgafSum = this.activationList.reduce((sum: any, item: any) => sum + item.gifgaf, 0);
+    this.gifgafSum = this.activationList.reduce((sum: any, item: any) => sum + item.giffgaff, 0);
     this.vodafoneSum = this.activationList.reduce((sum: any, item: any) => sum + item.vodafone, 0);
     this.lebaraSum = this.activationList.reduce((sum: any, item: any) => sum + item.lebara, 0);
     this.lycaSum = this.activationList.reduce((sum: any, item: any) => sum + item.lyca, 0);
     this.voxiSum = this.activationList.reduce((sum: any, item: any) => sum + item.voxi, 0);
     this.smartySum = this.activationList.reduce((sum: any, item: any) => sum + item.smarty, 0);
+
+    this.totalSum = this.eeSum + this.threeSum
+      + this.o2Sum + this.gifgafSum
+      + this.vodafoneSum + this.lebaraSum
+      + this.voxiSum + this.smartySum;
   }
 
 }

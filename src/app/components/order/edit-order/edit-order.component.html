@@ -1,0 +1,264 @@
+<mat-toolbar class="topbar">
+
+    <div class="branding">
+        <a href="/home">
+            <img src="./assets/images/logos/Leap.png" class="align-middle m-2 leap-logo" alt="logo" />
+        </a>
+    </div>
+    <!-- --------------------------------------------------------------- -->
+    <!-- Desktop Menu -->
+    @if(showToggle) {
+    <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center">
+        <mat-icon>menu</mat-icon>
+    </button>
+    }
+
+    <!-- Mobile Menu -->
+    @if(!showToggle) {
+    <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center">
+        <mat-icon>menu</mat-icon>
+    </button>
+    }
+    <!-- --------------------------------------------------------------- -->
+
+    <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button">
+        <mat-icon>shopping_cart</mat-icon>
+        <span *ngIf="cartData.length> 0" class="cart-items-count">{{ cartData.length }}</span>
+        <mat-icon class="mat-icon-sm">arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #cartMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="top-menu-dropdown cart-dropdown">
+        <ng-template matMenuContent>
+            <span (mouseleave)="cartMenuTrigger.closeMenu()" class="d-block">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
+                    <b><span>{{ cartData.length }} ITEM<span *ngIf="cartData.length > 1">S</span></span></b>
+                    <b><a [routerLink]="['/cart']" class="text-muted">VIEW CART</a></b>
+                </div>
+                <div class="divider mt-1"></div>
+                <div *ngIf="cartData.length == 0" class="py-1 text-muted text-center">
+                    You have no items in your shopping cart.
+                </div>
+                <!-- <mat-list>
+                    <mat-list-item *ngFor="let product of cartData.cartList">
+                        <h3 matLine class="text-muted">{{ product.productName }}</h3>
+                        <p matLine class="text-muted">
+                            <bdi>{{ product.qty }} x £
+                                {{ product.salePrice | number : "1.2-2" }}</bdi>
+                        </p>
+                        <button mat-icon-button color="warn" class="remove"
+                            (click)="remove(product); stopClickPropagate(£event)" matTooltip="Remove"
+                            matTooltipPosition="before">
+                            <mat-icon class="mat-icon-sm">close</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+                <div *ngIf="cartData?.cartList?.length > 0" class="cart-dropdown-footer">
+                    <div class="divider mt-1"></div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted mt-1">
+                        <b>TOTAL:</b>
+                        <b class="new-price">£
+                            {{
+                            cartData?.totalPrice +
+                            cartData?.deliveryCharges +
+                            (cartData?.totalPrice * cartData?.vat) /
+                            100 | number : "1.2-2"
+                            }}</b>
+                    </div>
+                    <div class="divider mt-1"></div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-1">
+                        <button mat-mini-fab color="warn" (click)="clear(); stopClickPropagate(£event)"
+                            matTooltip="Clear All" matTooltipPosition="after">
+                            <mat-icon>remove_shopping_cart</mat-icon>
+                        </button>
+                        <a [routerLink]="['/checkout']" mat-mini-fab color="primary" matTooltip="Checkout"
+                            matTooltipPosition="before">
+                            <mat-icon>check</mat-icon>
+                        </a>
+                    </div>
+                </div> -->
+            </span>
+        </ng-template>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button"
+        (click)="viewCart()">
+        <mat-icon>shopping_cart_checkout</mat-icon>
+        Checkout
+    </button>
+
+</mat-toolbar>
+
+
+<mat-sidenav-container class="mainWrapper">
+    <!-- Sidebar Navigation -->
+    <mat-sidenav #sidenav mode="side" opened class="sidebarNav">
+
+        <h3 class="sidebar-title">Categories</h3>
+
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let item of categories">
+                <!-- Main Category -->
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{ item.categoryName }}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <!-- Subcategories -->
+                <div *ngIf="item.subCategories.length > 0">
+                    <div class="subcategory" *ngFor="let sub of item.subCategories">
+                        <a mat-button (click)="loadProducts(sub.subCategoryId)">{{ sub.subCategoryName }}</a>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="contentWrapper">
+        <div *ngIf="!isCartView">
+            <!-- Categories -->
+            <div class="row" *ngIf="isDisplayCatgories">
+                <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
+                    <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadSubCategories(item)">
+                        <img src="{{ item.image }}" alt="imgSrc" class="w-100" mat-card-image />
+                        <mat-card-content class="p-b-12 p-t-12 position-relative">
+                            <mat-card-title class="mat-headline-2">
+                                {{ item.categoryName }}</mat-card-title>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <!-- Sub-Categories -->
+            <div class="row" *ngIf="isDisplaySubCatgories">
+                <div class="col-sm-6 col-lg-3" *ngFor="let item of subCategories">
+                    <mat-card class="cardWithShadow productcard overflow-hidden"
+                        (click)="loadProducts(item.subCategoryId)">
+                        <img src="{{ item.image }}" alt="imgSrc" class="w-100" mat-card-image />
+                        <mat-card-content class="p-b-12 p-t-12 position-relative">
+                            <mat-card-title class="mat-headline-2">
+                                {{ item.subCategoryName }}</mat-card-title>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <!-- Products -->
+            <div class="row" *ngIf="isDisplayProducts">
+                <div class="col-sm-6 col-lg-3" *ngFor="let item of products">
+                    <mat-card class="cardWithShadow productcard overflow-hidden"
+                        (click)="loadProducts(item.subCategoryId)">
+                        <img src="{{ item.image }}" alt="imgSrc" class="w-100" mat-card-image />
+                        <mat-card-content class="p-b-12 p-t-12 position-relative">
+                            <mat-card-title class="mat-headline-2"> {{ item.productName }}</mat-card-title>
+                            <mat-card-title class="mat-headline-2"> {{ item.productCode }}</mat-card-title>
+                            <div class="d-flex align-items-center selling-price">
+
+                                <div class="d-flex align-items-center">
+                                    <h3 class="mat-body-2  f-w-600">£{{ item.salePrice }}</h3>
+                                </div>
+                                <div class="m-l-auto d-flex gap-4">
+                                    <button mat-mini-fab color="primary" class="icon-30 cart-btn"
+                                        matTooltip="Add to Cart" (click)="addToCart(item)">
+                                        <mat-icon>shopping_basket</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isCartView">
+            <mat-card *ngIf="cartItems.length > 0">
+                <div class="table-responsive table-scroll example-container">
+                    <table mat-table [dataSource]="cartItems" class="w-100 custom-table">
+                        <ng-container matColumnDef="productImage">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element" class="p-l-0">
+                                <div class="d-flex align-items-center">
+                                    <img [src]="element.image" alt="users" width="48" class="rounded" />
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="productName">
+                            <th mat-header-cell *matHeaderCellDef>Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.productName }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="productCode">
+                            <th mat-header-cell *matHeaderCellDef>Code</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.productCode }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="salePrice">
+                            <th mat-header-cell *matHeaderCellDef>Price</th>
+                            <td mat-cell *matCellDef="let element">
+                                £{{ element.salePrice }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <input type="number" matInput #quantityInput class="form-control"
+                                        value="{{ element.qty }}"
+                                        (change)="updateCartItemQuantity(element,quantityInput.value)" />
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                            <th mat-header-cell *matHeaderCellDef>Amount</th>
+                            <td mat-cell *matCellDef="let element">
+                                £{{ element.amount }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element" class="action-link">
+                                <a class="m-r-10 cursor-pointer" (click)="removeCartItem(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+                <div class="text-right totals">
+                    <h5 class="m-b-5 f-w-600 f-s-16">Sub total: £{{ subTotal | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16">VAT: £{{ vatAmount | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16">Discount: £{{ discountAmount | number : "1.2-2" }}</h5>
+                    <mat-divider></mat-divider>
+                    <h3 class="m-b-5 f-s-18">Grand Total: £{{ grandTotal | number : "1.2-2" }}</h3>
+                </div>
+
+                <div class="text-right totals">
+                    <h3 class="m-b-5 f-s-14">Shipping Address: {{ shippingAddress }}</h3>
+                </div>
+
+
+                <div class="row col-lg-12 text-right">
+                    
+                    <button mat-flat-button class="col-lg-4" (click)="continueShopping()">
+                        <mat-icon>clear_all</mat-icon>
+                        Continue Shopping
+                    </button>
+
+                    
+
+                    <button mat-flat-button color="primary" class="col-lg-4" (click)="createOrder()" >
+                        <mat-icon>add</mat-icon>
+                        Update Order
+                    </button>
+                </div>
+            </mat-card>
+        </div>
+
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

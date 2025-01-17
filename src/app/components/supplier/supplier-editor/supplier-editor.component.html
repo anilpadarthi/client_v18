@@ -21,7 +21,7 @@
                         <mat-card-title>Supplier Accounts</mat-card-title>
                     </div>
                     <div class="col-lg-2">
-                        <button mat-flat-button color="primary" (click)="addSupplierAccount()">
+                        <button type="button" mat-flat-button color="primary" (click)="addSupplierAccount()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -41,8 +41,8 @@
                                     required>
                             </mat-form-field>
                             <div class="col-lg-4">
-                                <button mat-raised-button color="primary" class="remove-button"
-                                    (click)="removeSupplierAccoount(i)">
+                                <button type="button" mat-flat-button color="warn" class="remove-button"
+                                    (click)="removeSupplierAccount(i)">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </div>
@@ -54,7 +54,7 @@
                         <mat-card-title>Supplier Networks</mat-card-title>
                     </div>
                     <div class="col-lg-2">
-                        <button mat-flat-button color="primary" (click)="addSupplierProduct()">
+                        <button type="button" mat-flat-button color="primary" (click)="addSupplierProduct()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -77,7 +77,7 @@
                                 <input formControlName='productCost' id="{{'Price'+i}}" matInput isNumeric required>
                             </mat-form-field>
                             <div class="col-lg-4">
-                                <button mat-raised-button color="primary" class="remove-button"
+                                <button type="button" mat-flat-button color="warn" class="remove-button"
                                     (click)="removeSupplierProduct(i)">
                                     <mat-icon>close</mat-icon>
                                 </button>

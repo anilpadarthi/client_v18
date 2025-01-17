@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output, } from '@angular/core';
 import { navItems } from './sidebar-data';
 import { NavService } from '../../services/nav.service';
 import { WebstorgeService } from '../../services/web-storage.service';
-import { adminItems } from '../sidebar/Menus/admin-data';
+import { adminItems, managerItems } from '../sidebar/Menus/admin-data';
 import { agentItems } from '../sidebar/Menus/agent-data';
 
 @Component({
@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
     var userRole = this.webstorgeService.getUserInfo().userRoleId;
     switch (userRole) {
       case 2: this.navItems = adminItems; break;
+      case 3: this.navItems = managerItems; break;
       case 4: this.navItems = agentItems; break;
       default: this.navItems = navItems; break;
     }

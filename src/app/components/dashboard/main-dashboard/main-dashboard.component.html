@@ -7,7 +7,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="col-lg-3">
         <mat-label>Choose a Month</mat-label>
-        <input matInput [(ngModel)]="selectedDate" [matDatepicker]="picker" placeholder="Choose a Month" />
+        <input matInput [(ngModel)]="selectedDate" (dateChange)="loadDashboardMetrics()" [matDatepicker]="picker" placeholder="Choose a Month" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -43,9 +43,9 @@
             <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
               Assigned
             </h4>
-            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
               {{ assignedCount }}
-            </h6>
+            </h4>
           </mat-card-content>
         </mat-card>
       </div>
@@ -56,9 +56,9 @@
             <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
               Given To Shop
             </h4>
-            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
               {{ givenCount }}
-            </h6>
+            </h4>
           </mat-card-content>
         </mat-card>
       </div>
@@ -69,9 +69,9 @@
             <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
               Activations
             </h4>
-            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
               {{ activationCount }}
-            </h6>
+            </h4>
           </mat-card-content>
         </mat-card>
       </div>
@@ -82,9 +82,9 @@
             <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
               Instant Activations
             </h4>
-            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
               {{ instantActivationCount }}
-            </h6>
+            </h4>
           </mat-card-content>
         </mat-card>
       </div>

@@ -37,14 +37,13 @@ export class MainDashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.selectedDate = "2024-07-01";
     this.getAgentLookup();
     this.getManagerLookup();
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId
     this.filterId = loggedInUserId;
     this.filterType = userRole;
-
+    this.selectedDate = new Date();
     if (userRole == 'Admin') {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'

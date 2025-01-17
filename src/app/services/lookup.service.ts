@@ -75,7 +75,7 @@ export class LookupService {
   }
 
   getNetowrks(): Observable<any> {
-    return this.http.get<any>(this.url + "/Networks/");
+    return this.http.get<any>(this.url + "/Networks");
   }
 
   getUserRoles(): Observable<any> {

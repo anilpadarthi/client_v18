@@ -99,8 +99,8 @@
           <td mat-footer-cell *matFooterCellDef>{{ o2Sum }}</td>
         </ng-container>
         <ng-container matColumnDef="GIFFGAFF">
-          <th mat-header-cell *matHeaderCellDef>GIFGAF</th>
-          <td mat-cell *matCellDef="let element">{{ element.gifgaf }}</td>
+          <th mat-header-cell *matHeaderCellDef>GIFFGAFF</th>
+          <td mat-cell *matCellDef="let element">{{ element.giffgaff }}</td>
           <td mat-footer-cell *matFooterCellDef>{{ gifgafSum }}</td>
         </ng-container>
         <ng-container matColumnDef="LEBARA">
@@ -126,7 +126,7 @@
         <ng-container matColumnDef="TOTAL">
           <th mat-header-cell *matHeaderCellDef>TOTAL</th>
           <td mat-cell *matCellDef="let element">{{ element.total }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
+          <td mat-footer-cell *matFooterCellDef>{{ totalSum }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

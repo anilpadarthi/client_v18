@@ -141,8 +141,6 @@ export class AllocateAreaToAgentComponent implements OnInit {
     };
 
     this.areaService.allocateAreasToAgent(requestBody).subscribe((res) => {
-      this.areaList = res.data;
-      this.tempAreaList = res.data;
       this.isBackToSelection = true;
       this.loadData();
       this.toasterService.showMessage("Areas are transfered successfully.");

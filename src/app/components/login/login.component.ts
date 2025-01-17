@@ -1,6 +1,8 @@
 
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { LoginService } from '../../services/login.service';
+import { WebstorgeService } from '../../services/web-storage.service';
+import { ToasterService } from '../../services/toaster.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -18,13 +20,15 @@ export class LoginComponent {
   hidePassword = true;
 
   constructor(private router: Router,
-    private authService: AuthService,
+    private loginService: LoginService,
+    private webstorgeService: WebstorgeService,
+    private toasterService: ToasterService,
     private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
-      email: new FormControl("mahesh@gmail.com", [Validators.required, Validators.email]),
+      email: new FormControl("leapdist@gmail.com", [Validators.required, Validators.email]),
       password: new FormControl("admin@123", [Validators.required, Validators.minLength(6)])
     });
   }
@@ -43,11 +47,19 @@ export class LoginComponent {
         'email': this.loginForm.value.email,
         'password': this.loginForm.value.password
       };
-      let result = await this.authService.authenticate(requestBody);
-      if (!result) {
-        this.isValidLogin = false;
-        this._snackBar.open("Invalid username or password", "", { duration: 2000 });
-      }
+
+      this.loginService.authenticate(requestBody).subscribe((res) => {
+        if (res && res.data && res.data.token) {
+          this.isValidLogin = true;
+          this.webstorgeService.setSession(res.data.token);
+          this.webstorgeService.setUserInfo(res.data.userDetails);
+          this.router.navigate(['/home']);
+        }
+        else {
+          this.isValidLogin = false;
+          this.toasterService.showMessage("Invalid username or password");
+        }
+      });
     }
   }
 }

@@ -18,6 +18,7 @@ export class NetworkEditorComponent {
   networkForm: FormGroup;
   networkId: any;
   networkCodesLookup: any = [];
+  supplierLookup: any = [];
 
   constructor
     (
@@ -31,8 +32,8 @@ export class NetworkEditorComponent {
 
     this.networkForm = this.fb.group(
       {
-        baseNetworkId: ['', [Validators.required]],
-        networkCode: ['', [Validators.required]],
+        baseNetworkId: [null, [Validators.required]],
+        supplierId: [null, [Validators.required]],        
         networkName: ['', [Validators.required, Validators.minLength(2)]],
         skuCode: ['', [Validators.required]],
         status: [true],
@@ -42,13 +43,20 @@ export class NetworkEditorComponent {
 
   ngOnInit(): void {
     this.loadNetworkCodeLookup();
+    this.loadSupplierLookup();
     this.networkId = this.route.snapshot.paramMap.get('id');
     this.getNetworkDetails();
   }
 
-  loadNetworkCodeLookup() {
+  loadNetworkCodeLookup(): void {
     this.lookupService.getNetowrks().subscribe((res) => {
       this.networkCodesLookup = res.data;
+    });
+  }
+
+  loadSupplierLookup(): void {
+    this.lookupService.getSuppliers().subscribe((res) => {
+      this.supplierLookup = res.data;
     });
   }
 
@@ -65,7 +73,8 @@ export class NetworkEditorComponent {
       const requestBody = {
         "networkId": this.networkId != null ? this.networkId : 0,
         "baseNetworkId": this.networkForm.value.baseNetworkId,
-        "networkCode": this.networkForm.value.networkCode,
+        "supplierId": this.networkForm.value.supplierId,
+        "networkCode": this.networkCodesLookup.find((option: any) => option.id === this.networkForm.value.baseNetworkId).name,
         "networkName": this.networkForm.value.networkName.trim(),
         "skuCode": this.networkForm.value.skuCode.trim(),
         "status": this.networkForm.value.status ? 1 : 0
@@ -99,9 +108,5 @@ export class NetworkEditorComponent {
   onCancel(): void {
     this.router.navigate(['/networks']);
   }
-
-  onSelectionChange(event: MatSelectChange) {
-    const selectedOption = this.networkCodesLookup.find((option: any) => option.value === event.value);
-    this.networkForm.get('networkCode')?.setValue(selectedOption ? selectedOption.text : null);
-  }
+  
 }

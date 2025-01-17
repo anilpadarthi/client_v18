@@ -42,8 +42,7 @@ export class TrackReportComponent implements OnInit {
     private lookupService: LookupService
   ) { }
 
-  ngOnInit(): void {
-    this.fromDate = '2017-08-25';
+  ngOnInit(): void {    
     this.getUserLookup();
   }
 

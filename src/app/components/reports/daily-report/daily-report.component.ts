@@ -19,7 +19,7 @@ export class DailyReportComponent implements OnInit {
     'EE',
     'THREE',
     'O2',
-    'GIFGAF',
+    'GIFFGAFF',
     'VODAFONE',
     'LEBARA',
     'LYCA',
@@ -50,7 +50,7 @@ export class DailyReportComponent implements OnInit {
     this.eeSum = this.resultList.reduce((sum: any, item: any) => sum + item.ee, 0);
     this.threeSum = this.resultList.reduce((sum: any, item: any) => sum + item.three, 0);
     this.o2Sum = this.resultList.reduce((sum: any, item: any) => sum + item.o2, 0);
-    this.gifgafSum = this.resultList.reduce((sum: any, item: any) => sum + item.gifgaf, 0);
+    this.gifgafSum = this.resultList.reduce((sum: any, item: any) => sum + item.giffgaff, 0);
     this.vodafoneSum = this.resultList.reduce((sum: any, item: any) => sum + item.vodafone, 0);
     this.lebaraSum = this.resultList.reduce((sum: any, item: any) => sum + item.lebara, 0);
     this.lycaSum = this.resultList.reduce((sum: any, item: any) => sum + item.lyca, 0);

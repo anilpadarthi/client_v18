@@ -51,7 +51,7 @@ export class UserEditorComponent {
       userRoleId: ['', [Validators.required]],
       designation: ['', [Validators.required]],
       locality: [''],
-      isMCommAccess: false,
+      isMcomAccess: false,
       isLeapAccess: true,
       status: true,
       userImage: null as File | null,
@@ -61,6 +61,7 @@ export class UserEditorComponent {
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
+    this.userImagePreview = '/assets/images/profile/user-1.jpg';
     this.getUserRoleLookup();
     this.getUserDetails();
   }
@@ -115,7 +116,7 @@ export class UserEditorComponent {
       formBody.append('locality', this.userForm.value.locality);
       formBody.append('designation', this.userForm.value.designation);
       formBody.append('userRoleId', this.userForm.value.userRoleId?.toString());
-      formBody.append('isMCommAccess', this.userForm.value.isMCommAccess);
+      formBody.append('isMcomAccess', this.userForm.value.isMcomAccess);
       formBody.append('isLeapAccess', this.userForm.value.isLeapAccess);
       formBody.append('status', this.userForm.value.status ? '1' : '0');
       formBody.append('userImageFile', this.userForm.value.userImage);

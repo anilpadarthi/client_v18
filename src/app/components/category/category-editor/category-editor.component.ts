@@ -37,6 +37,7 @@ export class CategoryEditorComponent {
 
   ngOnInit(): void {
     this.categoryId = this.route.snapshot.paramMap.get('id');
+    this.categoryImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryDetails();
   }
 

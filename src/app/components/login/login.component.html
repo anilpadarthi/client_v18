@@ -1,54 +1,3 @@
-<!-- <div class="blank-layout-container justify-content-center">
-    <div class="position-relative row w-100 h-100">
-        <div class="col-lg-7 col-xl-8 bg-gredient p-0">
-        </div>
-        <div class="col-lg-5 col-xl-4 p-0">
-            <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
-                <div class="row justify-content-center w-100">
-                    <div class="col-lg-9 max-width-form">
-                        <div class="row col-12 m-l-30">
-                            <a [routerLink]="['/dashboards/dashboard1']">
-                                <img src="./assets/images/logos/Leap.png" class="align-middle m-2 leap-logo"
-                                    alt="logo" />
-                                    
-                            </a>
-                        </div>
-                        <span style="color:red" *ngIf="!isValidLogin">Invalid username or password</span>
-                        <form [formGroup]="loginForm" autocomplete="off" novalidate
-                            (ngSubmit)="submit()" fxLayout="column wrap">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter your Email/Phone</mat-label>
-                                <input matInput placeholder="Placeholder" formControlName="email" id="email" required />
-                                <mat-icon matSuffix>contact_page</mat-icon>
-                                <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
-                                <mat-error *ngIf="hasError('email', 'email')">Email is not valid</mat-error>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter your password</mat-label>
-                                <input matInput [type]="hide ? 'text' : 'password'" formControlName="password"
-                                    id="password" minlength="6" required />
-                                <button mat-icon-button matSuffix (click)="hide = !hide"
-                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                    <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-                                </button>
-                                <mat-error *ngIf="hasError('password', 'required')">password is required</mat-error>
-                                <mat-error *ngIf="hasError('password', 'minlength')">password is not valid</mat-error>
-                            </mat-form-field>
-
-                            <button mat-raised-button color="primary" class="login-btn" [disabled]="!loginForm.valid">
-                                Login
-                            </button>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
 <div class="blank-layout-container justify-content-center">
     <div class="position-relative row w-100 h-100">
         <div class="col-lg-7 col-xl-8 bg-gredient p-0">
@@ -93,6 +42,7 @@
                                     ?</a>
                             </div>
                             <button mat-flat-button color="primary" class="w-100" [disabled]="!loginForm.valid">
+                                <mat-icon>login</mat-icon>
                                 Sign In
                             </button>
                             <!-- input -->

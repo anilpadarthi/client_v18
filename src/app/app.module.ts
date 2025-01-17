@@ -93,8 +93,6 @@ import { SubCategoryListComponent } from './components/sub-category/sub-category
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductEditorComponent } from './components/product/product-editor/product-editor.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
-import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
-import { OrderPaymentHistoryComponent } from './components/order/order-payment-history/order-payment-history.component';
 import { OrderPaymentEditorComponent } from './components/order/order-payment-editor/order-payment-editor.component';
 import { OrderDetailsComponent } from './components/order/order-details/order-details.component';
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
@@ -102,6 +100,9 @@ import { ProductsViewComponent } from './components/shopping/products-view/produ
 import { CartItemsComponent } from './components/shopping/cart-items/cart-items.component';
 import { CheckoutComponent } from './components/shopping/checkout/checkout.component';
 import { CategoryViewComponent } from './components/shopping/category-view/category-view.component';
+import { CreateOrderComponent } from './components/order/create-order/create-order.component';
+import { EditOrderComponent } from './components/order/edit-order/edit-order.component';
+import { CheckOutComponent } from './components/order/check-out/check-out.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -178,15 +179,16 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ProductListComponent,
     ProductEditorComponent,
     OrderListComponent,
-    OrderHistoryComponent,
-    OrderPaymentHistoryComponent,
     OrderPaymentEditorComponent,
     OrderDetailsComponent,
     ProductDetailComponent,
     ProductsViewComponent,
     CartItemsComponent,
     CheckoutComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
+    CreateOrderComponent,
+    EditOrderComponent,
+    CheckOutComponent
   ],
   imports: [
     BrowserModule,

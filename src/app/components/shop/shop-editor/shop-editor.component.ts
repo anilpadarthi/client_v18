@@ -6,7 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '../../../services/toaster.service';
 import { PostcodeService } from '../../../services/postcode.service';
 import { Observable } from 'rxjs';
-import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, switchMap, filter, distinctUntilChanged } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-shop-editor',
@@ -19,7 +20,7 @@ export class ShopEditorComponent {
   shopId: any;
   areaLookup: any = [];
   @Input() selectedShopId!: number
-  shopImagePreview: string | ArrayBuffer | null = null;
+  shopImagePreview: any = null;
   filteredPostcodes!: Observable<string[]>;
   postCodeList: string[] = [];
 
@@ -42,19 +43,22 @@ export class ShopEditorComponent {
       vatNumber: [''],
       topupSystemId: [''],
       city: [''],
-      address: ['', [Validators.required]],
+      addressLine1: ['', [Validators.required]],
+      addressLine2: [''],
       paymentMode: [''],
       payableName: [''],
+      competitor: [''],
+      language: [''],
       deliveryInstructions: [''],
       comments: [''],
       isMobileShop: false,
-      shopImage: null as File | null,
-      agreementFrom: [''],
-      agreementTo: [''],
-      agreementNotes: [''],
+      agreementFrom: [null],
+      agreementTo: [null],
+      agreementNotes: [null],
       isTermsAndCondtions: false,
       shopContacts: this.fb.array([this.createChild()]),
-      status: true
+      status: true,
+      image: null as File | null,
     });
   }
 
@@ -64,11 +68,13 @@ export class ShopEditorComponent {
       this.shopId = this.selectedShopId;
     }
     this.getAreaRoleLookup();
+    this.shopImagePreview = '/assets/images/profile/user-1.jpg';
     this.getShopDetails();
 
     this.shopForm.get('postCode')?.valueChanges.pipe(
       debounceTime(300), // Wait 300ms after typing
       distinctUntilChanged(), // Prevent duplicate API calls
+      filter((value: any) => value && value.trim().length > 0),
       switchMap(value => this.postcodeService.searchPostcodes(value))
     )
       .subscribe(response => {
@@ -89,6 +95,9 @@ export class ShopEditorComponent {
         this.shopForm.get('agreementFrom')?.setValue(res.data.shopAgreement?.fromDate);
         this.shopForm.get('agreementTo')?.setValue(res.data.shopAgreement?.toDate);
         this.shopForm.get('agreementNotes')?.setValue(res.data.shopAgreement?.agreementNotes);
+        if (res.data?.shop?.image) {
+          this.shopImagePreview = environment.backend.host + '/' + res.data?.shop?.image;
+        }
         this.populateShopContacts(res.data.shopContacts || []);
       });
     }
@@ -105,30 +114,51 @@ export class ShopEditorComponent {
 
   onSave() {
     if (this.shopForm.valid) {
-      const requestBody = {
-        "shopId": this.shopId != null ? this.shopId : 0,
-        "shopName": this.shopForm.value.shopName,
-        "postCode": this.shopForm.value.postCode,
-        "areaId": this.shopForm.value.areaId,
-        "address": this.shopForm.value.address,
-        "city": this.shopForm.value.city,
-        "vatNumber": this.shopForm.value.vatNumber,
-        "paymentMode": this.shopForm.value.paymentMode,
-        "payableName": this.shopForm.value.payableName,
-        "deliveryInstructions": this.shopForm.value.deliveryInstructions,
-        "topupSystemId": this.shopForm.value.topupSystemId,
-        "comments": this.shopForm.value.comments,
-        "isMobileShop": this.shopForm.value.isMobileShop,
-        "agreementFrom": this.shopForm.value.agreementFrom,
-        "agreementTo": this.shopForm.value.agreementTo,
-        "agreementNotes": this.shopForm.value.agreementNotes,
-        "isTermsAndCondtions": this.shopForm.value.isTermsAndCondtions,
-        "shopContacts": this.shopForm.value.shopContacts,
-        "status": this.shopForm.value.status ? 1 : 0,
-      };
+      const formBody = new FormData();
+      formBody.append('shopId', this.shopId != null ? this.shopId : 0);
+      formBody.append('shopName', this.shopForm.value.shopName);
+      formBody.append('postCode', this.shopForm.value.postCode);
+      formBody.append('areaId', this.shopForm.value.areaId);
+      formBody.append('addressLine1', this.shopForm.value.addressLine1);
+      formBody.append('addressLine2', this.shopForm.value.addressLine2 || '');
+      formBody.append('city', this.shopForm.value.city || '');
+      formBody.append('vatNumber', this.shopForm.value.vatNumber || '');
+      formBody.append('competitor', this.shopForm.value.competitor || '');
+      formBody.append('language', this.shopForm.value.language || '');
+      formBody.append('paymentMode', this.shopForm.value.paymentMode || '');
+      formBody.append('payableName', this.shopForm.value.payableName || '');
+      formBody.append('deliveryInstructions', this.shopForm.value.deliveryInstructions || '');
+      formBody.append('topupSystemId', this.shopForm.value.topupSystemId || '');
+      formBody.append('comments', this.shopForm.value.comments || '');
+      formBody.append('isMobileShop', this.shopForm.value.isMobileShop);
+      formBody.append('isTermsAndCondtions', this.shopForm.value.isTermsAndCondtions);
+      formBody.append('status', this.shopForm.value.status ? '1' : '0');
+
+
+      // Handle array fields like shopContacts
+      if (this.shopForm.value.shopContacts && Array.isArray(this.shopForm.value.shopContacts)) {
+        this.shopForm.value.shopContacts.forEach((contact: any, index: number) => {
+          formBody.append(`shopContacts[${index}].shopContactId`, contact.shopContactId);
+          formBody.append(`shopContacts[${index}].contactType`, contact.contactType);
+          formBody.append(`shopContacts[${index}].contactName`, contact.contactName);
+          formBody.append(`shopContacts[${index}].contactEmail`, contact.contactEmail);
+          formBody.append(`shopContacts[${index}].contactNumber`, contact.contactNumber);
+        });
+
+      }
+
+      // If there's a file field (e.g., image), append it
+      if (this.shopForm.value.image) {
+        formBody.append('imageFile', this.shopForm.value.image);
+      }
+      if (this.shopForm.value.agreementFrom && this.shopForm.value.agreementTo) {
+        formBody.append('agreementFrom', this.shopForm.value.agreementFrom);
+        formBody.append('agreementTo', this.shopForm.value.agreementTo);
+        formBody.append('agreementNotes', this.shopForm.value.agreementNotes);
+      }
 
       if (this.shopId != null) {
-        this.shopService.updateShop(requestBody).subscribe((res) => {
+        this.shopService.updateShop(formBody).subscribe((res) => {
           if (res.statusCode == 200) {
             this.toasterService.showMessage("Updated successfully.");
             if (!this.selectedShopId) {
@@ -141,7 +171,7 @@ export class ShopEditorComponent {
         });
       }
       else {
-        this.shopService.createShop(requestBody).subscribe((res) => {
+        this.shopService.createShop(formBody).subscribe((res) => {
           if (res.statusCode == 201) {
             this.toasterService.showMessage("Created successfully.");
             this.router.navigate(['/shops']);
@@ -158,32 +188,14 @@ export class ShopEditorComponent {
     this.router.navigate(['/shops']);
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.shopForm.patchValue({
-        passportImage: file,
-      });
-    }
-  }
 
-  onFileSelected(event: Event, field: string): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-
-      if (field == "ShopImage") {
-        this.shopForm.value.userImage = file;
-        if (this.shopForm.value.userImage) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            this.shopImagePreview = reader.result; // Store the base64 string for preview
-          };
-          reader.readAsDataURL(file); // Convert image to base64 for preview
-        }
-      }
-      console.log(file);
-      // Do something with the file
+  imageUpload(event: any) {
+    var file = event.target.files[0];
+    this.shopForm.patchValue({ image: file });
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]); // read file as data url
+    reader.onload = (event) => { // called once readAsDataURL is completed
+      this.shopImagePreview = event?.target?.result;
     }
   }
 
@@ -221,6 +233,9 @@ export class ShopEditorComponent {
 
   ngOnChanges(): void {
     this.ngOnInit();
+  }
+  pickAddress(): void {
+
   }
 
 }

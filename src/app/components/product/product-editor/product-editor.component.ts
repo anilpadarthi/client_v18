@@ -39,10 +39,11 @@ export class ProductEditorComponent {
       isBundle: false,
       isOutOfStock: false,
       isVatEnabled: false,
-      categoryId: null,
-      subCategoryId: null,
+      categoryId: [null, Validators.required],
+      subCategoryId: [null, Validators.required],
       description: null,
       specification: null,
+      buyingPrice: null,
       //colourList: [[]],
       //sizeList: [[]],
       status: true,
@@ -53,6 +54,7 @@ export class ProductEditorComponent {
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id');
+    this.productImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryLookup();
     this.getProductDetails();
   }
@@ -81,6 +83,9 @@ export class ProductEditorComponent {
         this.productForm.patchValue(res.data.product);
         if (res.data.product?.productImage) {
           this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
+        }
+        if (res.data.product?.categoryId) {
+          this.getSubCategoryLookup(res.data.product?.categoryId);
         }
         this.populateProductPrices(res.data.productPrices || []);
       });
@@ -115,14 +120,18 @@ export class ProductEditorComponent {
       formBody.append('productId', this.productId != null ? this.productId : 0);
       formBody.append('productName', this.productForm.value.productName);
       formBody.append('productCode', this.productForm.value.productCode);
-      formBody.append('description', this.productForm.value.description);
-      formBody.append('specification', this.productForm.value.specification);
-      formBody.append('isNewArrival', this.productForm.value.isNewArrival);
-      formBody.append('isOutOfStock', this.productForm.value.isOutOfStock);
+      formBody.append('description', this.productForm.value.description || '');
+      formBody.append('specification', this.productForm.value.specification || '');
+      formBody.append('buyingPrice', this.productForm.value.buyingPrice || '');
+      formBody.append('isNewArrival', this.productForm.value.isNewArrival == null ? false : this.productForm.value.isNewArrival);
+      formBody.append('isOutOfStock', this.productForm.value.isOutOfStock == null ? false : this.productForm.value.isOutOfStock);
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
       formBody.append('status', this.productForm.value.status ? '1' : '0');
-      formBody.append('productImageFile', this.productForm.value.productImage);
+
+      if (this.productForm.value.productImage) {
+        formBody.append('productImageFile', this.productForm.value.productImage);
+      }
 
       if (this.productForm.value.productPrices && Array.isArray(this.productForm.value.productPrices)) {
         this.productForm.value.productPrices.forEach((price: any, index: number) => {

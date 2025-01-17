@@ -5,6 +5,7 @@ import { ToasterService } from '../../services/toaster.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../common/popup-table/popup-table.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-on-field',
@@ -27,7 +28,8 @@ export class OnFieldComponent implements OnInit {
     private dialog: MatDialog,
     private lookupService: LookupService,
     private shopService: ShopService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private router: Router
   ) { }
 
 
@@ -49,15 +51,13 @@ export class OnFieldComponent implements OnInit {
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
-      this.selectedAreaId = 164;
-      this.areaChange();
     });
   }
 
   areaChange() {
     this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
       this.shopLookup = res.data;
-      this.selectedShopId = 30222;
+      this.selectedShopId = null;
     });
   }
 
@@ -94,6 +94,13 @@ export class OnFieldComponent implements OnInit {
 
   displayMainSection(): void {
     this.isMainSection = true;
+  }
+
+  openShoppingPage(): void{
+    const fullPath = this.router.serializeUrl(
+      this.router.createUrlTree([`aceessories/create-order/${ this.selectedShopId }`])
+    );
+    window.open(fullPath, '_blank');
   }
 
 }

@@ -41,7 +41,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="PrevMonth">
-                    <th mat-header-cell *matHeaderCellDef>Last Mnth. Act.</th>
+                    <th mat-header-cell *matHeaderCellDef>Last Month Activations.</th>
                     <td mat-cell *matCellDef="let element">{{ element.lastMonthActivated }}</td>
                 </ng-container>
 
@@ -55,7 +55,7 @@
                     <td mat-cell *matCellDef="let element">{{ element.achieved }}</td>
                 </ng-container>
                 <ng-container matColumnDef="AchievedPercentage">
-                    <th mat-header-cell *matHeaderCellDef>Achieved Percentage</th>
+                    <th mat-header-cell *matHeaderCellDef>Achieved In Percentage(%)</th>
                     <td mat-cell *matCellDef="let element">{{ element.achievedPercent + '%'}}</td>
                 </ng-container>
                 <ng-container matColumnDef="Difference">

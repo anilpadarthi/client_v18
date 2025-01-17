@@ -43,8 +43,7 @@ export class CommissionStatementReportComponent implements OnInit {
     private lookupService: LookupService
   ) { }
 
-  ngOnInit(): void {
-    this.fromDate = '2020-07-01';
+  ngOnInit(): void { 
     this.getAreaLookup();
     this.getAgentLookup();
 

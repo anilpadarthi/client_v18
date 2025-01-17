@@ -1,10 +1,100 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { LookupService } from '../../../services/lookup.service';
+import { ToasterService } from '../../../services/toaster.service';
+import { OrderService } from '../../../services/order.service';
 
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss'
 })
-export class OrderDetailsComponent {
 
+export class OrderDetailsComponent implements OnInit {
+
+  orderItems: any[] = [];
+  header = '';
+  orderId = null;
+  selectedStatusId = null;
+  selectedPaymentMethodId = null;
+  selectedShippingMethodId = null;
+  statusLookup: any[] = [];
+  paymentMethodLookup: any[] = [];
+  shippingMethodLookup: any[] = [];
+  trackingNumber = null;
+
+  vatAmount = 0.00;
+  subTotal = 0.00;
+  deliveryCharges = 0.00;
+  discountAmount = 0.00;
+  grandTotal = 0.00;
+  discountPercentage = 0.00;
+  vatPercentage = 0.00;
+  grandTotalWithVAT = 0.00;
+  grandTotalWithOutVAT = 0.00;
+
+  displayedColumns: string[] = [
+    'productName',
+    'productCode',
+    'sellingPrice',
+    'quantity',
+    'amount',
+  ];
+
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private orderService: OrderService,
+    private toasterService: ToasterService) {
+    if (data.orderDetails) {
+      console.log(data);
+      this.orderItems = data.orderDetails.items;
+      this.header = data.headerName;
+      this.orderId = data.orderDetails.orderId;
+      this.statusLookup = data.statusLookup;
+      this.paymentMethodLookup = data.paymentMethodLookup;
+      this.shippingMethodLookup = data.shippingMethodLookup;
+      this.selectedStatusId = data.orderDetails.orderStatusTypeId;
+      this.selectedPaymentMethodId = data.orderDetails.orderPaymentTypeId;
+      this.selectedShippingMethodId = data.orderDetails.orderDeliveryTypeId;
+      this.trackingNumber = data.orderDetails.trackingNumber;
+      this.deliveryCharges = data.orderDetails.deliveryCharges;
+      this.vatPercentage = data.orderDetails.vatPercentage;
+      this.discountPercentage = data.orderDetails.discountPercentage;
+      this.updateCalculations();
+    }
+
+  }
+
+  ngOnInit(): void {
+
+  }
+  updateOrder(): void {
+    const requestBody = {
+      orderId: this.orderId,
+      orderStatusId: this.selectedStatusId,
+      paymentMethodId: this.selectedPaymentMethodId,
+      shippingModeId: this.selectedShippingMethodId,
+      trackingNumber: this.trackingNumber
+    };
+
+    this.orderService.updateOrderDetails(requestBody).subscribe((res) => {
+      this.toasterService.showMessage("Updated Successfully.");
+    });
+  }
+
+  updateCalculations() {
+    this.subTotal = 0;
+    this.orderItems?.forEach((product: any) => {
+      this.subTotal += product.qty * product.salePrice;
+    });
+    let netTotal = this.subTotal;
+    this.vatAmount = (netTotal * this.vatPercentage) / 100;
+
+    if (this.discountPercentage > 0) {
+      this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
+    }
+    this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
+    this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
+  }
 }

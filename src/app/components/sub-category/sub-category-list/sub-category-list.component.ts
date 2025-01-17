@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { SubCategoryService } from '../../../services/subCategory.service';
+import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
@@ -23,19 +24,28 @@ export class SubCategoryListComponent implements OnInit {
   pageNo = 0;
   totalCount = 0;
   subCategoryList: any[] = [];
+  categories: any[] = [];
   searchText!: string | null;
-
+  selectedCategoryId = null;
 
   constructor
     (
       private router: Router,
       private toasterService: ToasterService,
       public dialog: MatDialog,
-      private subCategoryService: SubCategoryService
+      private subCategoryService: SubCategoryService,
+      private lookupService: LookupService
     ) { }
 
   ngOnInit(): void {
+    this.getCategoryLookup();
     this.loadData();
+  }
+
+  getCategoryLookup() {
+    this.lookupService.getCategories().subscribe((res) => {
+      this.categories = res.data;
+    });
   }
 
   deleteclick(id: any) {
@@ -67,6 +77,7 @@ export class SubCategoryListComponent implements OnInit {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
+      categoryId: this.selectedCategoryId,
       searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null
     };
 
@@ -100,6 +111,7 @@ export class SubCategoryListComponent implements OnInit {
   onReset(): void {
     this.pageNo = 0;
     this.searchText = null;
+    this.selectedCategoryId =  null;
     this.loadData();
   }
 
