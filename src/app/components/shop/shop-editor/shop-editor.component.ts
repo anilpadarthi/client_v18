@@ -1,13 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ShopService } from '../../../services/shop.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '../../../services/toaster.service';
 import { PostcodeService } from '../../../services/postcode.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { Observable } from 'rxjs';
 import { debounceTime, switchMap, filter, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-shop-editor',
@@ -19,11 +21,15 @@ export class ShopEditorComponent {
   shopForm: FormGroup;
   shopId: any;
   areaLookup: any = [];
-  @Input() selectedShopId!: number
+  @Input() selectedShopId!: number;
+  @Input() refreshValue!: number;
+  @Output() notifyParent = new EventEmitter<any>();
   shopImagePreview: any = null;
   filteredPostcodes!: Observable<string[]>;
   postCodeList: string[] = [];
-
+  searchAddress = '';
+  suggestions: any[] = [];
+  isDisplay = false;
   constructor
     (
       private route: ActivatedRoute,
@@ -32,12 +38,15 @@ export class ShopEditorComponent {
       private lookupService: LookupService,
       private toasterService: ToasterService,
       private fb: FormBuilder,
-      private postcodeService: PostcodeService
+      private postcodeService: PostcodeService,
+      private webstorgeService: WebstorgeService,
+      private datePipe: DatePipe
     ) {
 
     this.shopForm = this.fb.group({
       shopId: 0,
       areaId: ['', [Validators.required]],
+      searchAddress: [''],
       postCode: ['', [Validators.required]],
       shopName: ['', [Validators.required]],
       vatNumber: [''],
@@ -50,6 +59,8 @@ export class ShopEditorComponent {
       competitor: [''],
       language: [''],
       deliveryInstructions: [''],
+      latitude: [''],
+      longitude: [''],
       comments: [''],
       isMobileShop: false,
       agreementFrom: [null],
@@ -63,6 +74,10 @@ export class ShopEditorComponent {
   }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    if (userRole == 'Admin' || userRole == 'Super Admin') {
+      this.isDisplay = true;
+    }
     this.shopId = this.route.snapshot.paramMap.get('id');
     if (this.selectedShopId) {
       this.shopId = this.selectedShopId;
@@ -75,11 +90,42 @@ export class ShopEditorComponent {
       debounceTime(300), // Wait 300ms after typing
       distinctUntilChanged(), // Prevent duplicate API calls
       filter((value: any) => value && value.trim().length > 0),
-      switchMap(value => this.postcodeService.searchPostcodes(value))
+      switchMap(value => this.postcodeService.autoCompletePostCodeList(value))
     )
       .subscribe(response => {
+        console.log(response);
         this.postCodeList = response;
       });
+
+    // this.shopForm.get('searchAddress')?.valueChanges.pipe(
+    //   debounceTime(300), // Wait 300ms after typing
+    //   distinctUntilChanged(), // Prevent duplicate API calls
+    //   filter((value: any) => value && value.trim().length > 1),
+    //   switchMap(value => this.postcodeService.autoCompleteAddresList(value))
+    // ).subscribe((response: any) => {
+    //   this.suggestions = response.suggestions;
+    // });
+
+    this.shopForm.get('searchAddress')?.valueChanges.pipe(
+      debounceTime(300), // Wait 300ms after typing
+      distinctUntilChanged(), // Prevent duplicate API calls
+      filter((value: any) => value && value.trim().length > 1),
+      switchMap(value => this.filterAddressList(value))
+    )
+  }
+
+  populatePostCodeAddressList(): void {
+    if (this.shopForm.value.postCode != null && this.shopForm.value.postCode != '') {
+      this.postcodeService.autoCompleteAddresList(this.shopForm.value.postCode).subscribe((response: any) => {
+        this.suggestions = response.suggestions;
+      });
+    }
+    else {
+      this.toasterService.showMessage("please enter valid postcode");
+    }
+  }
+  filterAddressList(val: any): any[] {
+    return this.suggestions.filter(f => f.address.includes(val));
   }
 
   getAreaRoleLookup(): void {
@@ -130,6 +176,8 @@ export class ShopEditorComponent {
       formBody.append('deliveryInstructions', this.shopForm.value.deliveryInstructions || '');
       formBody.append('topupSystemId', this.shopForm.value.topupSystemId || '');
       formBody.append('comments', this.shopForm.value.comments || '');
+      formBody.append('latitude', this.shopForm.value.latitude || '');
+      formBody.append('longitude', this.shopForm.value.longitude || '');
       formBody.append('isMobileShop', this.shopForm.value.isMobileShop);
       formBody.append('isTermsAndCondtions', this.shopForm.value.isTermsAndCondtions);
       formBody.append('status', this.shopForm.value.status ? '1' : '0');
@@ -144,7 +192,6 @@ export class ShopEditorComponent {
           formBody.append(`shopContacts[${index}].contactEmail`, contact.contactEmail);
           formBody.append(`shopContacts[${index}].contactNumber`, contact.contactNumber);
         });
-
       }
 
       // If there's a file field (e.g., image), append it
@@ -152,8 +199,8 @@ export class ShopEditorComponent {
         formBody.append('imageFile', this.shopForm.value.image);
       }
       if (this.shopForm.value.agreementFrom && this.shopForm.value.agreementTo) {
-        formBody.append('agreementFrom', this.shopForm.value.agreementFrom);
-        formBody.append('agreementTo', this.shopForm.value.agreementTo);
+        formBody.append('agreementFrom', this.datePipe.transform(this.shopForm.value.agreementFrom, 'yyyy-MM-dd') || '');
+        formBody.append('agreementTo', this.datePipe.transform(this.shopForm.value.agreementTo, 'yyyy-MM-dd') || '');
         formBody.append('agreementNotes', this.shopForm.value.agreementNotes);
       }
 
@@ -163,6 +210,9 @@ export class ShopEditorComponent {
             this.toasterService.showMessage("Updated successfully.");
             if (!this.selectedShopId) {
               this.router.navigate(['/shops']);
+            }
+            else {
+              this.notifyParent.emit(res.data);
             }
           }
           else {
@@ -185,7 +235,12 @@ export class ShopEditorComponent {
   }
 
   onCancel(): void {
-    this.router.navigate(['/shops']);
+    if (!this.selectedShopId) {
+      this.router.navigate(['/shops']);
+    }
+    else {
+      this.notifyParent.emit(null);
+    }
   }
 
 
@@ -234,7 +289,40 @@ export class ShopEditorComponent {
   ngOnChanges(): void {
     this.ngOnInit();
   }
-  pickAddress(): void {
+
+  onAutoCompleteAddress(): void {
+    if (this.searchAddress.length > 2) { // Trigger search only if input length > 2
+      this.postcodeService.autoCompleteAddresList(this.searchAddress).subscribe(
+        (response) => {
+          this.suggestions = response.suggestions.map((s: any) => s.address);
+        },
+        (error) => {
+          console.error('Error fetching postcodes:', error);
+          this.suggestions = [];
+        }
+      );
+    } else {
+      this.suggestions = [];
+    }
+  }
+
+  selectSuggestion(item: any): void {
+    this.postcodeService.getAddressDetails(item.id).subscribe(
+      (response) => {
+        console.log(response);
+        this.shopForm.get('addressLine1')?.setValue(item.address);
+        this.shopForm.get('addressLine2')?.setValue(response.line_3);
+        this.shopForm.get('city')?.setValue(response.town_or_city);
+        this.shopForm.get('latitude')?.setValue(response.latitude);
+        this.shopForm.get('longitude')?.setValue(response.longitude);
+        this.shopForm.get('searchAddress')?.setValue(item.address);
+        this.suggestions = [];
+      },
+      (error) => {
+        this.toasterService.showMessage('Error fetching postcodes:');
+        this.suggestions = [];
+      }
+    );
 
   }
 

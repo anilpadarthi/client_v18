@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DatePipe } from '@angular/common';
 
@@ -14,7 +14,9 @@ export class AreaActivationsComponent implements OnInit {
   @Input() selectedDate: any;
   @Input() filterId: any;
   @Input() filterType: any;
+  @Input() refreshCounter: any;
   activationList: any = [];
+  private isFirstChange = true;
   displayedColumns: string[] = [
     'Name',
     'DailyActivations',
@@ -35,9 +37,16 @@ export class AreaActivationsComponent implements OnInit {
     }
   }
 
-  ngOnChanges(): void {
-    this.loadData();
-  }
+  ngOnChanges(changes: SimpleChanges): void {
+      if (this.isFirstChange) {
+        this.isFirstChange = false; // Mark first change as handled
+        return; // Skip logic on the first change detection pass
+      }
+  
+      if (changes['selectedDate'] || changes['refreshCounter']) {
+        this.loadData();
+      }
+    }
 
   loadData(): void {
     const request = {

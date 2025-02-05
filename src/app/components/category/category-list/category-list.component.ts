@@ -116,4 +116,9 @@ export class CategoryListComponent implements OnInit {
       this.loadData();
     }
   }
+
+  exportToExcel(): void {
+    this.categoryService.exportToExcel();
+  }
+
 }

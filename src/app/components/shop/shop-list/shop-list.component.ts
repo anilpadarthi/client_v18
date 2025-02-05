@@ -3,6 +3,7 @@ import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { ShopService } from '../../../services/shop.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +25,7 @@ export class ShopListComponent implements OnInit {
   searchText!: string | null;
   selectedAreaId!: 0;
   areaLookup: any = [];
+  isDisplay = false;
   displayedColumns: string[] = [
     'shopId',
     'shopName',
@@ -41,11 +43,18 @@ export class ShopListComponent implements OnInit {
     public dialog: MatDialog,
     private toasterService: ToasterService,
     private shopService: ShopService,
+    private webstorgeService: WebstorgeService,
   ) { }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    if (userRole == 'Admin' || userRole == 'Super Admin') {
+      this.isDisplay = true;
+      this.loadData();
+    }
     this.getAreaLookup();
-    this.loadData();
+
+
   }
 
   getAreaLookup() {
@@ -139,6 +148,10 @@ export class ShopListComponent implements OnInit {
       this.pageNo = this.pageNo - 1;
       this.loadData();
     }
+  }
+
+  exportToExcel(): void {
+    this.shopService.exportToExcel();
   }
 
 }

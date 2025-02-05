@@ -43,6 +43,8 @@ import { ProductEditorComponent } from './components/product/product-editor/prod
 import { CreateOrderComponent } from './components/order/create-order/create-order.component';
 import { EditOrderComponent } from './components/order/edit-order/edit-order.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
+import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
+import { AgreementNotificationsComponent } from './components/management/agreement-notifications/agreement-notifications.component';
 
 
 const routes: Routes = [
@@ -101,9 +103,13 @@ const routes: Routes = [
       { path: 'management/attendance-report', component: AttendanceReportComponent },
       { path: 'management/bulk-upload', component: BulkUploadComponent },
       { path: 'management/whatsapp', component: WhatsappNotificationsComponent },
+      { path: 'management/agreement-requests', component: AgreementNotificationsComponent },
+      { path: 'management/commission-tier-requests', component: AgreementNotificationsComponent },
       { path: 'management/expenses', component: ExpensesComponent },
       { path: 'management/expenses-form', component: ExpensesFormComponent },
       { path: 'management/revenue', component: ExpensesFormComponent },
+      { path: 'management/shop-commission-cheques', component: ExpensesFormComponent },
+      { path: 'management/bank-cheques', component: ExpensesFormComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
 
 
@@ -127,6 +133,7 @@ const routes: Routes = [
   },
   { path: 'aceessories/create-order/:id', component: CreateOrderComponent },
   { path: 'aceessories/edit-order/:id', component: EditOrderComponent },
+  { path: 'aceessories/agent-sim-request/:id', component: AgentSimOrderComponent },
 
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '/login' }

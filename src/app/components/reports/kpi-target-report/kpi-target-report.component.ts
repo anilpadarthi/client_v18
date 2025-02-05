@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -16,7 +17,7 @@ export class KpiTargetReportComponent implements OnInit {
   bonusAmount = 0;
   managerLookup: any = [];
   kpiTargetList: any = [];
-
+  isDisplay = false;
   displayedColumns: string[] = [
     'NAME',
     'PrevMonth',
@@ -29,12 +30,17 @@ export class KpiTargetReportComponent implements OnInit {
   constructor(
     public datePipe: DatePipe,
     private lookupService: LookupService,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private webstorgeService: WebstorgeService
   ) { }
 
 
   ngOnInit(): void {
-    this.getManagerLookup();
+    let userRole = this.webstorgeService.getUserRole();
+    if (userRole == 'Admin' || userRole == 'Super Admin') {
+      this.isDisplay = true;
+      this.getManagerLookup();
+    }
   }
 
   getManagerLookup() {

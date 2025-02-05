@@ -12,7 +12,7 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="col-lg-3">
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
         <mat-label>Manager</mat-label>
         <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="managerChange()">
           <mat-option [value]=null>All</mat-option>
@@ -22,7 +22,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="col-lg-3">
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
         <mat-label>Agent</mat-label>
         <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent" (selectionChange)="agentChange()">
           <mat-option [value]=null>All</mat-option>
@@ -32,7 +32,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="col-lg-3">
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
         <mat-label>Area</mat-label>
         <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
           <mat-option [value]=null>All</mat-option>
@@ -42,7 +42,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="col-lg-3">
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
         <mat-label>Shop</mat-label>
         <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
           <mat-option [value]=null>All</mat-option>
@@ -57,8 +57,8 @@
       <div class="col-sm-12 col-lg-6 space-between-buttons">
         <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
         <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-        <button mat-flat-button color="primary" (click)="onFilter()">
-          <mat-icon>download</mat-icon>
+        <button mat-flat-button color="primary" (click)="onFilter()" *ngIf="isDisplay">
+          <mat-icon>download</mat-icon> Download
         </button>
       </div>
     </div>

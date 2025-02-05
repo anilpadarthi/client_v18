@@ -7,7 +7,8 @@
     <div class="row">
       <mat-form-field appearance="outline" class="col-lg-3">
         <mat-label>Choose a Month</mat-label>
-        <input matInput [(ngModel)]="selectedDate" (dateChange)="loadDashboardMetrics()" [matDatepicker]="picker" placeholder="Choose a Month" />
+        <input matInput [(ngModel)]="pickerDate" [matDatepicker]="picker"
+          placeholder="Choose a Month" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -92,14 +93,19 @@
   </mat-card-content>
 </mat-card>
 
-<app-network-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType"></app-network-activations>
+<app-network-activations [selectedDate]="selectedDate" [filterId]="filterId" [refreshCounter]="refreshCounter"
+  [filterType]="filterType"></app-network-activations>
 
 <div *ngIf="dashboardViewMode == 'Admin' || dashboardViewMode == 'Manager' ">
-  <app-agent-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType" ></app-agent-activations>
+  <app-agent-activations [selectedDate]="selectedDate" [filterId]="filterId" [refreshCounter]="refreshCounter"
+    [filterType]="filterType"></app-agent-activations>
 </div>
 
 <div *ngIf="dashboardViewMode == 'Agent'">
-  <app-area-activations [selectedDate]="selectedDate" [filterId]="filterId" [filterType]="filterType"></app-area-activations>
+  <app-area-activations [selectedDate]="selectedDate" [filterId]="filterId" [refreshCounter]="refreshCounter"
+    [filterType]="filterType"></app-area-activations>
+  <app-kpi-target-details [selectedDate]="selectedDate" [filterId]="filterId" [refreshCounter]="refreshCounter"
+    [filterType]="filterType"></app-kpi-target-details>
 </div>
 
 

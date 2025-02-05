@@ -1,41 +1,92 @@
 <mat-card class="cardWithShadow">
-    <mat-card-header class="d-flex">
-      <mat-card-title>KPI TARGETS </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-<div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="w-100">
+  <mat-card-header class="d-flex">
+    <mat-card-title>KPI Targets </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     
 
-      <ng-container matColumnDef="network">
-        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">NETWORK</th>
-        <td mat-cell *matCellDef="let element">
-            {{ element.network }}
-        </td> 
-      </ng-container>
+    <div *ngIf="activationList?.length>0" class="table-responsive table-scroll example-container">
+      <table class="table table-bordered nowrap w-100 custom-table mat-table" >
+        <tbody>
+          <tr style="background-color: #FF6347;">
+            <td style="font-weight:bold;text-align:center">Name</td>
+            <td style="font-weight:bold;text-align:center"> Previous Act.</td>
+            <td style="font-weight:bold;text-align:center"> Current Act.</td>
+            <td style="font-weight:bold;text-align:center"> KPI Target</td>
+            <td></td>
+            <td style="font-weight:bold;text-align:center">Act</td>
+            <td style="font-weight:bold;text-align:center">Per Sim</td>
+            <td style="font-weight:bold;text-align:center">Diff</td>
+            <td style="font-weight:bold;text-align:center">TTL Comm</td>
+          </tr>
+          <tr>
+            <td rowspan="4" style="font-weight:bold;text-align:center">
+              {{activationList[0].name }}
+            </td>
+            <td rowspan="4" style="font-weight:bold;text-align:center">
+              {{activationList[0].prevMonth }}
+            </td>
+            <td rowspan="4" style="font-weight:bold;text-align:center">
+              {{activationList[0].currentMonth }}
+            </td>
+            <td rowspan="4" style="font-weight:bold;text-align:center">
+              {{activationList[0].target }}
+            </td>
+            <td style="background-color:yellow;font-weight:bold"> {{activationList[0].percentage }}
+            </td>
+            <td style="background-color:yellow;font-weight:bold"> {{activationList[0].act }}
+            </td>
+            <td style="background-color:yellow;font-weight:bold"> {{activationList[0].rate }}
+            </td>
+            <td style="background-color:yellow;font-weight:bold"> {{activationList[0].diff }}
+            </td>
+            <td style="background-color:yellow;font-weight:bold"> {{activationList[0].total }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:lightgreen;font-weight:bold"> {{activationList[1].percentage }}
+            </td>
+            <td style="background-color:lightgreen;font-weight:bold"> {{activationList[1].act }}
+            </td>
+            <td style="background-color:lightgreen;font-weight:bold"> {{activationList[1].rate }}
+            </td>
+            <td style="background-color:lightgreen;font-weight:bold"> {{activationList[1].diff }}
+            </td>
+            <td style="background-color:lightgreen;font-weight:bold"> {{activationList[1].total }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:dodgerblue;font-weight:bold"> {{activationList[2].percentage }}
+            </td>
+            <td style="background-color:dodgerblue;font-weight:bold"> {{activationList[2].act }}
+            </td>
+            <td style="background-color:dodgerblue;font-weight:bold"> {{activationList[2].rate }}
+            </td>
+            <td style="background-color:dodgerblue;font-weight:bold"> {{activationList[2].diff }}
+            </td>
+            <td style="background-color:dodgerblue;font-weight:bold"> {{activationList[2].total }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].percentage }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].act }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].rate }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].diff }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].total }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].bonus }}
+            </td>
+            <td style="background-color:salmon;font-weight:bold"> {{activationList[3].totalCommission }}
+            </td>
+          </tr>
 
-      <ng-container matColumnDef="previousActivations">
-        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">PREV. ACT.</th>
-        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.previousActivations }}</td>
-      </ng-container>
+        </tbody>
+      </table>
+    </div>
 
-      <ng-container matColumnDef="currentActivations">
-        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">CURR. ACT.</th>
-        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.currentActivations }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="lastActivated">
-        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">LAST ACTIVATED</th>
-        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.lastActivated }}</td>
-      </ng-container>
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">TOTAL</th>
-        <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.total }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
   </mat-card-content>
 </mat-card>

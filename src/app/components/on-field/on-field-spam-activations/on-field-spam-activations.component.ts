@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { OnFieldService } from '../../../services/on-field.service';
 import { DatePipe } from '@angular/common';
 
@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
 
 export class OnFieldSpamActivationsComponent implements OnInit {
   @Input() selectedShopId!: number;
+  @Input() refreshValue!: number;
+  private isFirstChange = true;
+  isLoading = false;
   activationList: any = [];
   displayedColumns: string[] = [
     'DATE',
@@ -36,17 +39,33 @@ export class OnFieldSpamActivationsComponent implements OnInit {
   }
 
   loadData(): void {
+    this.isLoading = true;
     const request = {
       shopId: this.selectedShopId,
       isInstantActivation: true,
       isSpam: true,
     };
     this.onFieldService.onFieldActivationList(request).subscribe((res) => {
-      this.activationList = res.data;
+      this.isLoading = false;
+      if (res.data) {
+        let result = res.data;
+        result.forEach((e: any) => {
+          e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
+        });
+        this.activationList = result;
+      }
     });
   }
-  ngOnChanges(): void {
-    this.loadData();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedShopId'] || changes['refreshValue']  ) {
+      this.loadData();
+    }
   }
 
 }

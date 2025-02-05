@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DatePipe } from '@angular/common';
 
@@ -10,35 +10,69 @@ import { DatePipe } from '@angular/common';
 })
 
 export class KpiTargetDetailsComponent implements OnInit {
-  @Input() selectedDate: any
-  searchText: any;
+  @Input() selectedDate: any;
+  @Input() filterId: any;
+  @Input() filterType: any;
+  @Input() refreshCounter: any;
+  activationList: any = [];
+  private isFirstChange = true;
   displayedColumns: string[] = [
-    'ID',
     'Name',
-    'PreviousActivations',
-    'CurrentActivations',
-    'InstantActivations',
-    'Total'
-  ];
-  activations = [
-    {
-      network: 'EE',
-      previousActivations: '2',
-      currentActivations: '3',
-      lastActivated: '2024-01-01',
-      total: '24'
-    }
+    'PrevMonth',
+    'CurrentMonth',
+    'Target',
+    'Percentage',
+    'Act',
+    'Rate',
+    'Diff',
+    'Total',
+    'Bonus',
+    'TotalCommission',
   ];
   dataSource: any = null;
 
 
-  constructor(public datePipe: DatePipe) { }
-
+  constructor(
+    public datePipe: DatePipe,
+    private dashboardService: DashboardService,
+  ) { }
 
   ngOnInit(): void {
-    this.dataSource = this.activations;
+    if (this.selectedDate) {
+      this.loadData();
+    }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
 
+    if (changes['selectedDate'] || changes['refreshCounter']) {
+      this.loadData();
+    }
+  }
 
+  loadData(): void {
+    const request = {
+      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      filterId: this.filterId,
+      filterType: this.filterType
+    };
+
+    this.dashboardService.getUserWiseKPIReport(request).subscribe((res) => {
+      this.activationList = res.data;
+    });
+  }
+
+  getTotal(column: string): any {
+    if (column == 'Id') {
+      return "";
+    }
+    else if (column == 'Name') {
+      return "Total";
+    }
+    return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
 }

@@ -3,6 +3,8 @@ import { AreaService } from '../../../services/area.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 
 @Component({
   selector: 'app-allocate-area-to-agent',
@@ -40,6 +42,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
     private lookupService: LookupService,
     private areaService: AreaService,
     private toasterService: ToasterService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -151,6 +154,18 @@ export class AllocateAreaToAgentComponent implements OnInit {
   proceedToAllocate(): void {
     this.isBackToSelection = false;
     this.selectedAreasToTransfer = this.areaList.filter(f => f.selected == true);
+  }
+
+  viewAllocationHistory(areaId: number): void {
+    this.areaService.viewAreaAllocationHistory(areaId).subscribe((res) => {
+      var data = {
+        result: res.data,
+        headerName: 'Area Allocation History'
+      }
+      this.dialog.open(PopupTableComponent, {
+        data
+      });
+    });
   }
 
 }

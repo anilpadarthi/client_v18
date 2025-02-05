@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { OrderService } from '../../../services/order.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -56,6 +57,8 @@ export class OrderListComponent implements OnInit {
   selectedFromDate = null;
   selectedToDate = null;
   isVat = false;
+  userRole = '';
+  isDisplay = false;
 
   orderList = [];
 
@@ -63,11 +66,21 @@ export class OrderListComponent implements OnInit {
     public dialog: MatDialog,
     private orderService: OrderService,
     private lookupService: LookupService,
+    private webstorgeService: WebstorgeService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+
+    if (this.userRole == 'Admin' || this.userRole == 'Super Admin') {
+      this.isDisplay = true;
+    }
+    else {
+      this.selectedAgentId = loggedInUserId;
+    }
     this.loadData();
     this.loadDropDowns();
   }
@@ -116,13 +129,15 @@ export class OrderListComponent implements OnInit {
       this.areaLookup = res.data;
     });
 
-    this.lookupService.getAgents().subscribe((res) => {
-      this.agentLookup = res.data;
-    });
+    if (this.userRole == 'Admin' || this.userRole == 'Super Admin') {
+      this.lookupService.getAgents().subscribe((res) => {
+        this.agentLookup = res.data;
+      });
 
-    this.lookupService.getManagers().subscribe((res) => {
-      this.managerLookup = res.data;
-    });
+      this.lookupService.getManagers().subscribe((res) => {
+        this.managerLookup = res.data;
+      });
+    }
   }
 
   areaChange(): void {
@@ -174,10 +189,10 @@ export class OrderListComponent implements OnInit {
   }
 
   editOrder(orderId: number): void {
-      const fullPath = this.router.serializeUrl(
-        this.router.createUrlTree([`aceessories/edit-order/${ orderId }`])
-      );
-      window.open(fullPath, '_blank');
+    const fullPath = this.router.serializeUrl(
+      this.router.createUrlTree([`aceessories/edit-order/${orderId}`])
+    );
+    window.open(fullPath, '_blank');
 
   }
 

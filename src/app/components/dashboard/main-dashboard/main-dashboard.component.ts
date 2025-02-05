@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 })
 
 export class MainDashboardComponent implements OnInit {
+  pickerDate: any = null;
   selectedDate: any = null;
   selectedUserId = null;
   selectedManagerId = null;
@@ -26,6 +27,7 @@ export class MainDashboardComponent implements OnInit {
   instantActivationCount = 0;
   filterId: any = null;
   filterType: any = null;
+  refreshCounter = 0;
 
   constructor(
     private webstorgeService: WebstorgeService,
@@ -37,20 +39,22 @@ export class MainDashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getAgentLookup();
-    this.getManagerLookup();
+
     let userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     this.filterId = loggedInUserId;
     this.filterType = userRole;
     this.selectedDate = new Date();
-    if (userRole == 'Admin') {
+    if (userRole == 'Admin' || userRole == 'Super Admin' ) {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
+      this.getAgentLookup();
+      this.getManagerLookup();
     }
     else if (userRole == 'Manager') {
       this.isManager = true;
       this.dashboardViewMode = 'Manager'
+      this.getAgentLookup();
     }
     else if (userRole == 'Agent') {
       this.dashboardViewMode = 'Agent'
@@ -93,10 +97,13 @@ export class MainDashboardComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.selectedDate == null) {
+
+    if (this.pickerDate == null) {
       this.toasterService.showMessage('Please select any month before to proceed.');
     }
     else {
+      this.refreshCounter++;
+      this.selectedDate = this.pickerDate;
       if (this.selectedUserId) {
         this.dashboardViewMode = 'Agent';
         this.filterId = this.selectedUserId;
@@ -110,5 +117,5 @@ export class MainDashboardComponent implements OnInit {
       this.loadDashboardMetrics();
     }
   }
-  
+
 }

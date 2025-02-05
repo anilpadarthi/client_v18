@@ -121,4 +121,9 @@ export class AreaListComponent implements OnInit {
       this.loadData();
     }
   }
+
+  exportToExcel(): void {
+    this.areaService.exportToExcel();
+  }
+
 }

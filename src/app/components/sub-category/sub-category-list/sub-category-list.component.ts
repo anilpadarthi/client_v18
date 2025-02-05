@@ -128,4 +128,9 @@ export class SubCategoryListComponent implements OnInit {
       this.loadData();
     }
   }
+
+  exportToExcel(): void {
+    this.subCategoryService.exportToExcel();
+  }
+
 }

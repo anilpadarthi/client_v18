@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICommonResponse } from '../models/common-response';
+import { ExportService } from './export.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AreaService {
 
   url: string;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public exportService: ExportService) {
     this.url = `api/Area`
   }
 
@@ -41,6 +42,15 @@ export class AreaService {
 
   allocateAreasToAgent(requestBody: any): Observable<ICommonResponse> {
     return this.http.post<ICommonResponse>(this.url + '/AllocateAreasToAgent', requestBody);
+  }
+
+  exportToExcel(): void {
+    let url =  this.url +'/ExportToExcel';
+    return this.exportService.downloadExcel(url,'AreaList');
+  }
+
+  viewAreaAllocationHistory(areaId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/ViewAreaAllocationHistory?areaId=${areaId}`);
   }
 
 }

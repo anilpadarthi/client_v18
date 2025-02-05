@@ -1,5 +1,8 @@
-import { Component, Input, ElementRef, ViewChild  } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { ShopService } from '../../../services/shop.service';
+import { ToasterService } from '../../../services/toaster.service';
+import { PostcodeService } from '../../../services/postcode.service';
 
 @Component({
   selector: 'app-on-field-shop-visit',
@@ -10,25 +13,33 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class OnFieldShopVisitComponent {
 
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
-  form!: FormGroup;
   capturedImage: string | null = null;
-  @Input() selectedShopId!: number;
+  liveImage: any = null;
+  comments: any = null;
+  selectedShopId: any = null;
+  @Input() geoLocation: any;
+  @Input() shopAddressDetails: any = null;
+  @Input() refreshValue!: number;
+  @Output() notifyParent = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
-      image: [null, Validators.required]
-    });
+  constructor(private fb: FormBuilder,
+    private shopService: ShopService,
+    private toasterService: ToasterService,
+    private postcodeService: PostcodeService,
+  ) {
+    this.capturedImage = '/assets/images/profile/user-1.jpg';
+    this.selectedShopId = this.shopAddressDetails?.shopId;
   }
 
   onCaptureImage(event: any): void {
     const file = event.target.files[0];
+    this.liveImage = file;
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         this.capturedImage = reader.result as string;
       };
       reader.readAsDataURL(file);
-      this.form.patchValue({ image: file });
     }
   }
 
@@ -57,18 +68,7 @@ export class OnFieldShopVisitComponent {
     }
   }
 
-  // Prepare the image for upload
-  uploadImage() {
-    if (this.capturedImage) {
-      const formData = new FormData();
-      formData.append('image', this.dataURItoBlob(this.capturedImage), 'captured-image.png');
 
-      // Call your upload API here
-      // this.http.post('your-api-endpoint', formData).subscribe(response => {
-      //   console.log('Image uploaded successfully', response);
-      // });
-    }
-  }
 
   // Convert Data URL to Blob
   dataURItoBlob(dataURI: string): Blob {
@@ -84,17 +84,42 @@ export class OnFieldShopVisitComponent {
   }
 
   onSubmit(): void {
-    if (this.form.valid) {
-      const formData = new FormData();
-      formData.append('image', this.form.get('image')?.value);
-
-      console.log('Captured Image FormData:', formData);
-      // Perform API submission here
+    if (this.selectedShopId) {
+      this.postcodeService.getDistanceBetweenLatAndLong(this.geoLocation.latitude, this.geoLocation.longitude,
+        this.shopAddressDetails.latitude, this.shopAddressDetails.longitude).subscribe((res) => {
+          if (res.metres < 300) {
+            this.proceedToShopVisit();
+          }
+          else {
+            this.toasterService.showMessage('You are not allowd to scan sims for this shop, for this location.')
+          }
+        });
     }
   }
 
-  closeDialog(): void {
+  onClear(): void {
+    this.comments = null;
+  }
 
+  proceedToShopVisit(): void {
+    const formData = new FormData();
+    formData.append('shopId', this.selectedShopId != null ? this.selectedShopId : 0);
+    formData.append('comments', this.comments);
+    formData.append('imageFile', this.liveImage);
+    formData.append('latitude', this.geoLocation.latitude);
+    formData.append('longitude', this.geoLocation.longitude);
+
+    console.log('Captured Image FormData:', formData);
+
+    this.shopService.creteShopVisit(this.selectedShopId).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Visited successfully.");
+        this.comments = null;
+        this.capturedImage = null;
+        this.liveImage = null;
+        this.notifyParent.emit();
+      }
+    });
   }
 
 

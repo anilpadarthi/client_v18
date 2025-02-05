@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LookupService } from '../../services/lookup.service';
 import { ShopService } from '../../services/shop.service';
 import { ToasterService } from '../../services/toaster.service';
+import { GeolocationService } from '../../services/geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../common/popup-table/popup-table.component';
@@ -15,13 +16,15 @@ import { Router } from '@angular/router';
 
 export class OnFieldComponent implements OnInit {
 
-
   selectedAreaId: any = null;
   selectedShopId: any = null;
+  shopAddressDetails: any = null;
   areaLookup: any = [];
   shopLookup: any = [];
   action = '';
   isMainSection = true;
+  refreshCounter = 0;
+  geoLocation: any;
 
   constructor(
     public datePipe: DatePipe,
@@ -29,22 +32,31 @@ export class OnFieldComponent implements OnInit {
     private lookupService: LookupService,
     private shopService: ShopService,
     private toasterService: ToasterService,
+    private geolocationService: GeolocationService,
     private router: Router
   ) { }
 
 
   ngOnInit(): void {
     this.getAreaLookup();
-
   }
 
   ngOnChanges() {
+  }
 
+  handleChildBackEvent(data: any): void {
+    if (data) {
+      this.shopAddressDetails = data;
+    }
+    this.displayMainSection();
   }
 
   onSubmit() {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      this.refreshCounter++;
     }
   }
 
@@ -61,46 +73,99 @@ export class OnFieldComponent implements OnInit {
     });
   }
 
-  openShopVisitHistoryDialog(): void {
-    this.shopService.getShopVisitHistory(this.selectedShopId).subscribe((res) => {
-      var data = {
-        result: res.data,
-        headerName: 'Shop Visit History'
+  shopChange() {
+    this.fetchLocation();
+    this.getShopAddressDetails();
+  }
+
+  fetchLocation(): void {
+    this.geolocationService.getCurrentLocation().then(
+      (position) => {
+        this.geoLocation = position;
+        console.log(position);
+      },
+      (error) => {
+        console.log(error);
       }
-      this.dialog.open(PopupTableComponent, {
-        data
+    );
+  }
+
+  openShopVisitHistoryDialog(): void {
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      this.shopService.getShopVisitHistory(this.selectedShopId).subscribe((res) => {
+        var data = {
+          result: res.data,
+          headerName: 'Shop Visit History'
+        }
+        this.dialog.open(PopupTableComponent, {
+          data
+        });
       });
-    });
+    }
   }
 
   openShopAgreementHistoryDialog(): void {
-    this.toasterService.showMessage("Comming soon...");
-
-    // this.shopService.getShopVisitHistory(this.selectedShopId).subscribe((res) => {
-    //   var data = {
-    //     result: res.data,
-    //     headerName: 'Agreement History'
-    //   }
-    //   this.dialog.open(PopupTableComponent, {
-    //     data
-    //   });
-    // });
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      this.shopService.getShopAgreementHistory(this.selectedShopId).subscribe((res) => {
+        var data = {
+          result: res.data,
+          headerName: 'Agreement History'
+        }
+        this.dialog.open(PopupTableComponent, {
+          data
+        });
+      });
+    }
   }
 
   onActionClicked(type: any) {
-    this.action = type;
-    this.isMainSection = false;
+    console.log(this.shopAddressDetails);
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      if (this.shopAddressDetails && this.shopAddressDetails?.latitude != '' && this.shopAddressDetails.longitude != '') {
+        this.action = type;
+        this.isMainSection = false;
+      }
+      else {
+        this.toasterService.showMessage('Shop details are missing, please fill to proceed furthur');
+        this.action = 'EditShop';//open edit shop to update the details
+        this.isMainSection = false;
+      }
+    }
   }
 
   displayMainSection(): void {
     this.isMainSection = true;
   }
 
-  openShoppingPage(): void{
-    const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`aceessories/create-order/${ this.selectedShopId }`])
-    );
-    window.open(fullPath, '_blank');
+  openShoppingPage(): void {
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      const fullPath = this.router.serializeUrl(
+        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}`])
+      );
+      window.open(fullPath, '_blank');
+    }
+  }
+
+  refreshChildren() {
+    this.refreshCounter++; // Increment to trigger change detection
+  }
+
+  getShopAddressDetails(): void {
+    this.shopService.getShopAddressDetails(this.selectedShopId).subscribe((res) => {
+      this.shopAddressDetails = res.data;
+    });
   }
 
 }

@@ -132,7 +132,7 @@ export class EditUserProfileComponent {
   }
 
   onCancel(): void {
-    this.router.navigate(['/users']);
+    this.getUserDetails();
   }
 
   imageUpload(event: any) {

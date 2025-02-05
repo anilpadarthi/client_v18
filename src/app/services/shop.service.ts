@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICommonResponse } from '../models/common-response';
+import { ExportService } from './export.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ShopService {
 
   url: string;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,public exportService: ExportService) {
     this.url = `api/Shop`
   }
 
@@ -43,6 +44,10 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url+ `/GetShopVisitHistory?shopId=${shopId}`);
   }
 
+  getShopAgreementHistory(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url+ `/GetShopAgreementHistory?shopId=${shopId}`);
+  }
+
   getShopWalletAmount(shopId: number): Observable<ICommonResponse> {
     return this.http.get<ICommonResponse>(this.url+ `/GetShopWalletAmount?shopId=${shopId}`);
   }
@@ -51,5 +56,13 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url+ `/GetShopWalletHistory?shopId=${shopId}&walletType='${walletType}'`);
   }
 
+  exportToExcel(): void {
+    let url =  this.url +'/ExportToExcel';
+    return this.exportService.downloadExcel(url,'AreaList');
+  }
+
+  getShopAddressDetails(id: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url  + `/GetShopAddressDetails?shopId=${id}`);
+  }
 
 }

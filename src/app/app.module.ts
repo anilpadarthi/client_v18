@@ -103,6 +103,7 @@ import { CategoryViewComponent } from './components/shopping/category-view/categ
 import { CreateOrderComponent } from './components/order/create-order/create-order.component';
 import { EditOrderComponent } from './components/order/edit-order/edit-order.component';
 import { CheckOutComponent } from './components/order/check-out/check-out.component';
+import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -188,7 +189,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CategoryViewComponent,
     CreateOrderComponent,
     EditOrderComponent,
-    CheckOutComponent
+    CheckOutComponent,
+    AgentSimOrderComponent
   ],
   imports: [
     BrowserModule,

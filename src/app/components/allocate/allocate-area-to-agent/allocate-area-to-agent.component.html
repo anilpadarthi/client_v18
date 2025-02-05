@@ -64,7 +64,7 @@
           <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef>ACTION</th>
             <td mat-cell *matCellDef="let element" class="f-s-14">
-              <a class="m-r-10 cursor-pointer">
+              <a class="m-r-10 cursor-pointer" (click)="viewAllocationHistory(element.areaId)">
                 View History
               </a>
             </td>

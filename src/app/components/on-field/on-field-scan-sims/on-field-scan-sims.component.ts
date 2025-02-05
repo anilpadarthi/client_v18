@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { SimService } from '../../../services/sim.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { ShopService } from '../../../services/shop.service';
+import { PostcodeService } from '../../../services/postcode.service';
 
 @Component({
   selector: 'app-on-field-scan-sims',
@@ -10,7 +12,11 @@ import { ToasterService } from '../../../services/toaster.service';
 
 export class OnFieldScanSimsComponent {
   searchText: any;
-  @Input() selectedShopId!: number
+  selectedShopId!: number;
+  @Input() refreshValue!: number;
+  @Input() geoLocation!: any;
+  @Output() notifyParent = new EventEmitter<string>();
+  @Input() shopAddressDetails: any = null;
   displayedColumns: string[] = [
     'SIMID',
     'NETWORK',
@@ -23,27 +29,47 @@ export class OnFieldScanSimsComponent {
   constructor(
     private simService: SimService,
     private toasterService: ToasterService,
-  ) { }
+    private shopService: ShopService,
+    private postcodeService: PostcodeService,
+  ) {
+    this.selectedShopId = this.shopAddressDetails?.shopId;
+  }
 
   onScanSims(): void {
+    console.log(this.geoLocation);
+    console.log(this.shopAddressDetails);
     if (this.searchText) {
-      const request = {
-        imeiNumbers: this.searchText != null ? this.searchText.trim().toLowerCase().split('\n') : null,
-        shopId: this.selectedShopId
-      };
-
-      this.simService.scanSims(request).subscribe((res) => {
-        if (res.data.length > 0) {
-          this.dataSource = res.data;
-        }
-        else {
-          this.dataSource = [];
-        }
-      });
+      if (this.selectedShopId) {
+        this.postcodeService.getDistanceBetweenLatAndLong(this.geoLocation.latitude, this.geoLocation.longitude,
+          this.shopAddressDetails.latitude, this.shopAddressDetails.longitude).subscribe((res) => {
+            if (res.metres < 300) {
+              this.proceddToScanSims();
+            }
+            else {
+              this.toasterService.showMessage('You are not allowd to scan sims for this shop, for this location.')
+            }
+          });
+      }
     }
     else {
       this.toasterService.showMessage('Please enter IMEI / PCNNO and scan before proceed to furthur.');
     }
+  }
+
+  proceddToScanSims(): void {
+    const request = {
+      imeiNumbers: this.searchText != null ? this.searchText.trim().toLowerCase().split('\n') : null,
+      shopId: this.selectedShopId,
+    };
+
+    this.simService.scanSims(request).subscribe((res) => {
+      if (res.data.length > 0) {
+        this.dataSource = res.data;
+      }
+      else {
+        this.dataSource = [];
+      }
+    });
   }
 
   onAllocateSims(): void {
@@ -51,14 +77,20 @@ export class OnFieldScanSimsComponent {
     if (this.dataSource?.length > 0) {
       const request = {
         imeiNumbers: this.dataSource.filter((f: any) => f.status == 'NotAssigned').map((m: any) => m.imei),
-        shopId: this.selectedShopId
+        shopId: this.selectedShopId,
+        latitude: String(this.geoLocation.latitude),
+        longitude: String(this.geoLocation.longitude),
       };
 
       if (request.imeiNumbers.length > 0) {
         this.simService.allocateSims(request).subscribe((res) => {
-          if (res.data.length > 0) {
+          if (res.data?.length > 0) {
             this.dataSource = null;
             this.toasterService.showMessage(res.data);
+            this.notifyParent.emit();
+          }
+          else {
+            this.toasterService.showMessage('Something went wrong.');
           }
         });
       }
@@ -95,7 +127,9 @@ export class OnFieldScanSimsComponent {
     this.searchText = null;
   }
 
-  ngOnChanges(): void {
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['shopAddressDetails'] || changes['refreshValue']  ) {
+      this.selectedShopId = this.shopAddressDetails.shopId;
+    }
   }
 }

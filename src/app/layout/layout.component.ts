@@ -53,6 +53,7 @@ export class LayoutComponent implements OnInit {
     this.htmlElement = document.querySelector('html')!;
     var userRole = this.webstorgeService.getUserInfo().userRoleId;
     switch (userRole) {
+      case 1: this.navItems = adminItems; break;
       case 2: this.navItems = adminItems; break;
       case 3: this.navItems = managerItems; break;
       case 4: this.navItems = agentItems; break;

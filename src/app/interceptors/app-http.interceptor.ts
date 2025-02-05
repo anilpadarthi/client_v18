@@ -20,7 +20,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    if (!req.url.startsWith('https://postcodes.io')) {
+    if (!req.url.startsWith('https://postcodes.io') && !req.url.startsWith('https://api.getAddress.io')) {
 
       req = req.clone({
         url: `${environment.backend.host}/${req.url}`

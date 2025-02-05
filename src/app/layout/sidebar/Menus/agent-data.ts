@@ -6,83 +6,8 @@ import { NavItem } from "../nav-item/nav-item";
 
 export const agentItems: NavItem[] = [
 
-  {
-    displayName: 'Dashboards',
-    iconName: 'home',
-    route: '',
-    children: [
-      {
-        displayName: 'Main',
-        iconName: 'arrow_right',
-        route: 'dashboard/main',
-      },
-      {
-        displayName: 'Analytics',
-        iconName: 'arrow_right',
-        route: 'dashboard/analytics',
-      },
-    ],
-  },
-  {
-    displayName: 'IMEI',
-    iconName: 'manage_search',
-    route: 'imei/search',
-  },
-  {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
-  },
-  {
-    displayName: 'Reports',
-    iconName: 'monitoring',
-    route: '',
-    children: [
-      {
-        displayName: 'Monthly Activations',
-        iconName: 'arrow_right',
-        route: 'report/monthly/activations',
-      },
-      {
-        displayName: 'KPI Targets',
-        iconName: 'arrow_right',
-        route: 'report/kpi-target',
-      },
-      {
-        displayName: 'Commission Statements',
-        iconName: 'arrow_right',
-        route: 'report/commission-statement',
-      },
-    ],
-  },
-  {
-    displayName: 'Setup',
-    iconName: 'manage_accounts',
-    route: '',
-    children: [
-      {
-        displayName: 'Area',
-        iconName: 'arrow_right',
-        route: 'areas',
-      },
-      {
-        displayName: 'Shop',
-        iconName: 'arrow_right',
-        route: 'shops',
-      },
-    ],
-  },
 
-  {
-    displayName: 'Payslip',
-    iconName: 'text_snippet',
-    route: 'payslip',
-  },
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
-  },
+ 
 
   {
     displayName: 'Accessories',
@@ -95,18 +20,57 @@ export const agentItems: NavItem[] = [
         route: 'aceessories/sales',
       },
       {
-        displayName: 'Create Order',
+        displayName: 'Request Sims',
         iconName: 'arrow_right',
-        route: 'aceessories/create-order',
+        route: 'aceessories/agent-sim-request',
         target: '_blank'
       },
     ],
   },
   {
-    displayName: 'Edit Profile',
-    iconName: 'account_circle',
-    route: 'profile/edit',
+    displayName: 'Dashboard',
+    iconName: 'home',
+    route: 'dashboard/main',
   },
+  {
+    displayName: 'OnField',
+    iconName: 'store',
+    route: 'onfield',
+  },
+  {
+    displayName: 'Monthly Activations',
+    iconName: 'monitoring',
+    route: 'report/monthly/activations',
+  },
+  {
+    displayName: 'Shop',
+    iconName: 'manage_accounts',
+    route: 'shops',
+  },
+  {
+    displayName: 'IMEI Search',
+    iconName: 'manage_search',
+    route: 'imei/search',
+  },
+
+
+  {
+    displayName: 'Payslip',
+    iconName: 'text_snippet',
+    route: 'management/payslip',
+  },
+  {
+    displayName: 'Chat',
+    iconName: 'chat',
+    route: 'chat',
+  },
+
+
+  // {
+  //   displayName: 'Edit Profile',
+  //   iconName: 'account_circle',
+  //   route: 'profile/edit',
+  // },
 
 
 ];

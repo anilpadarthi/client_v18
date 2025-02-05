@@ -69,12 +69,12 @@ export const adminItems: NavItem[] = [
       },
       {
         displayName: 'Sim Allocations',
-        iconName: 'file-description',
+        iconName: 'arrow_right',
         route: 'report/simallocation-report',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'file-description',
+        iconName: 'arrow_right',
         route: 'report/kpi-target',
       },
       {
@@ -150,7 +150,7 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'Payslip',
-        iconName: 'file-description',
+        iconName: 'arrow_right',
         route: 'management/payslip',
       },
       {
@@ -186,12 +186,12 @@ export const adminItems: NavItem[] = [
       {
         displayName: 'Shop Commission Cheques',
         iconName: 'arrow_right',
-        route: 'shop-commission-cheques',
+        route: 'management/shop-commission-cheques',
       },
       {
         displayName: 'Bank Cheques',
         iconName: 'arrow_right',
-        route: 'bank-cheques',
+        route: 'management/bank-cheques',
       },
     ],
   },
@@ -217,14 +217,20 @@ export const adminItems: NavItem[] = [
         route: 'aceessories/create-order',
         target: '_blank'
       },
+      {
+        displayName: 'Request Sims',
+        iconName: 'arrow_right',
+        route: 'aceessories/agent-sim-request/8',
+        target: '_blank'
+      },
     ],
   },
 
-  {
-    displayName: 'Edit Profile',
-    iconName: 'account_circle',
-    route: 'profile/edit',
-  },
+  // {
+  //   displayName: 'Edit Profile',
+  //   iconName: 'account_circle',
+  //   route: 'profile/edit',
+  // },
 
 
 ];
@@ -400,11 +406,11 @@ export const managerItems: NavItem[] = [
     ],
   },
 
-  {
-    displayName: 'Edit Profile',
-    iconName: 'account_circle',
-    route: 'profile/edit',
-  },
+  // {
+  //   displayName: 'Edit Profile',
+  //   iconName: 'account_circle',
+  //   route: 'profile/edit',
+  // },
 
 
 ];

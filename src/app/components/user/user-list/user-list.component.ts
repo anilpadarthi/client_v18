@@ -128,6 +128,8 @@ export class UserListComponent {
     }
   }
 
-
+  exportToExcel(): void {
+    this.userService.exportToExcel();
+  }
 
 }

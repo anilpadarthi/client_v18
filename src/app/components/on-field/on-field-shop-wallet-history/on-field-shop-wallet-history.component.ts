@@ -41,7 +41,6 @@ export class OnFieldShopWalletHistoryComponent implements OnInit {
   }
 
   loadData(): void {
-
     this.onFieldService.onFieldCommissionWalletHistory(this._data).subscribe((res) => {
       this.walletHistoryList = res.data;
     });

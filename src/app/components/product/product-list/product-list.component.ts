@@ -151,4 +151,9 @@ export class ProductListComponent implements OnInit {
       this.loadData();
     }
   }
+
+  exportToExcel(): void {
+    this.productService.exportToExcel();
+  }
+
 }

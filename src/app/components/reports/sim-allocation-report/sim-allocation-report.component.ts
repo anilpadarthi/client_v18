@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
-import { Router } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -16,8 +12,8 @@ import { DatePipe } from '@angular/common';
 
 
 export class SimAllocationReportComponent implements OnInit {
-  selectedMonth = '';
-  selectedUserId = 0;
+  selectedMonth = null;
+  selectedUserId = null;
   totalCount = 0;
   userLookup: any = [];
   activationList: any = [];
@@ -25,14 +21,13 @@ export class SimAllocationReportComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    private router: Router,
     private reportService: ReportService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit(): void {
     this.getAgentLookup();
-
   }
 
   getAgentLookup() {
@@ -47,7 +42,7 @@ export class SimAllocationReportComponent implements OnInit {
       fromDate: this.datePipe.transform(this.selectedMonth, 'yyyy-MM-dd'),
       filterId: this.selectedUserId
     };
-    
+
     this.reportService.getSimAllocationReport(requestBody).subscribe((res) => {
       this.activationList = res.data;
 
@@ -60,12 +55,17 @@ export class SimAllocationReportComponent implements OnInit {
 
 
   onFilter(): void {
-    this.loadData();
+    if (this.selectedMonth && this.selectedUserId) {
+      this.loadData();
+    }
+    else {
+      this.toasterService.showMessage('Please select both Date and Agent to proceed further.')
+    }
   }
 
   onClear(): void {
-    this.selectedMonth = '';
-    this.selectedUserId = 0;
+    this.selectedMonth = null;
+    this.selectedUserId = null;
   }
 
 }

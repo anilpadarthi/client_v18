@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 
 
@@ -39,7 +39,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   voxiSum: number = 0;
   smartySum: number = 0;
   totalSum: number = 0;
-
+  isDisplay = false;
   displayedColumns: string[] = [
     'ID',
     'NAME',
@@ -58,13 +58,23 @@ export class MonthlyActivationReportComponent implements OnInit {
     private datePipe: DatePipe,
     private _snackBar: MatSnackBar,
     private reportService: ReportService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private webstorgeService: WebstorgeService
   ) { }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+
+    if (userRole == 'Admin' || userRole == 'Super Admin') {
+      this.isDisplay = true;
+      this.getAgentLookup();
+      this.getManagerLookup();
+    }
+    else if (userRole == 'Agent') {
+      this.selectedUserId = loggedInUserId;
+    }
     this.getAreaLookup();
-    this.getAgentLookup();
-    this.getManagerLookup();
   }
 
   getAgentLookup() {

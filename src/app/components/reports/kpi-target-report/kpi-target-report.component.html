@@ -5,25 +5,23 @@
 
     <mat-card-content>
         <div class="row justify-content-between">
-            <div class="col-lg-3">
-                <mat-form-field appearance="outline">
-                    <mat-label>From Month</mat-label>
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="fromDate" placeholder="Choose a Month" />
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="col-lg-3">
-                <mat-form-field appearance="outline">
-                    <mat-label>Manager</mat-label>
-                    <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
-                        <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of managerLookup" [value]="item.id">
-                            <span>{{ item.name }}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+
+            <mat-form-field appearance="outline" class="col-lg-3">
+                <mat-label>From Month</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="fromDate" placeholder="Choose a Month" />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
+                <mat-label>Manager</mat-label>
+                <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
+                    <mat-option [value]=null>All</mat-option>
+                    <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+                        <span>{{ item.name }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
             <div class="col-lg-6 space-between-buttons">
                 <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
                 <button mat-flat-button color="primary" (click)="onClear()">Clear</button>

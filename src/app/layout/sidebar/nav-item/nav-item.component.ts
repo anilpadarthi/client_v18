@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, Output, EventEmitter, HostBinding } from '
 import { NavItem } from './nav-item';
 import { Router } from '@angular/router';
 import { NavService } from '../../../services/nav.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { animate, state, style, transition, trigger, } from '@angular/animations';
 
 @Component({
@@ -32,7 +33,7 @@ export class AppNavItemComponent implements OnChanges {
   @Input() item: NavItem | any;
   @Input() depth: any;
 
-  constructor(public navService: NavService, public router: Router) {
+  constructor(public navService: NavService, public router: Router, private webstorgeService: WebstorgeService) {
     if (this.depth === undefined) {
       this.depth = 0;
     }
@@ -52,6 +53,11 @@ export class AppNavItemComponent implements OnChanges {
   onItemSelected(item: NavItem) {
     if (!item.children || !item.children.length) {
       if(item.target){
+
+        if(item.route == 'aceessories/agent-sim-request'){
+          let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+          item.route+=`/${loggedInUserId}`;
+        }
         const fullPath = this.router.serializeUrl(
           this.router.createUrlTree([item.route])
         );

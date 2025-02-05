@@ -34,6 +34,11 @@
                     <mat-icon>add</mat-icon>
                     Add
                 </button>
+                <button mat-flat-button color="primary" *ngIf="isDisplay" (click)="exportToExcel()"
+                    class="card-container-right">
+                    <mat-icon>download</mat-icon>
+                    Export To Excel
+                </button>
             </div>
         </div>
 
@@ -82,7 +87,7 @@
                         <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.shopId)">
                             <mat-icon>edit</mat-icon>
                         </a>
-                        <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.shopId)">
+                        <a class="m-r-10 cursor-pointer" *ngIf="isDisplay" (click)="deleteclick(element.shopId)">
                             <mat-icon>delete</mat-icon>
                         </a>
                     </td>
