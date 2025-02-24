@@ -18,6 +18,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
     'select',
     'agentId',
     'agentName',
+    'userRole',
     'assingedTo',
     'action'
   ];
@@ -116,7 +117,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
   onFilter(): void {
     if (this.selectedManagerId && this.searchText) {
       let filterResult = this.tempAgentList.filter(f => f.assignedToUserId == this.selectedManagerId
-        && f.areaName.toLowerCase().includes(this.searchText!.toLowerCase()));
+        && f.userName.toLowerCase().includes(this.searchText!.toLowerCase()));
       this.agentList = filterResult;
     }
     else if (this.selectedManagerId) {
@@ -124,7 +125,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
       this.agentList = filterResult;
     }
     else if (this.searchText) {
-      let filterResult = this.tempAgentList.filter(f => f.areaName.toLowerCase().includes(this.searchText!.toLowerCase()));
+      let filterResult = this.tempAgentList.filter(f => f.userName.toLowerCase().includes(this.searchText!.toLowerCase()));
       this.agentList = filterResult;
     }
     else {
@@ -136,10 +137,10 @@ export class AllocateAgentToManagerComponent implements OnInit {
     this.isBackToSelection = true;
   }
 
-  transferAreas(): void {
+  transferAgents(): void {
     const requestBody = {
       managerId: this.selectedMangerIdForTransfer,
-      fromDate: this.fromDate,
+      fromDate: this.setFirstDayOfMonth(this.fromDate),
       agentIds: this.selectedAgentsToTransfer.map((m: any) => m.userId)
     };
 
@@ -160,12 +161,19 @@ export class AllocateAgentToManagerComponent implements OnInit {
     this.userService.viewUserAllocationHistory(userId).subscribe((res) => {
       var data = {
         result: res.data,
-        headerName: 'Area Allocation History'
+        headerName: 'Agent Allocation History'
       }
       this.dialog.open(PopupTableComponent, {
         data
       });
     });
+  }
+
+  setFirstDayOfMonth(date: Date): Date {
+    const firstDay = new Date(date);
+    firstDay.setDate(1);
+    firstDay.setDate(firstDay.getDate() + 1); // Set the day to the 1st of the month
+    return firstDay;
   }
 
 }

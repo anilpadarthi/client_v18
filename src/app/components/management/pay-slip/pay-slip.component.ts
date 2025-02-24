@@ -28,7 +28,7 @@ export class PaySlipComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'Super Admin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isDisplay = true;
       this.getAgentLookup();
     }

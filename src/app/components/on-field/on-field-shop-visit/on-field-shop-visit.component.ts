@@ -65,6 +65,7 @@ export class OnFieldShopVisitComponent {
     if (ctx) {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       this.capturedImage = canvas.toDataURL('image/png');  // Convert to base64 string
+      this.liveImage = this.capturedImage;
     }
   }
 

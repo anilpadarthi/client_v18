@@ -66,7 +66,7 @@ export class MonthlyActivationReportComponent implements OnInit {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (userRole == 'Admin' || userRole == 'Super Admin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isDisplay = true;
       this.getAgentLookup();
       this.getManagerLookup();

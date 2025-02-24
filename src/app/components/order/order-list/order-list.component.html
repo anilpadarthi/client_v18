@@ -5,7 +5,7 @@
 
     <mat-card-content>
         <div class="row space-between-buttons">
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Status</mat-label>
                 <mat-select [(ngModel)]="selectedStatusId">
                     <mat-option [value]="null">All</mat-option>
@@ -14,7 +14,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Payment Method</mat-label>
                 <mat-select [(ngModel)]="selectedPaymentMethodId">
                     <mat-option [value]="null">All</mat-option>
@@ -23,7 +23,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4" *ngIf="isDisplay">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isDisplay">
                 <mat-label>Agent</mat-label>
                 <mat-select [(ngModel)]="selectedAgentId">
                     <mat-option [value]="null">All</mat-option>
@@ -32,7 +32,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4" *ngIf="isDisplay">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isDisplay">
                 <mat-label>Manager</mat-label>
                 <mat-select [(ngModel)]="selectedManagerId">
                     <mat-option [value]="null">All</mat-option>
@@ -41,7 +41,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Area</mat-label>
                 <mat-select [(ngModel)]="selectedAreaId" (selectionChange)="areaChange()">
                     <mat-option [value]="null">All</mat-option>
@@ -50,7 +50,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Shop</mat-label>
                 <mat-select [(ngModel)]="selectedShopId">
                     <mat-option [value]="null">All</mat-option>
@@ -59,7 +59,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Shipping Type</mat-label>
                 <mat-select [(ngModel)]="selectedShippingMethodId">
                     <mat-option [value]="null">All</mat-option>
@@ -68,22 +68,22 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Order Number</mat-label>
                 <input matInput placeholder="Search By OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>Track Number</mat-label>
                 <input matInput placeholder="Search By Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>From Month</mat-label>
                 <input matInput [(ngModel)]="selectedFromDate" [matDatepicker]="fromPicker"
                     placeholder="Choose a Month" />
                 <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
                 <mat-datepicker #fromPicker></mat-datepicker>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-4">
+            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                 <mat-label>To Month</mat-label>
                 <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker" placeholder="Choose a Month" />
                 <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -103,6 +103,47 @@
 
         <div *ngIf="orderList.length > 0" class="table-responsive table-scroll example-container">
             <table mat-table [dataSource]="orderList" class="w-100 custom-table">
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="action-link">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="editOrder(element.orderId)">
+                                <mat-icon>edit</mat-icon>
+                                Edit Order
+                            </button>
+                            <button mat-menu-item (click)="viewOrder(element.orderId)">
+                                <mat-icon>visibility</mat-icon>
+                                View Order Details
+                            </button>
+                            <button mat-menu-item (click)="orderHistory(element.orderId)">
+                                <mat-icon>history</mat-icon>
+                                Order History
+                            </button>
+                            <button mat-menu-item (click)="paymentHistory(element.orderId)">
+                                <mat-icon>update</mat-icon>
+                                Payment History
+                            </button>
+                            <button mat-menu-item (click)="addPayment(element)">
+                                <mat-icon>currency_pound</mat-icon>
+                                Add Payment
+                            </button>
+                            <button mat-menu-item (click)="download(element.orderId)">
+                                <mat-icon>download</mat-icon>VAT Statement
+                            </button>
+                            <button mat-menu-item (click)="download(element.orderId)">
+                                <mat-icon>download</mat-icon>NOT VAT Statement
+                            </button>
+                            <button mat-menu-item (click)="sendEmail(element.orderId)">
+                                <mat-icon>mail</mat-icon>
+                                Send Email
+                            </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
                 <ng-container matColumnDef="orderId">
                     <th mat-header-cell *matHeaderCellDef>OrderID</th>
                     <td mat-cell *matCellDef="let element">
@@ -145,10 +186,10 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="paymenthMethod">
+                <ng-container matColumnDef="paymentMethod">
                     <th mat-header-cell *matHeaderCellDef>Payment Method</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.paymenthMethod }}
+                        {{ element.paymentMethod }}
                     </td>
                 </ng-container>
 
@@ -166,26 +207,7 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef>
-                        ACTION
-                    </th>
-                    <td mat-cell *matCellDef="let element" class="action-link">
-                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="editOrder(element.orderId)">Edit Order</button>
-                            <button mat-menu-item (click)="viewOrder(element.orderId)">View Order Details</button>
-                            <button mat-menu-item (click)="orderHistory(element.orderId)">Order History</button>
-                            <button mat-menu-item (click)="paymentHistory(element.orderId)">Payment History</button>
-                            <button mat-menu-item (click)="makePayment(element.orderId)">Make Payment</button>
-                            <button mat-menu-item (click)="download(element.orderId)">VAT Statement</button>
-                            <button mat-menu-item (click)="download(element.orderId)">NOT VAT Statement</button>
-                            <button mat-menu-item (click)="sendEmail(element.orderId)">Send Email</button>
-                        </mat-menu>
-                    </td>
-                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>

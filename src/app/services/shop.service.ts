@@ -65,4 +65,8 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url  + `/GetShopAddressDetails?shopId=${id}`);
   }
 
+  updateAddress(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<any>(this.url + '/UpdateAddress' + `?shippingAddress=${requestBody.shippingAddress}`, {});
+  }
+
 }

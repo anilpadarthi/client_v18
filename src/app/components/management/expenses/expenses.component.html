@@ -1,5 +1,61 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Attendance </mat-card-title>
+    </mat-card-header>
 
+    <mat-card-content>
+        <div class="row justify-content-between">
 
-<div class="welcome-home">
-    <p>Comming soon..</p>
-</div>
+            <mat-form-field appearance="outline" class="col-lg-3">
+                <mat-label>From Month</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="fromDate" placeholder="Choose a Month" />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            
+            <div class="col-lg-6 space-between-buttons">
+                <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+                <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+
+        <div *ngIf="atttendanceList?.length > 0" class="table-responsive table-scroll example-container">
+            <table mat-table [dataSource]="atttendanceList" class="w-100 custom-table">
+                <ng-container matColumnDef="NAME">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.name }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="PrevMonth">
+                    <th mat-header-cell *matHeaderCellDef>Last Month Activations.</th>
+                    <td mat-cell *matCellDef="let element">{{ element.lastMonthActivated }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="KPI1">
+                    <th mat-header-cell *matHeaderCellDef>KPI1</th>
+                    <td mat-cell *matCellDef="let element">{{ element.kpI1Activations }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="KPI1Achieved">
+                    <th mat-header-cell *matHeaderCellDef>KPI1 Achieved</th>
+                    <td mat-cell *matCellDef="let element">{{ element.achieved }}</td>
+                </ng-container>
+                <ng-container matColumnDef="AchievedPercentage">
+                    <th mat-header-cell *matHeaderCellDef>Achieved In Percentage(%)</th>
+                    <td mat-cell *matCellDef="let element">{{ element.achievedPercent + '%'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Difference">
+                    <th mat-header-cell *matHeaderCellDef>Difference</th>
+                    <td mat-cell *matCellDef="let element">{{ element.diff1 }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+        <div class="zero-records" *ngIf="atttendanceList?.length == 0">No records found</div>
+    </mat-card-content>
+</mat-card>

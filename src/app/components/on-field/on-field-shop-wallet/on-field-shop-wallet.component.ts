@@ -35,7 +35,7 @@ export class OnFieldShopWalletComponent implements OnInit {
       this.loadData();
     }
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'Super Admin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isDisplayInstantBonus = true;
     }
   }
@@ -47,7 +47,8 @@ export class OnFieldShopWalletComponent implements OnInit {
       if (res.data.length > 0) {
         this.commissionAmount = res.data?.filter((f: any) => f.walletType == 'Commission')[0].amount;
         this.bonusAmount = res.data?.filter((f: any) => f.walletType == 'Bonus')[0].amount;
-        this.instantBonusAmount = res.data?.filter((f: any) => f.walletType == 'InstantBonus')[0].amount;
+        let instantBonusAmt = res.data?.filter((f: any) => f.walletType == 'InstantBonus');
+        this.instantBonusAmount = instantBonusAmt != null && instantBonusAmt.length > 0 ? instantBonusAmt[0].amount : 0.00;
       }
       else{
         this.commissionAmount = 0;

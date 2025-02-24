@@ -17,6 +17,7 @@ export class AreaActivationsComponent implements OnInit {
   @Input() refreshCounter: any;
   activationList: any = [];
   private isFirstChange = true;
+  isLoading = false;
   displayedColumns: string[] = [
     'Name',
     'DailyActivations',
@@ -49,6 +50,7 @@ export class AreaActivationsComponent implements OnInit {
     }
 
   loadData(): void {
+    this.isLoading = true;
     const request = {
       fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
       filterId: this.filterId,
@@ -57,6 +59,7 @@ export class AreaActivationsComponent implements OnInit {
 
     this.dashboardService.getAreaWiseActivations(request).subscribe((res) => {
       this.activationList = res.data;
+      this.isLoading = false;
     });
   }
 

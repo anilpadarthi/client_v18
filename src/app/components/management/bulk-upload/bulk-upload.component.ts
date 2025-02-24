@@ -27,7 +27,6 @@ export class BulkUploadComponent {
 
   // Upload file to the backend
   uploadFile(): void {
-console.log(this.importFile);
     if (this.importFile && this.importFileType != '') {
       const formData = new FormData();
       formData.append('importFile', this.importFile);

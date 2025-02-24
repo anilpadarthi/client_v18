@@ -15,6 +15,7 @@ export class NetworkActivationsComponent implements OnInit {
   @Input() refreshCounter: any;
   activationList: any = [];
   private isFirstChange = true;
+  isLoading = false;
   displayedColumns: string[] = [
     'Network',
     'DailyActivations',
@@ -46,6 +47,7 @@ export class NetworkActivationsComponent implements OnInit {
     }
 
   loadData(): void {
+    this.isLoading = true;
     const requestBody = {
       fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
       filterId: this.filterId,
@@ -54,6 +56,7 @@ export class NetworkActivationsComponent implements OnInit {
 
     this.dashboardService.getNetworkWiseActivations(requestBody).subscribe((res) => {
       this.activationList = res.data;
+      this.isLoading = false;
     });
   }
 

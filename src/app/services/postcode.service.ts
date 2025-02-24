@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -40,9 +41,17 @@ export class PostcodeService {
   }
 
   getDistanceBetweenLatAndLong(fromLatitude: any, fromLongitude: any, toLatitude: any, toLongitude: any): Observable<any> {
+    if(environment.isAddressSearch){
     const url = `https://api.getAddress.io/distance/${fromLatitude}/${fromLongitude}/to/${toLatitude}/${toLongitude}/?api-key=${this.apiKey}`;
 
     return this.http.get<any>(url);
+    }
+    else{
+      var result ={
+        metres:100
+      }
+      return of(result);
+    }
   }
 
 }

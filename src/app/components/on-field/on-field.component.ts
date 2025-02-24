@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../common/popup-table/popup-table.component';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-on-field',
@@ -76,18 +77,26 @@ export class OnFieldComponent implements OnInit {
   shopChange() {
     this.fetchLocation();
     this.getShopAddressDetails();
+    this.displayMainSection();
   }
 
   fetchLocation(): void {
-    this.geolocationService.getCurrentLocation().then(
-      (position) => {
-        this.geoLocation = position;
-        console.log(position);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (environment.isGeoLocationTurnOn) {
+      this.geolocationService.getCurrentLocation().then(
+        (position) => {
+          this.geoLocation = position;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else {
+      this.geoLocation = {
+        latitude: '17.17',
+        longitude: '17.17'
+      };
+    }
   }
 
   openShopVisitHistoryDialog(): void {
@@ -125,12 +134,16 @@ export class OnFieldComponent implements OnInit {
   }
 
   onActionClicked(type: any) {
-    console.log(this.shopAddressDetails);
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
     else {
-      if (this.shopAddressDetails && this.shopAddressDetails?.latitude != '' && this.shopAddressDetails.longitude != '') {
+      if (this.shopAddressDetails
+        && this.shopAddressDetails?.latitude != null
+        && this.shopAddressDetails.longitude != null
+        && this.shopAddressDetails?.latitude != ''
+        && this.shopAddressDetails.longitude != ''
+      ) {
         this.action = type;
         this.isMainSection = false;
       }
@@ -150,11 +163,18 @@ export class OnFieldComponent implements OnInit {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
-    else {
+    else if (this.shopAddressDetails
+      && this.shopAddressDetails?.latitude != null
+      && this.shopAddressDetails.longitude != null
+      && this.shopAddressDetails?.latitude != ''
+      && this.shopAddressDetails.longitude != '') {
       const fullPath = this.router.serializeUrl(
-        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}`])
+        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}/COD`])
       );
       window.open(fullPath, '_blank');
+    }
+    else {
+      this.toasterService.showMessage('Shop details are missing, please fill to proceed furthur');
     }
   }
 

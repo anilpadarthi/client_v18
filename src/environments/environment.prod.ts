@@ -1,9 +1,14 @@
 export const environment = {
-  production: true,
+  production: false,
+  host: 'http://localhost:5170',
   backend:  {
-    host: 'http://api.anglesims.co.uk'
+    //host: 'http://api.anglesims.co.uk'
+    //host: 'https://localhost:51544'
+    //host: 'http://localhost:8084'
+    host: 'http://uat-api.leap-tel.com'
   },
-  fromend:  {
-    host: 'http://localhost:4200'  
+  frontend:  {
+    //host: 'http://localhost:4200' 
+    host: 'http://uat.leap-tel.com' 
   }
 };

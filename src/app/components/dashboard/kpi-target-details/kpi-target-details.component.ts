@@ -16,6 +16,7 @@ export class KpiTargetDetailsComponent implements OnInit {
   @Input() refreshCounter: any;
   activationList: any = [];
   private isFirstChange = true;
+  isLoading = false;
   displayedColumns: string[] = [
     'Name',
     'PrevMonth',
@@ -55,6 +56,7 @@ export class KpiTargetDetailsComponent implements OnInit {
   }
 
   loadData(): void {
+    this.isLoading = true;
     const request = {
       fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
       filterId: this.filterId,
@@ -63,6 +65,7 @@ export class KpiTargetDetailsComponent implements OnInit {
 
     this.dashboardService.getUserWiseKPIReport(request).subscribe((res) => {
       this.activationList = res.data;
+      this.isLoading = false;
     });
   }
 

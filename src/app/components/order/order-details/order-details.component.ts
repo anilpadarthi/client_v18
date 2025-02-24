@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -12,6 +12,7 @@ import { OrderService } from '../../../services/order.service';
 
 export class OrderDetailsComponent implements OnInit {
 
+  @Output() notifyParent = new EventEmitter<string>();
   orderItems: any[] = [];
   header = '';
   orderId = null;
@@ -22,6 +23,7 @@ export class OrderDetailsComponent implements OnInit {
   paymentMethodLookup: any[] = [];
   shippingMethodLookup: any[] = [];
   trackingNumber = null;
+
 
   vatAmount = 0.00;
   subTotal = 0.00;
@@ -44,9 +46,9 @@ export class OrderDetailsComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private orderService: OrderService,
-    private toasterService: ToasterService) {
+    private toasterService: ToasterService,
+    public dialogRef: MatDialogRef<OrderDetailsComponent>) {
     if (data.orderDetails) {
-      console.log(data);
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;
       this.orderId = data.orderDetails.orderId;
@@ -78,7 +80,13 @@ export class OrderDetailsComponent implements OnInit {
     };
 
     this.orderService.updateOrderDetails(requestBody).subscribe((res) => {
-      this.toasterService.showMessage("Updated Successfully.");
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Updated Successfully.");
+        this.dialogRef.close(true);
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
     });
   }
 
@@ -97,4 +105,10 @@ export class OrderDetailsComponent implements OnInit {
     this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
     this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
   }
+
+  close(): void {
+    this.dialogRef.close(false);
+  }
+
+
 }

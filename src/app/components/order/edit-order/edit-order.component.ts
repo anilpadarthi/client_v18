@@ -1,13 +1,10 @@
-
-
-
-
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { ShopService } from '../../../services/shop.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-order',
@@ -34,7 +31,6 @@ export class EditOrderComponent implements OnInit {
   grandTotalWithVAT = 0.00;
   grandTotalWithOutVAT = 0.00;
 
-  cartData: any[] = [];
   cartItems: any[] = [];
   isCartView = false;
   isDisplayCatgories = true;
@@ -60,8 +56,6 @@ export class EditOrderComponent implements OnInit {
   }
 
 
-
-
   displayedColumns: string[] = [
     'productImage',
     'productName',
@@ -76,30 +70,35 @@ export class EditOrderComponent implements OnInit {
   ngOnInit(): void {
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
     this.orderService.getShoppingPageDetails().subscribe((res) => {
+      res.data?.categories?.forEach((category: any) => {
+        category.image = environment.backend.host + '/' + category.image;
+        category.subCategories?.forEach((subCategory: any) => {
+          subCategory.image = environment.backend.host + '/' + subCategory.image;
+        });
+      });
+
+      res.data?.products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.categories = res.data.categories;
       this.totalProducts = res.data.products;
-
-    });   
+    });
 
     if (this.orderId) {
       this.orderService.getById(this.orderId).subscribe((res) => {
+        this.shopId =  res.data.shopId;
         this.cartItems = res.data.items;
         this.deliveryCharges = res.data.deliveryCharges;
         this.vatPercentage = res.data.vatPercentage;
         this.discountPercentage = res.data.discountPercentage;
+        this.cartItems.forEach((e: any) => {
+          e.amount = e.qty * e.salePrice
+          e.productImage = environment.backend.host + '/' + e.productImage
+        });
+
         this.updateCalculations();
         this.isCartView = true;
       });
     }
-
-    if (this.shopId) {
-      this.shopService.getShop(this.shopId).subscribe((res) => {
-        this.shippingAddress = (res.data.shop.address + ', ' +
-          res.data.shop.postCode + ', ' + 'London, UK');
-      });
-    }
   }
-
 
   loadProducts(subCategoryId: any) {
     this.isDisplayProducts = true;
@@ -131,11 +130,11 @@ export class EditOrderComponent implements OnInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-
+    
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;
-    let prodPrice = item.productPrices.filter((f: any) => newQuantity >= f.fromQty && newQuantity <= f.toQty);
+    let prodPrice = item.productPrices?.filter((f: any) => newQuantity >= f.fromQty && newQuantity <= f.toQty);
     if (prodPrice != null && prodPrice.length > 0) {
       existingItem.salePrice = prodPrice[0].salePrice;
     }
@@ -155,7 +154,6 @@ export class EditOrderComponent implements OnInit {
 
   viewCart(): void {
     this.isCartView = true;
-    console.log(this.cartItems);
     this.updateCalculations();
   }
 
@@ -193,7 +191,7 @@ export class EditOrderComponent implements OnInit {
     this.isDisplayProducts = false;
   }
 
-  createOrder(): void {
+  updateOrder(): void {
     const requestBody = {
       orderId: this.orderId,
       shopId: this.shopId,
@@ -209,13 +207,16 @@ export class EditOrderComponent implements OnInit {
       discountPercentage: this.discountPercentage,
       walletAmount: this.isWalletAmountUsed ? this.walletAmount : null,
     };
-
     this.orderService.update(requestBody).subscribe((res) => {
       this.toasterService.showMessage("Updated Successfully.");
       this.cartItems = [];
-      this.continueShopping();
+      setTimeout(() => this.closeWindow(), 2000);
       //window.close();
     });
+  }
+
+  closeWindow() {
+    window.close();  // Attempt to close the window/tab
   }
 
 }

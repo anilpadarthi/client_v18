@@ -28,6 +28,7 @@ export class MainDashboardComponent implements OnInit {
   filterId: any = null;
   filterType: any = null;
   refreshCounter = 0;
+  isLoading = false;
 
   constructor(
     private webstorgeService: WebstorgeService,
@@ -45,7 +46,7 @@ export class MainDashboardComponent implements OnInit {
     this.filterId = loggedInUserId;
     this.filterType = userRole;
     this.selectedDate = new Date();
-    if (userRole == 'Admin' || userRole == 'Super Admin' ) {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' ) {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
       this.getAgentLookup();
@@ -80,6 +81,7 @@ export class MainDashboardComponent implements OnInit {
   }
 
   loadDashboardMetrics(): void {
+    this.isLoading = true;
     const requestBody = {
       fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
       filterId: this.filterId,
@@ -87,11 +89,13 @@ export class MainDashboardComponent implements OnInit {
     };
 
     this.dashboardService.getDahboardMetrics(requestBody).subscribe((res) => {
+      this.isLoading = false;
       if (res.data?.length > 0) {
         this.assignedCount = res.data[0].assignedCount;
         this.givenCount = res.data[0].givenToShopCount;
         this.activationCount = res.data[0].activationCount;
         this.instantActivationCount = res.data[0].instantActivationCount;
+       
       }
     });
   }

@@ -192,7 +192,6 @@ export class ProductEditorComponent {
   }
 
   removeChildProduct(index: number) {
-    console.log('remove the child - ', index);
     this.productPrices.removeAt(index);
   }
 

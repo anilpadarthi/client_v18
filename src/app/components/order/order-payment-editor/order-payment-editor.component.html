@@ -1,0 +1,61 @@
+<h2 mat-dialog-title class="modal-header-title">Add Payment
+    <button mat-dialog-close class="modal-header-close-btn">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content class="mat-typography" style="max-width: 600px">
+    <form [formGroup]="paymentForm" (ngSubmit)="onSave()" class="m-t-15">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Payment Mode</mat-label>
+            <mat-select formControlName="paymentMode" (selectionChange)="onPaymentModeChange($event)">
+                <mat-option value=''>--Select--</mat-option>
+                <mat-option value="Cash">Cash</mat-option>
+                <mat-option value="LeapCheque">Leap Cheque</mat-option>
+                <mat-option value="McomCheque">Mcom Cheque</mat-option>
+                <mat-option value="CommissionCheque">Commission Cheque</mat-option>
+                <mat-option value="BankTransfer">Bank Transfer</mat-option>
+                <mat-option value="Other">Other</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="IsDisplayAvailableCheques">
+            <mat-select placeholder="Select Cheque" (selectionChange)="onChequeNumberChange($event)">
+                <mat-option [value]="null">-Select-</mat-option>
+                <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
+                    <span>{{item.id}} - {{ item.name }}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Reference Number</mat-label>
+            <input matInput formControlName="referenceNumber" [disabled]="IsDisabled"
+                placeholder="Enter your Sub-Category name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount" [disabled]="IsDisabled"
+                placeholder="Enter your Sub-Category name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Comments</mat-label>
+            <textarea matInput formControlName="comments" placeholder="Enter your Sub-Category name"
+                cols="5"></textarea>
+        </mat-form-field>
+
+        <div class="d-flex align-items-center m-b-16">
+            <img *ngIf="referenceImagePreview" [src]="referenceImagePreview" class="rounded-image"
+                alt="Image Preview" />
+            <button mat-flat-button color="primary" class="m-l-16 input-file-button">
+                <input type="file" accept="image/*" (change)="imageUpload($event)" />
+            </button>
+        </div>
+
+        <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="paymentForm.invalid">
+            Save
+        </button>
+    </form>
+</mat-dialog-content>

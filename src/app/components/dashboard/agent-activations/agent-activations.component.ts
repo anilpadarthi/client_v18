@@ -16,6 +16,7 @@ export class AgentActivationsComponent implements OnInit {
   activationList: any = [];
   @Input() refreshCounter: any;
   private isFirstChange = true;
+  isLoading = false;
   displayedColumns: string[] = [
     'Name',
     'DailyActivations',
@@ -47,6 +48,7 @@ export class AgentActivationsComponent implements OnInit {
   }
 
   loadData(): void {
+    this.isLoading = true;
     const requestBody = {
       fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
       filterId: this.filterId,
@@ -55,6 +57,7 @@ export class AgentActivationsComponent implements OnInit {
 
     this.dashboardService.getUserWiseActivations(requestBody).subscribe((res) => {
       this.activationList = res.data;
+      this.isLoading = false;
     });
   }
 

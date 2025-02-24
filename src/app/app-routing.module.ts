@@ -131,7 +131,7 @@ const routes: Routes = [
 
     ],
   },
-  { path: 'aceessories/create-order/:id', component: CreateOrderComponent },
+  { path: 'aceessories/create-order/:id/:type', component: CreateOrderComponent },
   { path: 'aceessories/edit-order/:id', component: EditOrderComponent },
   { path: 'aceessories/agent-sim-request/:id', component: AgentSimOrderComponent },
 

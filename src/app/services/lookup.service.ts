@@ -82,4 +82,8 @@ export class LookupService {
     return this.http.get<any>(this.url + "/Roles");
   }
 
+  getAvailableShopCommissionCheques(shopId: any): Observable<any> {
+    return this.http.get<any>(this.url + "/GetAvailableShopCommissionCheques/?shopId=" + shopId);
+  }
+
 }

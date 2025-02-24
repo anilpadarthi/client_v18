@@ -10,6 +10,8 @@ import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { Router } from '@angular/router';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
+import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payment-editor.component';
+import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
 
 @Component({
   selector: 'app-order-list',
@@ -20,6 +22,7 @@ import { OrderDetailsComponent } from '../order-details/order-details.component'
 export class OrderListComponent implements OnInit {
 
   displayedColumns = [
+    "actions",
     "orderId",
     "date",
     "user",
@@ -27,9 +30,8 @@ export class OrderListComponent implements OnInit {
     "shop",
     "amount",
     "status",
-    "paymenthMethod",
-    "courier",
-    "actions",
+    "paymentMethod",
+    "courier"
   ];
 
   pageEvent: PageEvent | undefined;
@@ -45,7 +47,7 @@ export class OrderListComponent implements OnInit {
   areaLookup: any[] = [];
   shopLookup: any[] = [];
   shippingMethodLookup: any[] = [];
-  selectedStatusId = null;
+  selectedStatusId = 1;
   selectedPaymentMethodId = null;
   selectedAgentId = null;
   selectedManagerId = null;
@@ -75,7 +77,7 @@ export class OrderListComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'Super Admin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.isDisplay = true;
     }
     else {
@@ -129,7 +131,7 @@ export class OrderListComponent implements OnInit {
       this.areaLookup = res.data;
     });
 
-    if (this.userRole == 'Admin' || this.userRole == 'Super Admin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.lookupService.getAgents().subscribe((res) => {
         this.agentLookup = res.data;
       });
@@ -163,7 +165,7 @@ export class OrderListComponent implements OnInit {
     this.selectedAreaId = null;
     this.selectedManagerId = null;
     this.selectedShopId = null;
-    this.selectedStatusId = null;
+    this.selectedStatusId = 1;
     this.selectedPaymentMethodId = null;
     this.selectedShippingMethodId = null;
     this.selectedFromDate = null;
@@ -205,8 +207,14 @@ export class OrderListComponent implements OnInit {
         paymentMethodLookup: this.paymentMethodLookup,
         shippingMethodLookup: this.shippingMethodLookup
       }
-      this.dialog.open(OrderDetailsComponent, {
+      const dialogRef = this.dialog.open(OrderDetailsComponent, {
         data
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.loadData();  // Call loadData() after the dialog closes
+        }
       });
     });
   }
@@ -229,10 +237,9 @@ export class OrderListComponent implements OnInit {
 
     this.orderService.getOrderPaymentHistory(orderId).subscribe((res) => {
       var data = {
-        result: res.data,
-        headerName: 'Order Payment History'
+        orderId: orderId
       }
-      this.dialog.open(PopupTableComponent, {
+      this.dialog.open(OrderPaymentHistoryComponent, {
         data
       });
     });
@@ -247,7 +254,17 @@ export class OrderListComponent implements OnInit {
 
   }
 
-  makePayment(orderId: number): void {
+  addPayment(item: any): void {
+
+    this.orderService.getOrderPaymentHistory(item.orderId).subscribe((res) => {
+      var data = {
+        orderId: item.orderId,
+        shopId: item.shopId
+      }
+      this.dialog.open(OrderPaymentEditorComponent, {
+        data
+      });
+    });
 
   }
 

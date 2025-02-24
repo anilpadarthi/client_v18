@@ -51,7 +51,7 @@
                         <input matInput formControlName="searchAddress" type="text" (click)="populatePostCodeAddressList()"
                             [matAutocomplete]="autoCompleteAddress" placeholder="Pick address from here.." />
                         <mat-autocomplete #autoCompleteAddress="matAutocomplete">
-                            <mat-option (click)="selectSuggestion(item)" *ngFor="let item of suggestions"
+                            <mat-option (click)="selectSuggestion(item)" *ngFor="let item of addressSuggestions"
                                 [value]="item">
                                 {{ item.address }}
                             </mat-option>
@@ -67,8 +67,6 @@
                         <mat-label>City</mat-label>
                         <input matInput formControlName="city" />
                     </mat-form-field>
-
-
 
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Address Line 1 </mat-label>
@@ -128,11 +126,11 @@
 
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Latitude</mat-label>
-                        <input matInput type="tel" formControlName="latitude" [disabled]="true" />
+                        <input matInput type="tel" formControlName="latitude"  />
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Longitude </mat-label>
-                        <input matInput formControlName="longitude" [disabled]="true" />
+                        <input matInput formControlName="longitude"  />
                     </mat-form-field>
 
                     <mat-checkbox class="col-lg-6" formControlName="isMobileShop">Mobile Shop</mat-checkbox>

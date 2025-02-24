@@ -7,6 +7,7 @@ import { GeolocationService } from '../../services/geolocation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent {
   loginForm!: FormGroup;
   isValidLogin = true;
   hidePassword = true;
-  geoLocation:any;
+  geoLocation: any;
+
 
   constructor(private router: Router,
     private loginService: LoginService,
@@ -46,39 +48,50 @@ export class LoginComponent {
   }
 
   async submit(): Promise<void> {
-    if (this.loginForm.valid) {
-      var requestBody = {
-        'email': this.loginForm.value.email,
-        'password': this.loginForm.value.password,
-        'latitude': String(this.geoLocation.latitude),
-        'longitude': String(this.geoLocation.longitude),
-      };
+    if (this.geoLocation != null) {
+      if (this.loginForm.valid) {
+        var requestBody = {
+          'email': this.loginForm.value.email,
+          'password': this.loginForm.value.password,
+          'latitude': String(this.geoLocation.latitude),
+          'longitude': String(this.geoLocation.longitude),
+        };
 
-      this.loginService.authenticate(requestBody).subscribe((res) => {
-        if (res && res.data && res.data.token) {
-          this.isValidLogin = true;
-          this.webstorgeService.setSession(res.data.token);
-          this.webstorgeService.setUserInfo(res.data.userDetails);
-          this.router.navigate(['/home']);
-        }
-        else {
-          this.isValidLogin = false;
-          this.toasterService.showMessage("Invalid username or password");
-        }
-      });
+        this.loginService.authenticate(requestBody).subscribe((res) => {
+          if (res && res.data && res.data.token) {
+            this.isValidLogin = true;
+            this.webstorgeService.setSession(res.data.token);
+            this.webstorgeService.setUserInfo(res.data.userDetails);
+            this.router.navigate(['/home']);
+          }
+          else {
+            this.isValidLogin = false;
+            this.toasterService.showMessage("Invalid username or password");
+          }
+        });
+      }
+    }
+    else {
+      this.toasterService.showMessage("Please turn on location services, to proceed further.");
     }
   }
 
   fetchLocation(): void {
-    this.geolocationService.getCurrentLocation().then(
-      (position) => {
-        this.geoLocation = position;
-        console.log(position);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (environment.isGeoLocationTurnOn) {
+      this.geolocationService.getCurrentLocation().then(
+        (position) => {
+          this.geoLocation = position;
+        },
+        (error) => {
+          console.log(error);
+        });
+    }
+    else {
+      this.geoLocation = {
+        latitude: '17.17',
+        longitude: '17.17'
+      };
+    }
   }
 
 }

@@ -1,4 +1,8 @@
-<h2 mat-dialog-title>{{ title }}</h2>
+<h2 mat-dialog-title class="modal-header-title"  >{{ title }}
+  <button mat-dialog-close class="modal-header-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
 <mat-dialog-content>
   <p>{{ message }}</p>
 </mat-dialog-content>

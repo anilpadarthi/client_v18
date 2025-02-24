@@ -28,4 +28,12 @@ export class CommissionStatementService {
   }
 
 
+  getCommissionHistoryDetails(shopCommissionHistoryId: number): Observable<any> {
+    return this.http.get<any>(this.url + `/GetCommissionHistoryDetails?shopCommissionHistoryId=${shopCommissionHistoryId}`);
+  }
+
+  optInForShopCommissionForCheque(shopCommissionHistoryId: number): Observable<any> {
+    return this.http.get<any>(this.url + `/OptInForShopCommissionForCheque?shopCommissionHistoryId=${shopCommissionHistoryId}`);
+  }
+
 }

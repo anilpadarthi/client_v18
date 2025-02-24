@@ -104,6 +104,7 @@ import { CreateOrderComponent } from './components/order/create-order/create-ord
 import { EditOrderComponent } from './components/order/edit-order/edit-order.component';
 import { CheckOutComponent } from './components/order/check-out/check-out.component';
 import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
+import { OrderPaymentHistoryComponent } from './components/order/order-payment-history/order-payment-history.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -190,7 +191,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CreateOrderComponent,
     EditOrderComponent,
     CheckOutComponent,
-    AgentSimOrderComponent
+    AgentSimOrderComponent,
+    OrderPaymentHistoryComponent
   ],
   imports: [
     BrowserModule,

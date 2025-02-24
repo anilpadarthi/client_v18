@@ -6,6 +6,8 @@
 
 
     <div class="row">
+      <mat-checkbox [(ngModel)]="isLebaraSims" class="col-lg-12">
+      </mat-checkbox>
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>IMEI / PCNNO</mat-label>
         <textarea rows="10" [(ngModel)]="searchText" matInput placeholder="Scan your sim cards here..."></textarea>

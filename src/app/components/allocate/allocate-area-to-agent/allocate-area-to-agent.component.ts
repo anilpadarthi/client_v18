@@ -139,7 +139,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
   transferAreas(): void {
     const requestBody = {
       agentId: this.selectedAgentIdForTransfer,
-      fromDate: this.fromDate,
+      fromDate: this.setFirstDayOfMonth(this.fromDate),
       areaIds: this.selectedAreasToTransfer.map((m: any) => m.areaId)
     };
 
@@ -166,6 +166,13 @@ export class AllocateAreaToAgentComponent implements OnInit {
         data
       });
     });
+  }
+
+  setFirstDayOfMonth(date: Date): Date {
+    const firstDay = new Date(date);
+    firstDay.setDate(1);
+    firstDay.setDate(firstDay.getDate() + 1); // Set the day to the 1st of the month
+    return firstDay;
   }
 
 }

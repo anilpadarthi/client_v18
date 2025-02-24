@@ -53,4 +53,8 @@ export class UserService {
     return this.http.get<ICommonResponse>(this.url + `/ViewUserAllocationHistory?userId=${userId}`);
   }
 
+  updateAddress(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<any>(this.url + '/UpdateAddress' + `?shippingAddress=${requestBody.shippingAddress}`, {});
+  }
+
 }

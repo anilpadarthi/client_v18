@@ -49,9 +49,7 @@ export class OrderService {
     return this.http.get<any>(this.url + "/GetOrderHistory/" + orderId);
   }
 
-  getOrderPaymentHistory(orderId: number): Observable<any> {
-    return this.http.get<any>(this.url + "/GetOrderPaymentHistory/" + orderId);
-  }
+  
 
   downloadOrders(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + "/DownloadOrders", requestBody);
@@ -63,6 +61,25 @@ export class OrderService {
 
   getOrderNotificationCount(): Observable<any> {
     return this.http.get<any>(`${this.url}/GetOrderNotificationCount`);
+  }
+
+
+  getPayment(id: number): Observable<any> {
+    return this.http.get<Response>(this.url + "/GetPayment/" + id);
+  }
+  getOrderPaymentHistory(orderId: number): Observable<any> {
+    return this.http.get<any>(this.url + "/GetOrderPaymentHistory/" + orderId);
+  }
+  createPayment(orderDetails: any): Observable<any> {
+    return this.http.post<Response>(this.url + "/CreatePayment", orderDetails);
+  }
+
+  updatePayment(orderPaymentId: any): Observable<any> {
+    return this.http.get<Response>(this.url + "/UpdateOrderPayment/"+ orderPaymentId);
+  }
+
+  deletePayment(orderPaymentId: any): Observable<any> {
+    return this.http.get<Response>(this.url + "/DeleteOrderPayment/"+ orderPaymentId);
   }
 
 }
