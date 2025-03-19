@@ -220,7 +220,7 @@ export const adminItems: NavItem[] = [
       {
         displayName: 'Request Sims',
         iconName: 'arrow_right',
-        route: 'aceessories/agent-sim-request/8',
+        route: 'aceessories/agent-sim-request',
         target: '_blank'
       },
     ],

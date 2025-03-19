@@ -25,7 +25,7 @@ export class AppNavItemComponent implements OnChanges {
 
   @Output() toggleMobileLink: any = new EventEmitter<void>();
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
-  
+
   expanded: any = false;
   disabled: any = false;
   twoLines: any = false;
@@ -50,18 +50,18 @@ export class AppNavItemComponent implements OnChanges {
 
   onItemSelected(item: NavItem) {
     if (!item.children || !item.children.length) {
-      if(item.target){
+      if (item.target) {
 
-        if(item.route == 'aceessories/agent-sim-request'){
-          let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-          item.route+=`/${loggedInUserId}`;
-        }
+        // if(item.route == 'aceessories/agent-sim-request'){
+        //   let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+        //   item.route+=`/${loggedInUserId}`;
+        // }
         const fullPath = this.router.serializeUrl(
           this.router.createUrlTree([item.route])
         );
         window.open(fullPath, '_blank');
       }
-      else{
+      else {
         this.router.navigate([item.route]);
       }
 

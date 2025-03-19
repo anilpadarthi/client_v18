@@ -105,6 +105,8 @@ import { EditOrderComponent } from './components/order/edit-order/edit-order.com
 import { CheckOutComponent } from './components/order/check-out/check-out.component';
 import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
 import { OrderPaymentHistoryComponent } from './components/order/order-payment-history/order-payment-history.component';
+import { OutstandingMetricsComponent } from './components/order/outstanding-metrics/outstanding-metrics.component';
+import { GroupChatComponent } from './components/chat/group-chat/group-chat.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -192,7 +194,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     EditOrderComponent,
     CheckOutComponent,
     AgentSimOrderComponent,
-    OrderPaymentHistoryComponent
+    OrderPaymentHistoryComponent,
+    OutstandingMetricsComponent,
+    GroupChatComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@
 </h2>
 <mat-dialog-content>
 
-    <div class="row m-t-15">
+    <div class="row m-t-15" *ngIf="isAdmin">
         <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
             <mat-label>Status</mat-label>
             <mat-select [(ngModel)]="selectedStatusId">
@@ -15,16 +15,16 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" >
             <mat-label>Payment Method</mat-label>
-            <mat-select [(ngModel)]="selectedPaymentMethodId">
+            <mat-select [(ngModel)]="selectedPaymentMethodId" [disabled]="true">
                 <mat-option [value]="null">All</mat-option>
                 <mat-option *ngFor="let subCategory of paymentMethodLookup" [value]="subCategory.id">
                     <span>{{subCategory.name}}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" >
             <mat-label>Shipping Type</mat-label>
             <mat-select [(ngModel)]="selectedShippingMethodId">
                 <mat-option [value]="null">All</mat-option>
@@ -38,7 +38,7 @@
             <input matInput placeholder="Search By Track Number" [(ngModel)]="trackingNumber" autocomplete="off">
         </mat-form-field>
     </div>
-    <div class="row col-lg-12">
+    <div class="row col-lg-12" *ngIf="isAdmin">
         <button mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
             Update
         </button>
@@ -62,19 +62,19 @@
             <ng-container matColumnDef="sellingPrice">
                 <th mat-header-cell *matHeaderCellDef>Price</th>
                 <td mat-cell *matCellDef="let element">
-                    £{{ element.salePrice }}
+                    £{{ element.salePrice | number: '1.2-2' }}
                 </td>
             </ng-container>
             <ng-container matColumnDef="quantity">
                 <th mat-header-cell *matHeaderCellDef>Quantity</th>
                 <td mat-cell *matCellDef="let element">
-                    £{{ element.qty }}
+                    {{ element.qty }}
                 </td>
             </ng-container>
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef>Amount</th>
                 <td mat-cell *matCellDef="let element">
-                    £{{ element.qty * element.salePrice }}
+                    £{{ (element.qty * element.salePrice) | number: '1.2-2' }}
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

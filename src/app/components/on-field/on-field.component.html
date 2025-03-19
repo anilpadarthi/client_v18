@@ -55,10 +55,14 @@
             <mat-icon>history</mat-icon>
             Agreement History
           </button>
-          <button mat-menu-item (click)="openShoppingPage()">
+          <button mat-menu-item (click)="openShoppingPage('COD')">
             <mat-icon>open_in_new</mat-icon>
             Create Order
           </button>
+          <button mat-menu-item (click)="openShoppingPage('B')">
+            <mat-icon>open_in_new</mat-icon>
+            Create Bonus Order
+          </button>   
         </mat-menu>
       </div>
     </div>

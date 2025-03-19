@@ -45,9 +45,12 @@ export class OnFieldComponent implements OnInit {
   ngOnChanges() {
   }
 
-  handleChildBackEvent(data: any): void {
-    if (data) {
-      this.shopAddressDetails = data;
+  handleChildBackEvent(response: any): void {
+    if (response.fromAction == 'Shop') {
+      this.shopAddressDetails = response.data;
+    }
+    else if (response.fromAction == 'Scan') {
+      this.refreshCounter++;
     }
     this.displayMainSection();
   }
@@ -138,11 +141,11 @@ export class OnFieldComponent implements OnInit {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
     else {
-      if (this.shopAddressDetails
+      if ((this.shopAddressDetails
         && this.shopAddressDetails?.latitude != null
         && this.shopAddressDetails.longitude != null
         && this.shopAddressDetails?.latitude != ''
-        && this.shopAddressDetails.longitude != ''
+        && this.shopAddressDetails.longitude != '') || !environment.isAddressSearch
       ) {
         this.action = type;
         this.isMainSection = false;
@@ -159,17 +162,17 @@ export class OnFieldComponent implements OnInit {
     this.isMainSection = true;
   }
 
-  openShoppingPage(): void {
+  openShoppingPage(type:any): void {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
-    else if (this.shopAddressDetails
+    else if ((this.shopAddressDetails
       && this.shopAddressDetails?.latitude != null
       && this.shopAddressDetails.longitude != null
       && this.shopAddressDetails?.latitude != ''
-      && this.shopAddressDetails.longitude != '') {
+      && this.shopAddressDetails.longitude != '') || !environment.isAddressSearch) {
       const fullPath = this.router.serializeUrl(
-        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}/COD`])
+        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}/${type}`])
       );
       window.open(fullPath, '_blank');
     }

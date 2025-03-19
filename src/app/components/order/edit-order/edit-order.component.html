@@ -181,9 +181,10 @@
                     <h5 class="m-b-5 f-w-600 f-s-16">Sub total: £{{ subTotal | number : "1.2-2" }}</h5>
                     <h5 class="f-w-600 f-s-16">VAT ({{ vatPercentage }}%): £{{ vatAmount | number : "1.2-2" }}</h5>
                     <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16 discount">Discount ({{discountPercentage}}%): £{{ discountAmount | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16 discount">Discount Amount: £{{ discountAmount | number : "1.2-2" }}</h5>
                     <div class="f-w-600 f-s-16">Discount In %:
                         <mat-form-field appearance="outline">
+                            <mat-label>Discount Percentage(%)</mat-label>
                             <input type="number" matInput class="form-control" [(ngModel)]="discountPercentage"
                                 (change)="updateCalculations()">
                         </mat-form-field>

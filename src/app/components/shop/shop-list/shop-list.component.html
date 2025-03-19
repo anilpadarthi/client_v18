@@ -5,7 +5,7 @@
 
     <mat-card-content>
         <div class="row space-between-buttons">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
                         <mat-option [value]="0">All</mat-option>
@@ -15,7 +15,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Search Shop</mat-label>
                     <input matInput #searchInput placeholder="Search Shop" [(ngModel)]="searchText"
@@ -23,7 +23,7 @@
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            <div class="col-lg-4 filter-buttons">
+            <div class="col-lg-6 ">
                 <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
                     <mat-icon>filter_list</mat-icon> Filter
                 </button>
@@ -84,6 +84,7 @@
                         ACTION
                     </th>
                     <td mat-cell *matCellDef="let element" class="action-link">
+                       
                         <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.shopId)">
                             <mat-icon>edit</mat-icon>
                         </a>

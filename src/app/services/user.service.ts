@@ -57,4 +57,8 @@ export class UserService {
     return this.http.post<any>(this.url + '/UpdateAddress' + `?shippingAddress=${requestBody.shippingAddress}`, {});
   }
 
+  sendActivationEmail(userId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url+ `/SendActivationEmail?userId=${userId}`);
+  }
+
 }

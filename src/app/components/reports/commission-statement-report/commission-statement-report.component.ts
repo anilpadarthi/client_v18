@@ -32,12 +32,13 @@ export class CommissionStatementReportComponent implements OnInit {
     'UserName',
     'AreaName',
     'ShopName',
-    'PostCode',
     'CommissionDate',
     'CommissionAmount',
     'BonusAmount',
     'OptedCheque',
-    'Accessories',
+    'OptedTopup',
+    'OptedWallet',
+    // 'Accessories',
     'Action'
   ];
 
@@ -85,7 +86,7 @@ export class CommissionStatementReportComponent implements OnInit {
 
     this.commissionStatementService.getCommissionList(requestBody).subscribe((res) => {
       if (res.data.length > 0) {
-        this.commissionList = res.data;        
+        this.commissionList = res.data;
       }
       this.isLoading = false;
     });
@@ -116,27 +117,55 @@ export class CommissionStatementReportComponent implements OnInit {
 
   onAccessoreisPage(shopCommissionHistoryId: number): void {
     const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`aceessories/create-order/${shopCommissionHistoryId}/AC`])
+      this.router.createUrlTree([`aceessories/create-order/${shopCommissionHistoryId}/MC`])
     );
     window.open(fullPath, '_blank');
   }
 
-  optedForCheque(shopCommissionHistoryId: number): void {
-    this.commissionStatementService.optInForShopCommissionForCheque(shopCommissionHistoryId).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.loadData();
-        this.toasterService.showMessage("Successfully opted.");
-      }
-      else {
-        this.toasterService.showMessage(res.data);
-      }
-    });
+  optedForCheque(shopCommissionHistoryId: number, isChecked: boolean): void {
+    if (isChecked) {
+      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Cheque').subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.loadData();
+          this.toasterService.showMessage("Successfully opted.");
+        }
+        else {
+          this.toasterService.showMessage(res.data);
+        }
+      });
+    }
   }
 
-  downloadCommissionStatement(shopCommissionHistoryId: number): void {
-
-
+  optedForTopup(shopCommissionHistoryId: number, isChecked: boolean): void {
+    if (isChecked) {
+      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Topup').subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.loadData();
+          this.toasterService.showMessage("Successfully opted.");
+        }
+        else {
+          this.toasterService.showMessage(res.data);
+        }
+      });
+    }
   }
 
+  optedForWallet(shopCommissionHistoryId: number, isChecked: boolean): void {
+    if (isChecked) {
+      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Wallet').subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.loadData();
+          this.toasterService.showMessage("Successfully opted.");
+        }
+        else {
+          this.toasterService.showMessage(res.data);
+        }
+      });
+    }
+  }
+
+  downloadCommissionStatement(shopId: number, fromDate: string): void {
+    this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
+  }
 
 }

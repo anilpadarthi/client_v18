@@ -16,7 +16,7 @@ export class OnFieldScanSimsComponent {
   selectedShopId!: number;
   @Input() refreshValue!: number;
   @Input() geoLocation!: any;
-  @Output() notifyParent = new EventEmitter<string>();
+  @Output() notifyParent = new EventEmitter<any>();
   @Input() shopAddressDetails: any = null;
   isLebaraSims = false;
   displayedColumns: string[] = [
@@ -62,10 +62,11 @@ export class OnFieldScanSimsComponent {
     if (this.isLebaraSims) {
       isValidSims = this.validateLebaraSims();
     }
+
     if (isValidSims) {
       const request = {
         imeiNumbers: imeiList,
-        moblieNumbers: imeiList,
+        moblieNumbers: this.isLebaraSims ? imeiList : null,
         shopId: this.selectedShopId,
       };
 
@@ -91,11 +92,20 @@ export class OnFieldScanSimsComponent {
       };
 
       if (request.imeiNumbers.length > 0) {
+        const hasLeabaraSims = this.dataSource.some((f: any) => f.netWorkName.toUpperCase() === 'LEBARA');
+        if (!this.isLebaraSims && hasLeabaraSims) {
+          this.toasterService.showMessage('Processing.. You are allocating LEBARA Sims, Please assign PHONE numbers for instant activations.');
+        }
         this.simService.allocateSims(request).subscribe((res) => {
           if (res.data?.length > 0) {
             this.dataSource = null;
             this.toasterService.showMessage(res.data);
-            this.notifyParent.emit();
+            if (this.isLebaraSims || !hasLeabaraSims) {
+              const parentData= {
+                fromAction: 'Scan'
+              }
+              this.notifyParent.emit(parentData);
+            }
           }
           else {
             this.toasterService.showMessage('Something went wrong.');
@@ -142,20 +152,19 @@ export class OnFieldScanSimsComponent {
   }
 
   validateLebaraSims(): boolean {
-    debugger;
     const pcnNoList = this.searchText != null ? this.searchText.trim().toLowerCase().split('\n') : null;
     if (pcnNoList != null) {
       for (var i = 0; i < pcnNoList.length; i++) {
         if (pcnNoList[i] != "") {
           if (pcnNoList[i + 1] == undefined || pcnNoList[i + 1].length != 11) {
-            this.toasterService.showMessage("Please enter valid PHONE number for LEBARA");
+            this.toasterService.showMessage("Please enter valid PHONE number for LEBARA, It should containt 11 digits");
             return false;
           }
           else if (!pcnNoList[i].startsWith("8944100030")) {
-            this.toasterService.showMessage("Please enter valid ICICD number for LEBARA");
+            this.toasterService.showMessage("Please enter valid ICICD number for LEBARA, It should containt 11 digits");
             return false;
           }
-         
+
         }
         i = i + 1;
       }

@@ -18,10 +18,10 @@ export class PopupTableComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private datePipe: DatePipe
   ) {
+    this.header = data.headerName;
     if (data.result.length > 0) {
       this.displayedColumns = Object.keys(data.result[0]);
-      this.dataSource = data.result;
-      this.header = data.headerName;
+      this.dataSource = data.result;      
     }    
   }
 
@@ -30,9 +30,9 @@ export class PopupTableComponent {
   }
 
   // Apply date format to a column
-  formatDate(value: any): string {
-    return this.isDate(value) ? this.datePipe.transform(value, 'yyyy-MM-dd') : value;
-  }
+  // formatDate(value: any): string {
+  //   return this.isDate(value) ? this.datePipe.transform(value, 'yyyy-MM-dd') : value;
+  // }
 
 
 }

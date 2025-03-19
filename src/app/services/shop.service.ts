@@ -69,4 +69,8 @@ export class ShopService {
     return this.http.post<any>(this.url + '/UpdateAddress' + `?shippingAddress=${requestBody.shippingAddress}`, {});
   }
 
+  sendActivationEmail(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url+ `/SendActivationEmail?shopId=${shopId}`);
+  }
+
 }

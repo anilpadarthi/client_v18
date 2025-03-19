@@ -14,10 +14,11 @@ import { ToasterService } from '../../../services/toaster.service';
 export class OrderPaymentHistoryComponent implements OnInit {
 
   dataSource: any = [];
-  displayedColumns: string[] = [
-    'amount',
+  displayedColumns: string[] = [    
     'paymentDate',
+    'paymentMode',
     'referenceNumber',
+    'amount',
     'collectedStatus',
     'collectedBy',
     'comments',

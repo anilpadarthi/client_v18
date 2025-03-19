@@ -35,7 +35,7 @@
         Cart Amount (£{{ subTotal | number: '1.2-2' }})
     </button>
 
-    <button mat-flat-button color="primary" class="m-r-10" *ngIf="requestType != 'COD'" (click)="viewCart()">
+    <button mat-flat-button color="primary" class="m-r-10" *ngIf="commissionAmount>0" (click)="viewCart()">
         Commission Amount (£{{ commissionAmount | number: '1.2-2'}})
     </button>
 
@@ -188,13 +188,29 @@
                 </div>
                 <div class="text-right totals">
                     <h5 class="m-b-5 f-w-600 f-s-16">Sub total: £{{ subTotal | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16">VAT: £{{ vatAmount | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16 discount">Discount Amount: £{{ discountAmount | number : "1.2-2" }}</h5>
-                    <div class="f-w-600 f-s-16">Discount In %:
+                    <h5 class="f-w-600 f-s-16" *ngIf="isVAT">VAT: £{{ vatAmount | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16" *ngIf="isVAT">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}
+                    </h5>
+                    <h5 class="f-w-600 f-s-16 discount" *ngIf="requestType=='COD'">Discount Amount: £{{ discountAmount |
+                        number : "1.2-2" }}</h5>
+                    <div class="f-w-600 f-s-16" *ngIf="requestType=='COD'">Discount In %:
                         <mat-form-field appearance="outline">
+                            <mat-label>Discount Percentage(%)</mat-label>
                             <input type="number" matInput class="form-control" [(ngModel)]="discountPercentage"
                                 (change)="updateCalculations()">
+                        </mat-form-field>
+                    </div>
+                    <div class="f-w-600 f-s-16" *ngIf="commissionAmount > 0 && requestType == 'COD'">
+                        Wallet Commission:
+                        <mat-form-field appearance="outline">
+                            <mat-label> Wallet Commissions</mat-label>
+                            <mat-select placeholder="Select Commission Cheque"
+                                (selectionChange)="onChequeNumberChange($event)">
+                                <mat-option [value]="null">-Select-</mat-option>
+                                <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
+                                    <span>{{item.id}} - £{{ item.name }}</span>
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                     <mat-divider></mat-divider>
@@ -222,7 +238,7 @@
                         Continue Shopping
                     </button>
 
-                    <mat-form-field appearance="outline" class="col-lg-4">
+                    <mat-form-field appearance="outline" class="col-lg-4" *ngIf="requestType == 'COD'">
                         <mat-label>Payment Method</mat-label>
                         <mat-select [(ngModel)]="selectedPaymentMethodId">
                             <mat-option [value]="null">All</mat-option>

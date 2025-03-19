@@ -34,7 +34,7 @@ export class LoginComponent {
   ngOnInit() {
     this.loginForm = new FormGroup({
       email: new FormControl("leapdist@gmail.com", [Validators.required, Validators.email]),
-      password: new FormControl("Elephnat@123", [Validators.required, Validators.minLength(6)])
+      password: new FormControl("Elephnat@123", [Validators.required, Validators.minLength(4)])
     });
     this.fetchLocation();
   }
@@ -62,6 +62,9 @@ export class LoginComponent {
             this.isValidLogin = true;
             this.webstorgeService.setSession(res.data.token);
             this.webstorgeService.setUserInfo(res.data.userDetails);
+            if (res.data.userNotifications != null && res.data.userNotifications.length > 0) {
+              this.toasterService.showMessage(res.data.userNotifications[0]);
+            }
             this.router.navigate(['/home']);
           }
           else {

@@ -43,8 +43,6 @@ export class EditOrderComponent implements OnInit {
   shopId: any = null;
   orderId: any = null;
   shippingAddress: any = null;
-  walletAmount = null;
-  isWalletAmountUsed = false;
 
   constructor(
     private orderService: OrderService,
@@ -84,7 +82,7 @@ export class EditOrderComponent implements OnInit {
 
     if (this.orderId) {
       this.orderService.getById(this.orderId).subscribe((res) => {
-        this.shopId =  res.data.shopId;
+        this.shopId = res.data.shopId;
         this.cartItems = res.data.items;
         this.deliveryCharges = res.data.deliveryCharges;
         this.vatPercentage = res.data.vatPercentage;
@@ -130,7 +128,7 @@ export class EditOrderComponent implements OnInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-    
+
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;
@@ -176,9 +174,7 @@ export class EditOrderComponent implements OnInit {
     let netTotal = this.subTotal;
     this.vatAmount = (netTotal * this.vatPercentage) / 100;
 
-    if (this.discountPercentage > 0) {
-      this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    }
+    this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
     this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
     this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
     this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
@@ -205,14 +201,19 @@ export class EditOrderComponent implements OnInit {
       totalWithOutVATAmount: this.grandTotalWithOutVAT,
       vatPercentage: this.vatPercentage,
       discountPercentage: this.discountPercentage,
-      walletAmount: this.isWalletAmountUsed ? this.walletAmount : null,
     };
     this.orderService.update(requestBody).subscribe((res) => {
-      this.toasterService.showMessage("Updated Successfully.");
-      this.cartItems = [];
-      setTimeout(() => this.closeWindow(), 2000);
-      //window.close();
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Updated Successfully.");
+        this.cartItems = [];
+        setTimeout(() => this.closeWindow(), 2000);
+        //window.close();
+      }
+      else {
+        this.toasterService.showMessage(res.message);
+      }
     });
+
   }
 
   closeWindow() {

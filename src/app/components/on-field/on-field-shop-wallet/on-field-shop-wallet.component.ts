@@ -44,11 +44,9 @@ export class OnFieldShopWalletComponent implements OnInit {
     this.isLoading = true;
     this.onFieldService.onFieildCommissionWalletAmounts(this.selectedShopId).subscribe((res) => {
       this.isLoading = false;
-      if (res.data.length > 0) {
-        this.commissionAmount = res.data?.filter((f: any) => f.walletType == 'Commission')[0].amount;
-        this.bonusAmount = res.data?.filter((f: any) => f.walletType == 'Bonus')[0].amount;
-        let instantBonusAmt = res.data?.filter((f: any) => f.walletType == 'InstantBonus');
-        this.instantBonusAmount = instantBonusAmt != null && instantBonusAmt.length > 0 ? instantBonusAmt[0].amount : 0.00;
+      if (res.data!=null) {
+        this.commissionAmount = res.data?.outstandingCommissionAmount;
+        this.bonusAmount = res.data?.outstandingBonusAmount;
       }
       else{
         this.commissionAmount = 0;

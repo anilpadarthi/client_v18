@@ -45,6 +45,7 @@ import { EditOrderComponent } from './components/order/edit-order/edit-order.com
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
 import { AgreementNotificationsComponent } from './components/management/agreement-notifications/agreement-notifications.component';
+import { GroupChatComponent } from './components/chat/group-chat/group-chat.component';
 
 
 const routes: Routes = [
@@ -133,9 +134,10 @@ const routes: Routes = [
   },
   { path: 'aceessories/create-order/:id/:type', component: CreateOrderComponent },
   { path: 'aceessories/edit-order/:id', component: EditOrderComponent },
-  { path: 'aceessories/agent-sim-request/:id', component: AgentSimOrderComponent },
+  { path: 'aceessories/agent-sim-request', component: AgentSimOrderComponent },
 
   { path: 'login', component: LoginComponent },
+  { path: 'chat', component: GroupChatComponent },
   { path: '**', redirectTo: '/login' }
 ];
 

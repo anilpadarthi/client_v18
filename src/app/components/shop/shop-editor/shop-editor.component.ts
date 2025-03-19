@@ -222,7 +222,11 @@ export class ShopEditorComponent {
               this.router.navigate(['/shops']);
             }
             else {
-              this.notifyParent.emit(res.data);
+              const parentData= {
+                data: res.data,
+                fromAction: 'Shop'
+              }
+              this.notifyParent.emit(parentData);
             }
           }
           else {
@@ -333,6 +337,10 @@ export class ShopEditorComponent {
       }
     );
 
+  }
+
+  sendActivationEmail(): void {
+    this.shopService.sendActivationEmail(this.shopId);
   }
 
 }

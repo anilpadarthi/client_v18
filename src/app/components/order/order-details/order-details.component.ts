@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { LookupService } from '../../../services/lookup.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { OrderService } from '../../../services/order.service';
 
@@ -23,6 +23,8 @@ export class OrderDetailsComponent implements OnInit {
   paymentMethodLookup: any[] = [];
   shippingMethodLookup: any[] = [];
   trackingNumber = null;
+  userRole = '';
+  isAdmin = false;
 
 
   vatAmount = 0.00;
@@ -47,13 +49,22 @@ export class OrderDetailsComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private orderService: OrderService,
     private toasterService: ToasterService,
+    private webstorgeService: WebstorgeService,
     public dialogRef: MatDialogRef<OrderDetailsComponent>) {
+
     if (data.orderDetails) {
+
+      this.userRole = this.webstorgeService.getUserRole();
+      let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+      if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+        this.isAdmin = true;
+      }
+
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;
       this.orderId = data.orderDetails.orderId;
       this.statusLookup = data.statusLookup;
-      this.paymentMethodLookup = data.paymentMethodLookup;
+      this.paymentMethodLookup = data.paymentMethodLookup;//.filter((f:any) => f.name != "Bonus" && f.name != "Monthly Commission")
       this.shippingMethodLookup = data.shippingMethodLookup;
       this.selectedStatusId = data.orderDetails.orderStatusTypeId;
       this.selectedPaymentMethodId = data.orderDetails.orderPaymentTypeId;
@@ -68,6 +79,8 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+
 
   }
   updateOrder(): void {

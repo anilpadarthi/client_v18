@@ -3,21 +3,22 @@
     <mat-card-title>Allocate Sims</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-
+    <div class="row col-lg-12">
+      <mat-checkbox [(ngModel)]="isLebaraSims"> Lebara Sims
+      </mat-checkbox> 
+    </div>
 
     <div class="row">
-      <mat-checkbox [(ngModel)]="isLebaraSims" class="col-lg-12">
-      </mat-checkbox>
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>IMEI / PCNNO</mat-label>
         <textarea rows="10" [(ngModel)]="searchText" matInput placeholder="Scan your sim cards here..."></textarea>
       </mat-form-field>
-      <div class="col-lg-12 space-between-buttons">
-        <button mat-raised-button color="primary" (click)="onScanSims()">SCAN</button>
-        <button mat-raised-button color="primary" (click)="onAllocateSims()">ALLOCATE</button>
-        <button mat-raised-button color="primary" (click)="onDeAllocateSims()">DE-ALLOCATE</button>
-        <button mat-flat-button color="warn" (click)="onClear()">CANCEL</button>
-      </div>
+    </div>
+    <div class="row col-lg-12 space-between-buttons">
+      <button mat-raised-button color="primary" (click)="onScanSims()">SCAN</button>
+      <button mat-raised-button color="primary" (click)="onAllocateSims()">ALLOCATE</button>
+      <button mat-raised-button color="primary" (click)="onDeAllocateSims()">DE-ALLOCATE</button>
+      <button mat-flat-button color="warn" (click)="onClear()">CANCEL</button>
     </div>
 
     <div *ngIf="dataSource?.length > 0" class="table-responsive table-scroll example-container m-t-15">

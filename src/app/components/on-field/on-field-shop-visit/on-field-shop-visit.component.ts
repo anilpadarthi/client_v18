@@ -20,7 +20,7 @@ export class OnFieldShopVisitComponent {
   @Input() geoLocation: any;
   @Input() shopAddressDetails: any = null;
   @Input() refreshValue!: number;
-  @Output() notifyParent = new EventEmitter<string>();
+  @Output() notifyParent = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder,
     private shopService: ShopService,
@@ -118,7 +118,10 @@ export class OnFieldShopVisitComponent {
         this.comments = null;
         this.capturedImage = null;
         this.liveImage = null;
-        this.notifyParent.emit();
+        const parentData= {
+          fromAction: 'ShopVisit'
+        }
+        this.notifyParent.emit(parentData);
       }
     });
   }

@@ -3,6 +3,7 @@ import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { OnFieldService } from '../../../services/on-field.service';
 import { ShopService } from '../../../services/shop.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -34,6 +35,7 @@ export class CreateOrderComponent implements OnInit {
   grandTotalWithVAT = 0.00;
   grandTotalWithOutVAT = 0.00;
   isEditAddress = false;
+  availableCommissionChequeNumbers: any[] = [];
 
   cartItems: any[] = [];
   isCartView = false;
@@ -49,10 +51,10 @@ export class CreateOrderComponent implements OnInit {
   shopId: any = null;
   shopCommissionId: any = null;
   shippingAddress: any = null;
-  walletAmount = null;
-  isWalletAmountUsed = false;
+  walletAmount = 0;
   shopDetails: any = null;
   requestType: string | null = null;
+  isVAT = false;
 
   constructor(
     private orderService: OrderService,
@@ -60,6 +62,7 @@ export class CreateOrderComponent implements OnInit {
     private shopService: ShopService,
     private commissionStatementService: CommissionStatementService,
     private toasterService: ToasterService,
+    private onFieldService: OnFieldService,
     private route: ActivatedRoute,
   ) {
   }
@@ -79,40 +82,39 @@ export class CreateOrderComponent implements OnInit {
   ngOnInit(): void {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.requestType = this.route.snapshot.paramMap.get('type');
+
     if (this.requestType == 'COD') {
+      this.isVAT = true;
+      this.minimumCartAmount = environment.codMinimumCartValue;
       this.shopId = id;
-    }
-    else if (this.requestType == 'AC') {
-      this.shopCommissionId = id;
-      this.commissionStatementService.getCommissionHistoryDetails(this.shopCommissionId).subscribe((res) => {
-        this.commissionAmount = res.data?.commissionAmount;
-        this.shopId = res.data?.shopId;
-        this.minimumCartAmount = this.commissionAmount;
-        this.deliveryCharges = 0.00;
-        this.vatPercentage = 0.00;
+      this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
+        if (res.data != null) {
+          this.commissionAmount = res.data?.outstandingCommissionAmount;
+          if (this.commissionAmount > 0) {
+            this.loadAvailableCheques();
+          }
+        }
       });
+    }
+    else if (this.requestType == 'MC') {
+      this.shopCommissionId = id;
+      this.minimumCartAmount = this.commissionAmount;
+      this.deliveryCharges = 0.00;
+      this.vatPercentage = 0.00;
+      this.isVAT = false;
+      this.getCommissionHistoryDetails();
     }
 
     else if (this.requestType == 'B') {
-      this.shopCommissionId = id;
-      this.commissionStatementService.getCommissionHistoryDetails(this.shopCommissionId).subscribe((res) => {
-        this.commissionAmount = res.data?.bonusAmount;
-        this.shopId = res.data?.shopId;
-        this.minimumCartAmount = this.commissionAmount;
-        this.deliveryCharges = 0.00;
-        this.vatPercentage = 0.00;
-      });
+      this.minimumCartAmount = environment.bonusMinimCartValue;
+      this.isVAT = true;
+      this.shopId = id;
+
+      this.getBonusAmount();
     }
 
     else if (this.requestType == 'IB') {
-      this.shopCommissionId = id;
-      this.commissionStatementService.getCommissionHistoryDetails(this.shopCommissionId).subscribe((res) => {
-        this.commissionAmount = res.data?.instantBonusAmount;
-        this.shopId = res.data?.shopId;
-        this.minimumCartAmount = this.commissionAmount;
-        this.deliveryCharges = 0.00;
-        this.vatPercentage = 0.00;
-      });
+      this.shopId = id;
     }
 
 
@@ -130,16 +132,52 @@ export class CreateOrderComponent implements OnInit {
     });
 
     this.lookupService.getOrderPaymentTypes().subscribe((res) => {
-      this.paymentMethodLookup = res.data;
+      let paymentTypes = res.data;
+      if (this.requestType == 'B') {
+        this.selectedPaymentMethodId = paymentTypes.find((f: any) => f.name == "Bonus").id;
+      }
+      else if (this.requestType == 'MC') {
+        this.selectedPaymentMethodId = paymentTypes.find((f: any) => f.name == "Monthly Commission").id;
+      }
+      else {
+        this.paymentMethodLookup = paymentTypes.filter((f:any) => f.name != "Bonus" && f.name != "Monthly Commission")
+      }
+
     });
 
     if (this.shopId) {
-      this.shopService.getShop(this.shopId).subscribe((res) => {
-        this.shopDetails = res.data.shop;
-        this.shippingAddress = (this.shopDetails.addressLine1 + ', ' +
-          res.data.shop.postCode + ', ' + 'London, UK');
-      });
+      this.getShopDetails(this.shopId);
     }
+  }
+
+  private getShopDetails(shopId: number): void {
+    this.shopService.getShop(shopId).subscribe((res) => {
+      this.shopDetails = res.data.shop;
+      this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}, London, UK`;
+    });
+  }
+
+  getBonusAmount(): void {
+    this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
+      if (res.data != null) {
+        this.commissionAmount = res.data?.outstandingBonusAmount;
+      }
+    });
+  }
+
+  getCommissionHistoryDetails(): void {
+    this.commissionStatementService.getCommissionHistoryDetails(this.shopCommissionId).subscribe((res) => {
+      if (res.data?.isRedemed) {
+        this.commissionAmount = 0.00;
+      }
+      else {
+        this.commissionAmount = res.data?.commissionAmount;
+        this.shopId = res.data?.shopId;
+        if (this.shopId) {
+          this.getShopDetails(this.shopId);
+        }
+      }
+    });
   }
 
 
@@ -218,10 +256,7 @@ export class CreateOrderComponent implements OnInit {
     });
     let netTotal = this.subTotal;
     this.vatAmount = (netTotal * this.vatPercentage) / 100;
-
-    if (this.discountPercentage > 0) {
-      this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    }
+    this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
     this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
     this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
     this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
@@ -235,13 +270,7 @@ export class CreateOrderComponent implements OnInit {
   }
 
   createOrder(): void {
-    if (this.subTotal <= this.minimumCartAmount) {
-      this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 25.00 pounds.")
-    }
-    else if (this.subTotal >= this.commissionAmount && this.requestType != 'COD') {
-      this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.")
-    }
-    else {
+    if (this.validateOrderAmount()) {
       const requestBody = {
         orderId: null,
         shopId: this.shopId,
@@ -256,16 +285,64 @@ export class CreateOrderComponent implements OnInit {
         totalWithOutVATAmount: this.grandTotalWithOutVAT,
         vatPercentage: this.vatPercentage,
         discountPercentage: this.discountPercentage,
-        walletAmount: this.isWalletAmountUsed ? this.walletAmount : null,
+        walletAmount: this.walletAmount,
+        referenceNumber: this.shopCommissionId,
+        requestType: this.requestType,
+        isVat: this.isVAT ? 1 : 0
       };
 
       this.orderService.create(requestBody).subscribe((res) => {
-        this.toasterService.showMessage("Created Successfully.");
-        this.cartItems = [];
-        setTimeout(() => this.closeWindow(), 2000);
-        //window.close();
+        if (res.statusCode == 201) {
+          this.toasterService.showMessage("Created Successfully.");
+          this.cartItems = [];
+          setTimeout(() => this.closeWindow(), 2000);
+          //window.close();
+        }
+        else {
+          this.toasterService.showMessage(res.message);
+        }
       });
     }
+  }
+
+  validateOrderAmount(): boolean {
+    let isValid = true;
+    if (this.requestType == 'B') {
+      this.getBonusAmount();
+      if (this.grandTotalWithVAT > this.commissionAmount) {
+        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+        isValid = false;
+      }
+      else if (this.grandTotalWithVAT < this.minimumCartAmount) {
+        this.toasterService.showMessage('You cannot place order, minimum cart value should be £ ' + this.minimumCartAmount + ' pounds.');
+        isValid = false;
+      }
+    }
+    else if (this.requestType == 'MC') {
+      this.getCommissionHistoryDetails();
+      if (this.subTotal > this.commissionAmount) {
+        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+        isValid = false;
+      }
+      else if (this.subTotal < this.minimumCartAmount) {
+        this.toasterService.showMessage('You cannot place order, minimum cart value should be £ ' + this.minimumCartAmount + ' pounds.');
+        isValid = false;
+      }
+    }
+    else {
+      if (this.subTotal < this.minimumCartAmount) {
+        this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 50.00 pounds.");
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  }
+
+  loadAvailableCheques() {
+    this.lookupService.getAvailableShopCommissionCheques(this.shopId).subscribe((res) => {
+      this.availableCommissionChequeNumbers = res.data;
+    });
   }
 
   editAddress(): void {
@@ -291,6 +368,29 @@ export class CreateOrderComponent implements OnInit {
 
   closeWindow() {
     window.close();  // Attempt to close the window/tab
+  }
+
+
+  onChequeNumberChange(event: any): void {
+    let item = this.availableCommissionChequeNumbers.find(f => f.id == event.value);
+    debugger;
+    if (item != null) {
+      var walletAmount = Number(item.name);
+
+      if (walletAmount > this.subTotal) {
+        this.walletAmount = 0;
+        this.shopCommissionId = null;
+        this.toasterService.showMessage('You can not use this wallet commission as it exceeds the sub total.');
+      }
+      else {
+        this.walletAmount = walletAmount;
+        this.shopCommissionId = item.id;
+      }
+    }
+    else {
+      this.walletAmount = 0;
+      this.shopCommissionId = null;
+    }
   }
 
 }

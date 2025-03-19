@@ -109,10 +109,10 @@ mat-panel-title {
         margin-right: 1em;
     }
 }
-
-.filter-buttons {
-    margin-top: 10px;
+.outstanding-metrics{
+    margin-bottom: 1em;
 }
+
 
 mat-expansion-panel {
     margin-bottom: 1em !important;
@@ -133,6 +133,14 @@ mat-expansion-panel {
 .space-between-buttons {
     button {
         margin-right: 1em !important;
+        margin-bottom: 1em !important;
+        top: 10px !important;
+    }
+}
+
+.align-buttons {
+    button {
+        top: 10px !important;
     }
 }
 

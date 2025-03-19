@@ -132,4 +132,8 @@ export class UserListComponent {
     this.userService.exportToExcel();
   }
 
+  sendActivationEmail(userId: number): void {
+    this.userService.sendActivationEmail(userId);
+  }
+
 }

@@ -26,7 +26,6 @@ export class OrderListComponent implements OnInit {
     "orderId",
     "date",
     "user",
-    "area",
     "shop",
     "amount",
     "status",
@@ -47,7 +46,7 @@ export class OrderListComponent implements OnInit {
   areaLookup: any[] = [];
   shopLookup: any[] = [];
   shippingMethodLookup: any[] = [];
-  selectedStatusId = 1;
+  selectedStatusId = null;
   selectedPaymentMethodId = null;
   selectedAgentId = null;
   selectedManagerId = null;
@@ -59,8 +58,13 @@ export class OrderListComponent implements OnInit {
   selectedFromDate = null;
   selectedToDate = null;
   isVat = false;
+  isSimRequests = false;
   userRole = '';
-  isDisplay = false;
+  isAdmin = false;
+
+  totalOutstanding = 0.00;
+  totalPPAAmount = 0.00;
+  totalPPMAmount = 0.00;
 
   orderList = [];
 
@@ -69,6 +73,7 @@ export class OrderListComponent implements OnInit {
     private orderService: OrderService,
     private lookupService: LookupService,
     private webstorgeService: WebstorgeService,
+    private toasterService: ToasterService,
     private router: Router
   ) {
   }
@@ -78,7 +83,8 @@ export class OrderListComponent implements OnInit {
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
-      this.isDisplay = true;
+      this.isAdmin = true;
+      this.loadOutstandingMetrics();
     }
     else {
       this.selectedAgentId = loggedInUserId;
@@ -103,7 +109,8 @@ export class OrderListComponent implements OnInit {
       toDate: this.selectedToDate,
       orderId: this.orderNumberSearch,
       trackingNumber: this.trackNumberSearch,
-      isVat: this.isVat ? 1 : 0
+      isVat: this.isVat ? 1 : 0,
+      isSimRequests: this.isSimRequests ? 1 : 0
     };
 
     this.orderService.getPagedOrderList(requestBody).subscribe((res) => {
@@ -142,6 +149,21 @@ export class OrderListComponent implements OnInit {
     }
   }
 
+  loadOutstandingMetrics(): void {
+    if (this.selectedAgentId != null && this.isAdmin)  {
+      let requestBody = {
+        filterType: 'Agent',
+        filterId: this.selectedAgentId
+      };
+      this.orderService.loadOutstandingMetrics(requestBody).subscribe((res) => {
+        this.totalOutstanding = res.data?.totalOutstanding;
+        this.totalPPAAmount = res.data?.totalPPAAmount;
+        this.totalPPMAmount = res.data?.totalPPMAmount;
+      });
+    }
+  }
+
+
   areaChange(): void {
     if (this.selectedAreaId) {
       this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
@@ -153,10 +175,24 @@ export class OrderListComponent implements OnInit {
     }
   }
 
+  managerChange(): void {
+    if (this.selectedManagerId) {
+      this.lookupService.getAgentsByManager(this.selectedManagerId).subscribe((res) => {
+        this.agentLookup = res.data;
+      });
+    }
+    else {
+      this.lookupService.getAgents().subscribe((res) => {
+        this.agentLookup = res.data;
+      });
+    }
+  }
+
 
   onFilter(): void {
     this.pageNo = 0;
     this.loadData();
+    this.loadOutstandingMetrics();
   }
 
   onClear(): void {
@@ -165,7 +201,7 @@ export class OrderListComponent implements OnInit {
     this.selectedAreaId = null;
     this.selectedManagerId = null;
     this.selectedShopId = null;
-    this.selectedStatusId = 1;
+    this.selectedStatusId = null;
     this.selectedPaymentMethodId = null;
     this.selectedShippingMethodId = null;
     this.selectedFromDate = null;
@@ -173,6 +209,7 @@ export class OrderListComponent implements OnInit {
     this.orderNumberSearch = null;
     this.trackNumberSearch = null;
     this.isVat = false;
+    this.isSimRequests = false;
     this.loadData();
   }
 
@@ -246,12 +283,24 @@ export class OrderListComponent implements OnInit {
 
   }
 
-  download(orderId: number): void {
+  downloadVAT(orderId: number): void {
+    this.orderService.downloadVATInvoice(orderId);
+  }
 
+  downloadNonVAT(orderId: number): void {
+    this.orderService.downloadNonVATInvoice(orderId);
   }
 
   sendEmail(orderId: number): void {
-
+    console.log('test');
+    this.orderService.sendVATInvoice(orderId).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage('Email sent successfully.');
+      }
+      else {
+        this.toasterService.showMessage('Something went wrong');
+      }
+    });
   }
 
   addPayment(item: any): void {
@@ -265,7 +314,26 @@ export class OrderListComponent implements OnInit {
         data
       });
     });
+  }
 
+  cancelOrder(orderDetails: any): void {
+    const requestBody = {
+      orderId: orderDetails.orderId,
+      orderStatusId: 3, // cancelled order
+      paymentMethodId: orderDetails.paymentMethodId,
+      shippingModeId: orderDetails.shippingModeId,
+      trackingNumber: orderDetails.trackingNumber
+    };
+
+    this.orderService.updateOrderDetails(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Cancelled Successfully.");
+        this.loadData();
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
   }
 
 

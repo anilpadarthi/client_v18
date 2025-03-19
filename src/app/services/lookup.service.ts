@@ -62,6 +62,10 @@ export class LookupService {
     return this.http.get<any>(this.url + "/Agents");
   }
 
+  getAgentsByManager(managerId:number): Observable<any> {
+    return this.http.get<any>(this.url + "/AgentsByManager?managerId="+managerId);
+  }
+
   getManagers(): Observable<any> {
     return this.http.get<any>(this.url + "/Managers");
   }

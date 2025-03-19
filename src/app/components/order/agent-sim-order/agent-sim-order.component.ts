@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { UserService } from '../../../services/user.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 
@@ -41,6 +42,7 @@ export class AgentSimOrderComponent implements OnInit {
     private orderService: OrderService,
     private userService: UserService,
     private toasterService: ToasterService,
+    private webstorgeService: WebstorgeService,
     private route: ActivatedRoute,
   ) {
   }
@@ -56,7 +58,7 @@ export class AgentSimOrderComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.agentId = Number(this.route.snapshot.paramMap.get('id'));
+    this.agentId = this.webstorgeService.getUserInfo().userId;
     this.orderService.getShoppingPageDetails().subscribe((res) => {
       let categories = res.data?.categories.filter((c: any) => c.categoryId == 40);
       categories?.forEach((category: any) => {
@@ -165,18 +167,28 @@ export class AgentSimOrderComponent implements OnInit {
       agentId: this.agentId,
       items: this.cartItems,
       itemTotal: this.subTotal,
-      requestType: 'Sim Request',
-      paymentMethodId: 4,
+      requestType: 'SimRequest',
+      paymentMethodId: 5,
       placedBy: this.agentId,
       shippingAddress: this.shippingAddress,
     };
 
     this.orderService.create(requestBody).subscribe((res) => {
-      this.toasterService.showMessage("Sim Request created successfully.");
-      this.cartItems = [];
-      this.continueShopping();
-      //window.close();
+      if (res.statusCode == 201) {
+        this.toasterService.showMessage("Sim Request created successfully.");
+        this.cartItems = [];
+        setTimeout(() => this.closeWindow(), 2000);
+        //window.close();
+      }
+      else {
+        this.toasterService.showMessage(res.message);
+      }     
+     
     });
+  }
+
+  closeWindow() {
+    window.close();  // Attempt to close the window/tab
   }
 
   editAddress(): void {
