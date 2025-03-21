@@ -38,6 +38,7 @@ export class CreateOrderComponent implements OnInit {
   availableCommissionChequeNumbers: any[] = [];
 
   cartItems: any[] = [];
+  isMainView = true;
   isCartView = false;
   isDisplayCatgories = true;
   isDisplaySubCatgories = false;
@@ -55,6 +56,8 @@ export class CreateOrderComponent implements OnInit {
   shopDetails: any = null;
   requestType: string | null = null;
   isVAT = false;
+  selectedProduct:any = null;
+  isDisplayProductDetails = false;
 
   constructor(
     private orderService: OrderService,
@@ -140,7 +143,7 @@ export class CreateOrderComponent implements OnInit {
         this.selectedPaymentMethodId = paymentTypes.find((f: any) => f.name == "Monthly Commission").id;
       }
       else {
-        this.paymentMethodLookup = paymentTypes.filter((f:any) => f.name != "Bonus" && f.name != "Monthly Commission")
+        this.paymentMethodLookup = paymentTypes.filter((f: any) => f.name != "Bonus" && f.name != "Monthly Commission")
       }
 
     });
@@ -186,6 +189,8 @@ export class CreateOrderComponent implements OnInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
     this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
   }
@@ -195,6 +200,8 @@ export class CreateOrderComponent implements OnInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = true;
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.subCategories = item.subCategories;
   }
 
@@ -235,6 +242,8 @@ export class CreateOrderComponent implements OnInit {
 
   viewCart(): void {
     this.isCartView = true;
+    this.isMainView = false;
+    this.isDisplayProductDetails = false;
     this.updateCalculations();
   }
 
@@ -264,6 +273,8 @@ export class CreateOrderComponent implements OnInit {
 
   continueShopping(): void {
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
@@ -391,6 +402,24 @@ export class CreateOrderComponent implements OnInit {
       this.walletAmount = 0;
       this.shopCommissionId = null;
     }
+  }
+
+  increaseQuantity(item: any) {
+    if(item.qty)
+    item.qty++;
+  }
+
+  decreaseQuantity(item:any) {
+    if (item.qty > 0) {
+      item.qty--;
+    }
+  }
+
+  viewProductDetails(item:any):void{
+    this.isDisplayProductDetails = true;
+    this.isCartView = false;
+    this.isMainView = false;
+    this.selectedProduct = item;
   }
 
 }

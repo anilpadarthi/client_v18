@@ -22,6 +22,7 @@ export class OrderPaymentEditorComponent {
   IsDisplayAvailableCheques = false;
   IsDisabled = false;
   availableCommissionChequeNumbers: any[] = [];
+  balanceAmount = 0.00;
 
   constructor
     (
@@ -34,6 +35,7 @@ export class OrderPaymentEditorComponent {
     ) {
     this.orderId = data.orderId;
     this.shopId = data.shopId;
+    this.balanceAmount = data.balanceAmount;
     this.paymentForm = this.fb.group(
       {
         referenceNumber: ['', [Validators.required, Validators.minLength(2)]],
@@ -69,7 +71,7 @@ export class OrderPaymentEditorComponent {
   }
 
   onSave() {
-    if (this.paymentForm.valid) {
+    if (this.paymentForm.valid) {      
       const formBody = new FormData();
       formBody.append('orderId', this.orderId != null ? this.orderId : 0);
       formBody.append('shopId', this.shopId != null ? this.shopId : 0);

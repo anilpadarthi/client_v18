@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Wallet History 
+<h2 mat-dialog-title>Wallet History
   <button mat-dialog-close class="modal-header-close-btn">
     <mat-icon>close</mat-icon>
-</button>
+  </button>
 </h2>
 
 <mat-dialog-content>
@@ -9,30 +9,43 @@
     <table mat-table [dataSource]="walletHistoryList" class="w-100 custom-table">
 
       <ng-container matColumnDef="TRANSACTIONDATE">
-        <th mat-header-cell *matHeaderCellDef>TRANSACTION DATE</th>
+        <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let element">
           {{ element.transactionDate | date:'MM/dd/yyyy'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="DESCRIPTION">
-        <th mat-header-cell *matHeaderCellDef>DESCRIPTION</th>
+        <th mat-header-cell *matHeaderCellDef>Description</th>
         <td mat-cell *matCellDef="let element">{{ element.description }}</td>
       </ng-container>
 
       <ng-container matColumnDef="REFERENCENUMBER">
-        <th mat-header-cell *matHeaderCellDef>REFERENCE NUMBER</th>
+        <th mat-header-cell *matHeaderCellDef>Reference Number</th>
         <td mat-cell *matCellDef="let element">{{ element.referenceNumber }}</td>
       </ng-container>
 
       <ng-container matColumnDef="TRANSACTIONTYPE">
-        <th mat-header-cell *matHeaderCellDef>TRANSACTION TYPE</th>
+        <th mat-header-cell *matHeaderCellDef>Transaction Type</th>
         <td mat-cell *matCellDef="let element">{{ element.transactionType }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="AMOUNT">
-        <th mat-header-cell *matHeaderCellDef>AMOUNT</th>
-        <td mat-cell *matCellDef="let element">£{{ element.amount | number : "1.2-2" }}</td>
+      <ng-container matColumnDef="CREDIT">
+        <th mat-header-cell *matHeaderCellDef>Credited</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="credit"  *ngIf="element.transactionType=='Credit'">£{{ element.amount | number : "1.2-2" }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="DEBIT">
+        <th mat-header-cell *matHeaderCellDef>Debited</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="debit" *ngIf="element.transactionType=='Debit'"> - £{{ element.amount | number : "1.2-2" }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="BALANCE">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let element">£{{ element.balanceAmount | number : "1.2-2" }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

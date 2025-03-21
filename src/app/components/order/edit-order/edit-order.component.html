@@ -98,8 +98,7 @@
                         <mat-card-content class="p-b-12 p-t-12 position-relative">
                             <mat-card-title class="mat-headline-2 product-title" title="{{item.productName}}"> {{
                                 item.productName }}</mat-card-title>
-                            <mat-card-title class="mat-headline-2 product-title"> {{ item.productCode
-                                }}</mat-card-title>
+                            <p class="mat-headline-2 product-code"> {{ item.productCode }}</p>
                             <div class="d-flex align-items-center selling-price">
 
                                 <div class="d-flex align-items-center">
@@ -108,7 +107,7 @@
                                 <div class="m-l-auto d-flex gap-4">
                                     <button mat-mini-fab color="primary" class="icon-30 cart-btn"
                                         matTooltip="Add to Cart" (click)="addToCart(item)">
-                                        <mat-icon>shopping_basket</mat-icon>
+                                        <mat-icon>shopping_cart</mat-icon>
                                     </button>
                                 </div>
                             </div>
@@ -202,7 +201,7 @@
                     </button>
 
                     <button mat-flat-button color="primary" class="col-lg-3 cart-btn" (click)="updateOrder()">
-                        
+
                         Update Order
                     </button>
                 </div>

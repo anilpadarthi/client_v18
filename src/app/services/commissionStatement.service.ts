@@ -19,12 +19,14 @@ export class CommissionStatementService {
     return this.http.post<any>(this.url + '/GetCommissionList', requestBody);
   }
 
-  getCommissionStatementReport(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + '/GetCommissionStatementReport', requestBody);
+  getCommissionStatementReport(requestBody: any): Observable<boolean> {
+    const url = this.url + '/GetCommissionStatementReport';
+    return this.exportService.downloadToPDF(url, requestBody, 'Commission_Statement.pdf');
   }
 
-  getCommissionStatementVATReportAsync(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + '/GetCommissionStatementVATReportAsync', requestBody);
+  getCommissionStatementVATReportAsync(requestBody: any): Observable<boolean> {
+    const url = this.url + '/GetCommissionStatementVATReportAsync';
+    return this.exportService.downloadToPDF(url, requestBody, 'Commission_VAT_Statement.pdf');
   }
 
 
@@ -41,6 +43,8 @@ export class CommissionStatementService {
     return this.exportService.downloadPDF(url, 'Commission_Statement_' + shopId + '.pdf');
   }
 
-
-
+  exportToExcel(isOptedIn:boolean,fromDate:any): void {
+    let url =  this.url +'/ExportToExcel';
+    return this.exportService.downloadExcel(url,'Commission_List');
+  }
 }

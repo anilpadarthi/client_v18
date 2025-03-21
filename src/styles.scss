@@ -273,7 +273,7 @@ video {
 
 .product-title {
     font-size: 14px !important;
-    display: -webkit-box;
+    display: -webkit-box !important;
     /* Enables flexible box layout */
     -webkit-box-orient: vertical;
     /* Specifies the box orientation */
@@ -282,12 +282,28 @@ video {
     overflow: hidden;
     /* Hides the overflowed text */
     text-overflow: ellipsis;
+    height: 50px !important;
     /* Adds '...' when text is truncated */
+}
+
+.product-code{
+    color:black  !important;
+    font-size: 12px !important;
+    font-weight: bold;
+    text-align: center !important;
+    margin: 0px !important;
 }
 
 .product-image {
     max-height: 200px !important;
-    max-width: 250px !important;
+    max-width: 200px !important;
+}
+
+.item-qty{
+    width: 60px !important;
+    height:30px  !important;
+    padding-top:5px !important ;
+    margin-top:5px !important ;
 }
 
 .cart-items-count {

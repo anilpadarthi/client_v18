@@ -107,42 +107,42 @@
         <div class="row outstanding-metrics" *ngIf="isAdmin">
             <div class="col-lg-4 col-12">
                 <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-32">
+                    <mat-card-content class="p-16">
                         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
                             class="rounded-circle" />
                         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
                             Expected Amount
                         </h4>
                         <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            {{ totalOutstanding }}
+                            £{{ totalOutstanding | number: '1.2-2'}}
                         </h4>
                     </mat-card-content>
                 </mat-card>
             </div>
             <div class="col-lg-4 col-12">
                 <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-32">
+                    <mat-card-content class="p-16">
                         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
                             class="rounded-circle" />
                         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
                             PPA
                         </h4>
                         <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            {{ totalPPAAmount }}
+                            £{{ totalPPAAmount | number: '1.2-2' }}
                         </h4>
                     </mat-card-content>
                 </mat-card>
             </div>
             <div class="col-lg-4 col-12">
                 <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-32">
+                    <mat-card-content class="p-16">
                         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
                             class="rounded-circle" />
                         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
                             PPM
                         </h4>
                         <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            {{ totalPPMAmount }}
+                            £{{ totalPPMAmount | number: '1.2-2'}}
                         </h4>
                     </mat-card-content>
                 </mat-card>
@@ -224,37 +224,44 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="amount">
-                    <th mat-header-cell *matHeaderCellDef>Amount</th>
-                    <td mat-cell *matCellDef="let element">
-                        £ {{ element.totalWithOutVATAmount }} /
-                        £ {{ element.totalWithVATAmount }}
+                <ng-container matColumnDef="expected">
+                    <th mat-header-cell *matHeaderCellDef>Expected</th>
+                    <td mat-cell *matCellDef="let element" class="text-right">
+                        £ {{ element.isVat ? element.totalWithVATAmount : element.totalWithOutVATAmount }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="collected">
+                    <th mat-header-cell *matHeaderCellDef>Collected</th>
+                    <td mat-cell *matCellDef="let element" class="text-right">
+                        £ {{ element.isVat ? element.totalWithVATAmount : element.totalWithOutVATAmount }}
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="paymentMethod">
-                    <th mat-header-cell *matHeaderCellDef>Payment Method</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.paymentMethod }}
-                    </td>
-                </ng-container>
 
                 <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
                         {{ element.orderStatus }}
                     </td>
                 </ng-container>
 
+                <ng-container matColumnDef="paymentMethod">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Payment</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        {{ element.paymentMethod }}
+                    </td>
+                </ng-container>
+
                 <ng-container matColumnDef="courier">
-                    <th mat-header-cell *matHeaderCellDef>Courier</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Courier</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
                         {{ element.courier }}
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns" 
+                [ngClass]="{ 'green-row': row.isVAT === 1 }"></tr>
             </table>
         </div>
         <div *ngIf="orderList.length > 0">

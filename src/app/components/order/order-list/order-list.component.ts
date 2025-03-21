@@ -27,7 +27,8 @@ export class OrderListComponent implements OnInit {
     "date",
     "user",
     "shop",
-    "amount",
+    "expected",
+    "collected",
     "status",
     "paymentMethod",
     "courier"
@@ -150,7 +151,7 @@ export class OrderListComponent implements OnInit {
   }
 
   loadOutstandingMetrics(): void {
-    if (this.selectedAgentId != null && this.isAdmin)  {
+    if (this.selectedAgentId != null && this.isAdmin) {
       let requestBody = {
         filterType: 'Agent',
         filterId: this.selectedAgentId
@@ -308,7 +309,9 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrderPaymentHistory(item.orderId).subscribe((res) => {
       var data = {
         orderId: item.orderId,
-        shopId: item.shopId
+        shopId: item.shopId,
+        balanceAmount: res.data != null && res.data.length > 0 ? res.data.reduce((sum: any, s: any) => sum + s.amount, 0)
+          : (item.isVAT ? item.TotalWithVATAmount : item.TotalWithOutVATAmount)
       }
       this.dialog.open(OrderPaymentEditorComponent, {
         data

@@ -1,1 +1,68 @@
-<p>product-detail works!</p>
+<div class="product-container">
+  <!-- Left Section: Product Images -->
+  <div class="product-images">
+    <img *ngIf="productImagePreview" [src]="productImagePreview" class="main-image" alt="Image Preview" />
+
+    <!-- <div class="thumbnail-container">
+      <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" [class.selected]="img === product.image"
+        (click)="selectImage(img)" />
+    </div> -->
+  </div>
+
+  <!-- Right Section: Product Info -->
+  <div class="product-info">
+    <p class="f-w-600">Product Code: {{ productDetails.productCode }}</p>
+    <p class="availability">Availability: {{ 0 }}</p>
+
+    <h2 class="product-title">{{ productDetails.productName }}</h2>
+
+
+
+    <div class="price-container">
+      <span class="price" *ngFor="let item of productPrices">
+        £{{ item.salePrice | number: '1.2-2' }}
+      </span>
+    </div>
+
+    <h3>Pricing Table</h3>
+
+    <table mat-table [dataSource]="productPrices" class="mat-elevation-z2">
+      <ng-container matColumnDef="fromQty">
+        <th mat-header-cell *matHeaderCellDef>Min Qty</th>
+        <td mat-cell *matCellDef="let row">{{ row.fromQty }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="toQty">
+        <th mat-header-cell *matHeaderCellDef>Max Qty</th>
+        <td mat-cell *matCellDef="let row">{{ row.toQty }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="salePrice">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let row"> £{{ row.salePrice | number: '1.2-2' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+
+    <!-- Quantity Selector -->
+    <div class="quantity-container">
+      <p>Quantity</p>
+      <button mat-icon-button (click)="decreaseQuantity()">
+        <mat-icon>remove</mat-icon>
+      </button>
+      <input matInput type="number" [(ngModel)]="quantity" min="1" class="quantity-input" />
+      <button mat-icon-button (click)="increaseQuantity()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button mat-flat-button color="primary" (click)="addToCart()" >Add to Cart</button>
+    </div>
+  </div>
+</div>

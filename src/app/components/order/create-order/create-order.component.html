@@ -73,7 +73,7 @@
 
     <!-- Main Content -->
     <mat-sidenav-content class="contentWrapper">
-        <div *ngIf="!isCartView">
+        <div *ngIf="isMainView">
             <!-- Categories -->
             <div class="row" *ngIf="isDisplayCatgories">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
@@ -102,22 +102,25 @@
             <!-- Products -->
             <div class="row" *ngIf="isDisplayProducts">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of products">
-                    <mat-card class="cardWithShadow productcard overflow-hidden"
-                        (click)="loadProducts(item.subCategoryId)">
-                        <img src="{{ item.productImage }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
+                    <mat-card class="cardWithShadow productcard overflow-hidden">
+                        <img src="{{ item.productImage }}" alt="imgSrc" class="w-100 product-image" mat-card-image (click)="viewProductDetails(item)" />
                         <mat-card-content class="p-b-12 p-t-12 position-relative">
                             <mat-card-title class="mat-headline-2 product-title" title="{{item.productName}}"> {{
                                 item.productName }}</mat-card-title>
-                            <mat-card-title class="mat-headline-2 product-title"> {{ item.productCode
-                                }}</mat-card-title>
-                            <div class="d-flex align-items-center selling-price">
-                                <div class="d-flex align-items-center">
-                                    <h3 class="mat-body-2  f-w-600">£{{ item.salePrice }}</h3>
-                                </div>
-                                <div class="m-l-auto d-flex gap-4">
-                                    <button mat-mini-fab color="primary" class="icon-30 cart-btn"
-                                        matTooltip="Add to Cart" (click)="addToCart(item)">
-                                        <mat-icon>shopping_basket</mat-icon>
+                            <p class="mat-headline-2 product-code"> {{ item.productCode }}</p>
+                            <p class="mat-headline-2 f-s-16  f-w-600">£{{ item.salePrice | number: '1.2-2' }}</p>
+                            <div class="d-flex ">
+                                <div class="d-flex quantity-container">
+                                    <button mat-icon-button color="primary" (click)="decreaseQuantity(item)">
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                    <input matInput type="number" class="item-qty" [(ngModel)]="item.qty">
+                                    <button mat-icon-button color="primary" (click)="increaseQuantity(item)">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="primary" class="icon-30" matTooltip="Add to Cart"
+                                        (click)="addToCart(item)">
+                                        <mat-icon>shopping_cart</mat-icon>
                                     </button>
                                 </div>
                             </div>
@@ -254,6 +257,10 @@
                     </button>
                 </div>
             </mat-card>
+        </div>
+
+        <div *ngIf="isDisplayProductDetails">
+            <app-product-detail [selectedProduct]="selectedProduct" (notifyParent)="addToCart($event)"></app-product-detail>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

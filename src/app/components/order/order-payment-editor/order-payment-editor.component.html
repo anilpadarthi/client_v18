@@ -1,10 +1,12 @@
-<h2 mat-dialog-title class="modal-header-title">Add Payment
+<h2 mat-dialog-title class="modal-header-title">Add Payment <span class="balance">
+        Outstanding Balance: £ {{balanceAmount | number: '1.2-2'}}</span>
     <button mat-dialog-close class="modal-header-close-btn">
         <mat-icon>close</mat-icon>
     </button>
 </h2>
 
 <mat-dialog-content class="mat-typography" style="max-width: 600px">
+    <h3 class="balance"> Outstanding Balance: £ {{balanceAmount | number: '1.2-2'}}</h3>
     <form [formGroup]="paymentForm" (ngSubmit)="onSave()" class="m-t-15">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Payment Mode</mat-label>

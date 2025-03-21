@@ -22,7 +22,9 @@ export class OnFieldShopWalletHistoryComponent implements OnInit {
     'DESCRIPTION',
     'REFERENCENUMBER',
     'TRANSACTIONTYPE',
-    'AMOUNT',
+    'CREDIT',
+    'DEBIT',
+    'BALANCE',
   ];
   walletHistoryList: any = [];
 

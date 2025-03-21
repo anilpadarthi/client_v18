@@ -4,6 +4,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { WebstorgeService } from '../../../services/web-storage.service';
 
 
 
@@ -28,6 +29,8 @@ export class CommissionStatementReportComponent implements OnInit {
   userLookup: any = [];
   commissionList: any = [];
   isLoading = false;
+  userRole = '';
+  isAdmin = false;
   displayedColumns: string[] = [
     'UserName',
     'AreaName',
@@ -45,12 +48,18 @@ export class CommissionStatementReportComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private commissionStatementService: CommissionStatementService,
+    private webstorgeService: WebstorgeService,
     private lookupService: LookupService,
     private toasterService: ToasterService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
     this.getAreaLookup();
     this.getAgentLookup();
 
@@ -166,6 +175,24 @@ export class CommissionStatementReportComponent implements OnInit {
 
   downloadCommissionStatement(shopId: number, fromDate: string): void {
     this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
+  }
+
+  exportToPDF(mode: any): void {
+    let requestBody = {
+
+
+    }
+    this.toasterService.showMessage("Downloading...");
+    this.commissionStatementService.getCommissionStatementReport(requestBody).subscribe((res) => {
+      if (res) {
+        this.toasterService.showMessage("Successfully downloaded.");
+      }
+    });
+  }
+
+  exportToExcel(): void {    
+    this.toasterService.showMessage("Downloading...");
+    this.commissionStatementService.exportToExcel(this.isOptedIn,this.fromDate);
   }
 
 }

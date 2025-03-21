@@ -33,7 +33,7 @@ export class BulkUploadComponent {
       formData.append('importType', this.importFileType || '');
       this.bulkUploadService.uploadFile(formData).subscribe((res) => {
         if (res.statusCode == 200) {
-          this.toasterService.showMessage(res.data);
+          this.toasterService.showMessage("Uploaded successfully, It is being processed soon.");
           this.importFileType = '';
           this.importFile = null;
         }
