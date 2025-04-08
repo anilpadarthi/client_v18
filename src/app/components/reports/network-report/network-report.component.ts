@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 
 @Component({
@@ -10,7 +12,8 @@ import { DatePipe } from '@angular/common';
 })
 
 export class NetworkReportComponent implements OnInit {
-  selectedMonth = null;
+
+  selectedMonth: string | null = null;
   totalCount = 0;
   networkUsageList: any = [];
   displayedColumns: string[] = [
@@ -29,7 +32,7 @@ export class NetworkReportComponent implements OnInit {
 
   loadData(): void {
     const requestBody = {
-      fromDate: this.datePipe.transform(this.selectedMonth, 'yyyy-MM-dd'),
+      fromDate: this.selectedMonth
     };
 
     this.reportService.getNetworkUsageReport(requestBody).subscribe((res) => {
@@ -52,6 +55,18 @@ export class NetworkReportComponent implements OnInit {
 
   get totalActivated(): number {
     return this.networkUsageList.reduce((sum: any, item: any) => sum + item.activated, 0);
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

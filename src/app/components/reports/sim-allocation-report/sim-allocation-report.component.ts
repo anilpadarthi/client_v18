@@ -3,6 +3,8 @@ import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-sim-allocation-report',
@@ -12,12 +14,25 @@ import { DatePipe } from '@angular/common';
 
 
 export class SimAllocationReportComponent implements OnInit {
-  selectedMonth = null;
+
+  selectedMonth: string | null = null;
   selectedUserId = null;
   totalCount = 0;
+  totalAssignedToShop = 0;
+  totalAssignedToAgent = 0;
+  totalDifference = 0;
+  lastMonthTotalActivations = 0;
+  totalFreeAllocations = 0;
   userLookup: any = [];
   activationList: any = [];
-  displayedColumns: string[] = [];
+  displayedColumns: string[] = [
+    'Name',
+    'LastMonthActivaitons',
+    'FreeAllocations',
+    'AssignedToAgent',
+    'AssignedToShop',
+    'Difference',
+  ];
 
   constructor(
     public datePipe: DatePipe,
@@ -39,7 +54,7 @@ export class SimAllocationReportComponent implements OnInit {
   loadData(): void {
 
     const requestBody = {
-      fromDate: this.datePipe.transform(this.selectedMonth, 'yyyy-MM-dd'),
+      fromDate: this.selectedMonth,
       filterId: this.selectedUserId
     };
 
@@ -47,7 +62,11 @@ export class SimAllocationReportComponent implements OnInit {
       this.activationList = res.data;
 
       if (res.data.length > 0) {
-        this.displayedColumns = Object.keys(res.data[0]);
+        this.totalAssignedToAgent = this.activationList.reduce((sum: any, item: any) => sum + item.allocatedToAgent, 0);
+        this.totalAssignedToShop = this.activationList.reduce((sum: any, item: any) => sum + item.allocatedToShop, 0);
+        this.totalDifference = this.activationList.reduce((sum: any, item: any) => sum + item.difference, 0);
+        this.lastMonthTotalActivations = this.activationList.reduce((sum: any, item: any) => sum + item.lastMonthActivations, 0);
+        this.totalFreeAllocations = this.activationList.reduce((sum: any, item: any) => sum + item.freeAllocations, 0);
       }
     });
 
@@ -66,6 +85,18 @@ export class SimAllocationReportComponent implements OnInit {
   onClear(): void {
     this.selectedMonth = null;
     this.selectedUserId = null;
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

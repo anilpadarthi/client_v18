@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class PostcodeService {
-  private apiKey = 'FeIwIXbbk0WhiyuI-Hi-Uw44901';
+  private apiKey = 'QaK3e7hqvEOb2jK8Ad31Hg45532';
   constructor(private http: HttpClient) { }
 
   // Fetch postcodes within a specific area or partial search

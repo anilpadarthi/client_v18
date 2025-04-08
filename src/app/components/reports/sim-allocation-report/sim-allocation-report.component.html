@@ -4,14 +4,14 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row justify-content-between">
-      <div class="col-sm-3">
-        <mat-form-field appearance="outline">
-          <mat-label>Choose a Month</mat-label>
-          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="picker" placeholder="Choose a Month" />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
+      <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-label>Choose a Month</mat-label>
+        <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+        <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+        </mat-datepicker>
+      </mat-form-field>
       <div class="col-sm-3">
         <mat-form-field appearance="outline">
           <mat-label>User</mat-label>
@@ -28,17 +28,56 @@
         <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
       </div>
     </div>
-
+    <p *ngIf="activationList.length > 0" class="info-msg">** Accounts are calculated from 26th to 25th **</p>
     <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container ">
       <table mat-table [dataSource]="activationList" class="w-100 custom-table">
-        <ng-container *ngFor=" let column of displayedColumns" [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.baseNetworkName }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="LastMonthActivaitons">
+          <th mat-header-cell *matHeaderCellDef>Prev. Activaitons</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.lastMonthActivations }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ lastMonthTotalActivations }}</td>
+        </ng-container>
+        <ng-container matColumnDef="FreeAllocations">
+          <th mat-header-cell *matHeaderCellDef>Free Allocations</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.freeAllocations }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ totalFreeAllocations }}</td>
+        </ng-container>
+        <ng-container matColumnDef="AssignedToAgent">
+          <th mat-header-cell *matHeaderCellDef>Assinged To Agent</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.allocatedToAgent }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ totalAssignedToAgent }}</td>
+        </ng-container>
+        <ng-container matColumnDef="AssignedToShop">
+          <th mat-header-cell *matHeaderCellDef>Assigned To Shop</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.allocatedToShop }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ totalAssignedToShop }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Difference">
+          <th mat-header-cell *matHeaderCellDef>Difference</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.difference }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ totalDifference }}</td>
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns; sticky: true"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
       </table>
     </div>
     <div class="zero-records" *ngIf="activationList?.length == 0">No records found</div>

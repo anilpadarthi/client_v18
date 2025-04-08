@@ -3,6 +3,8 @@ import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-kpi-target-report',
@@ -12,7 +14,7 @@ import { DatePipe } from '@angular/common';
 
 export class KpiTargetReportComponent implements OnInit {
 
-  fromDate = null;
+  selectedMonth: string | null = null;
   selectedManagerId = null;
   bonusAmount = 0;
   managerLookup: any = [];
@@ -52,7 +54,7 @@ export class KpiTargetReportComponent implements OnInit {
   loadData(): void {
 
     const requestBody = {
-      fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+      fromDate: this.selectedMonth,
       filterId: this.selectedManagerId
     };
 
@@ -70,8 +72,20 @@ export class KpiTargetReportComponent implements OnInit {
   }
 
   onClear(): void {
-    this.fromDate = null;
+    this.selectedMonth = null;
     this.selectedManagerId = null;
   }
+
+  // Handle Year Selection (no action needed)
+    chosenYearHandler(normalizedYear: any) {
+      // No action required, just wait for month selection
+    }
+  
+    // Handle Month Selection
+    chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+      this.selectedMonth = formattedMonth + "-01";
+      datepicker.close(); // Close picker after selection
+    }
 
 }

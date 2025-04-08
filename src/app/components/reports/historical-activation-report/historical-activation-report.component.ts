@@ -4,6 +4,8 @@ import { LookupService } from '../../../services/lookup.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 
 @Component({
@@ -19,8 +21,8 @@ export class HistoricalActivationReportComponent implements OnInit {
   selectedShopId = null;
   selectedUserId = null;
   selectedManagerId = null;
-  fromMonth = null;
-  toMonth = null;
+  fromMonth: string | null = null;
+  toMonth: string | null = null;
   totalCount = 0;
   areaLookup: any = [];
   shopLookup: any = [];
@@ -82,8 +84,8 @@ export class HistoricalActivationReportComponent implements OnInit {
 
     if (this.fromMonth) {
       const requestBody = {
-        fromDate: this.datePipe.transform(this.fromMonth, 'yyyy-MM-dd'),
-        toDate: this.datePipe.transform(this.toMonth, 'yyyy-MM-dd'),
+        fromDate: this.fromMonth,
+        toDate: this.toMonth,
         areaId: this.selectedAreaId,
         shopId: this.selectedShopId,
         userId: this.selectedUserId,
@@ -126,6 +128,25 @@ export class HistoricalActivationReportComponent implements OnInit {
       return "Total";
     }
     return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  choseFromMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.fromMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+    return formattedMonth + "-01";
+  }
+
+  choseToMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.toMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

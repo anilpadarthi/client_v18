@@ -168,6 +168,10 @@
                                 <mat-icon>edit</mat-icon>
                                 Cancel Order
                             </button>
+                            <button *ngIf="isAdmin" mat-menu-item (click)="hideOrder(element.orderId,element.isHide)">
+                                <mat-icon>edit</mat-icon>
+                                {{element.isHide ? 'UnHide Order' : 'Hide Order'}}
+                            </button>
                             <button mat-menu-item (click)="viewOrder(element.orderId)">
                                 <mat-icon>visibility</mat-icon>
                                 View Order Details
@@ -227,13 +231,14 @@
                 <ng-container matColumnDef="expected">
                     <th mat-header-cell *matHeaderCellDef>Expected</th>
                     <td mat-cell *matCellDef="let element" class="text-right">
-                        £ {{ element.isVat ? element.totalWithVATAmount : element.totalWithOutVATAmount }}
+                        £ {{ (element.isVAT == 1 ? element.totalWithVATAmount : element.totalWithOutVATAmount) | number:
+                        '1.2-2' }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="collected">
                     <th mat-header-cell *matHeaderCellDef>Collected</th>
                     <td mat-cell *matCellDef="let element" class="text-right">
-                        £ {{ element.isVat ? element.totalWithVATAmount : element.totalWithOutVATAmount }}
+                        £ {{element.collectedAmount | number: '1.2-2' }}
                     </td>
                 </ng-container>
 
@@ -260,8 +265,8 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns" 
-                [ngClass]="{ 'green-row': row.isVAT === 1 }"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                    [ngClass]="{ 'green-row': row.isVAT === 1 }"></tr>
             </table>
         </div>
         <div *ngIf="orderList.length > 0">

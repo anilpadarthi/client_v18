@@ -32,9 +32,7 @@ body {
     background-color: #FF6347 !important;
 }
 
-.custom-table tfoot {
-    background-color: #FF6347 !important;
-}
+
 
 .custom-table th {
     border: 0.1px solid #ccc;
@@ -109,7 +107,8 @@ mat-panel-title {
         margin-right: 1em;
     }
 }
-.outstanding-metrics{
+
+.outstanding-metrics {
     margin-bottom: 1em;
 }
 
@@ -283,15 +282,29 @@ video {
     /* Hides the overflowed text */
     text-overflow: ellipsis;
     height: 50px !important;
+    margin-bottom: 0px !important;
+    text-align: center !important;
+    color: #FF6347;
+    line-height: var(--mat-card-title-text-line-height, var(--mat-app-title-large-line-height));
     /* Adds '...' when text is truncated */
 }
 
-.product-code{
-    color:black  !important;
-    font-size: 12px !important;
+.product-code {
+    color: black !important;
+    font-size: 14px !important;
     font-weight: bold;
     text-align: center !important;
     margin: 0px !important;
+    padding-top: 0.5em !important;
+}
+
+.sale-price {
+    color: #FF6347 !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    text-align: center !important;
+    margin: 0px !important;
+    padding-top: 0.5em !important;
 }
 
 .product-image {
@@ -299,11 +312,11 @@ video {
     max-width: 200px !important;
 }
 
-.item-qty{
+.item-qty {
     width: 60px !important;
-    height:30px  !important;
-    padding-top:5px !important ;
-    margin-top:5px !important ;
+    height: 30px !important;
+    padding-top: 5px !important;
+    margin-top: 5px !important;
 }
 
 .cart-items-count {
@@ -326,8 +339,34 @@ video {
 
 
 .productcard {
-    margin-bottom: 20px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center horizontally */
+    text-align: center;
+    /* Center text */
+    padding: 10px !important;
+    margin-bottom: 1em !important;
+    padding-bottom: 0em !important;
 }
+
+.productcard img {
+    max-width: 100%;
+    /* Ensure image is responsive */
+    height: auto;
+    /* Maintain aspect ratio */
+    object-fit: contain;
+    /* Prevent distortion */
+}
+
+.quantity-container {
+    padding: 1em;
+}
+
+.quantity-container button {
+    padding-left: 5px;
+}
+
 
 .mat-headline-2 {
     text-align: center !important;
@@ -364,4 +403,10 @@ video {
     background: none;
     border: none;
     cursor: pointer;
+}
+.info-msg {
+    color: gray;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
 }

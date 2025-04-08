@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { UserService } from '../../../services/user.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-agent-sim-order',
@@ -12,13 +13,10 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './agent-sim-order.component.scss'
 })
 
-export class AgentSimOrderComponent implements OnInit {
+export class AgentSimOrderComponent implements OnInit, AfterViewInit {
 
-  @Input() showToggle = true;
-  @Input() toggleChecked = false;
-  @Output() toggleMobileNav = new EventEmitter<void>();
-  @Output() toggleMobileFilterNav = new EventEmitter<void>();
-  @Output() toggleCollapsed = new EventEmitter<void>();
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+  isMobile: boolean = false;
 
   showFiller = false;
   subTotal = 0.00;
@@ -36,7 +34,7 @@ export class AgentSimOrderComponent implements OnInit {
   totalProducts: any[] = [];
   paymentMethodLookup: any[] = [];
   agentId: any = null;
-  
+
 
   constructor(
     private orderService: OrderService,
@@ -45,6 +43,7 @@ export class AgentSimOrderComponent implements OnInit {
     private webstorgeService: WebstorgeService,
     private route: ActivatedRoute,
   ) {
+    this.checkScreenSize();
   }
 
   displayedColumns: string[] = [
@@ -56,6 +55,29 @@ export class AgentSimOrderComponent implements OnInit {
     'amount',
     'action'
   ];
+
+  @HostListener('window:resize', ['$event'])
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+    this.closeSidebar();
+  }
+
+  toggleSidebar() {
+    this.sidenav.toggle();
+  }
+
+  closeSidebar() {
+    if (this.isMobile) {
+      this.sidenav?.close();
+    }
+  }
+
+  ngAfterViewInit() {
+    // Ensure sidenav updates correctly after view initialization
+    setTimeout(() => {
+      this.sidenav.opened = !this.isMobile;
+    });
+  }
 
   ngOnInit(): void {
     this.agentId = this.webstorgeService.getUserInfo().userId;
@@ -87,6 +109,7 @@ export class AgentSimOrderComponent implements OnInit {
     this.isCartView = false;
     this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
     this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    this.closeSidebar();
   }
 
   loadSubCategories(item: any) {
@@ -182,8 +205,8 @@ export class AgentSimOrderComponent implements OnInit {
       }
       else {
         this.toasterService.showMessage(res.message);
-      }     
-     
+      }
+
     });
   }
 

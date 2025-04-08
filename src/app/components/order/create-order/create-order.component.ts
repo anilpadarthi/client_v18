@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit, AfterViewInit  } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
@@ -7,6 +7,8 @@ import { OnFieldService } from '../../../services/on-field.service';
 import { ShopService } from '../../../services/shop.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { WebstorgeService } from '../../../services/web-storage.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-create-order',
@@ -14,15 +16,13 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './create-order.component.scss'
 })
 
-export class CreateOrderComponent implements OnInit {
+export class CreateOrderComponent implements OnInit, AfterViewInit  {
 
-  @Input() showToggle = true;
-  @Input() toggleChecked = false;
-  @Output() toggleMobileNav = new EventEmitter<void>();
-  @Output() toggleMobileFilterNav = new EventEmitter<void>();
-  @Output() toggleCollapsed = new EventEmitter<void>();
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+    isMobile: boolean = false;
 
   showFiller = false;
+  isLoading = false;
   commissionAmount = 0.00;
   minimumCartAmount = 25.00;
   vatAmount = 0.00;
@@ -56,8 +56,9 @@ export class CreateOrderComponent implements OnInit {
   shopDetails: any = null;
   requestType: string | null = null;
   isVAT = false;
-  selectedProduct:any = null;
+  selectedProduct: any = null;
   isDisplayProductDetails = false;
+  userRole = '';
 
   constructor(
     private orderService: OrderService,
@@ -66,8 +67,10 @@ export class CreateOrderComponent implements OnInit {
     private commissionStatementService: CommissionStatementService,
     private toasterService: ToasterService,
     private onFieldService: OnFieldService,
+    private webstorgeService: WebstorgeService,
     private route: ActivatedRoute,
   ) {
+    this.checkScreenSize();
   }
 
 
@@ -81,11 +84,36 @@ export class CreateOrderComponent implements OnInit {
     'action'
   ];
 
+  @HostListener('window:resize', ['$event'])
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+    this.closeSidebar();
+  }
+
+  toggleSidebar() {
+    this.sidenav.toggle();
+  }
+
+  closeSidebar() {
+    if (this.isMobile) {
+      this.sidenav?.close();
+    }
+  }
+
+  ngAfterViewInit() {
+    // Ensure sidenav updates correctly after view initialization
+    setTimeout(() => {
+      this.sidenav.opened = !this.isMobile;
+    });
+  }
+
 
   ngOnInit(): void {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.requestType = this.route.snapshot.paramMap.get('type');
-
+    this.userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    this.isLoading = true;
     if (this.requestType == 'COD') {
       this.isVAT = true;
       this.minimumCartAmount = environment.codMinimumCartValue;
@@ -157,6 +185,7 @@ export class CreateOrderComponent implements OnInit {
     this.shopService.getShop(shopId).subscribe((res) => {
       this.shopDetails = res.data.shop;
       this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}, London, UK`;
+      this.isLoading = false;
     });
   }
 
@@ -193,6 +222,7 @@ export class CreateOrderComponent implements OnInit {
     this.isDisplayProductDetails = false;
     this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
     this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    this.closeSidebar();
   }
 
   loadSubCategories(item: any) {
@@ -209,7 +239,6 @@ export class CreateOrderComponent implements OnInit {
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
 
     if (!existingItem) {
-      item.qty = '1';
       item.amount = Number(item.qty) * item.salePrice;
       this.cartItems.push(item);
     }
@@ -299,7 +328,7 @@ export class CreateOrderComponent implements OnInit {
         walletAmount: this.walletAmount,
         referenceNumber: this.shopCommissionId,
         requestType: this.requestType,
-        isVat: this.isVAT ? 1 : 0
+        isVat: this.requestType == 'B' ? 1 : 0
       };
 
       this.orderService.create(requestBody).subscribe((res) => {
@@ -405,17 +434,21 @@ export class CreateOrderComponent implements OnInit {
   }
 
   increaseQuantity(item: any) {
-    if(item.qty)
-    item.qty++;
+
+    if (item.qty == undefined) {
+      item.qty = 1;
+    }
+    else if (item.qty > 0)
+      item.qty++;
   }
 
-  decreaseQuantity(item:any) {
+  decreaseQuantity(item: any) {
     if (item.qty > 0) {
       item.qty--;
     }
   }
 
-  viewProductDetails(item:any):void{
+  viewProductDetails(item: any): void {
     this.isDisplayProductDetails = true;
     this.isCartView = false;
     this.isMainView = false;

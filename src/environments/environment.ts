@@ -4,24 +4,37 @@
 
 export const environment = {
   production: false,
-  isGeoLocationTurnOn : false,
-  isAddressSearch: false,
+  isGeoLocationTurnOn : true,
+  isAddressSearch: true,
   codMinimumCartValue: 50,
   bonusMinimCartValue: 50,
   instantBonusMinimumCartValue: 50,
 
   host: 'http://localhost:5170',
   backend:  {
-    //host: 'http://api.anglesims.co.uk'
-    //host: 'https://localhost:51544'
-    //host: 'http://localhost:8084'
-    host: 'https://uat-api.leap-tel.com'
+    host: 'https://localhost:51544'
   },
   frontend:  {
-    //host: 'http://localhost:4200' 
-    host: 'https://uat.leap-tel.com' 
+    host: 'http://localhost:4200' 
   }
 };
+
+// export const environment = {
+//   production: false,
+//   isGeoLocationTurnOn : true,
+//   isAddressSearch: true,
+//   codMinimumCartValue: 50,
+//   bonusMinimCartValue: 50,
+//   instantBonusMinimumCartValue: 50,
+
+//   host: 'http://localhost:5170',
+//   backend:  {
+//     host: 'https://uat-api.leap-tel.com'
+//   },
+//   frontend:  {
+//     host: 'https://uat.leap-tel.com' 
+//   }
+// };
 
 /*
  * For easier debugging in development mode, you can import the following file

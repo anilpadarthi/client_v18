@@ -4,6 +4,8 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { DashboardService } from '../../../services/dashboard.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-main-dashboard',
@@ -12,8 +14,8 @@ import { DatePipe } from '@angular/common';
 })
 
 export class MainDashboardComponent implements OnInit {
-  pickerDate: any = null;
-  selectedDate: any = null;
+  
+  selectedMonth: string | null = null;
   selectedUserId = null;
   selectedManagerId = null;
   userLookup: any = [];
@@ -45,7 +47,7 @@ export class MainDashboardComponent implements OnInit {
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     this.filterId = loggedInUserId;
     this.filterType = userRole;
-    this.selectedDate = new Date();
+    //this.selectedMonth = new Date().toDateString('dd/MM/YYYY');
     if (userRole == 'Admin' || userRole == 'SuperAdmin' ) {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
@@ -83,7 +85,7 @@ export class MainDashboardComponent implements OnInit {
   loadDashboardMetrics(): void {
     this.isLoading = true;
     const requestBody = {
-      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      fromDate: this.selectedMonth,
       filterId: this.filterId,
       filterType: this.filterType
     };
@@ -102,12 +104,11 @@ export class MainDashboardComponent implements OnInit {
 
   onSubmit(): void {
 
-    if (this.pickerDate == null) {
+    if (this.selectedMonth == null) {
       this.toasterService.showMessage('Please select any month before to proceed.');
     }
     else {
-      this.refreshCounter++;
-      this.selectedDate = this.pickerDate;
+      this.refreshCounter++;      
       if (this.selectedUserId) {
         this.dashboardViewMode = 'Agent';
         this.filterId = this.selectedUserId;
@@ -121,5 +122,17 @@ export class MainDashboardComponent implements OnInit {
       this.loadDashboardMetrics();
     }
   }
+
+  // Handle Year Selection (no action needed)
+    chosenYearHandler(normalizedYear: any) {
+      // No action required, just wait for month selection
+    }
+  
+    // Handle Month Selection
+    chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+      this.selectedMonth = formattedMonth + "-01";
+      datepicker.close(); // Close picker after selection
+    }
 
 }

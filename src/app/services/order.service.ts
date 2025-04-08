@@ -50,7 +50,9 @@ export class OrderService {
     return this.http.get<any>(this.url + "/GetOrderHistory/" + orderId);
   }
 
-
+  hideOrder(orderId: number, isHide: any): Observable<any> {
+    return this.http.get<any>(this.url + "/HideOrder?orderId=" + orderId + '&isHide=' + isHide);
+  }
 
   downloadOrders(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + "/DownloadOrders", requestBody);

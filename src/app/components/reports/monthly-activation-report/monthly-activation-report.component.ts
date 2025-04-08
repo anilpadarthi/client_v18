@@ -4,6 +4,8 @@ import { LookupService } from '../../../services/lookup.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 
 @Component({
@@ -19,7 +21,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   selectedShopId = null;
   selectedUserId = null;
   selectedManagerId = null;
-  selectedMonth = null;
+  selectedMonth: string | null = null;
   isInstantActivation = false;
   totalCount = 0;
   areaLookup: any = [];
@@ -113,7 +115,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   loadData(): void {
     if (this.selectedMonth) {
       const requestBody = {
-        fromDate: this.datePipe.transform(this.selectedMonth, 'yyyy-MM-dd'),
+        fromDate: this.selectedMonth,
         areaId: this.selectedAreaId,
         shopId: this.selectedShopId,
         userId: this.selectedUserId,
@@ -165,6 +167,18 @@ export class MonthlyActivationReportComponent implements OnInit {
       + this.o2Sum + this.gifgafSum
       + this.vodafoneSum + this.lebaraSum
       + this.voxiSum + this.smartySum;
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

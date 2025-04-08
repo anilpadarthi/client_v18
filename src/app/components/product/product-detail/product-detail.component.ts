@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { environment } from '../../../../environments/environment';
 
@@ -10,13 +10,10 @@ import { environment } from '../../../../environments/environment';
 export class ProductDetailComponent implements OnInit {
   @Input() selectedProduct!: any;
   @Output() notifyParent = new EventEmitter<any>();
-  productImagePreview: any = null;
-  productPrices: any[] = [];
-  productDetails: any;
   quantity = 1;
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
-  
+
 
   constructor
     (
@@ -30,6 +27,9 @@ export class ProductDetailComponent implements OnInit {
   }
 
   increaseQuantity() {
+    if (this.selectedProduct.qty == undefined || this.selectedProduct.qty == null) {
+      this.selectedProduct.qty = 1;
+    }
     this.quantity++;
   }
 
@@ -38,15 +38,15 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
   addToCart(): void {
     this.selectedProduct.qty = this.quantity;
     this.notifyParent.emit(this.selectedProduct);
   }
-  
+
 
   ngOnChanges(): void {
-      
+    this.selectedProduct.qty = null;
   }
 }

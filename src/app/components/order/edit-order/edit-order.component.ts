@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { ShopService } from '../../../services/shop.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-edit-order',
@@ -12,13 +13,10 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './edit-order.component.scss'
 })
 
-export class EditOrderComponent implements OnInit {
+export class EditOrderComponent implements OnInit, AfterViewInit {
 
-  @Input() showToggle = true;
-  @Input() toggleChecked = false;
-  @Output() toggleMobileNav = new EventEmitter<void>();
-  @Output() toggleMobileFilterNav = new EventEmitter<void>();
-  @Output() toggleCollapsed = new EventEmitter<void>();
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+    isMobile: boolean = false;
 
   showFiller = false;
   vatAmount = 0.00;
@@ -33,6 +31,7 @@ export class EditOrderComponent implements OnInit {
 
   cartItems: any[] = [];
   isCartView = false;
+  isMainView = true;
   isDisplayCatgories = true;
   isDisplaySubCatgories = false;
   isDisplayProducts = false;
@@ -43,6 +42,8 @@ export class EditOrderComponent implements OnInit {
   shopId: any = null;
   orderId: any = null;
   shippingAddress: any = null;
+  selectedProduct: any = null;
+  isDisplayProductDetails = false;
 
   constructor(
     private orderService: OrderService,
@@ -51,6 +52,7 @@ export class EditOrderComponent implements OnInit {
     private toasterService: ToasterService,
     private route: ActivatedRoute,
   ) {
+    this.checkScreenSize();
   }
 
 
@@ -63,6 +65,29 @@ export class EditOrderComponent implements OnInit {
     'amount',
     'action'
   ];
+
+  @HostListener('window:resize', ['$event'])
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+    this.closeSidebar();
+  }
+
+  toggleSidebar() {
+    this.sidenav.toggle();
+  }
+
+  closeSidebar() {
+    if (this.isMobile) {
+      this.sidenav?.close();
+    }
+  }
+
+  ngAfterViewInit() {
+    // Ensure sidenav updates correctly after view initialization
+    setTimeout(() => {
+      this.sidenav.opened = !this.isMobile;
+    });
+  }
 
 
   ngOnInit(): void {
@@ -94,6 +119,7 @@ export class EditOrderComponent implements OnInit {
 
         this.updateCalculations();
         this.isCartView = true;
+        this.isMainView = false;
       });
     }
   }
@@ -103,8 +129,10 @@ export class EditOrderComponent implements OnInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
+    this.isMainView = true;
     this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
     this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    this.closeSidebar();
   }
 
   loadSubCategories(item: any) {
@@ -112,6 +140,7 @@ export class EditOrderComponent implements OnInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = true;
     this.isCartView = false;
+    this.isMainView = true;
     this.subCategories = item.subCategories;
   }
 
@@ -152,6 +181,7 @@ export class EditOrderComponent implements OnInit {
 
   viewCart(): void {
     this.isCartView = true;
+    this.isMainView = false;
     this.updateCalculations();
   }
 
@@ -182,6 +212,7 @@ export class EditOrderComponent implements OnInit {
 
   continueShopping(): void {
     this.isCartView = false;
+    this.isMainView = true;
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
@@ -218,6 +249,28 @@ export class EditOrderComponent implements OnInit {
 
   closeWindow() {
     window.close();  // Attempt to close the window/tab
+  }
+
+  increaseQuantity(item: any) {
+
+    if (item.qty == undefined) {
+      item.qty = 1;
+    }
+    else if (item.qty > 0)
+      item.qty++;
+  }
+
+  decreaseQuantity(item: any) {
+    if (item.qty > 0) {
+      item.qty--;
+    }
+  }
+
+  viewProductDetails(item: any): void {
+    this.isDisplayProductDetails = true;
+    this.isCartView = false;
+    this.isMainView = false;
+    this.selectedProduct = item;
   }
 
 }

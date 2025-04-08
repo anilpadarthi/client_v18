@@ -3,22 +3,27 @@ import { NavItem } from "../nav-item/nav-item";
 
 export const adminItems: NavItem[] = [
 
+  // {
+  //   displayName: 'Dashboards',
+  //   iconName: 'home',
+  //   route: '',
+  //   children: [
+  //     {
+  //       displayName: 'Main',
+  //       iconName: 'arrow_right',
+  //       route: 'dashboard/main',
+  //     },
+  //     {
+  //       displayName: 'Analytics',
+  //       iconName: 'arrow_right',
+  //       route: 'dashboard/analytics',
+  //     },
+  //   ],
+  // },
   {
-    displayName: 'Dashboards',
+    displayName: 'Dashboard',
     iconName: 'home',
-    route: '',
-    children: [
-      {
-        displayName: 'Main',
-        iconName: 'arrow_right',
-        route: 'dashboard/main',
-      },
-      {
-        displayName: 'Analytics',
-        iconName: 'arrow_right',
-        route: 'dashboard/analytics',
-      },
-    ],
+    route: 'dashboard/main',
   },
   {
     displayName: 'Allocate',
@@ -37,16 +42,7 @@ export const adminItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'IMEI',
-    iconName: 'manage_search',
-    route: 'imei/search',
-  },
-  {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
-  },
+ 
   {
     displayName: 'Reports',
     iconName: 'monitoring',
@@ -58,12 +54,12 @@ export const adminItems: NavItem[] = [
         route: 'report/monthly/activations',
       },
       {
-        displayName: 'Analysis Reports',
+        displayName: 'Analysis Report',
         iconName: 'arrow_right',
         route: 'report/historical/activations',
       },
       {
-        displayName: 'Network Reports',
+        displayName: 'Network Report',
         iconName: 'arrow_right',
         route: 'report/network-report',
       },
@@ -81,6 +77,16 @@ export const adminItems: NavItem[] = [
         displayName: 'Commission Statements',
         iconName: 'arrow_right',
         route: 'report/commission-statement',
+      },
+      {
+        displayName: 'Area Commissions',
+        iconName: 'arrow_right',
+        route: 'report/area-commissions',
+      },
+      {
+        displayName: 'Monthly Accessories Report',
+        iconName: 'arrow_right',
+        route: 'report/monthly-accessories-report',
       },
       {
         displayName: 'Daily Reports',
@@ -195,11 +201,7 @@ export const adminItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
-  },
+
 
   {
     displayName: 'Accessories',
@@ -210,22 +212,24 @@ export const adminItems: NavItem[] = [
         displayName: 'Sales',
         iconName: 'arrow_right',
         route: 'aceessories/sales',
-      },
-      {
-        displayName: 'Create Order',
-        iconName: 'arrow_right',
-        route: 'aceessories/create-order',
-        target: '_blank'
-      },
-      {
-        displayName: 'Request Sims',
-        iconName: 'arrow_right',
-        route: 'aceessories/agent-sim-request',
-        target: '_blank'
-      },
+      }, 
     ],
   },
-
+  {
+    displayName: 'IMEI',
+    iconName: 'manage_search',
+    route: 'imei/search',
+  },
+  {
+    displayName: 'OnField',
+    iconName: 'store',
+    route: 'onfield',
+  },
+  {
+    displayName: 'Chat',
+    iconName: 'chat',
+    route: 'chat',
+  },
   // {
   //   displayName: 'Edit Profile',
   //   iconName: 'account_circle',
@@ -238,22 +242,27 @@ export const adminItems: NavItem[] = [
 
 export const managerItems: NavItem[] = [
 
+  // {
+  //   displayName: 'Dashboards',
+  //   iconName: 'home',
+  //   route: '',
+  //   children: [
+  //     {
+  //       displayName: 'Main',
+  //       iconName: 'arrow_right',
+  //       route: 'dashboard/main',
+  //     },
+  //     {
+  //       displayName: 'Analytics',
+  //       iconName: 'arrow_right',
+  //       route: 'dashboard/analytics',
+  //     },
+  //   ],
+  // },
   {
-    displayName: 'Dashboards',
+    displayName: 'Dashboard',
     iconName: 'home',
-    route: '',
-    children: [
-      {
-        displayName: 'Main',
-        iconName: 'arrow_right',
-        route: 'dashboard/main',
-      },
-      {
-        displayName: 'Analytics',
-        iconName: 'arrow_right',
-        route: 'dashboard/analytics',
-      },
-    ],
+    route: 'dashboard/main',
   },
   {
     displayName: 'Allocate',

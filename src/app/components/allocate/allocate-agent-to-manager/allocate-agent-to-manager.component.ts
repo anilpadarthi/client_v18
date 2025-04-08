@@ -5,6 +5,8 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-allocate-agent-to-manager',
@@ -18,7 +20,6 @@ export class AllocateAgentToManagerComponent implements OnInit {
     'select',
     'agentId',
     'agentName',
-    'userRole',
     'assingedTo',
     'action'
   ];
@@ -35,7 +36,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
   selectedMangerIdForTransfer = null;
   managerLookup: any = [];
   selectedAgentsToTransfer: any = [];
-  fromDate: any;
+  selectedMonth: string | null = null;
   isBackToSelection = true;
 
   constructor(
@@ -103,7 +104,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
     this.searchText = null;
     this.selectedManagerId = null;
     this.selectedMangerIdForTransfer = null;
-    this.fromDate = null;
+    this.selectedMonth = null;
     this.onFilter();
   }
 
@@ -140,7 +141,7 @@ export class AllocateAgentToManagerComponent implements OnInit {
   transferAgents(): void {
     const requestBody = {
       managerId: this.selectedMangerIdForTransfer,
-      fromDate: this.setFirstDayOfMonth(this.fromDate),
+      fromDate: this.selectedMonth,
       agentIds: this.selectedAgentsToTransfer.map((m: any) => m.userId)
     };
 
@@ -169,11 +170,18 @@ export class AllocateAgentToManagerComponent implements OnInit {
     });
   }
 
-  setFirstDayOfMonth(date: Date): Date {
-    const firstDay = new Date(date);
-    firstDay.setDate(1);
-    firstDay.setDate(firstDay.getDate() + 1); // Set the day to the 1st of the month
-    return firstDay;
+
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

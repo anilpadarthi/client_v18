@@ -5,6 +5,8 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-allocate-area-to-agent',
@@ -34,7 +36,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
   selectedAgentIdForTransfer = null;
   agentLookup: any = [];
   selectedAreasToTransfer: any = [];
-  fromDate: any;
+  selectedMonth: string | null = null;
   isBackToSelection = true;
 
   constructor(
@@ -102,7 +104,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
     this.searchText = null;
     this.selectedAgentId = null;
     this.selectedAgentIdForTransfer = null;
-    this.fromDate = null;
+    this.selectedMonth = null;
     this.onFilter();
   }
 
@@ -139,7 +141,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
   transferAreas(): void {
     const requestBody = {
       agentId: this.selectedAgentIdForTransfer,
-      fromDate: this.setFirstDayOfMonth(this.fromDate),
+      fromDate: this.selectedMonth,
       areaIds: this.selectedAreasToTransfer.map((m: any) => m.areaId)
     };
 
@@ -168,11 +170,18 @@ export class AllocateAreaToAgentComponent implements OnInit {
     });
   }
 
-  setFirstDayOfMonth(date: Date): Date {
-    const firstDay = new Date(date);
-    firstDay.setDate(1);
-    firstDay.setDate(firstDay.getDate() + 1); // Set the day to the 1st of the month
-    return firstDay;
-  }
+
+
+  // Handle Year Selection (no action needed)
+    chosenYearHandler(normalizedYear: any) {
+      // No action required, just wait for month selection
+    }
+  
+    // Handle Month Selection
+    chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+      this.selectedMonth = formattedMonth + "-01";
+      datepicker.close(); // Close picker after selection
+    }
 
 }

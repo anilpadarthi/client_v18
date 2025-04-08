@@ -88,4 +88,8 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetSimAllocationReport', requestBody);
   }
 
+  getMonthlyAccessoriesReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetMonthlyAccessoriesReport', requestBody);
+  }
+
 }

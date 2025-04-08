@@ -1,6 +1,10 @@
-import { Component, OnInit,Input,  SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { OnFieldService } from '../../../services/on-field.service';
 import { DatePipe } from '@angular/common';
+import { WebstorgeService } from '../../../services/web-storage.service';
+import { ToasterService } from '../../../services/toaster.service';
+import { CommissionStatementService } from '../../../services/commissionStatement.service';
+
 
 @Component({
   selector: 'app-on-field-commissions',
@@ -15,6 +19,8 @@ export class OnFieldCommissionsComponent implements OnInit {
   private isFirstChange = true;
   isLoading = false;
   activationList: any = [];
+  userRole = '';
+  isAdmin = false;
   displayedColumns: string[] = [
     'DATE',
     'EE',
@@ -23,54 +29,78 @@ export class OnFieldCommissionsComponent implements OnInit {
     'LEBARA',
     'GIFGAFF',
     'VODAFONE',
-    'VOXI',    
+    'VOXI',
     'SMARTY',
     'TOTAL',
     'CommissionAmount',
-    'BonusAmount'
+    'BonusAmount',
+    'actions'
   ];
-  
+
   constructor(
     public datePipe: DatePipe,
     private onFieldService: OnFieldService,
-  ) {}
+    private webstorgeService: WebstorgeService,
+    private toasterService: ToasterService,
+    private commissionStatementService: CommissionStatementService
+  ) { }
 
   ngOnInit(): void {
-    if(this.selectedShopId > 0){
+    this.userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
+    if (this.selectedShopId > 0) {
       this.loadData();
     }
   }
 
 
-  loadData(): void {   
+  loadData(): void {
     this.isLoading = true;
     const request = {
       shopId: this.selectedShopId,
-      isInstantActivation : false,
+      isInstantActivation: false,
     };
     this.onFieldService.onFieldCommissionList(request).subscribe((res) => {
       this.isLoading = false;
       if (res.data) {
         let result = res.data;
-          result.forEach((e: any) => {
-            e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
-          });
+        result.forEach((e: any) => {
+          e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
+        });
         this.activationList = result;
       }
     });
   }
-  
+
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (this.isFirstChange) {
-        this.isFirstChange = false; // Mark first change as handled
-        return; // Skip logic on the first change detection pass
-      }
-  
-      if (changes['selectedShopId'] || changes['refreshValue']  ) {
-        this.loadData();
-      }
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
     }
-  
-  
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.loadData();
+    }
+  }
+
+  hideBonus(shopCommissionHistoryId: number, includeWalletBonus: any): void {
+    this.commissionStatementService.hideBonus(shopCommissionHistoryId, !includeWalletBonus).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Successfully hidden.");
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
+  }
+
+  downloadCommissionStatement(shopId: number, fromDate: string): void {
+    this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
+  }
+
+
 }

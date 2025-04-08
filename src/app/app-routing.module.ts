@@ -46,6 +46,8 @@ import { OrderListComponent } from './components/order/order-list/order-list.com
 import { AgentSimOrderComponent } from './components/order/agent-sim-order/agent-sim-order.component';
 import { AgreementNotificationsComponent } from './components/management/agreement-notifications/agreement-notifications.component';
 import { GroupChatComponent } from './components/chat/group-chat/group-chat.component';
+import { AreaCommissionsComponent } from './components/reports/area-commissions/area-commissions.component';
+import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
 
 
 const routes: Routes = [
@@ -99,6 +101,8 @@ const routes: Routes = [
       { path: 'report/simallocation-report', component: SimAllocationReportComponent },
       { path: 'report/kpi-target', component: KpiTargetReportComponent },
       { path: 'report/commission-statement', component: CommissionStatementReportComponent },
+      { path: 'report/monthly-accessories-report', component: MonthlyAccessoriesReportComponent },
+      { path: 'report/area-commissions', component: AreaCommissionsComponent },
       { path: 'report/daily-report', component: DailyReportComponent },
       { path: 'management/payslip', component: PaySlipComponent },
       { path: 'management/attendance-report', component: AttendanceReportComponent },

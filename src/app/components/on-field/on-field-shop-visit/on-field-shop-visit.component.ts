@@ -12,15 +12,16 @@ import { PostcodeService } from '../../../services/postcode.service';
 
 export class OnFieldShopVisitComponent {
 
-  @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
+  @ViewChild('videoElement', { static: true }) videoElement!: ElementRef;
+  @ViewChild('canvasElement', { static: true }) canvasElement!: ElementRef;
   capturedImage: string | null = null;
-  liveImage: any = null;
   comments: any = null;
   selectedShopId: any = null;
   @Input() geoLocation: any;
   @Input() shopAddressDetails: any = null;
   @Input() refreshValue!: number;
   @Output() notifyParent = new EventEmitter<any>();
+  stream!: MediaStream;
 
   constructor(private fb: FormBuilder,
     private shopService: ShopService,
@@ -31,43 +32,29 @@ export class OnFieldShopVisitComponent {
     this.selectedShopId = this.shopAddressDetails?.shopId;
   }
 
-  onCaptureImage(event: any): void {
-    const file = event.target.files[0];
-    this.liveImage = file;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.capturedImage = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        this.videoElement.nativeElement.srcObject = stream;
-      })
-      .catch((err) => {
-        console.error('Error accessing camera:', err);
-      });
-  }
-
-  // Capture the image from the video stream
   captureImage() {
-    const canvas = document.createElement('canvas');
     const video = this.videoElement.nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    const context = canvas.getContext('2d');
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      this.capturedImage = canvas.toDataURL('image/png');  // Convert to base64 string
-      this.liveImage = this.capturedImage;
+    this.capturedImage = canvas.toDataURL('image/png'); // Convert to base64
+  }
+
+  async startCamera() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      this.videoElement.nativeElement.srcObject = this.stream;
+    } catch (error) {
+      console.error('Error accessing camera:', error);
     }
   }
+
+
+
 
 
 
@@ -88,6 +75,7 @@ export class OnFieldShopVisitComponent {
     if (this.selectedShopId) {
       this.postcodeService.getDistanceBetweenLatAndLong(this.geoLocation.latitude, this.geoLocation.longitude,
         this.shopAddressDetails.latitude, this.shopAddressDetails.longitude).subscribe((res) => {
+          console.log(res);
           if (res.metres < 300) {
             this.proceedToShopVisit();
           }
@@ -103,27 +91,35 @@ export class OnFieldShopVisitComponent {
   }
 
   proceedToShopVisit(): void {
+    if (!this.capturedImage) {
+      alert('Please capture an image first!');
+      return;
+    }
+
+    const blob = this.dataURItoBlob(this.capturedImage);
     const formData = new FormData();
     formData.append('shopId', this.selectedShopId != null ? this.selectedShopId : 0);
     formData.append('comments', this.comments);
-    formData.append('imageFile', this.liveImage);
     formData.append('latitude', this.geoLocation.latitude);
     formData.append('longitude', this.geoLocation.longitude);
+    formData.append('imageFile', blob, 'captured-image.png');
 
-    console.log('Captured Image FormData:', formData);
 
-    this.shopService.creteShopVisit(this.selectedShopId).subscribe((res) => {
+    this.shopService.creteShopVisit(formData).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage("Visited successfully.");
         this.comments = null;
         this.capturedImage = null;
-        this.liveImage = null;
-        const parentData= {
+        const parentData = {
           fromAction: 'ShopVisit'
         }
         this.notifyParent.emit(parentData);
       }
     });
+  }
+
+  ngOnChanges(): void {
+    this.selectedShopId = this.shopAddressDetails?.shopId;
   }
 
 

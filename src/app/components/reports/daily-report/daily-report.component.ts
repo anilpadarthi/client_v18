@@ -25,6 +25,7 @@ export class DailyReportComponent implements OnInit {
     'LYCA',
     'VOXI',
     'SMARTY',
+    'TOTAL'
   ];
 
   eeSum: number = 0;
@@ -36,6 +37,7 @@ export class DailyReportComponent implements OnInit {
   lycaSum: number = 0;
   voxiSum: number = 0;
   smartySum: number = 0;
+  totalSum: number = 0;
 
 
   constructor(
@@ -56,6 +58,11 @@ export class DailyReportComponent implements OnInit {
     this.lycaSum = this.resultList.reduce((sum: any, item: any) => sum + item.lyca, 0);
     this.voxiSum = this.resultList.reduce((sum: any, item: any) => sum + item.voxi, 0);
     this.smartySum = this.resultList.reduce((sum: any, item: any) => sum + item.smarty, 0);
+
+    this.totalSum = this.eeSum + this.threeSum
+      + this.o2Sum + this.gifgafSum
+      + this.vodafoneSum + this.lebaraSum
+      + this.voxiSum + this.smartySum;
   }
 
   loadData(): void {
@@ -65,6 +72,9 @@ export class DailyReportComponent implements OnInit {
     this.reportService.getDailyGivenCount(requestBody).subscribe((res) => {
       this.resultList = res.data;
       if(this.resultList.length > 0){
+        this.resultList.forEach((e: any) => {
+          e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
+        });
         this.calculateSums();
       }
     });

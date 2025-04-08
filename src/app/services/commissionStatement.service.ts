@@ -43,8 +43,12 @@ export class CommissionStatementService {
     return this.exportService.downloadPDF(url, 'Commission_Statement_' + shopId + '.pdf');
   }
 
-  exportToExcel(isOptedIn:boolean,fromDate:any): void {
-    let url =  this.url +'/ExportToExcel';
+  exportCommissionChequeExcel(isOptedIn:boolean,fromDate:any): void {
+    let url =  this.url +'/ExportCommissionChequeExcel?isOptedIn=' + isOptedIn + '&fromDate=' + fromDate;
     return this.exportService.downloadExcel(url,'Commission_List');
+  }
+
+  hideBonus(shopCommissionHistoryId: number, isDisplayBonus: any): Observable<any> {
+    return this.http.get<any>(this.url + "/HideBonus?shopCommissionHistoryId=" + shopCommissionHistoryId + '&isDisplayBonus=' + isDisplayBonus);
   }
 }

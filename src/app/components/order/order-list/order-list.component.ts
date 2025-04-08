@@ -310,8 +310,7 @@ export class OrderListComponent implements OnInit {
       var data = {
         orderId: item.orderId,
         shopId: item.shopId,
-        balanceAmount: res.data != null && res.data.length > 0 ? res.data.reduce((sum: any, s: any) => sum + s.amount, 0)
-          : (item.isVAT ? item.TotalWithVATAmount : item.TotalWithOutVATAmount)
+        balanceAmount: (item.isVAT == 1 ? item.totalWithVATAmount : item.totalWithOutVATAmount) - (res.data != null && res.data.length > 0 ? res.data.reduce((sum: any, s: any) => sum + s.amount, 0) : 0)
       }
       this.dialog.open(OrderPaymentEditorComponent, {
         data
@@ -332,6 +331,17 @@ export class OrderListComponent implements OnInit {
       if (res.statusCode == 200) {
         this.toasterService.showMessage("Cancelled Successfully.");
         this.loadData();
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
+  }
+
+  hideOrder(orderId: number, isHide: any): void {
+    this.orderService.hideOrder(orderId, !isHide).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Successfully hidden.");
       }
       else {
         this.toasterService.showMessage(res.data);

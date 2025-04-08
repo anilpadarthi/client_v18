@@ -31,20 +31,17 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Reference Number</mat-label>
-            <input matInput formControlName="referenceNumber" [disabled]="IsDisabled"
-                placeholder="Enter your Sub-Category name" />
+            <input matInput formControlName="referenceNumber" [disabled]="IsDisabled" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount" [disabled]="IsDisabled"
-                placeholder="Enter your Sub-Category name" />
+            <input matInput formControlName="amount" [disabled]="IsDisabled" type="number" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Comments</mat-label>
-            <textarea matInput formControlName="comments" placeholder="Enter your Sub-Category name"
-                cols="5"></textarea>
+            <textarea matInput formControlName="comments" cols="5"></textarea>
         </mat-form-field>
 
         <div class="d-flex align-items-center m-b-16">

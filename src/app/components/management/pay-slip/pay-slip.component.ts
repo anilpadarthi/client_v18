@@ -35,7 +35,7 @@ export class PaySlipComponent implements OnInit {
   kpi1Percentage = 0.00;
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
-  displayedColumns1: string[] = ['ActivationCount', 'NetworkName', 'Rate', 'Total'];
+  displayedColumns1: string[] = ['NetworkName', 'ActivationCount','Rate', 'Total'];
   displayedColumns2: string[] = ['saleType', 'totalSale', 'rate', 'total'];
   displayedColumns3: string[] = ['comments', 'date', 'amount'];
 
@@ -110,7 +110,6 @@ export class PaySlipComponent implements OnInit {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.selectedMonth = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
-
   }
 
 
