@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, OnInit, AfterViewInit  } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
@@ -16,17 +16,18 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrl: './create-order.component.scss'
 })
 
-export class CreateOrderComponent implements OnInit, AfterViewInit  {
+export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
-    isMobile: boolean = false;
+  isMobile: boolean = false;
 
   showFiller = false;
   isLoading = false;
   commissionAmount = 0.00;
   minimumCartAmount = 25.00;
-  vatAmount = 0.00;
+  totalVatAmount = 0.00;
   subTotal = 0.00;
+  netTotal = 0.00;
   deliveryCharges = 2.99;
   discountAmount = 0.00;
   grandTotal = 0.00;
@@ -58,6 +59,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
   isVAT = false;
   selectedProduct: any = null;
   isDisplayProductDetails = false;
+  isAdmin = false;
   userRole = '';
 
   constructor(
@@ -75,12 +77,13 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
 
 
   displayedColumns: string[] = [
-    'productImage',
     'productName',
     'productCode',
-    'salePrice',
     'quantity',
-    'amount',
+    'salePrice',
+    'netAmount',
+    'vatAmount',
+    'total',
     'action'
   ];
 
@@ -112,7 +115,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.requestType = this.route.snapshot.paramMap.get('type');
     this.userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
     this.isLoading = true;
     if (this.requestType == 'COD') {
       this.isVAT = true;
@@ -156,10 +161,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-
-      res.data?.products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.categories = res.data.categories;
-      this.totalProducts = res.data.products;
+      //res.data?.products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      //this.totalProducts = res.data.products;
     });
 
     this.lookupService.getOrderPaymentTypes().subscribe((res) => {
@@ -213,15 +217,20 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
   }
 
 
-  loadProducts(subCategoryId: any) {
+  loadProducts(categoryId: number, subCategoryId: number) {
     this.isDisplayProducts = true;
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
     this.isMainView = true;
     this.isDisplayProductDetails = false;
-    this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
-    this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    //this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
+    this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data;
+      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    });
+    
     this.closeSidebar();
   }
 
@@ -239,7 +248,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
 
     if (!existingItem) {
-      item.amount = Number(item.qty) * item.salePrice;
+      item.netAmount = Number(item.qty) * item.salePrice;
+      item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
       this.cartItems.push(item);
     }
     this.saveCartToSession();
@@ -258,7 +268,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
     else {
       existingItem.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
     }
-    existingItem.amount = Number(existingItem.qty) * existingItem.salePrice;
+    existingItem.netAmount = Number(existingItem.qty) * existingItem.salePrice;
+    existingItem.vatAmount = (existingItem.netAmount * this.vatPercentage) / 100;
     this.saveCartToSession();
     this.updateCalculations();
   }
@@ -289,15 +300,15 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
 
   updateCalculations() {
     this.subTotal = 0;
-    this.cartItems?.forEach((product) => {
-      this.subTotal += product.qty * product.salePrice;
-    });
-    let netTotal = this.subTotal;
-    this.vatAmount = (netTotal * this.vatPercentage) / 100;
+    this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
+    this.totalVatAmount = this.cartItems?.reduce((total1, product) => total1 + product.vatAmount, 0) || 0;
+    this.subTotal = this.netTotal + this.totalVatAmount;
+
+
     this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
-    this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithVAT = (this.subTotal + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - (this.netTotal * this.discountPercentage) / 100;
+    this.grandTotal = this.grandTotalWithVAT;
   }
 
   continueShopping(): void {
@@ -317,8 +328,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit  {
         shippingAddress: this.shippingAddress,
         paymentMethodId: this.selectedPaymentMethodId,
         items: this.cartItems,
-        itemTotal: this.subTotal,
-        vatAmount: this.vatAmount,
+        itemTotal: this.netTotal,
+        vatAmount: this.totalVatAmount,
         deliveryCharges: this.deliveryCharges,
         discountAmount: this.discountAmount,
         totalWithVATAmount: this.grandTotalWithVAT,

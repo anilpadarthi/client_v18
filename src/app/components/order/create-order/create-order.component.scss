@@ -5,7 +5,13 @@
 .branding {
     padding: 0em !important;
 }
-.continue-shopping button {
-    margin-right: 1em;
-    margin-bottom: 1em;
+
+.continue-shopping {
+    display: block !important;
+
+    button,
+    mat-form-field {
+        margin-left: 1em !important;
+        margin-bottom: 1em !important;
+    }
 }

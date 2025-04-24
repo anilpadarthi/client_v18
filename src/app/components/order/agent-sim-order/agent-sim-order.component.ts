@@ -90,10 +90,8 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
         });
       });
 
-      let products = res.data?.products.filter((c: any) => c.categoryId == 40);
-      products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.categories = categories;
-      this.totalProducts = products;
+
     });
 
     this.userService.getUser(this.agentId).subscribe((res) => {
@@ -102,13 +100,16 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
 
-  loadProducts(subCategoryId: any) {
+  loadProducts(categoryId: number, subCategoryId: number) {
     this.isDisplayProducts = true;
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
-    this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
-    this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data;
+      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    });
     this.closeSidebar();
   }
 
@@ -191,7 +192,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       items: this.cartItems,
       itemTotal: this.subTotal,
       requestType: 'SimRequest',
-      paymentMethodId: 5,
+      paymentMethodId: 9,
       placedBy: this.agentId,
       shippingAddress: this.shippingAddress,
     };

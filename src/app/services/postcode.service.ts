@@ -30,8 +30,10 @@ export class PostcodeService {
 
   autoCompleteAddresList(searchText: string): Observable<any> {
     const url = `https://api.getAddress.io/autocomplete/${searchText}?api-key=${this.apiKey}`;
-
-    return this.http.get<any>(url);
+    var requestBody = {
+      "search": ["postcode"]
+    }
+    return this.http.post<any>(url, requestBody);
   }
 
   getAddressDetails(id: any): Observable<any> {

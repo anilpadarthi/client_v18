@@ -20,7 +20,9 @@ export class PaySlipComponent implements OnInit {
   selectedManagerId = 0;
   totalSalaryInAdvance = 0.00;
   totalSalary = 0.00;
+  totalActivations = 0;
   totalSimCommission = 0.00;
+  totalSaleAmount = 0.00;
   totalAccessoriesCommission = 0.00;
   userLookup: any = [];
   managerLookup: any = [];
@@ -90,7 +92,9 @@ export class PaySlipComponent implements OnInit {
         this.salaryDetails = res.data.salaryDetailsModel;
         this.salaryInAdvance = res.data.salaryInAdvanceModel;
         this.totalSalary = this.salaryDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+        this.totalActivations = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.activationCount, 0);
         this.totalSimCommission = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+        this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.totalSale, 0);
         this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
         this.totalSalaryInAdvance = this.salaryInAdvance.reduce((sum: any, item: any) => sum + item.amount, 0);
         this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;

@@ -77,8 +77,8 @@
                       {{element.includeWalletBonus ? 'Hide Bonus' : 'UnHide Bonus'}}
                   </button>
                  
-                  <button *ngIf="isAdmin" mat-menu-item (click)="downloadCommissionStatement(element.shopId,element.commissionDate)">
-                      <mat-icon>download</mat-icon>Download Statement
+                  <button mat-menu-item (click)="downloadCommissionStatement(element.shopId,element.commissionDate)">
+                      <mat-icon>download</mat-icon>Download
                   </button>
                  
               </mat-menu>

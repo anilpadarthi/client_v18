@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+
+
+import { Component, OnInit } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -9,17 +10,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { Router } from '@angular/router';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
-import { OrderDetailsComponent } from '../order-details/order-details.component';
-import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payment-editor.component';
-import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
+import { OrderDetailsComponent } from '../../order/order-details/order-details.component';
+import { OrderPaymentEditorComponent } from '../../order/order-payment-editor/order-payment-editor.component';
+import { OrderPaymentHistoryComponent } from '../../order/order-payment-history/order-payment-history.component';
+
 
 @Component({
-  selector: 'app-order-list',
-  templateUrl: './order-list.component.html',
-  styleUrl: './order-list.component.scss'
+  selector: 'app-on-field-shop-order-list',
+  templateUrl: './on-field-shop-order-list.component.html',
+  styleUrl: './on-field-shop-order-list.component.scss'
 })
 
-export class OrderListComponent implements OnInit {
+export class OnFieldShopOrderListComponent implements OnInit {
 
   displayedColumns = [
     "actions",
@@ -40,33 +42,15 @@ export class OrderListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageNo = 0;
   totalCount!: number;
-  agentLookup: any[] = [];
-  managerLookup: any[] = [];
   statusLookup: any[] = [];
   paymentMethodLookup: any[] = [];
-  areaLookup: any[] = [];
-  shopLookup: any[] = [];
   shippingMethodLookup: any[] = [];
   selectedStatusId = null;
   selectedPaymentMethodId = null;
-  selectedAgentId = null;
-  selectedManagerId = null;
-  selectedAreaId = null;
   selectedShopId = null;
   selectedShippingMethodId = null;
   orderNumberSearch = null;
   trackNumberSearch = null;
-  selectedFromDate = null;
-  selectedToDate = null;
-  isVat = false;
-  isShowOutstandingMetrics = false;
-  userRole = '';
-  isAdmin = false;
-
-  totalOutstanding = 0.00;
-  totalPPAAmount = 0.00;
-  totalPPMAmount = 0.00;
-
   orderList = [];
 
   constructor(
@@ -79,17 +63,7 @@ export class OrderListComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
-    this.userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
-      this.isAdmin = true;
-      //this.loadOutstandingMetrics();
-    }
-    else {
-      this.selectedAgentId = loggedInUserId;
-    }
+  ngOnInit(): void {   
     this.loadData();
     this.loadDropDowns();
   }
@@ -99,18 +73,12 @@ export class OrderListComponent implements OnInit {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      areaId: this.selectedAreaId,
       shopId: this.selectedShopId,
       orderStatusId: this.selectedStatusId,
       paymentMethodId: this.selectedPaymentMethodId,
       shippingModeId: this.selectedShippingMethodId,
-      agentId: this.selectedAgentId,
-      managerId: this.selectedManagerId,
-      fromDate: this.selectedFromDate,
-      toDate: this.selectedToDate,
       orderId: this.orderNumberSearch,
       trackingNumber: this.trackNumberSearch,
-      isVat: this.isVat ? 1 : 0,
     };
 
     this.orderService.getPagedOrderList(requestBody).subscribe((res) => {
@@ -134,61 +102,7 @@ export class OrderListComponent implements OnInit {
       this.shippingMethodLookup = res.data;
     });
 
-    this.lookupService.getAreas().subscribe((res) => {
-      this.areaLookup = res.data;
-    });
-
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
-      this.lookupService.getAgents().subscribe((res) => {
-        this.agentLookup = res.data;
-      });
-
-      this.lookupService.getManagers().subscribe((res) => {
-        this.managerLookup = res.data;
-      });
-    }
   }
-
-  loadOutstandingMetrics(): void {
-    if (this.selectedAgentId != null && this.isAdmin) {
-      let requestBody = {
-        filterType: 'Agent',
-        filterId: this.selectedAgentId
-      };
-      this.orderService.loadOutstandingMetrics(requestBody).subscribe((res) => {
-        this.totalOutstanding = res.data?.totalOutstanding;
-        this.totalPPAAmount = res.data?.totalPPAAmount;
-        this.totalPPMAmount = res.data?.totalPPMAmount;
-        this.isShowOutstandingMetrics = true;
-      });
-    }
-  }
-
-
-  areaChange(): void {
-    if (this.selectedAreaId) {
-      this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
-        this.shopLookup = res.data;
-      });
-    }
-    else {
-      this.shopLookup = [];
-    }
-  }
-
-  managerChange(): void {
-    if (this.selectedManagerId) {
-      this.lookupService.getAgentsByManager(this.selectedManagerId).subscribe((res) => {
-        this.agentLookup = res.data;
-      });
-    }
-    else {
-      this.lookupService.getAgents().subscribe((res) => {
-        this.agentLookup = res.data;
-      });
-    }
-  }
-
 
   onFilter(): void {
     this.pageNo = 0;
@@ -198,19 +112,12 @@ export class OrderListComponent implements OnInit {
 
   onClear(): void {
     this.pageNo = 0;
-    this.selectedAgentId = null;
-    this.selectedAreaId = null;
-    this.selectedManagerId = null;
     this.selectedShopId = null;
     this.selectedStatusId = null;
     this.selectedPaymentMethodId = null;
     this.selectedShippingMethodId = null;
-    this.selectedFromDate = null;
-    this.selectedToDate = null;
     this.orderNumberSearch = null;
     this.trackNumberSearch = null;
-    this.isVat = false;
-    this.isShowOutstandingMetrics = false;
     this.loadData();
   }
 

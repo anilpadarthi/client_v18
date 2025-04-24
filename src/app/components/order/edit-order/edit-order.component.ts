@@ -6,6 +6,7 @@ import { ShopService } from '../../../services/shop.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { MatSidenav } from '@angular/material/sidenav';
+import { WebstorgeService } from '../../../services/web-storage.service';
 
 @Component({
   selector: 'app-edit-order',
@@ -16,16 +17,18 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class EditOrderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
-    isMobile: boolean = false;
+  isMobile: boolean = false;
 
   showFiller = false;
-  vatAmount = 0.00;
+  isVAT = false;
+  totalVatAmount = 0.00;
   subTotal = 0.00;
+  netTotal = 0.00;
   deliveryCharges = 0.00;
   discountAmount = 0.00;
   grandTotal = 0.00;
   discountPercentage = 10.00;
-  vatPercentage = 18.00;
+  vatPercentage = 20.00;
   grandTotalWithVAT = 0.00;
   grandTotalWithOutVAT = 0.00;
 
@@ -44,6 +47,8 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   shippingAddress: any = null;
   selectedProduct: any = null;
   isDisplayProductDetails = false;
+  isAdmin = false;
+  userRole = '';
 
   constructor(
     private orderService: OrderService,
@@ -51,18 +56,20 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     private shopService: ShopService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
+    private webstorgeService: WebstorgeService,
   ) {
     this.checkScreenSize();
   }
 
 
   displayedColumns: string[] = [
-    'productImage',
     'productName',
     'productCode',
-    'salePrice',
     'quantity',
-    'amount',
+    'salePrice',
+    'netAmount',
+    'vatAmount',
+    'total',
     'action'
   ];
 
@@ -92,6 +99,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
+    this.userRole = this.webstorgeService.getUserRole();
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
     this.orderService.getShoppingPageDetails().subscribe((res) => {
       res.data?.categories?.forEach((category: any) => {
         category.image = environment.backend.host + '/' + category.image;
@@ -99,10 +110,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-
-      res.data?.products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.categories = res.data.categories;
-      this.totalProducts = res.data.products;
     });
 
     if (this.orderId) {
@@ -112,9 +120,11 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
         this.deliveryCharges = res.data.deliveryCharges;
         this.vatPercentage = res.data.vatPercentage;
         this.discountPercentage = res.data.discountPercentage;
+        this.isVAT = res.data.isVAT;
         this.cartItems.forEach((e: any) => {
-          e.amount = e.qty * e.salePrice
-          e.productImage = environment.backend.host + '/' + e.productImage
+          e.netAmount = e.qty * e.salePrice;
+          e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
+          e.productImage = environment.backend.host + '/' + e.productImage;
         });
 
         this.updateCalculations();
@@ -124,14 +134,17 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadProducts(subCategoryId: any) {
+  loadProducts(categoryId: number, subCategoryId: number) {
     this.isDisplayProducts = true;
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
     this.isMainView = true;
-    this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
-    this.products.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data;
+      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    });
     this.closeSidebar();
   }
 
@@ -148,8 +161,8 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
 
     if (!existingItem) {
-      item.qty = '1';
-      item.amount = Number(item.qty) * item.salePrice;
+      item.netAmount = Number(item.qty) * item.salePrice;
+      item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
       this.cartItems.push(item);
     }
     this.saveCartToSession();
@@ -161,14 +174,15 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;
-    let prodPrice = item.productPrices?.filter((f: any) => newQuantity >= f.fromQty && newQuantity <= f.toQty);
+    let prodPrice = item.productPrices.filter((f: any) => newQuantity >= f.fromQty && newQuantity <= f.toQty);
     if (prodPrice != null && prodPrice.length > 0) {
       existingItem.salePrice = prodPrice[0].salePrice;
     }
     else {
       existingItem.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
     }
-    existingItem.amount = Number(existingItem.qty) * existingItem.salePrice;
+    existingItem.netAmount = Number(existingItem.qty) * existingItem.salePrice;
+    existingItem.vatAmount = (existingItem.netAmount * this.vatPercentage) / 100;
     this.saveCartToSession();
     this.updateCalculations();
   }
@@ -198,16 +212,15 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
 
   updateCalculations() {
     this.subTotal = 0;
-    this.cartItems?.forEach((product) => {
-      this.subTotal += product.qty * product.salePrice;
-    });
-    let netTotal = this.subTotal;
-    this.vatAmount = (netTotal * this.vatPercentage) / 100;
+    this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
+    this.totalVatAmount = this.cartItems?.reduce((total1, product) => total1 + product.vatAmount, 0) || 0;
+    this.subTotal = this.netTotal + this.totalVatAmount;
+
 
     this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
-    this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithVAT = (this.subTotal + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - (this.netTotal * this.discountPercentage) / 100;
+    this.grandTotal = this.grandTotalWithVAT;
   }
 
   continueShopping(): void {
@@ -224,8 +237,8 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
       shopId: this.shopId,
       shippingAddress: this.shippingAddress,
       items: this.cartItems,
-      itemTotal: this.subTotal,
-      vatAmount: this.vatAmount,
+      itemTotal: this.netTotal,
+      vatAmount: this.totalVatAmount,
       deliveryCharges: this.deliveryCharges,
       discountAmount: this.discountAmount,
       totalWithVATAmount: this.grandTotalWithVAT,

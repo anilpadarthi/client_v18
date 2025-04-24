@@ -41,7 +41,7 @@
                 <!-- Subcategories -->
                 <div *ngIf="item.subCategories.length > 0">
                     <div class="subcategory" *ngFor="let sub of item.subCategories">
-                        <a mat-button (click)="loadProducts(sub.subCategoryId)">
+                        <a mat-button (click)="loadProducts(sub.categoryId,sub.subCategoryId)">
                             <mat-icon>arrow_right</mat-icon>
                             {{ sub.subCategoryName }}</a>
                     </div>
@@ -68,7 +68,7 @@
             <div class="row" *ngIf="isDisplaySubCatgories">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of subCategories">
                     <mat-card class="cardWithShadow productcard overflow-hidden"
-                        (click)="loadProducts(item.subCategoryId)">
+                        (click)="loadProducts(item.categoryId,item.subCategoryId)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
                         <h3 class="product-title">
                             {{ item.subCategoryName }}
@@ -111,47 +111,56 @@
             <mat-card *ngIf="cartItems.length > 0">
                 <div class="table-responsive table-scroll example-container">
                     <table mat-table [dataSource]="cartItems" class="w-100 custom-table">
-                        <ng-container matColumnDef="productImage">
-                            <th mat-header-cell *matHeaderCellDef></th>
-                            <td mat-cell *matCellDef="let element" class="p-l-0">
-                                <div class="d-flex align-items-center">
-                                    <img [src]="element.productImage" alt="users" width="48" class="rounded" />
-                                </div>
-                            </td>
-                        </ng-container>
                         <ng-container matColumnDef="productName">
                             <th mat-header-cell *matHeaderCellDef>Name</th>
                             <td mat-cell *matCellDef="let element">
                                 {{ element.productName }}
                             </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
                         <ng-container matColumnDef="productCode">
                             <th mat-header-cell *matHeaderCellDef>Code</th>
                             <td mat-cell *matCellDef="let element">
                                 {{ element.productCode }}
                             </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <input type="number" matInput #quantityInput class="item-qty" value="{{ element.qty }}"
+                                    (change)="updateCartItemQuantity(element,quantityInput.value)" />
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
                         <ng-container matColumnDef="salePrice">
                             <th mat-header-cell *matHeaderCellDef>Price</th>
                             <td mat-cell *matCellDef="let element">
                                 £{{ element.salePrice | number: '1.2-2' }}
                             </td>
+                            <td mat-footer-cell *matFooterCellDef>Total</td>
                         </ng-container>
-                        <ng-container matColumnDef="quantity">
-                            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+
+                        <ng-container matColumnDef="netAmount">
+                            <th mat-header-cell *matHeaderCellDef>Net</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-form-field appearance="outline" class="w-100">
-                                    <input type="number" matInput #quantityInput class="form-control"
-                                        value="{{ element.qty }}"
-                                        (change)="updateCartItemQuantity(element,quantityInput.value)" />
-                                </mat-form-field>
+                                £{{ element.netAmount | number: '1.2-2' }}
                             </td>
+                            <td mat-footer-cell *matFooterCellDef> £{{ netTotal | number: '1.2-2'}} </td>
                         </ng-container>
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef>Amount</th>
+                        <ng-container matColumnDef="vatAmount">
+                            <th mat-header-cell *matHeaderCellDef>VAT</th>
                             <td mat-cell *matCellDef="let element">
-                                £{{ element.amount | number: '1.2-2' }}
+                                £{{ element.vatAmount | number: '1.2-2' }}
                             </td>
+                            <td mat-footer-cell *matFooterCellDef> £{{ totalVatAmount | number: '1.2-2'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef>Total</th>
+                            <td mat-cell *matCellDef="let element">
+                                £{{ (element.netAmount + element.vatAmount) | number: '1.2-2' }}
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef> £{{ subTotal | number: '1.2-2'}} </td>
                         </ng-container>
                         <ng-container matColumnDef="action">
                             <th mat-header-cell *matHeaderCellDef></th>
@@ -160,25 +169,30 @@
                                     <mat-icon>delete</mat-icon>
                                 </a>
                             </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
                     </table>
                 </div>
                 <div class="text-right totals">
-                    <h5 class="m-b-5 f-w-600 f-s-16">Sub total: £{{ subTotal | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16">VAT ({{ vatPercentage }}%): £{{ vatAmount | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}</h5>
-                    <h5 class="f-w-600 f-s-16 discount">Discount Amount: £{{ discountAmount | number : "1.2-2" }}</h5>
-                    <div class="f-w-600 f-s-16">Discount In %:
+                    <h5 class="m-b-5 f-w-600 f-s-16">Net total: £{{ netTotal | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16">VAT: £{{ totalVatAmount | number : "1.2-2" }}</h5>
+                    <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}
+                    </h5>
+                    <h5 class="f-w-600 f-s-16 discount">Discount Amount: £{{ discountAmount |
+                        number : "1.2-2" }}</h5>
+                    <div class="f-w-600 f-s-16" *ngIf="isAdmin">Discount In %:
                         <mat-form-field appearance="outline">
                             <mat-label>Discount Percentage(%)</mat-label>
                             <input type="number" matInput class="form-control" [(ngModel)]="discountPercentage"
                                 (change)="updateCalculations()">
                         </mat-form-field>
                     </div>
+
                     <mat-divider></mat-divider>
-                    <h3 class="m-b-5 f-s-18">Grand Total: £{{ grandTotal | number : "1.2-2" }}</h3>
+                    <h3 class="m-b-5">Grand Total: £{{ grandTotal | number : "1.2-2" }}</h3>
                 </div>
 
 
@@ -198,6 +212,6 @@
             <app-product-detail [selectedProduct]="selectedProduct"
                 (notifyParent)="addToCart($event)"></app-product-detail>
         </div>
-        
+
     </mat-sidenav-content>
 </mat-sidenav-container>

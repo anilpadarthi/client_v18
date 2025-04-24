@@ -21,7 +21,7 @@ export class OnFieldShopVisitComponent {
   @Input() shopAddressDetails: any = null;
   @Input() refreshValue!: number;
   @Output() notifyParent = new EventEmitter<any>();
-  stream!: MediaStream;
+  stream: MediaStream | null = null;
 
   constructor(private fb: FormBuilder,
     private shopService: ShopService,
@@ -53,6 +53,15 @@ export class OnFieldShopVisitComponent {
     }
   }
 
+  async stopCamera() {
+    if (this.stream) {
+      const tracks = this.stream.getTracks();
+      tracks.forEach(track => track.stop()); // Stops each track (video/audio)
+      this.videoElement.nativeElement.srcObject = null;
+      this.stream = null;
+    }
+  }
+
 
 
 
@@ -80,7 +89,7 @@ export class OnFieldShopVisitComponent {
             this.proceedToShopVisit();
           }
           else {
-            this.toasterService.showMessage('You are not allowd to scan sims for this shop, for this location.')
+            this.toasterService.showMessage('You are not allowd to shop visit, for this location. It is beyond 300 meter raidus')
           }
         });
     }

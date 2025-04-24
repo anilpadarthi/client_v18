@@ -133,6 +133,7 @@ export class MainDashboardComponent implements OnInit {
       const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
       this.selectedMonth = formattedMonth + "-01";
       datepicker.close(); // Close picker after selection
+      this.loadDashboardMetrics();
     }
 
 }

@@ -23,6 +23,8 @@ body {
     font-weight: bold !important;
 }
 
+
+
 .custom-table {
     width: 100%;
     border-collapse: collapse;
@@ -36,20 +38,20 @@ body {
 
 .custom-table th {
     border: 0.1px solid #ccc;
-    padding: 8px;
+    padding: 5px !important;
     font-size: 12px !important;
     font-weight: bold !important;
 }
 
 .custom-table td {
     border: 0.1px solid #ccc;
-    padding: 8px;
+    padding: 5px !important;
     font-size: 12px !important;
 }
 
 .custom-table tfoot td {
     border: 0.1px solid #ccc;
-    padding: 8px;
+    padding: 5px !important;
     font-size: 12px !important;
     font-weight: bold !important;
 }
@@ -404,6 +406,7 @@ video {
     border: none;
     cursor: pointer;
 }
+
 .info-msg {
     color: gray;
     text-align: center;

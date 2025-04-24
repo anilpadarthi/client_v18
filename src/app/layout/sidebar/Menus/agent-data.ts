@@ -7,7 +7,51 @@ import { NavItem } from "../nav-item/nav-item";
 export const agentItems: NavItem[] = [
 
 
- 
+
+
+
+  {
+    displayName: 'Dashboard',
+    iconName: 'home',
+    route: 'dashboard/main',
+  },
+  {
+    displayName: 'OnField',
+    iconName: 'store',
+    route: 'onfield',
+  },
+  {
+    displayName: 'Shop',
+    iconName: 'manage_accounts',
+    route: 'shops',
+  },
+  {
+    displayName: 'IMEI Search',
+    iconName: 'manage_search',
+    route: 'imei/search',
+  },
+  {
+    displayName: 'Reports',
+    iconName: 'monitoring',
+    route: '',
+    children: [
+      {
+        displayName: 'Monthly Activations',
+        iconName: 'monitoring',
+        route: 'report/monthly/activations',
+      },
+      {
+        displayName: 'Area Commissions',
+        iconName: 'arrow_right',
+        route: 'report/area-commissions',
+      },
+      {
+        displayName: 'Payslip',
+        iconName: 'text_snippet',
+        route: 'management/payslip',
+      },
+    ]
+  },
 
   {
     displayName: 'Accessories',
@@ -27,38 +71,11 @@ export const agentItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'Dashboard',
-    iconName: 'home',
-    route: 'dashboard/main',
-  },
-  {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
-  },
-  {
-    displayName: 'Monthly Activations',
-    iconName: 'monitoring',
-    route: 'report/monthly/activations',
-  },
-  {
-    displayName: 'Shop',
-    iconName: 'manage_accounts',
-    route: 'shops',
-  },
-  {
-    displayName: 'IMEI Search',
-    iconName: 'manage_search',
-    route: 'imei/search',
-  },
 
 
-  {
-    displayName: 'Payslip',
-    iconName: 'text_snippet',
-    route: 'management/payslip',
-  },
+
+
+
   {
     displayName: 'Chat',
     iconName: 'chat',

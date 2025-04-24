@@ -11,7 +11,7 @@
           <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of areaLookup" [value]="item.id">
-              <span>{{item.id}} - {{ item.name }}</span>
+              <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -22,7 +22,7 @@
           <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop" (selectionChange)="shopChange()">
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of shopLookup" [value]="item.id">
-              <span>{{ item.id}} - {{ item.name }}</span>
+              <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -54,6 +54,10 @@
           <button mat-menu-item (click)="openShopAgreementHistoryDialog()">
             <mat-icon>history</mat-icon>
             Agreement History
+          </button>
+          <button mat-menu-item (click)="openShopOrderHistory()">
+            <mat-icon>history</mat-icon>
+            Order History
           </button>
           <button mat-menu-item (click)="openShoppingPage('COD')">
             <mat-icon>open_in_new</mat-icon>

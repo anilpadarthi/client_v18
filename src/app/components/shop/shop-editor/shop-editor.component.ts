@@ -11,6 +11,7 @@ import { debounceTime, switchMap, filter, distinctUntilChanged } from 'rxjs/oper
 import { environment } from '../../../../environments/environment';
 import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shop-editor',
@@ -62,8 +63,8 @@ export class ShopEditorComponent {
       competitor: [''],
       language: [''],
       deliveryInstructions: [''],
-      latitude: [{value: '', disabled: true}],
-      longitude: [{value: '', disabled: true}],
+      latitude: [{ value: '', disabled: true }],
+      longitude: [{ value: '', disabled: true }],
       comments: [''],
       isMobileShop: false,
       agreementFrom: [null],
@@ -90,7 +91,7 @@ export class ShopEditorComponent {
     this.getShopDetails();
     //this.shopForm.get('latitude')?.disable();
     //this.shopForm.get('longitude')?.disable();
-    
+
     this.shopForm.get('postCode')?.valueChanges.pipe(
       debounceTime(300), // Wait 300ms after typing
       distinctUntilChanged(), // Prevent duplicate API calls
@@ -101,23 +102,23 @@ export class ShopEditorComponent {
         this.postCodeList = response;
       });
 
-    this.shopForm.get('searchAddress')?.valueChanges.pipe(
-      debounceTime(300), // Wait 300ms after typing
-      distinctUntilChanged(), // Prevent duplicate API calls
-      filter((value: any) => value && value.trim().length > 1),
-      switchMap(value => this.postcodeService.autoCompleteAddresList(value))
-    ).subscribe((response: any) => {
-      this.addressSuggestions = response.suggestions;
-    });
-
     // this.shopForm.get('searchAddress')?.valueChanges.pipe(
     //   debounceTime(300), // Wait 300ms after typing
     //   distinctUntilChanged(), // Prevent duplicate API calls
     //   filter((value: any) => value && value.trim().length > 1),
-    //   switchMap((value: any) => this.filterAddressList(value))
+    //   switchMap(value => this.postcodeService.autoCompleteAddresList(value))
     // ).subscribe((response: any) => {
-    //     this.addressSuggestions = response;
+    //   this.addressSuggestions = response.suggestions;
     // });
+
+    this.shopForm.get('searchAddress')?.valueChanges.pipe(
+      debounceTime(300), // Wait 300ms after typing
+      distinctUntilChanged(), // Prevent duplicate API calls
+      filter((value: any) => value && value.trim().length > 1),
+      switchMap((value: any) => this.filterAddressList(value))
+    ).subscribe((response: any) => {
+      this.addressSuggestions = response;
+    });
   }
 
   populatePostCodeAddressList(): void {
@@ -134,7 +135,7 @@ export class ShopEditorComponent {
   }
 
   filterAddressList(value: any): any {
-    let filteredResults  = this.apiAddressSuggestions.filter((f:any) => f.address.includes(value));
+    let filteredResults = this.apiAddressSuggestions.filter((f: any) => f.address.includes(value));
     return of(filteredResults);
   }
 
@@ -222,7 +223,7 @@ export class ShopEditorComponent {
               this.router.navigate(['/shops']);
             }
             else {
-              const parentData= {
+              const parentData = {
                 data: res.data,
                 fromAction: 'Shop'
               }
@@ -321,21 +322,24 @@ export class ShopEditorComponent {
   // }
 
   selectSuggestion(item: any): void {
-    this.postcodeService.getAddressDetails(item.id).subscribe(
-      (response) => {
-        this.shopForm.get('addressLine1')?.setValue(item.address);
-        this.shopForm.get('addressLine2')?.setValue(response.line_3);
-        this.shopForm.get('city')?.setValue(response.town_or_city);
-        this.shopForm.get('latitude')?.setValue(response.latitude);
-        this.shopForm.get('longitude')?.setValue(response.longitude);
-        this.shopForm.get('searchAddress')?.setValue(item.address);
-        //this.addressSuggestions = [];
-      },
-      (error) => {
+
+    this.postcodeService.getAddressDetails(item.id).pipe(
+      catchError(error => {
         this.toasterService.showMessage('Error fetching postcodes:');
-        //this.addressSuggestions = [];
+        // Optionally show an error message to the user
+        return of(null); // Return a fallback observable
+      })
+    ).subscribe((res) => {
+      if (res) {
+        this.shopForm.get('addressLine1')?.setValue(item.address);
+        this.shopForm.get('addressLine2')?.setValue(res.line_3);
+        this.shopForm.get('city')?.setValue(res.town_or_city);
+        this.shopForm.get('latitude')?.setValue(res.latitude);
+        this.shopForm.get('longitude')?.setValue(res.longitude);
+        this.shopForm.get('searchAddress')?.setValue(item.address);
+        // this.addressSuggestions = [];
       }
-    );
+    });
 
   }
 

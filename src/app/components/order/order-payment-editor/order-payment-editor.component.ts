@@ -5,6 +5,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-order-payment-editor',
@@ -23,6 +24,7 @@ export class OrderPaymentEditorComponent {
   IsDisabled = false;
   availableCommissionChequeNumbers: any[] = [];
   balanceAmount = 0.00;
+  selectedOption: any = '';
 
   constructor
     (
@@ -53,6 +55,16 @@ export class OrderPaymentEditorComponent {
     this.getOrderPaymentDetails();
   }
 
+  onRadioChange(event: MatRadioChange) {
+    // You can also do something based on the value
+    if (event.value === 'FA') {
+      this.paymentForm.get('amount')?.setValue(this.balanceAmount);
+    }
+    else{
+      this.paymentForm.get('amount')?.setValue('');
+    }
+  }
+
   loadAvailableCheques() {
     this.lookupService.getAvailableShopCommissionCheques(this.shopId).subscribe((res) => {
       this.availableCommissionChequeNumbers = res.data;
@@ -71,7 +83,7 @@ export class OrderPaymentEditorComponent {
   }
 
   onSave() {
-    if (this.paymentForm.valid) {      
+    if (this.paymentForm.valid) {
       const formBody = new FormData();
       formBody.append('orderId', this.orderId != null ? this.orderId : 0);
       formBody.append('shopId', this.shopId != null ? this.shopId : 0);

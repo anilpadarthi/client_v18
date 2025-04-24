@@ -37,7 +37,7 @@
                 <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
                     <mat-option [value]=null>All</mat-option>
                     <mat-option *ngFor="let item of areaLookup" [value]="item.id">
-                        <span>{{ item.id }} - {{ item.name }}</span>
+                        <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -99,41 +99,7 @@
                     <th mat-header-cell *matHeaderCellDef>Bonus</th>
                     <td mat-cell *matCellDef="let element">{{ element.bonusAmount | currency:'GBP' }}</td>
                 </ng-container>
-                <ng-container matColumnDef="OptedCheque">
-                    <th mat-header-cell *matHeaderCellDef>Opted for Cheque</th>
-                    <td mat-cell *matCellDef="let element">
-                        <mat-checkbox *ngIf="element.isAllowedToRequestCheque == 1" [disabled]="element.isRedemed"
-                            [checked]="element.optInType == 'Cheque'?true:false"
-                            (change)="optedForCheque(element.shopCommissionHistoryId,$event.checked)">
-                        </mat-checkbox>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="OptedTopup">
-                    <th mat-header-cell *matHeaderCellDef>Opted for Topup</th>
-                    <td mat-cell *matCellDef="let element">
-                        <mat-checkbox [disabled]="element.isRedemed" [checked]="element.optInType == 'Topup'?true:false"
-                            (change)="optedForTopup(element.shopCommissionHistoryId,$event.checked)">
-                        </mat-checkbox>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="OptedWallet">
-                    <th mat-header-cell *matHeaderCellDef>Opted for Wallet</th>
-                    <td mat-cell *matCellDef="let element">
-                        <mat-checkbox [disabled]="element.isRedemed"
-                            [checked]="element.optInType == 'Wallet'?true:false"
-                            (change)="optedForWallet(element.shopCommissionHistoryId,$event.checked)">
-                        </mat-checkbox>
-                    </td>
-                </ng-container>
-                <!-- <ng-container matColumnDef="Accessories">
-                    <th mat-header-cell *matHeaderCellDef>Accessories</th>
-                    <td mat-cell *matCellDef="let element">
-                        <a mat-button [disabled]="element.isRedemed" class="element.isRedemed ? 'disable-color:''"
-                            (click)="onAccessoreisPage(element.shopCommissionHistoryId)">
-                            <mat-icon>shopping_cart</mat-icon> Accessories
-                        </a>
-                    </td>
-                </ng-container> -->
+                
                 <ng-container matColumnDef="Action">
                     <th mat-header-cell *matHeaderCellDef>Action</th>
                     <td mat-cell *matCellDef="let element">

@@ -109,6 +109,7 @@ import { OutstandingMetricsComponent } from './components/order/outstanding-metr
 import { GroupChatComponent } from './components/chat/group-chat/group-chat.component';
 import { AreaCommissionsComponent } from './components/reports/area-commissions/area-commissions.component';
 import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
+import { OnFieldShopOrderListComponent } from './components/on-field/on-field-shop-order-list/on-field-shop-order-list.component';
 
 
 registerLocaleData(localeGb, 'en-GB');
@@ -201,7 +202,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     OutstandingMetricsComponent,
     GroupChatComponent,
     AreaCommissionsComponent,
-    MonthlyAccessoriesReportComponent
+    MonthlyAccessoriesReportComponent,
+    OnFieldShopOrderListComponent
   ],
   imports: [
     BrowserModule,

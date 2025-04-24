@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../common/popup-table/popup-table.component';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-on-field',
@@ -32,6 +33,7 @@ export class OnFieldComponent implements OnInit {
     private dialog: MatDialog,
     private lookupService: LookupService,
     private shopService: ShopService,
+    private orderService: OrderService,
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
     private router: Router
@@ -136,6 +138,18 @@ export class OnFieldComponent implements OnInit {
     }
   }
 
+  openShopOrderHistory(): void {
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      const fullPath = this.router.serializeUrl(
+        this.router.createUrlTree([`aceessories/shop/orders/${this.selectedShopId}`])
+      );
+      window.open(fullPath, '_blank');
+    }
+  }
+
   onActionClicked(type: any) {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
@@ -162,7 +176,7 @@ export class OnFieldComponent implements OnInit {
     this.isMainSection = true;
   }
 
-  openShoppingPage(type:any): void {
+  openShoppingPage(type: any): void {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }

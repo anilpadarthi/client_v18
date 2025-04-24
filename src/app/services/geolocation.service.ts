@@ -7,20 +7,16 @@ import { Injectable } from '@angular/core';
 export class GeolocationService {
   constructor() {}
 
-  getCurrentLocation(): Promise<{ latitude: number; longitude: number }> {
+  getCurrentLocation(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            resolve({ latitude, longitude });
-          },
-          (error) => {
-            reject(`Geolocation error: ${error.message}`);
-          }
-        );
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        });
       } else {
-        reject('Geolocation is not supported by this browser.');
+        reject({ code: 0, message: 'Geolocation not supported' });
       }
     });
   }

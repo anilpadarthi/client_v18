@@ -8,13 +8,17 @@
 <mat-dialog-content class="mat-typography" style="max-width: 600px">
     <h3 class="balance"> Outstanding Balance: £ {{balanceAmount | number: '1.2-2'}}</h3>
     <form [formGroup]="paymentForm" (ngSubmit)="onSave()" class="m-t-15">
+        <mat-radio-group [(ngModel)]="selectedOption" (change)="onRadioChange($event)">
+            <mat-radio-button value="FA">Full Amount</mat-radio-button>
+            <mat-radio-button value="OA">Other Amount</mat-radio-button>
+          </mat-radio-group>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Payment Mode</mat-label>
             <mat-select formControlName="paymentMode" (selectionChange)="onPaymentModeChange($event)">
                 <mat-option value=''>--Select--</mat-option>
                 <mat-option value="Cash">Cash</mat-option>
-                <mat-option value="LeapCheque">Leap Cheque</mat-option>
-                <mat-option value="McomCheque">Mcom Cheque</mat-option>
+                <!-- <mat-option value="LeapCheque">Leap Cheque</mat-option>
+                <mat-option value="McomCheque">Mcom Cheque</mat-option> -->
                 <mat-option value="CommissionCheque">Commission Cheque</mat-option>
                 <mat-option value="BankTransfer">Bank Transfer</mat-option>
                 <mat-option value="Other">Other</mat-option>

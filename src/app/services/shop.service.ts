@@ -48,6 +48,10 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url+ `/GetShopAgreementHistory?shopId=${shopId}`);
   }
 
+  getShopOrderHistory(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url+ `/GetShopAgreementHistory?shopId=${shopId}`);
+  }
+
   getShopWalletAmount(shopId: number): Observable<ICommonResponse> {
     return this.http.get<ICommonResponse>(this.url+ `/GetShopWalletAmount?shopId=${shopId}`);
   }

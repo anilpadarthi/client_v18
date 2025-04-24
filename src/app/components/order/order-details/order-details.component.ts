@@ -26,7 +26,6 @@ export class OrderDetailsComponent implements OnInit {
   userRole = '';
   isAdmin = false;
 
-
   vatAmount = 0.00;
   subTotal = 0.00;
   deliveryCharges = 0.00;
@@ -73,9 +72,13 @@ export class OrderDetailsComponent implements OnInit {
       this.deliveryCharges = data.orderDetails.deliveryCharges;
       this.vatPercentage = data.orderDetails.vatPercentage;
       this.discountPercentage = data.orderDetails.discountPercentage;
+      this.discountAmount = data.orderDetails.discountAmount;
+      this.grandTotalWithOutVAT = data.orderDetails.totalWithOutVATAmount;
+      this.grandTotalWithVAT = data.orderDetails.totalWithVATAmount;
+      this.grandTotal = data.orderDetails.totalWithVATAmount;
+      this.vatAmount = data.orderDetails.vatAmount;
       this.updateCalculations();
     }
-
   }
 
   ngOnInit(): void {
@@ -108,15 +111,6 @@ export class OrderDetailsComponent implements OnInit {
     this.orderItems?.forEach((product: any) => {
       this.subTotal += product.qty * product.salePrice;
     });
-    let netTotal = this.subTotal;
-    this.vatAmount = (netTotal * this.vatPercentage) / 100;
-
-    if (this.discountPercentage > 0) {
-      this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    }
-    this.grandTotalWithVAT = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = (netTotal + this.deliveryCharges) - this.discountAmount;
-    this.grandTotal = (netTotal + this.vatAmount + this.deliveryCharges) - this.discountAmount;
   }
 
   close(): void {

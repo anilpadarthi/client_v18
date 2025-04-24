@@ -44,7 +44,7 @@
                 <div *ngIf="item.subCategories.length > 0">
                     <div class="subcategory" *ngFor="let sub of item.subCategories">
 
-                        <a mat-button (click)="loadProducts(sub.subCategoryId)">
+                        <a mat-button (click)="loadProducts(sub.categoryId,sub.subCategoryId)">
                             <mat-icon>arrow_right</mat-icon>
                             {{ sub.subCategoryName }}</a>
                     </div>
@@ -71,7 +71,7 @@
             <div class="row" *ngIf="isDisplaySubCatgories">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of subCategories">
                     <mat-card class="cardWithShadow productcard overflow-hidden"
-                        (click)="loadProducts(item.subCategoryId)">
+                        (click)="loadProducts(item.categoryId,item.subCategoryId)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
                         <h3 class="product-title">
                             {{ item.subCategoryName }}
@@ -83,7 +83,7 @@
             <div class="row" *ngIf="isDisplayProducts">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of products">
                     <mat-card class="cardWithShadow productcard overflow-hidden"
-                        (click)="loadProducts(item.subCategoryId)">
+                        (click)="loadProducts(item.categoryId,item.subCategoryId)">
                         <img src="{{ item.productImage }}" alt="imgSrc" class="w-100" mat-card-image />
 
                         <h3 class="product-title" title="{{item.productName}}"> {{
@@ -182,7 +182,7 @@
                         </button>
 
                         <button mat-flat-button color="primary" class="col-lg-3" (click)="createOrder()">
-                            Update Order
+                            Create Order
                         </button>
                     </div>
                 </div>

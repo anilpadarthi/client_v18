@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { WebstorgeService } from '../../services/web-storage.service';
 import { ToasterService } from '../../services/toaster.service';
@@ -20,6 +20,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   isValidLogin = true;
   hidePassword = true;
+  isMobile = false;
   geoLocation: any;
 
 
@@ -29,7 +30,14 @@ export class LoginComponent {
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -50,6 +58,7 @@ export class LoginComponent {
   }
 
   async submit(): Promise<void> {
+    this.toasterService.showMessage(this.geoLocation.latitude + ', ' + this.geoLocation.longitude);
     if (this.geoLocation != null) {
       if (this.loginForm.valid) {
         var requestBody = {
@@ -85,11 +94,25 @@ export class LoginComponent {
     if (environment.isGeoLocationTurnOn) {
       this.geolocationService.getCurrentLocation().then(
         (position) => {
-          this.geoLocation = position;
+          this.geoLocation = position.coords;
         },
         (error) => {
-          console.log(error);
-        });
+          console.error('Geolocation error:', error);
+          switch (error.code) {
+            case 1:
+              console.error('Permission denied.');
+              break;
+            case 2:
+              console.error('Position unavailable.');
+              break;
+            case 3:
+              console.error('Timeout.');
+              break;
+            default:
+              console.error('Unknown error.');
+          }
+        }
+      );
     }
     else {
       this.geoLocation = {

@@ -40,10 +40,6 @@ export class CommissionStatementReportComponent implements OnInit {
     'CommissionDate',
     'CommissionAmount',
     'BonusAmount',
-    'OptedCheque',
-    'OptedTopup',
-    'OptedWallet',
-    // 'Accessories',
     'Action'
   ];
 

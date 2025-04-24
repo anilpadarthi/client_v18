@@ -2,23 +2,6 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false,
-  isGeoLocationTurnOn : true,
-  isAddressSearch: true,
-  codMinimumCartValue: 50,
-  bonusMinimCartValue: 50,
-  instantBonusMinimumCartValue: 50,
-
-  host: 'http://localhost:5170',
-  backend:  {
-    host: 'https://localhost:51544'
-  },
-  frontend:  {
-    host: 'http://localhost:4200' 
-  }
-};
-
 // export const environment = {
 //   production: false,
 //   isGeoLocationTurnOn : true,
@@ -29,12 +12,31 @@ export const environment = {
 
 //   host: 'http://localhost:5170',
 //   backend:  {
-//     host: 'https://uat-api.leap-tel.com'
+//     host: 'https://localhost:51544'
 //   },
 //   frontend:  {
-//     host: 'https://uat.leap-tel.com' 
+//     host: 'http://localhost:4200' 
 //   }
 // };
+
+export const environment = {
+  production: false,
+  isGeoLocationTurnOn : true,
+  isAddressSearch: false,
+  codMinimumCartValue: 50,
+  bonusMinimCartValue: 50,
+  instantBonusMinimumCartValue: 50,
+
+  host: 'http://localhost:5170',
+  backend:  {
+    host: 'https://uat-api.leap-tel.com'
+  },
+  frontend:  {
+    host: 'http://localhost:4200' 
+  }
+};
+
+
 
 /*
  * For easier debugging in development mode, you can import the following file
