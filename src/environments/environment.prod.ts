@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   isGeoLocationTurnOn : true,
-  isAddressSearch: true,
+  isAddressSearch: false,
   codMinimumCartValue: 50,
   bonusMinimCartValue: 50,
   instantBonusMinimumCartValue: 50,

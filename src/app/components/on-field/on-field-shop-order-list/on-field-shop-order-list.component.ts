@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,Output, EventEmitter  } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -47,7 +47,9 @@ export class OnFieldShopOrderListComponent implements OnInit {
   shippingMethodLookup: any[] = [];
   selectedStatusId = null;
   selectedPaymentMethodId = null;
-  selectedShopId = null;
+  @Input() selectedShopId!: number;
+  @Input() refreshValue!: number;
+  @Output() notifyParent = new EventEmitter<any>();
   selectedShippingMethodId = null;
   orderNumberSearch = null;
   trackNumberSearch = null;
@@ -112,13 +114,16 @@ export class OnFieldShopOrderListComponent implements OnInit {
 
   onClear(): void {
     this.pageNo = 0;
-    this.selectedShopId = null;
     this.selectedStatusId = null;
     this.selectedPaymentMethodId = null;
     this.selectedShippingMethodId = null;
     this.orderNumberSearch = null;
     this.trackNumberSearch = null;
     this.loadData();
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
   }
 
   handlePageEvent(event: PageEvent): void {

@@ -14,7 +14,7 @@
         </mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
+      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay && isAdmin">
         <mat-label>Manager</mat-label>
         <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="managerChange()">
           <mat-option [value]=null>All</mat-option>

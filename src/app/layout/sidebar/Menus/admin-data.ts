@@ -264,6 +264,17 @@ export const managerItems: NavItem[] = [
     iconName: 'home',
     route: 'dashboard/main',
   },
+ 
+  {
+    displayName: 'IMEI',
+    iconName: 'manage_search',
+    route: 'imei/search',
+  },
+  {
+    displayName: 'OnField',
+    iconName: 'store',
+    route: 'onfield',
+  },
   {
     displayName: 'Allocate',
     iconName: 'inventory',
@@ -275,16 +286,6 @@ export const managerItems: NavItem[] = [
         route: 'allocatearea',
       },
     ],
-  },
-  {
-    displayName: 'IMEI',
-    iconName: 'manage_search',
-    route: 'imei/search',
-  },
-  {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
   },
   {
     displayName: 'Reports',
@@ -301,11 +302,7 @@ export const managerItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/historical/activations',
       },
-      {
-        displayName: 'Network Reports',
-        iconName: 'arrow_right',
-        route: 'report/network-report',
-      },
+      
       {
         displayName: 'Sim Allocations',
         iconName: 'file-description',
@@ -315,22 +312,7 @@ export const managerItems: NavItem[] = [
         displayName: 'KPI Targets',
         iconName: 'file-description',
         route: 'report/kpi-target',
-      },
-      {
-        displayName: 'Commission Statements',
-        iconName: 'arrow_right',
-        route: 'report/commission-statement',
-      },
-      {
-        displayName: 'Daily Reports',
-        iconName: 'arrow_right',
-        route: 'report/daily-report',
-      },
-      {
-        displayName: 'Track',
-        iconName: 'arrow_right',
-        route: 'report/track',
-      },
+      },   
     ],
   },
   {
@@ -390,11 +372,6 @@ export const managerItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
-  },
 
   {
     displayName: 'Accessories',
@@ -413,6 +390,11 @@ export const managerItems: NavItem[] = [
         target: '_blank'
       },
     ],
+  },
+  {
+    displayName: 'Chat',
+    iconName: 'chat',
+    route: 'chat',
   },
 
   // {

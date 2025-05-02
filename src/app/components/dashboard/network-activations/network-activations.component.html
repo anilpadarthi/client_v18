@@ -9,13 +9,13 @@
     <div *ngIf="!isLoading && activationList?.length > 0" class="table-responsive table-scroll example-container">
       <table mat-table [dataSource]="activationList" class="w-100 custom-table">
         <ng-container matColumnDef="Network">
-          <th mat-header-cell *matHeaderCellDef>NETWORK</th>
+          <th mat-header-cell *matHeaderCellDef>Network</th>
           <td mat-cell *matCellDef="let element"> {{ element.networkCode }} </td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="DailyActivations">
-          <th mat-header-cell *matHeaderCellDef>DAILY ACT.</th>
+          <th mat-header-cell *matHeaderCellDef>Daily Act.</th>
           <td mat-cell *matCellDef="let element">{{ element.dailyActivations }}</td>
           <td mat-footer-cell *matFooterCellDef>
             {{ getTotal('dailyActivations') }}
@@ -23,7 +23,7 @@
         </ng-container>
 
         <ng-container matColumnDef="InstantActivations">
-          <th mat-header-cell *matHeaderCellDef>INSTANT ACT.</th>
+          <th mat-header-cell *matHeaderCellDef>Instant Act.</th>
           <td mat-cell *matCellDef="let element">{{ element.instantActivations }}</td>
           <td mat-footer-cell *matFooterCellDef>
             {{ getTotal('instantActivations') }}
@@ -31,13 +31,13 @@
         </ng-container>
 
         <ng-container matColumnDef="LastActivated">
-          <th mat-header-cell *matHeaderCellDef>LAST ACTIVATED</th>
+          <th mat-header-cell *matHeaderCellDef>Last Activated</th>
           <td mat-cell *matCellDef="let element">{{ element.lastActivatedDate | date: 'dd/MM/yyyy' }}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="Total">
-          <th mat-header-cell *matHeaderCellDef>TOTAL</th>
+          <th mat-header-cell *matHeaderCellDef>Total</th>
           <td mat-cell *matCellDef="let element">{{ element.total }}</td>
           <td mat-footer-cell *matFooterCellDef>
             {{ getTotal('total') }}

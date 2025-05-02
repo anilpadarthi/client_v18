@@ -89,10 +89,23 @@ export class OnFieldComponent implements OnInit {
     if (environment.isGeoLocationTurnOn) {
       this.geolocationService.getCurrentLocation().then(
         (position) => {
-          this.geoLocation = position;
+          this.geoLocation = position.coords;
         },
         (error) => {
-          console.log(error);
+          console.error('Geolocation error:', error);
+          switch (error.code) {
+            case 1:
+              console.error('Permission denied.');
+              break;
+            case 2:
+              console.error('Position unavailable.');
+              break;
+            case 3:
+              console.error('Timeout.');
+              break;
+            default:
+              console.error('Unknown error.');
+          }
         }
       );
     }
@@ -138,17 +151,6 @@ export class OnFieldComponent implements OnInit {
     }
   }
 
-  openShopOrderHistory(): void {
-    if (this.selectedShopId == null) {
-      this.toasterService.showMessage('Please select any shop before to proceed.');
-    }
-    else {
-      const fullPath = this.router.serializeUrl(
-        this.router.createUrlTree([`aceessories/shop/orders/${this.selectedShopId}`])
-      );
-      window.open(fullPath, '_blank');
-    }
-  }
 
   onActionClicked(type: any) {
     if (this.selectedShopId == null) {

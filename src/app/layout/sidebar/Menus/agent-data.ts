@@ -50,6 +50,16 @@ export const agentItems: NavItem[] = [
         iconName: 'text_snippet',
         route: 'management/payslip',
       },
+      {
+        displayName: 'Monthly Accessories Report',
+        iconName: 'arrow_right',
+        route: 'report/monthly-accessories-report',
+      },
+      {
+        displayName: 'Sim Allocations',
+        iconName: 'arrow_right',
+        route: 'report/simallocation-report',
+      },
     ]
   },
 

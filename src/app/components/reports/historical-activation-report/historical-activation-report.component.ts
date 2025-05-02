@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { WebstorgeService } from '../../../services/web-storage.service';
 
 
 @Component({
@@ -32,19 +33,34 @@ export class HistoricalActivationReportComponent implements OnInit {
   activationList: any = [];
   displayedColumns: string[] = [];
   isInstantActivation = false;
+  isDisplay = false;
+  isAdmin = false;
 
   constructor(
     private datePipe: DatePipe,
     private _snackBar: MatSnackBar,
     private router: Router,
     private reportService: ReportService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private webstorgeService: WebstorgeService
   ) { }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+      this.isDisplay = true;
+      this.isAdmin = true;
+      this.getAgentLookup();
+      this.getManagerLookup();
+    }
+    else if (userRole == 'Manager') {
+      this.isDisplay = true;
+      this.selectedManagerId = loggedInUserId;
+    }
     this.getAreaLookup();
-    this.getAgentLookup();
-    this.getManagerLookup();
+    
   }
 
   getAgentLookup() {

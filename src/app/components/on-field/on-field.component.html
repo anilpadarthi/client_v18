@@ -55,7 +55,7 @@
             <mat-icon>history</mat-icon>
             Agreement History
           </button>
-          <button mat-menu-item (click)="openShopOrderHistory()">
+          <button mat-menu-item (click)="onActionClicked('OrderList')">
             <mat-icon>history</mat-icon>
             Order History
           </button>
@@ -107,5 +107,9 @@
   <div *ngIf="action == 'ShopVisit'">
     <app-on-field-shop-visit [shopAddressDetails]="shopAddressDetails" [refreshValue]="refreshCounter"
       [geoLocation]="geoLocation" (notifyParent)="handleChildBackEvent($event)"></app-on-field-shop-visit>
+  </div>
+  <div *ngIf="action == 'OrderList'">
+    <app-on-field-shop-order-list [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+       (notifyParent)="handleChildBackEvent($event)"></app-on-field-shop-order-list>
   </div>
 </div>

@@ -42,6 +42,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   smartySum: number = 0;
   totalSum: number = 0;
   isDisplay = false;
+  isAdmin = false;
   displayedColumns: string[] = [
     'ID',
     'NAME',
@@ -67,9 +68,12 @@ export class MonthlyActivationReportComponent implements OnInit {
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' ){
+      this.isAdmin = true;
+    }
 
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
-      this.isDisplay = true;
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
+      this.isDisplay = true;      
       this.getAgentLookup();
       this.getManagerLookup();
     }
