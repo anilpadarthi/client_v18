@@ -2,15 +2,15 @@
   <!-- --------------------------------------------------------------- -->
   <!-- Desktop Menu -->
   @if(showToggle) {
-  <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center">
-    <mat-icon>menu</mat-icon>
+  <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center icon-btn">
+    <mat-icon>menu_open</mat-icon>
   </button>
   }
 
   <!-- Mobile Menu -->
   @if(!showToggle) {
   <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center">
-    <mat-icon>menu</mat-icon>
+    <mat-icon>menu_open</mat-icon>
   </button>
   }
   <!-- --------------------------------------------------------------- -->
@@ -18,19 +18,27 @@
   <!-- --------------------------------------------------------------- -->
   <!--  Search -->
   <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button class="d-flex justify-content-center">
-    <mat-icon>search</mat-icon>
-  </button>
-
   <div class="d-none d-lg-flex">
     <!-- --------------------------------------------------------------- -->
     <!--  Links -->
     <!-- --------------------------------------------------------------- -->
-    <button mat-button aria-label="Notifications" [matMenuTriggerFor]="menu">
+    <!-- <button mat-icon-button class="d-flex justify-content-center">
+      <mat-icon>search</mat-icon>
+    </button> -->
+    <mat-form-field class="custom-search">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Search">
+    </mat-form-field>    
+  
+    <!-- <button mat-button aria-label="Notifications" [matMenuTriggerFor]="menu">
 
       <div class="d-flex align-items-center">
         Add <mat-icon>add</mat-icon>
       </div>
+    </button> -->
+
+    <button mat-icon-button aria-label="Notifications" [matMenuTriggerFor]="menu" class="d-flex justify-content-center icon-btn mx-2">
+      <mat-icon>add</mat-icon>
     </button>
 
     <mat-menu #menu="matMenu" class="cardWithShadow">
@@ -50,23 +58,28 @@
 
 
 
-    <a mat-button [routerLink]="['/apps/chat']">Chat</a>
+    <!-- <a mat-button [routerLink]="['/apps/chat']">Chat</a> -->
+    <button mat-icon-button [routerLink]="['/apps/chat']" class="d-flex justify-content-center icon-btn">
+      <mat-icon>support_agent</mat-icon>
+    </button>
   </div>
 
-  <span class="flex-1-auto"></span>
+  
 
   <!-- Mobile Menu -->
-  <button mat-icon-button (click)="toggleMobileFilterNav.emit()" class="d-flex d-lg-none justify-content-center">
+  <button mat-icon-button (click)="toggleMobileFilterNav.emit()" class="d-flex d-lg-none justify-content-center icon-btn">
     <mat-icon>add</mat-icon>
   </button>
 
 
 
-  <!-- --------------------------------------------------------------- -->
+  <div class="end-sction d-flex align-items-center">
+    <span class="flex-1-auto"></span>
+    <!-- --------------------------------------------------------------- -->
   <!-- Notification Dropdown -->
   <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications">
-    <mat-icon>notifications</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" class="mx-2 circle-btn">
+    <span class="material-symbols-outlined">notifications</span>
   </button>
   <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">
     <div class="d-flex align-items-center p-x-32 p-y-16">
@@ -86,8 +99,8 @@
   <!-- --------------------------------------------------------------- -->
   <!-- profile Dropdown -->
   <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications">
-    <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover icon-35 profile-dd" width="35" />
+  <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications" class="circle-btn">
+    <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" />
   </button>
   <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
     <ng-scrollbar class="position-relative" style="height: 300px">
@@ -112,4 +125,5 @@
       </div>
     </ng-scrollbar>
   </mat-menu>
+  </div>
 </mat-toolbar>

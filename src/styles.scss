@@ -7,7 +7,7 @@ body {
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: "Noto Sans", sans-serif !important;
 }
 
 .loading-indicator {
@@ -24,36 +24,59 @@ body {
 }
 
 
-
+.table-responsive {
+    border: 1px solid #E2E3E5 !important;
+    border-radius: 6px;
+}
 .custom-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    tbody {
+        tr:nth-child(even) {
+            background-color: #F6F6F6;
+        }
+    }
+    .mat-mdc-header-row, .mdc-data-table__row {
+        height: auto;
+    }
 }
 
 .custom-table thead {
-    background-color: #FF6347 !important;
+    background-color: #FFEFEF !important;
+    th {
+        &:first-child {
+            border-top-left-radius: 6px;
+        }
+        &:last-child {
+            border-top-right-radius: 6px;
+        }
+    }
 }
 
 
 
 .custom-table th {
-    border: 0.1px solid #ccc;
-    padding: 5px !important;
-    font-size: 12px !important;
-    font-weight: bold !important;
+    padding: 12px 12px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border: 0;
+    color: #262A2D;
 }
 
 .custom-table td {
-    border: 0.1px solid #ccc;
-    padding: 5px !important;
-    font-size: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    border: 0;
+    color: #262A2D;
 }
 
 .custom-table tfoot td {
-    border: 0.1px solid #ccc;
-    padding: 5px !important;
-    font-size: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 16px !important;
     font-weight: bold !important;
+    color: #EF0000;
+    // border-top: 1px solid #E2E3E5;
+    box-shadow: 6px 1px 4px 1px #c5c5c5;
 }
 
 .custom-table td a {
@@ -65,7 +88,6 @@ body {
     max-height: 400px !important;
     max-width: 100%;
     overflow: auto;
-    border: 1px solid #ddd;
 }
 
 .no-records {
@@ -80,10 +102,16 @@ body {
 
 .zero-records {
     text-align: center;
-    color: red;
-    font-weight: bold;
-    font-size: 14px;
-    margin-top: 3em;
+    img {
+        height: 210px;
+    }
+    span {
+        display: block;
+        color: #262A2D;
+        font-size: 22px;
+        font-weight: 100;
+        margin-top: 10px;
+    }
 }
 
 mat-card-title {
@@ -230,7 +258,7 @@ mat-mdc-form-field-required-marker {
 }
 
 .mat-mdc-card-content {
-    padding: 1em !important;
+    padding: 18px !important;
 }
 
 .rounded-image {
@@ -408,8 +436,144 @@ video {
 }
 
 .info-msg {
-    color: gray;
-    text-align: center;
+    background-color: #FFEFEF;
+    color: #262A2D;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-top: 30px;
+}
+
+/** Custom CSS **/
+.mat-drawer {
+    &.sidebarNav {
+        background-color: #262A2D;
+        border-right: 0;
+    }
+}
+html {
+    .topbar {
+        .mat-mdc-icon-button {
+            &.icon-btn {
+                border-radius: 4px;
+                height: auto;
+                padding: 6px 8px;
+                width: auto;
+            }
+            &.circle-btn {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .rounded-circle {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+        }
+    }
+    .custom-search {
+        height: 35px;
+        .mdc-text-field {
+            background-color: #000000;
+            min-height: 35px;
+            border-radius: 6px;
+            .mat-mdc-form-field-input-control {
+                color: #ffffff;
+            }
+            input {
+                &::placeholder {
+                    color: #ffffff !important;
+                }
+            }
+        }
+        .mat-mdc-form-field-flex {
+            height: 35px;
+        }
+        .mat-mdc-form-field-infix {
+            padding: 8px 0;
+        }
+        .mat-mdc-form-field-bottom-align {
+            display: none;
+        }
+    }
+    .primary-btn {
+        background-color: #EF0000 !important;
+        color: #ffffff !important;
+    }
+    .accounts-cards {
+        background-color: rgba(#E0E0E0, 0.4);
+        border-radius: 6px;
+        .mat-mdc-card-content {
+            display: flex;
+            align-items: center;
+            .icon {
+                width: 57px;
+                height: 57px;
+                border-radius: 100%;
+                border: 1px solid #EF0000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                span {
+                    font-size: 30px;
+                    color: #EF0000;
+                }
+            }
+            .info {
+                text-align: left;
+                margin-left: 20px;
+                h2 {
+                    font-size: 22px;
+                    font-weight: 600;
+                    color: #262A2D;
+                    margin: 10px 0 0;
+                }
+                h4 {
+                    font-size: 14px;
+                    color: #797979;
+                    font-weight: 500;
+                    margin: 0;
+                }
+            }
+        }
+    }
+    .cardWithShadow {
+        border-top: 2px solid #DCDCE0;
+        box-shadow: none;
+        mat-card-header {
+            border-bottom: 0 !important;
+            font-size: 18px;
+            .mat-mdc-card-title {
+                color: #262A2D !important;
+            }
+        }
+    }
+}
+.mx-2 {
+    margin: 0 10px;
+}
+.page-title {
+    h1 {
+        font-size: 26px;
+        color: #262A2D;
+        font-weight: 600;
+        margin: 0;
+    }
+    &__info {
+        font-size: 12px;
+        display: inline-block;
+        margin: 10px 0;
+        line-height: normal;
+    }
+}
+
+html {
+    .ng-custom-fileds {
+        .mat-mdc-form-field-bottom-align {
+            display: none;
+        }
+    }
 }

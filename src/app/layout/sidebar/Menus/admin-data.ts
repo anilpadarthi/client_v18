@@ -22,12 +22,12 @@ export const adminItems: NavItem[] = [
   // },
   {
     displayName: 'Dashboard',
-    iconName: 'home',
+    iconName: 'roofing',
     route: 'dashboard/main',
   },
   {
     displayName: 'Allocate',
-    iconName: 'inventory',
+    iconName: 'account_tree',
     route: '',
     children: [
       {
@@ -45,7 +45,7 @@ export const adminItems: NavItem[] = [
  
   {
     displayName: 'Reports',
-    iconName: 'monitoring',
+    iconName: 'finance_mode',
     route: '',
     children: [
       {
@@ -102,7 +102,7 @@ export const adminItems: NavItem[] = [
   },
   {
     displayName: 'Setup',
-    iconName: 'manage_accounts',
+    iconName: 'settings',
     route: '',
     children: [
       {
@@ -151,7 +151,7 @@ export const adminItems: NavItem[] = [
 
   {
     displayName: 'Management',
-    iconName: 'widgets',
+    iconName: 'manage_accounts',
     route: '',
     children: [
       {
@@ -205,7 +205,7 @@ export const adminItems: NavItem[] = [
 
   {
     displayName: 'Accessories',
-    iconName: 'point_of_sale',
+    iconName: 'devices_other',
     route: '',
     children: [
       {
@@ -217,17 +217,17 @@ export const adminItems: NavItem[] = [
   },
   {
     displayName: 'IMEI',
-    iconName: 'manage_search',
+    iconName: 'barcode_scanner',
     route: 'imei/search',
   },
   {
     displayName: 'OnField',
-    iconName: 'store',
+    iconName: 'home_work',
     route: 'onfield',
   },
   {
     displayName: 'Chat',
-    iconName: 'chat',
+    iconName: 'sms',
     route: 'chat',
   },
   // {

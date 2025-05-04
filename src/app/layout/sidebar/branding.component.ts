@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <a href="/home">
         <img
           src="./assets/images/logos/Leap.png"
-          class="align-middle m-2 leap-logo"
+          class="align-middle leap-logo"
           alt="logo"
         />
       </a>

@@ -10,7 +10,8 @@
       expanded: expanded,
       disabled: item.disabled
     }" class="menu-list-item">
-  <mat-icon class="routeIcon">{{ item.iconName }}</mat-icon>
+  <!-- <mat-icon class="routeIcon">{{ item.iconName }}</mat-icon> -->
+  <span class="material-symbols-outlined material-symbols routeIcon">{{ item.iconName }}</span>
   <span class="hide-menu">{{ item.displayName | translate }}</span>
   @if(item.children && item.children.length) {
   <span class="arrow-icon" fxFlex>

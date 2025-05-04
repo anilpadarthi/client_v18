@@ -1,101 +1,126 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title>Dashboard</mat-card-title>
-  </mat-card-header>
-
-  <mat-card-content>
-    <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
-      <mat-spinner></mat-spinner>
-    </div>
-    <div class="row">
-      <mat-form-field appearance="outline" class="col-lg-3">
-        <mat-label>Choose a Month</mat-label>
-        <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
-        <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
-        <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-          (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-        </mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdmin">
-        <mat-label>Manager</mat-label>
-        <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="onManagerChanged()">
-          <mat-option [value]="0">All</mat-option>
-          <mat-option *ngFor="let item of managerLookup" [value]="item.id">
-            <span>{{ item.id }} - {{ item.name }}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdmin || isManager">
-        <mat-label>User</mat-label>
-        <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
-          <mat-option [value]="0">All</mat-option>
-          <mat-option *ngFor="let item of userLookup" [value]="item.id">
-            <span>{{ item.id }} - {{ item.name }}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div class="col-lg-3 d-flex align-items-center">
-        <button mat-flat-button color="primary" (click)="onSubmit()">Submit</button>
+<div class="page-title">
+  <h1>Dashboard</h1>
+  <span class="page-title__info">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
       </div>
-    </div>
-    <p  class="info-msg">** Accounts are calculated from 26th to 25th **</p>
-    <div class="row">
-      <div class="col-lg-3 col-sm-3 col-12">
-        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-          <mat-card-content class="p-32">
-            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
-            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-              Assigned
-            </h4>
-            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-              {{ assignedCount }}
-            </h4>
-          </mat-card-content>
-        </mat-card>
+      <div class="row ng-custom-fileds m-r-2">
+        <div class="col">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Choose a Month</mat-label>
+            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+            <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+              (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" *ngIf="isAdmin" style="width: 100%;">
+            <mat-label>Manager</mat-label>
+            <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="onManagerChanged()">
+              <mat-option [value]="0">All</mat-option>
+              <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+                <span>{{ item.id }} - {{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" style="width: 100%;">
+            <mat-label>User</mat-label>
+            <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+              <mat-option [value]="0">All</mat-option>
+              <mat-option *ngFor="let item of userLookup" [value]="item.id">
+                <span>{{ item.id }} - {{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-auto d-flex align-items-center">
+          <button class="primary-btn" mat-flat-button (click)="onSubmit()">Submit</button>
+        </div>
       </div>
-      <div class="col-lg-3 col-sm-3 col-12">
-        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-          <mat-card-content class="p-32">
-            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
-            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-              Given To Shop
-            </h4>
-            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-              {{ givenCount }}
-            </h4>
-          </mat-card-content>
-        </mat-card>
+      <p class="info-msg">Accounts are calculated from 26th to 25th</p>
+      <div class="row">
+        <div class="col-lg-3 col-sm-3 col-12">
+          <mat-card class="shadow-none text-center link accounts-cards">
+            <mat-card-content>
+              <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
+              <div class="icon">
+                <span class="material-symbols-outlined">how_to_reg</span>
+              </div>
+              <div class="info">
+                <h4>
+                  Assigned
+                </h4>
+                <h2>
+                  {{ assignedCount }}
+                </h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-3 col-sm-3 col-12">
+          <mat-card class="shadow-none text-center accounts-cards link">
+            <mat-card-content>
+              <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
+              <div class="icon">
+                <span class="material-symbols-outlined">local_mall</span>
+              </div>
+              <div class="info">
+                <h4>
+                  Given To Shop
+                </h4>
+                <h2>
+                  {{ givenCount }}
+                </h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-3 col-sm-3 col-12">
+          <mat-card class="shadow-none text-center accounts-cards link">
+            <mat-card-content>
+              <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
+              <div class="icon">
+                <span class="material-symbols-outlined">touch_app</span>
+              </div>
+              <div class="info">
+                <h4>
+                  Activations
+                </h4>
+                <h2>
+                  {{ activationCount }}
+                </h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-3 col-sm-3 col-12">
+          <mat-card class="shadow-none text-center accounts-cards link">
+            <mat-card-content>
+              <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
+              <div class="icon">
+                <span class="material-symbols-outlined">touch_triple</span>
+              </div>
+              <div class="info">
+                <h4>
+                  Instant Activations
+                </h4>
+                <h2>
+                  {{ instantActivationCount }}
+                </h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
-      <div class="col-lg-3 col-sm-3 col-12">
-        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-          <mat-card-content class="p-32">
-            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
-            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-              Activations
-            </h4>
-            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-              {{ activationCount }}
-            </h4>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="col-lg-3 col-sm-3 col-12">
-        <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-          <mat-card-content class="p-32">
-            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
-            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-              Instant Activations
-            </h4>
-            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-              {{ instantActivationCount }}
-            </h4>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>
 
 <app-network-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
   [filterType]="filterType"></app-network-activations>
