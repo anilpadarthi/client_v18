@@ -80,7 +80,7 @@ body {
 }
 
 .custom-table td a {
-    color: blue !important;
+    color: #ff6161 !important;
     cursor: pointer;
 }
 
@@ -293,6 +293,7 @@ video {
 //accessoreis styles
 .sidebar-title {
     margin-left: 20px !important;
+    color: #ffffff;
 }
 
 .mat-expansion-panel {
@@ -301,6 +302,7 @@ video {
 }
 
 .product-title {
+    width: 100%;
     font-size: 14px !important;
     display: -webkit-box !important;
     /* Enables flexible box layout */
@@ -313,26 +315,50 @@ video {
     text-overflow: ellipsis;
     height: 50px !important;
     margin-bottom: 0px !important;
-    text-align: center !important;
-    color: #FF6347;
+    text-align: left !important;
+    color: #262A2D;
     line-height: var(--mat-card-title-text-line-height, var(--mat-app-title-large-line-height));
+    font-weight: normal;
     /* Adds '...' when text is truncated */
+}
+.product-container {
+    .product-title {
+        height: inherit !important;
+        color: #EF0000 !important;
+    }
+    .price-container {
+        span {
+            color: #EF0000 !important;
+        }
+    }
+    .product-img {
+        width: 70% !important;
+    }
+    .product-info {
+        background-color: #f4f4f4;
+        padding: 20px 40px;
+        border-radius: 6px;
+        width: 100% !important;
+    }
 }
 
 .product-code {
     color: black !important;
     font-size: 14px !important;
-    font-weight: bold;
-    text-align: center !important;
+    font-weight: bold !important;
+    text-align: left !important;
     margin: 0px !important;
     padding-top: 0.5em !important;
+    width: 100%;
+    font-weight: normal;
 }
 
 .sale-price {
-    color: #FF6347 !important;
+    color: #ef0000 !important;
     font-size: 14px !important;
+    width: 100%;
     font-weight: bold;
-    text-align: center !important;
+    text-align: left !important;
     margin: 0px !important;
     padding-top: 0.5em !important;
 }
@@ -345,12 +371,18 @@ video {
 .item-qty {
     width: 60px !important;
     height: 30px !important;
-    padding-top: 5px !important;
-    margin-top: 5px !important;
+    background-color: #e7e7e7;
+    border: 0;
+    border-radius: 4px;
+    padding: 0 8px;
 }
-
+.icon-custom {
+    .mat-icon {
+        color: #ffffff;
+    }
+}
 .cart-items-count {
-    width: 16px;
+    width: 26px;
     height: 26px;
     background-color: red;
     border-radius: 50%;
@@ -381,9 +413,9 @@ video {
 }
 
 .productcard img {
-    max-width: 100%;
+    max-width: 100% !important;
     /* Ensure image is responsive */
-    height: auto;
+    max-height: 200px !important;
     /* Maintain aspect ratio */
     object-fit: contain;
     /* Prevent distortion */
@@ -391,10 +423,16 @@ video {
 
 .quantity-container {
     padding: 1em;
+    align-items: center;
 }
 
 .quantity-container button {
     padding-left: 5px;
+    &:hover {
+        .mat-icon {
+            color: #ef0000;
+        }
+    }
 }
 
 
@@ -417,6 +455,18 @@ video {
 
 .totals {
     padding-right: 20px !important;
+    h5 {
+        font-weight: normal;
+        span {
+            font-weight: 800;
+        }
+    }
+    h3 {
+        font-weight: normal;
+        span {
+            font-weight: 800;
+        }
+    }
 }
 
 .discount {
@@ -501,6 +551,10 @@ html {
     }
     .primary-btn {
         background-color: #EF0000 !important;
+        color: #ffffff !important;
+    }
+    .secondary-btn {
+        background-color: #262A2D !important;
         color: #ffffff !important;
     }
     .accounts-cards {
