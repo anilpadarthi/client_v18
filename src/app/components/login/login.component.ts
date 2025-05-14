@@ -42,9 +42,10 @@ export class LoginComponent {
   ngOnInit() {
     this.loginForm = new FormGroup({
       //email: new FormControl("shah.00731@gmail.com", [Validators.required, Validators.email]),
-      email: new FormControl("leapdist@gmail.com", [Validators.required, Validators.email]),
+      // email: new FormControl("leapdist@gmail.com", [Validators.required, Validators.email]),
+      email: new FormControl("", [Validators.required]),
       //password: new FormControl("jannat", [Validators.required, Validators.minLength(4)])
-      password: new FormControl("Elephnat@123", [Validators.required, Validators.minLength(4)])
+      password: new FormControl("", [Validators.required, Validators.minLength(4)])
     });
     this.fetchLocation();
   }

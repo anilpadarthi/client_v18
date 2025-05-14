@@ -61,6 +61,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   isDisplayProductDetails = false;
   isAdmin = false;
   userRole = '';
+  isRedemed = false;
 
   constructor(
     private orderService: OrderService,
@@ -203,15 +204,11 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   getCommissionHistoryDetails(): void {
     this.commissionStatementService.getCommissionHistoryDetails(this.shopCommissionId).subscribe((res) => {
-      if (res.data?.isRedemed) {
-        this.commissionAmount = 0.00;
-      }
-      else {
-        this.commissionAmount = res.data?.commissionAmount;
-        this.shopId = res.data?.shopId;
-        if (this.shopId) {
-          this.getShopDetails(this.shopId);
-        }
+      this.isRedemed = res.data?.isRedemed;
+      this.commissionAmount = res.data?.commissionAmount;
+      this.shopId = res.data?.shopId;
+      if (this.shopId) {
+        this.getShopDetails(this.shopId);
       }
     });
   }
@@ -230,7 +227,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.products = res.data;
       this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
     });
-    
+
     this.closeSidebar();
   }
 
@@ -371,12 +368,14 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
     else if (this.requestType == 'MC') {
       this.getCommissionHistoryDetails();
-      if (this.subTotal > this.commissionAmount) {
-        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
-        isValid = false;
+      if (!this.isRedemed) {
+        if (this.subTotal > this.commissionAmount) {
+          this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+          isValid = false;
+        }       
       }
-      else if (this.subTotal < this.minimumCartAmount) {
-        this.toasterService.showMessage('You cannot place order, minimum cart value should be £ ' + this.minimumCartAmount + ' pounds.');
+      else{
+        this.toasterService.showMessage("You cannot place order, Monthly Commission has already been used.");
         isValid = false;
       }
     }

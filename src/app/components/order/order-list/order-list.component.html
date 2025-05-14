@@ -1,266 +1,270 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-card-header>
-        <mat-card-title>Sales</mat-card-title>
-    </mat-card-header>
+<div class="page-title">
+    <h1>Sales</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="selectedStatusId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let category of statusLookup" [value]="category.id">
+                            <span>{{category.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Payment Method</mat-label>
+                    <mat-select [(ngModel)]="selectedPaymentMethodId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of paymentMethodLookup" [value]="subCategory.id">
+                            <span>{{subCategory.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isAdmin">
+                    <mat-label>Manager</mat-label>
+                    <mat-select [(ngModel)]="selectedManagerId" (selectionChange)="managerChange()">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of managerLookup" [value]="subCategory.id">
+                            <span>{{subCategory.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12"
+                    *ngIf="(userRole == 'Manager' || isAdmin)">
+                    <mat-label>Agent</mat-label>
+                    <mat-select [(ngModel)]="selectedAgentId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of agentLookup" [value]="subCategory.id">
+                            <span>{{subCategory.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-    <mat-card-content>
-        <div class="row">
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Status</mat-label>
-                <mat-select [(ngModel)]="selectedStatusId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let category of statusLookup" [value]="category.id">
-                        <span>{{category.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Payment Method</mat-label>
-                <mat-select [(ngModel)]="selectedPaymentMethodId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let subCategory of paymentMethodLookup" [value]="subCategory.id">
-                        <span>{{subCategory.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isAdmin">
-                <mat-label>Manager</mat-label>
-                <mat-select [(ngModel)]="selectedManagerId" (selectionChange)="managerChange()">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let subCategory of managerLookup" [value]="subCategory.id">
-                        <span>{{subCategory.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="(userRole == 'Manager' || isAdmin)">
-                <mat-label>Agent</mat-label>
-                <mat-select [(ngModel)]="selectedAgentId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let subCategory of agentLookup" [value]="subCategory.id">
-                        <span>{{subCategory.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Area</mat-label>
-                <mat-select [(ngModel)]="selectedAreaId" (selectionChange)="areaChange()">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let item of areaLookup" [value]="item.id">
-                        <span>{{item.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Shop</mat-label>
-                <mat-select [(ngModel)]="selectedShopId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let item of shopLookup" [value]="item.id">
-                        <span>{{item.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Shipping Type</mat-label>
-                <mat-select [(ngModel)]="selectedShippingMethodId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let subCategory of shippingMethodLookup" [value]="subCategory.id">
-                        <span>{{subCategory.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Order Number</mat-label>
-                <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Track Number</mat-label>
-                <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>From Month</mat-label>
-                <input matInput [(ngModel)]="selectedFromDate" [matDatepicker]="fromPicker"
-                    placeholder="Choose a Month" />
-                <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                <mat-datepicker #fromPicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>To Month</mat-label>
-                <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker" placeholder="Choose a Month" />
-                <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
-                <mat-datepicker #toPicker></mat-datepicker>
-            </mat-form-field>
-            <mat-checkbox color="primary" [(ngModel)]="isVat">IS VAT</mat-checkbox>
-        </div>
-        <div class="row col-lg-12 space-between-buttons m-b-10">
-            <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
-                <mat-icon>filter_list</mat-icon>
-                Filter
-            </button>
-            <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
-                <mat-icon>clear_all</mat-icon> Clear
-            </button>
-
-            <button mat-flat-button class="bg-primary text-white" (click)="loadOutstandingMetrics()">
-                <mat-icon>filter_list</mat-icon>
-                View OutStanding
-            </button>
-        </div>
-
-        <div class="row outstanding-metrics" *ngIf="isAdmin && isShowOutstandingMetrics">
-            <div class="col-lg-4 col-12">
-                <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-16">
-                        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
-                            class="rounded-circle" />
-                        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-                            Expected Amount
-                        </h4>
-                        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            £{{ totalOutstanding | number: '1.2-2'}}
-                        </h4>
-                    </mat-card-content>
-                </mat-card>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Area</mat-label>
+                    <mat-select [(ngModel)]="selectedAreaId" (selectionChange)="areaChange()">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                            <span>{{item.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Shop</mat-label>
+                    <mat-select [(ngModel)]="selectedShopId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+                            <span>{{item.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Shipping Type</mat-label>
+                    <mat-select [(ngModel)]="selectedShippingMethodId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of shippingMethodLookup" [value]="subCategory.id">
+                            <span>{{subCategory.name}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Order Number</mat-label>
+                    <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Track Number</mat-label>
+                    <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>From Month</mat-label>
+                    <input matInput [(ngModel)]="selectedFromDate" [matDatepicker]="fromPicker"
+                        placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>To Month</mat-label>
+                    <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker"
+                        placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+                <mat-checkbox color="primary" [(ngModel)]="isVat">IS VAT</mat-checkbox>
             </div>
-            <div class="col-lg-4 col-12">
-                <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-16">
-                        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
-                            class="rounded-circle" />
-                        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-                            PPA
-                        </h4>
-                        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            £{{ totalPPAAmount | number: '1.2-2' }}
-                        </h4>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-            <div class="col-lg-4 col-12">
-                <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
-                    <mat-card-content class="p-16">
-                        <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
-                            class="rounded-circle" />
-                        <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
-                            PPM
-                        </h4>
-                        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-                            £{{ totalPPMAmount | number: '1.2-2'}}
-                        </h4>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
+            <div class="row col-lg-12 space-between-buttons m-b-10">
+                <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
+                    <mat-icon>filter_list</mat-icon>
+                    Filter
+                </button>
+                <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
+                    <mat-icon>clear_all</mat-icon> Clear
+                </button>
 
-        <div *ngIf="orderList.length > 0" class="table-responsive table-scroll example-container">
-            <table mat-table [dataSource]="orderList" class="w-100 custom-table">
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef>
-                    </th>
-                    <td mat-cell *matCellDef="let element" class="action-link option-list-btn">
-                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                            <button *ngIf="element.orderStatusId == 1 || isAdmin" mat-menu-item
-                                (click)="editOrder(element.orderId)">
-                                <mat-icon>edit</mat-icon>
-                                Edit Order
+                <button mat-flat-button class="bg-primary text-white" (click)="loadOutstandingMetrics()">
+                    <mat-icon>filter_list</mat-icon>
+                    View OutStanding
+                </button>
+            </div>
+
+            <div class="row outstanding-metrics" *ngIf="isAdmin && isShowOutstandingMetrics">
+                <div class="col-lg-4 col-12">
+                    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+                        <mat-card-content class="p-16">
+                            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
+                                class="rounded-circle" />
+                            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+                                Expected Amount
+                            </h4>
+                            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+                                £{{ totalOutstanding | number: '1.2-2'}}
+                            </h4>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+                        <mat-card-content class="p-16">
+                            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
+                                class="rounded-circle" />
+                            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+                                PPA
+                            </h4>
+                            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+                                £{{ totalPPAAmount | number: '1.2-2' }}
+                            </h4>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
+                        <mat-card-content class="p-16">
+                            <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40"
+                                class="rounded-circle" />
+                            <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
+                                PPM
+                            </h4>
+                            <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+                                £{{ totalPPMAmount | number: '1.2-2'}}
+                            </h4>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div *ngIf="orderList.length > 0" class="table-responsive table-scroll example-container">
+                <table mat-table [dataSource]="orderList" class="w-100 custom-table">
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="action-link option-list-btn">
+                            <button mat-icon-button [matMenuTriggerFor]="menu"
+                                aria-label="Example icon-button with a menu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
-                            <button mat-menu-item (click)="viewOrder(element.orderId)">
-                                <mat-icon>visibility</mat-icon>
-                                Order Details
-                            </button>
-                            <button mat-menu-item (click)="orderHistory(element.orderId)">
-                                <mat-icon>history</mat-icon>
-                                Order History
-                            </button>
-                            <button mat-menu-item (click)="paymentHistory(element.orderId)">
-                                <mat-icon>payments</mat-icon>
-                                Payment History
-                            </button>
-                            <button mat-menu-item (click)="addPayment(element)">
-                                <mat-icon>currency_pound</mat-icon>
-                                Add Payment
-                            </button>
-                            <button mat-menu-item (click)="downloadNonVAT(element.orderId)">
-                                <mat-icon>description</mat-icon>Delivery Note
-                            </button>
-                            <button *ngIf="isAdmin" mat-menu-item (click)="downloadVAT(element.orderId)">
-                                <mat-icon>download</mat-icon>VAT Invoice
-                            </button>
-                            <button  mat-menu-item (click)="sendEmail(element.orderId)">
-                                <mat-icon>mail</mat-icon>
-                                Send Email
-                            </button>
-                        </mat-menu>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="orderId">
-                    <th mat-header-cell *matHeaderCellDef>OrderID</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.orderId }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef>Date</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.createdDate | date: 'dd/MM/yyyy' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="user">
-                    <th mat-header-cell *matHeaderCellDef>User</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.userName }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="shop">
-                    <th mat-header-cell *matHeaderCellDef>Shop</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.areaName }} - {{ element.shopName }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="expected">
-                    <th mat-header-cell *matHeaderCellDef>Expected</th>
-                    <td mat-cell *matCellDef="let element" class="text-right">
-                        £ {{ (element.isVAT == 1 ? element.totalWithVATAmount : element.totalWithOutVATAmount) | number:
-                        '1.2-2' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="collected">
-                    <th mat-header-cell *matHeaderCellDef>Collected</th>
-                    <td mat-cell *matCellDef="let element" class="text-right">
-                        £ {{element.collectedAmount | number: '1.2-2' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
-                    <td mat-cell *matCellDef="let element" class="text-center">
-                        {{ element.orderStatus }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="paymentMethod">
-                    <th mat-header-cell *matHeaderCellDef class="text-center">Payment</th>
-                    <td mat-cell *matCellDef="let element" class="text-center">
-                        {{ element.paymentMethod }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="courier">
-                    <th mat-header-cell *matHeaderCellDef class="text-center">Courier</th>
-                    <td mat-cell *matCellDef="let element" class="text-center">
-                        {{ element.courier }}
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                    [ngClass]="row.colourName"></tr>
-            </table>
-        </div>
-        <div *ngIf="orderList.length > 0">
-            <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
-                [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
-            </mat-paginator>
-        </div>
-        <div class="zero-records" *ngIf="orderList?.length == 0">No records found</div>
-    </mat-card-content>
-</mat-card>
+                            <mat-menu #menu="matMenu">
+                                <button *ngIf="element.orderStatusId == 1 || isAdmin" mat-menu-item
+                                    (click)="editOrder(element.orderId)">
+                                    <mat-icon>edit</mat-icon>
+                                    Edit Order
+                                </button>
+                                <button mat-menu-item (click)="viewOrder(element.orderId)">
+                                    <mat-icon>visibility</mat-icon>
+                                    Order Details
+                                </button>
+                                <button mat-menu-item (click)="orderHistory(element.orderId)">
+                                    <mat-icon>history</mat-icon>
+                                    Order History
+                                </button>
+                                <button mat-menu-item (click)="paymentHistory(element.orderId)">
+                                    <mat-icon>payments</mat-icon>
+                                    Payment History
+                                </button>
+                                <button mat-menu-item (click)="addPayment(element)">
+                                    <mat-icon>currency_pound</mat-icon>
+                                    Add Payment
+                                </button>
+                                <button mat-menu-item (click)="downloadNonVAT(element.orderId)">
+                                    <mat-icon>description</mat-icon>Delivery Note
+                                </button>
+                                <button *ngIf="isAdmin" mat-menu-item (click)="downloadVAT(element.orderId)">
+                                    <mat-icon>download</mat-icon>VAT Invoice
+                                </button>
+                                <button mat-menu-item (click)="sendEmail(element.orderId)">
+                                    <mat-icon>mail</mat-icon>
+                                    Send Email
+                                </button>
+                            </mat-menu>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderId">
+                        <th mat-header-cell *matHeaderCellDef>OrderID</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.orderId }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.createdDate | date: 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="user">
+                        <th mat-header-cell *matHeaderCellDef>User</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.userName }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="shop">
+                        <th mat-header-cell *matHeaderCellDef>Shop</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.areaName }} - {{ element.shopName }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expected">
+                        <th mat-header-cell *matHeaderCellDef>Expected</th>
+                        <td mat-cell *matCellDef="let element" class="text-right">
+                            £ {{ (element.isVAT == 1 ? element.totalWithVATAmount : element.totalWithOutVATAmount) |
+                            number:
+                            '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="collected">
+                        <th mat-header-cell *matHeaderCellDef>Collected</th>
+                        <td mat-cell *matCellDef="let element" class="text-right">
+                            £ {{element.collectedAmount | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            {{ element.orderStatus }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="paymentMethod">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Payment</th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            {{ element.paymentMethod }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="courier">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Courier</th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            {{ element.courier }}
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="row.colourName"></tr>
+                </table>
+            </div>
+            <div *ngIf="orderList.length > 0">
+                <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+                    [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+                </mat-paginator>
+            </div>
+            <div class="zero-records p-b-8" *ngIf="orderList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span></div>
+        </mat-card-content>
+    </mat-card>
+</div>

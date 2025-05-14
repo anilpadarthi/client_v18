@@ -59,6 +59,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
-    <div class="zero-records" *ngIf="!isLoading && activationList?.length == 0">No records found</div>
+    <div class="zero-records p-b-8" *ngIf="!isLoading && activationList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+      <span>No records found</span></div>
   </mat-card-content>
 </mat-card>

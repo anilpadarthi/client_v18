@@ -1,185 +1,190 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title>Salary Pay Slip</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="row justify-content-between">
-      <div class="col-sm-3">
-        <mat-form-field appearance="outline">
-          <mat-label>Select Month</mat-label>
-          <input matInput [matDatepicker]="monthPicker" [(ngModel)]="selectedMonth" readonly>
-          <mat-datepicker-toggle matSuffix [for]="monthPicker"></mat-datepicker-toggle>
-          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-          </mat-datepicker>
-        </mat-form-field>
+<div class="page-title">
+  <h1>Salary Pay Slip</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="row justify-content-between">
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Month</mat-label>
+            <input matInput [matDatepicker]="monthPicker" [(ngModel)]="selectedMonth" readonly>
+            <mat-datepicker-toggle matSuffix [for]="monthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+              (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" *ngIf="isAdmin">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Manager</mat-label>
+            <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
+              <mat-option [value]="0">All</mat-option>
+              <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+                <span>{{ item.id }} - {{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" *ngIf="isAdmin">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Agent</mat-label>
+            <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">
+              <mat-option [value]="0">All</mat-option>
+              <mat-option *ngFor="let item of userLookup" [value]="item.id">
+                <span>{{ item.id }} - {{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+        </div>
       </div>
-      <div class="col-sm-3" *ngIf="isAdmin">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Manager</mat-label>
-          <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
-            <mat-option [value]="0">All</mat-option>
-            <mat-option *ngFor="let item of managerLookup" [value]="item.id">
-              <span>{{ item.id }} - {{ item.name }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <p class="info-msg">** Accounts are calculated from 26th to 25th **</p>
+      <div class="table-responsive table-scroll example-container" *ngIf="salaryDetails.length > 0">
+        <h3 style="text-align: center;">Salary Details</h3>
+        <table mat-table [dataSource]="salaryDetails" class="w-100 custom-table">
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="workingDays">
+            <th mat-header-cell *matHeaderCellDef>Working Days</th>
+            <td mat-cell *matCellDef="let element">{{ element.noOfDays }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="salaryRate">
+            <th mat-header-cell *matHeaderCellDef>Salary Rate</th>
+            <td mat-cell *matCellDef="let element">£{{ element.salaryRate | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef>Total</td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef>£{{ totalSalary | number : "1.2-2" }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+        </table>
       </div>
-      <div class="col-sm-3" *ngIf="isAdmin">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Agent</mat-label>
-          <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">
-            <mat-option [value]="0">All</mat-option>
-            <mat-option *ngFor="let item of userLookup" [value]="item.id">
-              <span>{{ item.id }} - {{ item.name }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+
+      <div class="table-responsive table-scroll example-container" *ngIf="simCommissionDetails.length > 0">
+        <h3 style="text-align: center;">Sim Commission Details</h3>
+        <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
+
+          <ng-container matColumnDef="NetworkName">
+            <th mat-header-cell *matHeaderCellDef>Network</th>
+            <td mat-cell *matCellDef="let element">{{ element.networkName }}</td>
+            <td mat-footer-cell *matFooterCellDef>Total</td>
+          </ng-container>
+
+          <ng-container matColumnDef="ActivationCount">
+            <th mat-header-cell *matHeaderCellDef>Activations({{kpi1Target}})</th>
+            <td mat-cell *matCellDef="let element">{{ element.activationCount }}</td>
+            <td mat-footer-cell *matFooterCellDef>{{ totalActivations}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Rate">
+            <th mat-header-cell *matHeaderCellDef>Rate({{kpi1Percentage | number : "1.2-2"}})</th>
+            <td mat-cell *matCellDef="let element">£{{ element.rate | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="Total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef>£{{ totalSimCommission | number : "1.2-2" }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns1; sticky: true"></tr>
+        </table>
       </div>
-      <div class="col-sm-3 space-between-buttons">
-        <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-        <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+
+      <div class="table-responsive table-scroll example-container" *ngIf="accessoriesCommisssionDetails.length > 0">
+        <h3 style="text-align: center;">Accessories Commission Details</h3>
+        <table mat-table [dataSource]="accessoriesCommisssionDetails" class="w-100 custom-table">
+
+          <ng-container matColumnDef="saleType">
+            <th mat-header-cell *matHeaderCellDef>Sale Type</th>
+            <td mat-cell *matCellDef="let element">{{ element.saleType }}</td>
+            <td mat-footer-cell *matFooterCellDef>Total</td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalSale">
+            <th mat-header-cell *matHeaderCellDef>Total Sale</th>
+            <td mat-cell *matCellDef="let element">£{{ element.totalSale }}</td>
+            <td mat-footer-cell *matFooterCellDef>£{{ totalSaleAmount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef>Rate</th>
+            <td mat-cell *matCellDef="let element">£{{ element.rate | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
+            <td mat-footer-cell *matFooterCellDef>£{{ totalAccessoriesCommission | number : "1.2-2" }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns2; sticky: true"></tr>
+        </table>
       </div>
-    </div>
-    <p  class="info-msg">** Accounts are calculated from 26th to 25th **</p>
-    <div class="table-responsive table-scroll example-container" *ngIf="salaryDetails.length > 0">
-      <h3 style="text-align: center;">Salary Details</h3>
-      <table mat-table [dataSource]="salaryDetails" class="w-100 custom-table">
 
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
+      <div class="table-responsive table-scroll example-container" *ngIf="salaryInAdvance.length > 0">
+        <h3 style="text-align: center;">Advance Payments</h3>
+        <table mat-table [dataSource]="salaryInAdvance" class="w-100 custom-table">
 
-        <ng-container matColumnDef="workingDays">
-          <th mat-header-cell *matHeaderCellDef>Working Days</th>
-          <td mat-cell *matCellDef="let element">{{ element.noOfDays }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
+          <ng-container matColumnDef="comments">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="salaryRate">
-          <th mat-header-cell *matHeaderCellDef>Salary Rate</th>
-          <td mat-cell *matCellDef="let element">£{{ element.salaryRate | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef>Total</td>
-        </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{ element.createdDate }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef>Total</th>
-          <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef>£{{ totalSalary | number : "1.2-2" }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-      </table>
-    </div>
-
-    <div class="table-responsive table-scroll example-container" *ngIf="simCommissionDetails.length > 0">
-      <h3 style="text-align: center;">Sim Commission Details</h3>
-      <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
-
-        <ng-container matColumnDef="NetworkName">
-          <th mat-header-cell *matHeaderCellDef>Network</th>
-          <td mat-cell *matCellDef="let element">{{ element.networkName }}</td>
-          <td mat-footer-cell *matFooterCellDef>Total</td>
-        </ng-container>
-
-        <ng-container matColumnDef="ActivationCount">
-          <th mat-header-cell *matHeaderCellDef>Activations({{kpi1Target}})</th>
-          <td mat-cell *matCellDef="let element">{{ element.activationCount }}</td>
-          <td mat-footer-cell *matFooterCellDef>{{ totalActivations}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="Rate">
-          <th mat-header-cell *matHeaderCellDef>Rate({{kpi1Percentage | number : "1.2-2"}})</th>
-          <td mat-cell *matCellDef="let element">£{{ element.rate | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <ng-container matColumnDef="Total">
-          <th mat-header-cell *matHeaderCellDef>Total</th>
-          <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef>£{{ totalSimCommission | number : "1.2-2" }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedColumns1; sticky: true"></tr>
-      </table>
-    </div>
-
-    <div class="table-responsive table-scroll example-container" *ngIf="accessoriesCommisssionDetails.length > 0">
-      <h3 style="text-align: center;">Accessories Commission Details</h3>
-      <table mat-table [dataSource]="accessoriesCommisssionDetails" class="w-100 custom-table">
-
-        <ng-container matColumnDef="saleType">
-          <th mat-header-cell *matHeaderCellDef>Sale Type</th>
-          <td mat-cell *matCellDef="let element">{{ element.saleType }}</td>
-          <td mat-footer-cell *matFooterCellDef>Total</td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalSale">
-          <th mat-header-cell *matHeaderCellDef>Total Sale</th>
-          <td mat-cell *matCellDef="let element">£{{ element.totalSale }}</td>
-          <td mat-footer-cell *matFooterCellDef>£{{ totalSaleAmount }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="rate">
-          <th mat-header-cell *matHeaderCellDef>Rate</th>
-          <td mat-cell *matCellDef="let element">£{{ element.rate | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef>Total</th>
-          <td mat-cell *matCellDef="let element">£ {{ element.total | number : "1.2-2" }}</td>
-          <td mat-footer-cell *matFooterCellDef>£{{ totalAccessoriesCommission | number : "1.2-2" }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedColumns2; sticky: true"></tr>
-      </table>
-    </div>
-
-    <div class="table-responsive table-scroll example-container" *ngIf="salaryInAdvance.length > 0">
-      <h3 style="text-align: center;">Advance Payments</h3>
-      <table mat-table [dataSource]="salaryInAdvance" class="w-100 custom-table">
-
-        <ng-container matColumnDef="comments">
-          <th mat-header-cell *matHeaderCellDef>Description</th>
-          <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.createdDate }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Rate</th>
-          <td mat-cell *matCellDef="let element">£{{ element.amount | number : "1.2-2" }}</td>
-        </ng-container>
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Rate</th>
+            <td mat-cell *matCellDef="let element">£{{ element.amount | number : "1.2-2" }}</td>
+          </ng-container>
 
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns3; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
-      </table>
-    </div>
-    <div class="table-responsive table-scroll example-container" *ngIf="simCommissionDetails.length > 0">
-      <h3 style="text-align: right;"> Total Salary: £{{totalSalary | number : "1.2-2"}} </h3>
-      <h3 style="text-align: right;"> Total Sim Commission: £{{totalSimCommission | number : "1.2-2"}} </h3>
-      <h3 style="text-align: right;"> Total Accessories Commission: £{{totalAccessoriesCommission | number : "1.2-2"}} </h3>
-      <h3 style="text-align: right;"> Grand Total : £{{ (totalSalary + totalSimCommission + totalAccessoriesCommission) | number : "1.2-2"}}
-      </h3>
-      <h3 style="text-align: right;"> Salary In Advance : £{{totalSalaryInAdvance | number : "1.2-2" }} </h3>
-      <h3 style="text-align: right;"> Balance Amount : £{{ ((totalSalary + totalSimCommission + totalAccessoriesCommission)
-        -totalSalaryInAdvance) | number : "1.2-2" }} </h3>
-    </div>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns3; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+        </table>
+      </div>
+      <div class="table-responsive table-scroll example-container" *ngIf="simCommissionDetails.length > 0">
+        <h3 style="text-align: right;"> Total Salary: £{{totalSalary | number : "1.2-2"}} </h3>
+        <h3 style="text-align: right;"> Total Sim Commission: £{{totalSimCommission | number : "1.2-2"}} </h3>
+        <h3 style="text-align: right;"> Total Accessories Commission: £{{totalAccessoriesCommission | number : "1.2-2"}}
+        </h3>
+        <h3 style="text-align: right;"> Grand Total : £{{ (totalSalary + totalSimCommission +
+          totalAccessoriesCommission) | number : "1.2-2"}}
+        </h3>
+        <h3 style="text-align: right;"> Salary In Advance : £{{totalSalaryInAdvance | number : "1.2-2" }} </h3>
+        <h3 style="text-align: right;"> Balance Amount : £{{ ((totalSalary + totalSimCommission +
+          totalAccessoriesCommission)
+          -totalSalaryInAdvance) | number : "1.2-2" }} </h3>
+      </div>
 
-    <div class="zero-records" *ngIf="salaryDetails?.length == 0">No records found</div>
+      <div class="zero-records p-b-8" *ngIf="salaryDetails?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span></div>
 
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

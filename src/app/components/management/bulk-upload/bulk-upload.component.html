@@ -1,36 +1,37 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-card-header>
-        <mat-card-title>Bulk Import File</mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content>
-        <div class="row space-between-buttons">            
-            <div class="col-lg-3 col-xs-12">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Import File Type</mat-label>
-                    <mat-select [(ngModel)]="importFileType">
-                        <mat-option value=''>--Select--</mat-option>
-                        <mat-option value="Stock">Stock</mat-option>
-                        <mat-option value="DailyActivation">Daily Activation</mat-option>
-                        <mat-option value="TrackNumber">Track Number</mat-option>
-                        <mat-option value="OrderStatus">Order Status</mat-option>
-                        <mat-option value="Target">Target</mat-option>
-                        <mat-option value="ShopCommissionCheque">Commission Cheques</mat-option>
-                        <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-lg-9 space-between-buttons">
-                <div class="d-flex align-items-center m-b-16">
-                    <mat-icon>upload_file</mat-icon>
-                    <button mat-flat-button color="primary" class="m-l-16 input-file-button">
-                        <input type="file" accept=".xlsx" (change)="onFileChange($event)" />
-                    </button>
-                    <button mat-flat-button color="primary" (click)="uploadFile()">
-                        <mat-icon>upload</mat-icon> Upload
-                    </button>
+<div class="page-title">
+    <h1>Bulk Uploads</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row space-between-buttons">
+                <div class="col-lg-3 col-xs-12">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Import File Type</mat-label>
+                        <mat-select [(ngModel)]="importFileType">
+                            <mat-option value=''>--Select--</mat-option>
+                            <mat-option value="Stock">Stock</mat-option>
+                            <mat-option value="DailyActivation">Daily Activation</mat-option>
+                            <mat-option value="TrackNumber">Track Number</mat-option>
+                            <mat-option value="OrderStatus">Order Status</mat-option>
+                            <mat-option value="Target">Target</mat-option>
+                            <mat-option value="ShopCommissionCheque">Commission Cheques</mat-option>
+                            <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
+                <div class="col-lg-9 space-between-buttons">
+                    <div class="d-flex align-items-center m-b-16">
+                        <mat-icon>upload_file</mat-icon>
+                        <button mat-flat-button color="primary" class="m-l-16 input-file-button">
+                            <input type="file" accept=".xlsx" (change)="onFileChange($event)" />
+                        </button>
+                        <button mat-flat-button color="primary" (click)="uploadFile()">
+                            <mat-icon>upload</mat-icon> Upload
+                        </button>
+                    </div>
+                </div>
+
             </div>
-           
-        </div>
-    </mat-card-content></mat-card>
+        </mat-card-content>
+    </mat-card>
+</div>

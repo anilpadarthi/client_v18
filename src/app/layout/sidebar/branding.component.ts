@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <div class="branding">
     <a href="/home">
         <img
-          src="./assets/images/logos/Leap.png"
+          src="./assets/images/logos/logo.png"
           class="align-middle leap-logo"
           alt="logo"
         />

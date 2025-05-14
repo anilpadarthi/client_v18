@@ -1,53 +1,56 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-card-header>
-        <mat-card-title>Network Usage report</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="row justify-content-between">
-            <mat-form-field appearance="outline" class="col-lg-3">
-                <mat-label>Choose a Month</mat-label>
-                <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
-                <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
-                <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-                  (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-                </mat-datepicker>
-              </mat-form-field>
-            <div class="col-lg-9 space-between-buttons">
-                <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-                <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+<div class="page-title">
+    <h1>Network Usage Report</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row justify-content-between">
+                <mat-form-field appearance="outline" class="col-lg-3">
+                    <mat-label>Choose a Month</mat-label>
+                    <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker"
+                        placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+                        (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+                    </mat-datepicker>
+                </mat-form-field>
+                <div class="col-lg-9 space-between-buttons">
+                    <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+                    <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+                </div>
             </div>
-        </div>
-        <p *ngIf="networkUsageList.length > 0" class="info-msg" >** Accounts are calculated from 1st to 1st **</p>
-        <div *ngIf="networkUsageList?.length > 0" class="table-responsive table-scroll example-container ">
-            <table mat-table [dataSource]="networkUsageList" class="w-100 custom-table">
-                <ng-container matColumnDef="NAME">
-                    <th mat-header-cell *matHeaderCellDef>NAME</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.name }}
-                    </td>
-                    <td mat-footer-cell *matFooterCellDef>Total</td>
-                </ng-container>
-                <ng-container matColumnDef="GIVEN">
-                    <th mat-header-cell *matHeaderCellDef>GIVEN</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.given }}
-                    </td>
-                    <td mat-footer-cell *matFooterCellDef>{{ totalGiven }}</td>
-                </ng-container>
-                <ng-container matColumnDef="ACTIVATED">
-                    <th mat-header-cell *matHeaderCellDef>ACTIVATED</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.activated }}
-                    </td>
-                    <td mat-footer-cell *matFooterCellDef>{{ totalActivated }}</td>
-                </ng-container>
+            <p *ngIf="networkUsageList.length > 0" class="info-msg">** Accounts are calculated from 1st to 1st **</p>
+            <div *ngIf="networkUsageList?.length > 0" class="table-responsive table-scroll example-container ">
+                <table mat-table [dataSource]="networkUsageList" class="w-100 custom-table">
+                    <ng-container matColumnDef="NAME">
+                        <th mat-header-cell *matHeaderCellDef>NAME</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.name }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>Total</td>
+                    </ng-container>
+                    <ng-container matColumnDef="GIVEN">
+                        <th mat-header-cell *matHeaderCellDef>GIVEN</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.given }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>{{ totalGiven }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ACTIVATED">
+                        <th mat-header-cell *matHeaderCellDef>ACTIVATED</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.activated }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>{{ totalActivated }}</td>
+                    </ng-container>
 
-                <!-- Header and Row Declarations -->
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-            </table>
-        </div>
-        <div class="zero-records" *ngIf="networkUsageList?.length == 0">No records found</div>
-    </mat-card-content>
-</mat-card>
+                    <!-- Header and Row Declarations -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                </table>
+            </div>
+            <div class="zero-records p-b-8" *ngIf="networkUsageList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span></div>
+        </mat-card-content>
+    </mat-card>
+</div>

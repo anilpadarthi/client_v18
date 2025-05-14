@@ -1,85 +1,87 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-card-header>
-        <mat-card-title>Networks</mat-card-title>
-    </mat-card-header>
+<div class="page-title">
+    <h1>Networks</h1>
+    <span class="page-title__info"></span>
 
-    <mat-card-content>
-        <div class="row space-between-buttons">
-            <div class="col-lg-4">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Search Network</mat-label>
-                    <input matInput #searchInput placeholder="Search Network" [(ngModel)]="searchText"
-                        (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
-                    <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row space-between-buttons">
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Search Network</mat-label>
+                        <input matInput #searchInput placeholder="Search Network" [(ngModel)]="searchText"
+                            (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-8 ">
+                    <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
+                        <mat-icon>filter_list</mat-icon> Filter
+                    </button>
+                    <button mat-flat-button class="bg-error text-white" (mousedown)="onReset()">
+                        <mat-icon>clear_all</mat-icon> Clear
+                    </button>
+                    <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
+                        <mat-icon>add</mat-icon>
+                        Add
+                    </button>
+                </div>
             </div>
-            <div class="col-lg-8 ">
-                <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
-                    <mat-icon>filter_list</mat-icon> Filter
-                </button>
-                <button mat-flat-button class="bg-error text-white" (mousedown)="onReset()">
-                    <mat-icon>clear_all</mat-icon> Clear
-                </button>
-                <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
-                    <mat-icon>add</mat-icon>
-                    Add
-                </button>
+
+            <div class="table-responsive table-scroll example-container">
+                <table mat-table [dataSource]="networkList" class="w-100 custom-table">
+
+                    <ng-container matColumnDef="networkId">
+                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.networkId }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>NAME</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.networkName }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef>CODE</th>
+                        <td mat-cell *matCellDef="let element">{{ element.networkCode }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="skuCode">
+                        <th mat-header-cell *matHeaderCellDef>SKU CODE</th>
+                        <td mat-cell *matCellDef="let element">{{ element.skuCode }}</td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>STATUS</th>
+                        <td mat-cell *matCellDef="let element">{{ element.status ? 'Active' : 'InActive' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>
+                            ACTION
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="action-link">
+                            <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.networkId)">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                            <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.networkId)">
+                                <mat-icon>delete</mat-icon>
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
             </div>
-        </div>
-
-        <div class="table-responsive table-scroll example-container">
-            <table mat-table [dataSource]="networkList" class="w-100 custom-table">
-
-                <ng-container matColumnDef="networkId">
-                    <th mat-header-cell *matHeaderCellDef>ID</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.networkId }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>NAME</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.networkName }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="code">
-                    <th mat-header-cell *matHeaderCellDef>CODE</th>
-                    <td mat-cell *matCellDef="let element">{{ element.networkCode }}</td>
-                </ng-container>
-                <ng-container matColumnDef="skuCode">
-                    <th mat-header-cell *matHeaderCellDef>SKU CODE</th>
-                    <td mat-cell *matCellDef="let element">{{ element.skuCode }}</td>
-                </ng-container>
-
-
-                <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>STATUS</th>
-                    <td mat-cell *matCellDef="let element">{{ element.status ? 'Active' : 'InActive' }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef>
-                        ACTION
-                    </th>
-                    <td mat-cell *matCellDef="let element" class="action-link">
-                        <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.networkId)">
-                            <mat-icon>edit</mat-icon>
-                        </a>
-                        <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.networkId)">
-                            <mat-icon>delete</mat-icon>
-                        </a>
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-        </div>
-        <div class="no-records" *ngIf="networkList?.length == 0">No records found</div>
-        <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
-            [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
-        </mat-paginator>
-    </mat-card-content>
-</mat-card>
+            <div class="zero-records p-b-8" *ngIf="networkList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span></div>
+            <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+                [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+            </mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

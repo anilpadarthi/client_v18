@@ -1,78 +1,77 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title>On-Field</mat-card-title>
-  </mat-card-header>
-
-  <mat-card-content>
-    <div class="row justify-content-between">
-      <div class="col-lg-4">
-        <mat-form-field appearance="outline" class="w-100 hide-hint">
-          <mat-label>Area</mat-label>
-          <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
-            <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of areaLookup" [value]="item.id">
-              <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+<div class="page-title">
+  <h1>On-Field</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="row justify-content-between">
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100 hide-hint">
+            <mat-label>Area</mat-label>
+            <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+              <mat-option [value]=null>All</mat-option>
+              <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100 hide-hint">
+            <mat-label>Shop</mat-label>
+            <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop" (selectionChange)="shopChange()">
+              <mat-option [value]=null>All</mat-option>
+              <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+                <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4 text-end d-flex align-items-center justify-content-end">
+          <button mat-flat-button color="primary" (click)="onSubmit()">
+            Submit
+          </button>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onActionClicked('EditShop')">
+              <mat-icon>edit</mat-icon>
+              Edit Shop
+            </button>
+            <button mat-menu-item (click)="onActionClicked('ScanSims')">
+              <mat-icon>assignment</mat-icon>
+              Allocate Sims
+            </button>
+            <button mat-menu-item (click)="onActionClicked('ShopVisit')">
+              <mat-icon>check</mat-icon>
+              Shop Visit
+            </button>
+            <button mat-menu-item (click)="openShopVisitHistoryDialog()">
+              <mat-icon>history</mat-icon>
+              Shop Visit History
+            </button>
+            <button mat-menu-item (click)="openShopAgreementHistoryDialog()">
+              <mat-icon>history</mat-icon>
+              Agreement History
+            </button>
+            <button mat-menu-item (click)="onActionClicked('OrderList')">
+              <mat-icon>history</mat-icon>
+              Order History
+            </button>
+            <button mat-menu-item (click)="openShoppingPage('COD')">
+              <mat-icon>open_in_new</mat-icon>
+              Create Order
+            </button>
+            <button mat-menu-item (click)="openShoppingPage('B')">
+              <mat-icon>open_in_new</mat-icon>
+              Create Bonus Order
+            </button>
+          </mat-menu>
+        </div>
       </div>
-      <div class="col-lg-4">
-        <mat-form-field appearance="outline" class="w-100 hide-hint">
-          <mat-label>Shop</mat-label>
-          <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop" (selectionChange)="shopChange()">
-            <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of shopLookup" [value]="item.id">
-              <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-lg-4 text-end d-flex align-items-center justify-content-end">
-        <button mat-flat-button color="primary" (click)="onSubmit()">
-          Submit
-        </button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="onActionClicked('EditShop')">
-            <mat-icon>edit</mat-icon>
-            Edit Shop
-          </button>
-          <button mat-menu-item (click)="onActionClicked('ScanSims')">
-            <mat-icon>assignment</mat-icon>
-            Allocate Sims
-          </button>
-          <button mat-menu-item (click)="onActionClicked('ShopVisit')">
-            <mat-icon>check</mat-icon>
-            Shop Visit
-          </button>
-          <button mat-menu-item (click)="openShopVisitHistoryDialog()">
-            <mat-icon>history</mat-icon>
-            Shop Visit History
-          </button>
-          <button mat-menu-item (click)="openShopAgreementHistoryDialog()">
-            <mat-icon>history</mat-icon>
-            Agreement History
-          </button>
-          <button mat-menu-item (click)="onActionClicked('OrderList')">
-            <mat-icon>history</mat-icon>
-            Order History
-          </button>
-          <button mat-menu-item (click)="openShoppingPage('COD')">
-            <mat-icon>open_in_new</mat-icon>
-            Create Order
-          </button>
-          <button mat-menu-item (click)="openShoppingPage('B')">
-            <mat-icon>open_in_new</mat-icon>
-            Create Bonus Order
-          </button>   
-        </mat-menu>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
-
+    </mat-card-content>
+  </mat-card>
+</div>
 
 <div *ngIf="selectedShopId > 0" [hidden]="!isMainSection">
 
@@ -110,6 +109,6 @@
   </div>
   <div *ngIf="action == 'OrderList'">
     <app-on-field-shop-order-list [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
-       (notifyParent)="handleChildBackEvent($event)"></app-on-field-shop-order-list>
+      (notifyParent)="handleChildBackEvent($event)"></app-on-field-shop-order-list>
   </div>
 </div>

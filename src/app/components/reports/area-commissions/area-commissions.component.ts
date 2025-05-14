@@ -6,6 +6,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { Router } from '@angular/router';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -31,11 +32,12 @@ export class AreaCommissionsComponent implements OnInit {
     'ShopName',
     'CommissionDate',
     'CommissionAmount',
-    'BonusAmount',
+    'TopupSystemId',
+    // 'BonusAmount',
     'OptedCheque',
     'OptedTopup',
     'OptedWallet',
-    // 'Accessories',
+    'Accessories',
   ];
 
   constructor(
@@ -108,17 +110,22 @@ export class AreaCommissionsComponent implements OnInit {
     }
   }
 
-  optedForTopup(shopCommissionHistoryId: number, isChecked: boolean): void {
-    if (isChecked) {
-      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Topup').subscribe((res) => {
+  optedForTopup(row: any, event: MatCheckboxChange): void {
+    if (event.source.checked && row.topupSystemId != null && row.topupSystemId != '') {
+      this.commissionStatementService.optInForShopCommission(row.shopCommissionHistoryId, 'Topup').subscribe((res) => {
         if (res.statusCode == 200) {
           this.loadData();
-          this.toasterService.showMessage("Successfully opted.");
+          this.toasterService.showMessage(res.data);
         }
         else {
+          event.source.checked = false;
           this.toasterService.showMessage(res.data);
         }
       });
+    }
+    else {
+      event.source.checked = false;
+      this.toasterService.showMessage("Topup system id is not mapped, You can not do topup. Please reach out administrator");
     }
   }
 

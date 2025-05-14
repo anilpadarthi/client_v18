@@ -1,108 +1,110 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title>User Track Reports</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="row justify-content-between">
-      <div class="col-lg-3">
-        <mat-form-field appearance="outline">
-          <mat-label>Select a Day</mat-label>
-          <input matInput [(ngModel)]="fromDate" [matDatepicker]="picker" placeholder="Choose a Date" />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+<div class="page-title">
+  <h1>Track Report</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="row justify-content-between">
+        <div class="col-lg-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Select a Day</mat-label>
+            <input matInput [(ngModel)]="fromDate" [matDatepicker]="picker" placeholder="Choose a Date" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="outline">
+            <mat-label>User</mat-label>
+            <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+              <mat-option [value]=null>All</mat-option>
+              <mat-option *ngFor="let item of userLookup" [value]="item.id">
+                <span>{{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+          <button mat-flat-button color="primary" (click)="onFilter()">Log Attendance
+          </button>
+        </div>
       </div>
-      <div class="col-lg-3">
-        <mat-form-field appearance="outline">
-          <mat-label>User</mat-label>
-          <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
-            <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of userLookup" [value]="item.id">
-              <span>{{ item.name }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+
+      <div *ngIf="dataSource.length > 0" class="table-responsive table-scroll example-container">
+        <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
+          <ng-container matColumnDef="UserId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">
+              <a (click)="onUserTrack(element.userId)">
+                {{ element.userId }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="UserName">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.userName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="AreasVisited">
+            <th mat-header-cell *matHeaderCellDef>Areas Visited</th>
+            <td mat-cell *matCellDef="let element">
+              <a (click)="onAreasVisited(element.userId)">
+                {{ element.areasVisited }}
+              </a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ShopsVisited">
+            <th mat-header-cell *matHeaderCellDef>Shops Visited</th>
+            <td mat-cell *matCellDef="let element">
+              <a (click)="onShopsVisited(element.userId)">{{ element.shopsVisited }} </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ShopsSimsGiven">
+            <th mat-header-cell *matHeaderCellDef>Shops Sims Given</th>
+            <td mat-cell *matCellDef="let element">
+              <a (click)="onShopsSimsGiven(element.userId)">{{ element.shopsSimsGiven }} </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="TotalTime">
+            <th mat-header-cell *matHeaderCellDef>Total Time</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalTime }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Login">
+            <th mat-header-cell *matHeaderCellDef>Login</th>
+            <td mat-cell *matCellDef="let element">{{ element.login }}</td>
+          </ng-container>
+          <ng-container matColumnDef="FirstShop">
+            <th mat-header-cell *matHeaderCellDef>First Shop</th>
+            <td mat-cell *matCellDef="let element">{{ element.firstShop }}</td>
+          </ng-container>
+          <ng-container matColumnDef="LogOut">
+            <th mat-header-cell *matHeaderCellDef>LogOut</th>
+            <td mat-cell *matCellDef="let element">{{ element.logOut }}</td>
+          </ng-container>
+          <ng-container matColumnDef="RouteMap">
+            <th mat-header-cell *matHeaderCellDef>Route</th>
+            <td mat-cell *matCellDef="let element"><a><mat-icon>map</mat-icon></a></td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
       </div>
-      <div class="col-lg-6 space-between-buttons">
-        <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-        <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-        <button mat-flat-button color="primary" (click)="onFilter()">Log Attendance
-        </button>
+      <div class="zero-records p-b-8" *ngIf="dataSource.length == 0">
+        <img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
       </div>
-    </div>
-
-    <div *ngIf="dataSource.length > 0" class="table-responsive table-scroll example-container">
-      <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
-        <ng-container matColumnDef="UserId">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let element">
-            <a (click)="onUserTrack(element.userId)">
-              {{ element.userId }}
-            </a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="UserName">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.userName }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.date }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="AreasVisited">
-          <th mat-header-cell *matHeaderCellDef>Areas Visited</th>
-          <td mat-cell *matCellDef="let element">
-            <a (click)="onAreasVisited(element.userId)">
-              {{ element.areasVisited }}
-            </a>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="ShopsVisited">
-          <th mat-header-cell *matHeaderCellDef>Shops Visited</th>
-          <td mat-cell *matCellDef="let element">
-            <a (click)="onShopsVisited(element.userId)">{{ element.shopsVisited }} </a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="ShopsSimsGiven">
-          <th mat-header-cell *matHeaderCellDef>Shops Sims Given</th>
-          <td mat-cell *matCellDef="let element">
-            <a (click)="onShopsSimsGiven(element.userId)">{{ element.shopsSimsGiven }} </a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="TotalTime">
-          <th mat-header-cell *matHeaderCellDef>Total Time</th>
-          <td mat-cell *matCellDef="let element">{{ element.totalTime }}</td>
-        </ng-container>
-        <ng-container matColumnDef="Login">
-          <th mat-header-cell *matHeaderCellDef>Login</th>
-          <td mat-cell *matCellDef="let element">{{ element.login }}</td>
-        </ng-container>
-        <ng-container matColumnDef="FirstShop">
-          <th mat-header-cell *matHeaderCellDef>First Shop</th>
-          <td mat-cell *matCellDef="let element">{{ element.firstShop }}</td>
-        </ng-container>
-        <ng-container matColumnDef="LogOut">
-          <th mat-header-cell *matHeaderCellDef>LogOut</th>
-          <td mat-cell *matCellDef="let element">{{ element.logOut }}</td>
-        </ng-container>
-        <ng-container matColumnDef="RouteMap">
-          <th mat-header-cell *matHeaderCellDef>Route</th>
-          <td mat-cell *matCellDef="let element"><a><mat-icon>map</mat-icon></a></td>
-        </ng-container>
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-      </table>
-    </div>
-    <div class="zero-records" *ngIf="dataSource.length == 0">
-      No records found
-    </div>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

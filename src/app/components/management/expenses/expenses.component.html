@@ -13,7 +13,7 @@
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            
+
             <div class="col-lg-6 space-between-buttons">
                 <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
                 <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
@@ -56,6 +56,9 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
         </div>
-        <div class="zero-records" *ngIf="atttendanceList?.length == 0">No records found</div>
+        <div class="zero-records p-b-8" *ngIf="atttendanceList?.length == 0">
+            <img src="/assets/images/landingpage/background/no-records.svg" />
+            <span>No records found</span>
+        </div>
     </mat-card-content>
 </mat-card>
