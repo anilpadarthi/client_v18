@@ -32,12 +32,12 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'Allocate Areas',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'allocatearea',
       },
       {
         displayName: 'Allocate Agents',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'allocateagent',
       },
     ],

@@ -13,6 +13,9 @@
   height: 50px !important;
   margin: 6px 0 4px;
 }
+.mobile-logo {
+  display: none;
+}
 .app-sidebar{
   margin-top: 2px;
 }
@@ -36,7 +39,7 @@
         padding: 8px 17px;
 
         .mdc-list-item__content {
-          display: none;
+          // display: none;
         }
 
         .mdc-list-item__start {
@@ -101,6 +104,16 @@
 
   .contentWrapper {
     transition: swift-ease-out(width);
+  }
+  .leap-logo {
+    display: none;
+  }
+  .mobile-logo {
+    display: block;
+    height: 40px !important;
+    background: #fff;
+    padding: 2px 3px;
+    border-radius: 6px;
   }
 }
 

@@ -11,6 +11,13 @@ import { Component } from '@angular/core';
           alt="logo"
         />
       </a>
+      <a href="/home">
+        <img
+          src="./assets/images/logos/Favicon.png"
+          class="align-middle leap-logo mobile-logo"
+          alt="logo"
+        />
+      </a>
     </div>
   `,
 })
