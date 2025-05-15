@@ -125,7 +125,7 @@ const routes: Routes = [
 
 
 
-      { path: 'aceessories/sales', component: OrderListComponent },
+      { path: 'accessories/sales', component: OrderListComponent },
 
 
 
@@ -136,9 +136,9 @@ const routes: Routes = [
 
     ],
   },
-  { path: 'aceessories/create-order/:id/:type', component: CreateOrderComponent },
-  { path: 'aceessories/edit-order/:id', component: EditOrderComponent },
-  { path: 'aceessories/agent-sim-request', component: AgentSimOrderComponent },
+  { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent },
+  { path: 'accessories/edit-order/:id', component: EditOrderComponent },
+  { path: 'accessories/agent-sim-request', component: AgentSimOrderComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'chat', component: GroupChatComponent },

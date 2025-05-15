@@ -230,7 +230,7 @@ export class OrderListComponent implements OnInit {
 
   editOrder(orderId: number): void {
     const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`aceessories/edit-order/${orderId}`])
+      this.router.createUrlTree([`accessories/edit-order/${orderId}`])
     );
     window.open(fullPath, '_blank');
 

@@ -52,7 +52,7 @@ export class AppNavItemComponent implements OnChanges {
     if (!item.children || !item.children.length) {
       if (item.target) {
 
-        // if(item.route == 'aceessories/agent-sim-request'){
+        // if(item.route == 'accessories/agent-sim-request'){
         //   let loggedInUserId = this.webstorgeService.getUserInfo().userId;
         //   item.route+=`/${loggedInUserId}`;
         // }

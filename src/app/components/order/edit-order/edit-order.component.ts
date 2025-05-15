@@ -61,7 +61,6 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.checkScreenSize();
   }
 
-
   displayedColumns: string[] = [
     'productName',
     'productCode',
@@ -229,6 +228,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
+    window.scrollTo(0,0);
   }
 
   updateOrder(): void {

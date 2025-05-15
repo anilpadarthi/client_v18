@@ -188,7 +188,7 @@ export class OnFieldComponent implements OnInit {
       && this.shopAddressDetails?.latitude != ''
       && this.shopAddressDetails.longitude != '') || !environment.isAddressSearch) {
       const fullPath = this.router.serializeUrl(
-        this.router.createUrlTree([`aceessories/create-order/${this.selectedShopId}/${type}`])
+        this.router.createUrlTree([`accessories/create-order/${this.selectedShopId}/${type}`])
       );
       window.open(fullPath, '_blank');
     }

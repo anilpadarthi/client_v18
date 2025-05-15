@@ -211,7 +211,7 @@ export const adminItems: NavItem[] = [
       {
         displayName: 'Sales',
         iconName: 'arrow_right',
-        route: 'aceessories/sales',
+        route: 'accessories/sales',
       }, 
     ],
   },
@@ -381,12 +381,12 @@ export const managerItems: NavItem[] = [
       {
         displayName: 'Sales',
         iconName: 'arrow_right',
-        route: 'aceessories/sales',
+        route: 'accessories/sales',
       },
       {
         displayName: 'Create Order',
         iconName: 'arrow_right',
-        route: 'aceessories/create-order',
+        route: 'accessories/create-order',
         target: '_blank'
       },
     ],

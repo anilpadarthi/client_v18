@@ -91,7 +91,7 @@ export class AreaCommissionsComponent implements OnInit {
 
   onAccessoreisPage(shopCommissionHistoryId: number): void {
     const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`aceessories/create-order/${shopCommissionHistoryId}/MC`])
+      this.router.createUrlTree([`accessories/create-order/${shopCommissionHistoryId}/MC`])
     );
     window.open(fullPath, '_blank');
   }

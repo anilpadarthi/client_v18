@@ -7,13 +7,13 @@
   <!--  Search -->
   <!-- --------------------------------------------------------------- -->
   <div class="d-none d-lg-flex">
-      <!-- Desktop Menu -->
-  @if(showToggle) {
+    <!-- Desktop Menu -->
+    @if(showToggle) {
     <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center icon-btn">
       <mat-icon>menu_open</mat-icon>
     </button>
     }
-  
+
     <!-- Mobile Menu -->
     @if(!showToggle) {
     <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center">
@@ -29,8 +29,8 @@
     <mat-form-field class="custom-search m-l-10">
       <mat-icon matPrefix>search</mat-icon>
       <input matInput placeholder="Search">
-    </mat-form-field>    
-  
+    </mat-form-field>
+
     <!-- <button mat-button aria-label="Notifications" [matMenuTriggerFor]="menu">
 
       <div class="d-flex align-items-center">
@@ -38,7 +38,8 @@
       </div>
     </button> -->
 
-    <button mat-icon-button aria-label="Notifications" [matMenuTriggerFor]="menu" class="d-flex justify-content-center icon-btn mx-2">
+    <button mat-icon-button aria-label="Notifications" [matMenuTriggerFor]="menu"
+      class="d-flex justify-content-center icon-btn mx-2">
       <mat-icon>add</mat-icon>
     </button>
 
@@ -65,10 +66,11 @@
     </button>
   </div>
 
-  
+
 
   <!-- Mobile Menu -->
-  <button mat-icon-button (click)="toggleMobileFilterNav.emit()" class="d-flex d-lg-none justify-content-center icon-btn">
+  <button mat-icon-button (click)="toggleMobileFilterNav.emit()"
+    class="d-flex d-lg-none justify-content-center icon-btn">
     <mat-icon>add</mat-icon>
   </button>
 
@@ -77,54 +79,54 @@
   <div class="end-sction d-flex align-items-center">
     <span class="flex-1-auto"></span>
     <!-- --------------------------------------------------------------- -->
-  <!-- Notification Dropdown -->
-  <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" class="mx-2 circle-btn">
-    <span class="material-symbols-outlined">notifications</span>
-  </button>
-  <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">
-    <div class="d-flex align-items-center p-x-32 p-y-16">
-      <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Notifications</h6>
-      <span class="m-l-auto">
-        <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12">5 new</span>
-      </span>
-    </div>
-
-    <div class="p-y-12 p-x-32">
-      <button mat-stroked-button color="primary" class="w-100">
-        See all notifications
-      </button>
-    </div>
-  </mat-menu>
-
-  <!-- --------------------------------------------------------------- -->
-  <!-- profile Dropdown -->
-  <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications" class="circle-btn">
-    <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" />
-  </button>
-  <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
-    <ng-scrollbar class="position-relative" style="height: 300px">
-      <div class="p-x-32 p-y-16">
-        <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">User Profile</h6>
-
-        <div class="d-flex align-items-center p-b-24 b-b-1 m-t-16">
-          <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="95" />
-          <div class="m-l-16">
-            <h6 class="f-s-14 f-w-600 m-0 mat-subtitle-1">{{ loggedInUser.userName }}</h6>
-            <span class="f-s-14 d-block m-b-4">{{ loggedInUser.userRole.roleName }}</span>
-            <span class="d-flex align-items-center">
-              <mat-icon>mail</mat-icon> {{ loggedInUser.email }} </span>
-          </div>
-        </div>
+    <!-- Notification Dropdown -->
+    <!-- --------------------------------------------------------------- -->
+    <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" class="mx-2 circle-btn">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">
+      <div class="d-flex align-items-center p-x-32 p-y-16">
+        <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Notifications</h6>
+        <span class="m-l-auto">
+          <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12">5 new</span>
+        </span>
       </div>
 
       <div class="p-y-12 p-x-32">
-        <a (click)="logout()" mat-stroked-button color="primary" class="w-100">
-          <mat-icon class="f-s-18">logout</mat-icon>
-          Logout</a>
+        <button mat-stroked-button color="primary" class="w-100">
+          See all notifications
+        </button>
       </div>
-    </ng-scrollbar>
-  </mat-menu>
+    </mat-menu>
+
+    <!-- --------------------------------------------------------------- -->
+    <!-- profile Dropdown -->
+    <!-- --------------------------------------------------------------- -->
+    <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications" class="circle-btn">
+      <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" />
+    </button>
+    <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
+      <ng-scrollbar class="position-relative" style="height: 300px">
+        <div class="p-x-32 p-y-16">
+          <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">User Profile</h6>
+
+          <div class="d-flex align-items-center p-b-24 b-b-1 m-t-16">
+            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="95" />
+            <div class="m-l-16">
+              <h6 class="f-s-14 f-w-600 m-0 mat-subtitle-1">{{ loggedInUser.userName }}</h6>
+              <span class="f-s-14 d-block m-b-4">{{ loggedInUser.userRole.roleName }}</span>
+              <span class="d-flex align-items-center">
+                <mat-icon>mail</mat-icon> {{ loggedInUser.email }} </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-y-12 p-x-32">
+          <a (click)="logout()" mat-stroked-button color="primary" class="w-100">
+            <mat-icon class="f-s-18">logout</mat-icon>
+            Logout</a>
+        </div>
+      </ng-scrollbar>
+    </mat-menu>
   </div>
 </mat-toolbar>

@@ -315,6 +315,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
+    window.scrollTo(0,0);
   }
 
   createOrder(): void {
@@ -444,7 +445,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   increaseQuantity(item: any) {
-
     if (item.qty == undefined) {
       item.qty = 1;
     }

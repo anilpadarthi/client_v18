@@ -71,12 +71,12 @@ export const agentItems: NavItem[] = [
       {
         displayName: 'Sales',
         iconName: 'arrow_right',
-        route: 'aceessories/sales',
+        route: 'accessories/sales',
       },
       {
         displayName: 'Request Sims',
         iconName: 'arrow_right',
-        route: 'aceessories/agent-sim-request',
+        route: 'accessories/agent-sim-request',
         target: '_blank'
       },
     ],

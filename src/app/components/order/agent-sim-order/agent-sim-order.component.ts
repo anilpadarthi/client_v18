@@ -34,6 +34,9 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   totalProducts: any[] = [];
   paymentMethodLookup: any[] = [];
   agentId: any = null;
+  selectedProduct: any = null;
+  isDisplayProductDetails = false;
+  isMainView = true;
 
 
   constructor(
@@ -47,7 +50,6 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
   displayedColumns: string[] = [
-    'productImage',
     'productName',
     'productCode',
     'salePrice',
@@ -89,9 +91,8 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-
+console.log(categories);
       this.categories = categories;
-
     });
 
     this.userService.getUser(this.agentId).subscribe((res) => {
@@ -105,6 +106,8 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data;
@@ -118,6 +121,8 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = false;
     this.isDisplaySubCatgories = true;
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.subCategories = item.subCategories;
   }
 
@@ -125,12 +130,26 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
 
     if (!existingItem) {
-      item.qty = '1';
       item.amount = Number(item.qty) * item.salePrice;
       this.cartItems.push(item);
     }
     this.saveCartToSession();
     this.updateCalculations();
+  }
+
+  increaseQuantity(item: any) {
+    console.log(item);
+    if (item.qty == undefined) {
+      item.qty = 1;
+    }
+    else if (item.qty > 0)
+      item.qty++;
+  }
+
+  decreaseQuantity(item: any) {
+    if (item.qty > 0) {
+      item.qty--;
+    }
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
@@ -155,8 +174,11 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     this.updateCalculations();
   }
 
+
   viewCart(): void {
     this.isCartView = true;
+    this.isMainView = false;
+    this.isDisplayProductDetails = false;
     this.updateCalculations();
   }
 
@@ -180,9 +202,12 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
 
   continueShopping(): void {
     this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
+    window.scrollTo(0, 0);
   }
 
   createOrder(): void {
@@ -229,6 +254,13 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       this.toasterService.showMessage("Address updated successfully.");
       this.isEditAddress = false;
     });
+  }
+
+  viewProductDetails(item: any): void {
+    this.isDisplayProductDetails = true;
+    this.isCartView = false;
+    this.isMainView = false;
+    this.selectedProduct = item;
   }
 
 }
