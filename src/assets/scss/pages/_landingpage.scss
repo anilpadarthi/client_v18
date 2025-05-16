@@ -214,6 +214,11 @@
   flex-direction: row;
   gap: 20px;
 }
+.quality-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 @media (max-width: 767px) {
   .hstack {
@@ -221,5 +226,43 @@
   }
   .bg-size-cover {
     background-size: cover;
+  }
+  .ng-custom-fileds {
+    .mat-mdc-form-field {
+      margin-bottom: 20px;
+    }
+  }
+  .responsive-submit {
+    width: 100%;
+    justify-content: center;
+  }
+  .accounts-cards {
+    margin-bottom: 10px;
+  }
+  .custom-table {
+    th {
+      white-space: nowrap;
+    }
+  }
+  .product-container {
+    display: inline-block !important;
+    .product-images {
+      width: 100% !important;
+    }
+    .quality-section {
+      display: inline-block !important;
+      .buttons {
+        justify-content: center !important;
+      }
+    }
+  }
+  .menu-close {
+    color: #ffffff;
+    .mat-icon {
+      color: #ffffff;
+    }
+  }
+  .d-none-xs {
+    display: none !important;
   }
 }

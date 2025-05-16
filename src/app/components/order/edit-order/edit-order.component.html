@@ -1,13 +1,13 @@
 <mat-toolbar class="topbar">
-    <div class="d-none d-lg-flex">
-        <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
-            <mat-icon>menu</mat-icon>
-        </button>
+    <div class="d-flex align-items-center">
         <div class="branding">
             <a href="/home">
                 <img src="./assets/images/logos/logo.png" class="align-middle m-2 leap-logo" alt="logo" />
             </a>
         </div>
+        <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+            <mat-icon>menu</mat-icon>
+        </button>
         <button mat-icon-button (click)="toggleSidebar()" class="hamburg" *ngIf="!isMobile">
             <mat-icon>menu</mat-icon>
         </button>
