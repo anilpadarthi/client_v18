@@ -91,7 +91,6 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-console.log(categories);
       this.categories = categories;
     });
 
