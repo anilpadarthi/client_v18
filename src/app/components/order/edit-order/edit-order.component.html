@@ -28,7 +28,12 @@
 <mat-sidenav-container class="mainWrapper">
     <!-- Sidebar Navigation -->
     <mat-sidenav #sidenav mode="side" opened class="sidebarNav">
-        <h3 class="sidebar-title">Categories</h3>
+        <h3 class="sidebar-title d-flex justify-content-between align-items-center">
+            <span>Categories</span>
+            <button class="sidebar-title__close-btn" mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+                <mat-icon>close</mat-icon>
+            </button>
+        </h3>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let item of categories">
                 <!-- Main Category -->

@@ -265,4 +265,12 @@
   .d-none-xs {
     display: none !important;
   }
+  .mat-drawer-content {
+    margin-left: 0 !important;
+  }
+  .product-container {
+    .product-info {
+      padding: 10px;
+    }
+  }
 }
