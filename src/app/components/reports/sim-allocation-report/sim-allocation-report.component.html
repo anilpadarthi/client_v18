@@ -16,8 +16,11 @@
           <mat-form-field appearance="outline">
             <mat-label>User</mat-label>
             <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+              <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
               <mat-option [value]="0">All</mat-option>
-              <mat-option *ngFor="let item of userLookup" [value]="item.id">
+              <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
                 <span>{{ item.id }} - {{ item.name }}</span>
               </mat-option>
             </mat-select>
@@ -80,8 +83,10 @@
           <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
         </table>
       </div>
-      <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-        <span>No records found</span></div>
+      <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img
+          src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

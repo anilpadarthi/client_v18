@@ -24,8 +24,11 @@
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Area</mat-label>
                         <mat-select formControlName="areaId" placeholder="Select Area">
+                            <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                                noEntriesFoundLabel="No matching found">
+                            </ngx-mat-select-search>
                             <mat-option [value]="null">-Select-</mat-option>
-                            <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                            <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
                                 <span>{{ item.name }}</span>
                             </mat-option>
                         </mat-select>

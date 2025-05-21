@@ -3,8 +3,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebstorgeService } from '../services/web-storage.service';
 import { navItems } from './sidebar/sidebar-data';
-import { adminItems,managerItems } from './sidebar/Menus/admin-data';
-import { agentItems } from './sidebar/Menus/agent-data';
+import { AdminItems } from './sidebar/Menus/admin-data';
+import { ManagerItems } from './sidebar/Menus/manager-data';
+import { AgentItems } from './sidebar/Menus/agent-data';
+import { HRItems } from './sidebar/Menus/hr-data';
+import { CallCenterItems } from './sidebar/Menus/callcenter-data';
+import { WarehouseItems } from './sidebar/Menus/warehouse-data';
+import { RetailerItems } from './sidebar/Menus/retailer-data';
 import { CoreService } from '../services/core.service';
 import { NavService } from '../services/nav.service';
 import { AppSettings } from '../config';
@@ -53,10 +58,14 @@ export class LayoutComponent implements OnInit {
     this.htmlElement = document.querySelector('html')!;
     var userRole = this.webstorgeService.getUserInfo().userRoleId;
     switch (userRole) {
-      case 1: this.navItems = adminItems; break;
-      case 2: this.navItems = adminItems; break;
-      case 3: this.navItems = managerItems; break;
-      case 4: this.navItems = agentItems; break;
+      case 1: this.navItems = AdminItems; break;
+      case 2: this.navItems = AdminItems; break;
+      case 3: this.navItems = ManagerItems; break;
+      case 4: this.navItems = AgentItems; break;
+      case 5: this.navItems = HRItems; break;
+      case 6: this.navItems = WarehouseItems; break;
+      case 7: this.navItems = RetailerItems; break;
+      case 8: this.navItems = CallCenterItems; break;
       default: this.navItems = navItems; break;
     }
 

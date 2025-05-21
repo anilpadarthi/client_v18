@@ -6,6 +6,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-main-dashboard',
@@ -14,7 +15,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 })
 
 export class MainDashboardComponent implements OnInit {
-  
+
   selectedMonth: string | null = null;
   selectedUserId = null;
   selectedManagerId = null;
@@ -31,6 +32,10 @@ export class MainDashboardComponent implements OnInit {
   filterType: any = null;
   refreshCounter = 0;
   isLoading = false;
+  userFilterCtrl: FormControl = new FormControl();
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  filteredManagers: any[] = [];
 
   constructor(
     private webstorgeService: WebstorgeService,
@@ -48,7 +53,7 @@ export class MainDashboardComponent implements OnInit {
     this.filterId = loggedInUserId;
     this.filterType = userRole;
     //this.selectedMonth = new Date().toDateString('dd/MM/YYYY');
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' ) {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
       this.getAgentLookup();
@@ -64,17 +69,40 @@ export class MainDashboardComponent implements OnInit {
     }
 
     this.loadDashboardMetrics();
+
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item:any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item:any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup(): void {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
   getManagerLookup(): void {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 
@@ -97,7 +125,7 @@ export class MainDashboardComponent implements OnInit {
         this.givenCount = res.data[0].givenToShopCount;
         this.activationCount = res.data[0].activationCount;
         this.instantActivationCount = res.data[0].instantActivationCount;
-       
+
       }
     });
   }
@@ -108,7 +136,7 @@ export class MainDashboardComponent implements OnInit {
       this.toasterService.showMessage('Please select any month before to proceed.');
     }
     else {
-      this.refreshCounter++;      
+      this.refreshCounter++;
       if (this.selectedUserId) {
         this.dashboardViewMode = 'Agent';
         this.filterId = this.selectedUserId;
@@ -124,16 +152,16 @@ export class MainDashboardComponent implements OnInit {
   }
 
   // Handle Year Selection (no action needed)
-    chosenYearHandler(normalizedYear: any) {
-      // No action required, just wait for month selection
-    }
-  
-    // Handle Month Selection
-    chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-      this.selectedMonth = formattedMonth + "-01";
-      datepicker.close(); // Close picker after selection
-      this.loadDashboardMetrics();
-    }
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+    this.loadDashboardMetrics();
+  }
 
 }

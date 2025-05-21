@@ -26,8 +26,11 @@
                 <mat-form-field appearance="outline" class="col-sm-3" *ngIf="isAdmin">
                     <mat-label>User</mat-label>
                     <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+                        <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of userLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
                             <span>{{ item.id }} - {{ item.name }}</span>
                         </mat-option>
                     </mat-select>
@@ -35,8 +38,11 @@
                 <mat-form-field appearance="outline" class="col-sm-3">
                     <mat-label>Area</mat-label>
                     <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+                        <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
                             <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
                         </mat-option>
                     </mat-select>
@@ -44,8 +50,11 @@
                 <mat-form-field appearance="outline" class="col-sm-3">
                     <mat-label>Shop</mat-label>
                     <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
+                        <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredShops" [value]="item.id">
                             <span>{{ item.id }} - {{ item.name }}</span>
                         </mat-option>
                     </mat-select>
@@ -115,8 +124,10 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
                 </table>
             </div>
-            <div class="zero-records p-b-8" *ngIf="!isLoading && commissionList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="!isLoading && commissionList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

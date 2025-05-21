@@ -5,6 +5,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sub-category-editor',
@@ -18,6 +19,9 @@ export class SubCategoryEditorComponent {
   subCategoryId: any;
   subCtegoryImagePreview: any = null;
   categoryLookup: any = [];
+  categoryFilterCtrl: FormControl = new FormControl();
+  filteredCategories: any[] = [];
+
   constructor
     (
       private route: ActivatedRoute,
@@ -43,11 +47,23 @@ export class SubCategoryEditorComponent {
     this.subCtegoryImagePreview = '/assets/images/profile/user-1.jpg';
     this.getSubCategoryDetails();
     this.loadCategoryLookup();
+
+    this.categoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterCategories();
+    });
   }
-  
+
+  private filterCategories() {
+    const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredCategories = this.categoryLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
   loadCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categoryLookup = res.data;
+      this.filteredCategories = res.data;
     });
   }
   getSubCategoryDetails() {

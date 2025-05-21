@@ -8,8 +8,11 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area"
                             (selectionChange)="areaChange()">
+                            <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                                noEntriesFoundLabel="No matching found">
+                            </ngx-mat-select-search>
                             <mat-option [value]="0">All</mat-option>
-                            <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                            <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
                                 <span>{{ item.id }} - {{ item.name }}</span>
                             </mat-option>
                         </mat-select>
@@ -98,8 +101,10 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
             </div>
-            <div class="zero-records p-b-8" *ngIf="shopList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="shopList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
             <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
                 [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
             </mat-paginator>

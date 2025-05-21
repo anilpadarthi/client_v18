@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
@@ -27,6 +28,10 @@ export class ProductListComponent implements OnInit {
   categories: any[] = [];
   categoryId!: number | null;
   subCategoryId!: number | null;
+  categoryFilterCtrl: FormControl = new FormControl();
+  filteredCategories: any[] = [];
+  subCategoryFilterCtrl: FormControl = new FormControl();
+  filteredSubCategories: any[] = [];
 
   constructor
     (
@@ -40,17 +45,41 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.getCategoryLookup();
     this.loadData();
+
+    this.categoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterCategories();
+    });
+
+    this.subCategoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterSubCategories();
+    });
+  }
+
+  private filterCategories() {
+    const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredCategories = this.categories.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+   private filterSubCategories() {
+    const search = this.subCategoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredSubCategories = this.subCategories.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
+      this.filteredCategories = res.data;
     });
   }
 
   getSubCategoryLookup(categoryId: number) {
     this.lookupService.getSubCategories(categoryId).subscribe((res) => {
       this.subCategories = res.data;
+      this.filteredSubCategories = res.data;
     });
   }
 
@@ -98,8 +127,8 @@ export class ProductListComponent implements OnInit {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      categoryId:this.categoryId,
-      subCategoryId:this.subCategoryId,
+      categoryId: this.categoryId,
+      subCategoryId: this.subCategoryId,
       searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null
     };
 

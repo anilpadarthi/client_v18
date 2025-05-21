@@ -46,11 +46,27 @@ export class OnFieldShopVisitComponent {
 
   async startCamera() {
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      this.videoElement.nativeElement.srcObject = this.stream;
-    } catch (error) {
-      console.error('Error accessing camera:', error);
+      // Try back camera first
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: 'environment' } }
+      });
+      this.setVideoStream(stream);
+    } catch (err) {
+      console.warn('Back camera not available. Falling back to default camera.', err);
+      try {
+        // Fallback to default camera (usually front)
+        const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        this.setVideoStream(fallbackStream);
+      } catch (error) {
+        console.error('Unable to access any camera:', error);
+      }
     }
+  }
+
+  setVideoStream(stream: MediaStream) {
+    const videoElement = this.videoElement.nativeElement;
+    videoElement.srcObject = stream;
+    videoElement.play();
   }
 
   async stopCamera() {
@@ -61,10 +77,6 @@ export class OnFieldShopVisitComponent {
       this.stream = null;
     }
   }
-
-
-
-
 
 
   // Convert Data URL to Blob

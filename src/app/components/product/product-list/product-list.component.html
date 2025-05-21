@@ -7,8 +7,11 @@
                 <mat-form-field appearance="outline" class="col-lg-4">
                     <mat-label>Category</mat-label>
                     <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange($event)">
+                         <ngx-mat-select-search [formControl]="categoryFilterCtrl" placeholderLabel="Search here..."
+                                noEntriesFoundLabel="No matching found">
+                            </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                        <mat-option *ngFor="let category of filteredCategories" [value]="category.id">
                             <span>{{category.name}}</span>
                         </mat-option>
                     </mat-select>
@@ -16,8 +19,11 @@
                 <mat-form-field appearance="outline" class="col-lg-4">
                     <mat-label>Sub-Category</mat-label>
                     <mat-select [(ngModel)]="subCategoryId" (selectionChange)="onSubCategoryChange($event)">
+                         <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"
+                                placeholderLabel="Search here..." noEntriesFoundLabel="No matching found">
+                            </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                        <mat-option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">
                             <span>{{subCategory.name}}</span>
                         </mat-option>
                     </mat-select>

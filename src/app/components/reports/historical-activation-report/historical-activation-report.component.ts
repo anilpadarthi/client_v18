@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { WebstorgeService } from '../../../services/web-storage.service';
-
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-historical-activation-report',
@@ -35,6 +35,14 @@ export class HistoricalActivationReportComponent implements OnInit {
   isInstantActivation = false;
   isDisplay = false;
   isAdmin = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  shopFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+  filteredShops: any[] = [];
+  userFilterCtrl: FormControl = new FormControl();
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  filteredManagers: any[] = [];
 
   constructor(
     private datePipe: DatePipe,
@@ -60,30 +68,76 @@ export class HistoricalActivationReportComponent implements OnInit {
       this.selectedManagerId = loggedInUserId;
     }
     this.getAreaLookup();
-    
+
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+    this.shopFilterCtrl.valueChanges.subscribe(() => {
+      this.filterShops();
+    });
+
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterShops() {
+    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
+    this.filteredShops = this.shopLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
   getManagerLookup() {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 
   areaChange() {
     this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
       this.shopLookup = res.data;
+      this.filteredShops = res.data;
       this.selectedShopId = null;
     });
   }

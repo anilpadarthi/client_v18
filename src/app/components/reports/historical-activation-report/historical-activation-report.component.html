@@ -24,38 +24,50 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay && isAdmin">
           <mat-label>Manager</mat-label>
           <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="managerChange()">
+             <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+            <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
               <span>{{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Agent</mat-label>
           <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent" (selectionChange)="agentChange()">
+             <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of userLookup" [value]="item.id">
+            <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
               <span>{{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Area</mat-label>
           <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
+             <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+            <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
               <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Shop</mat-label>
           <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
+             <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+            <mat-option *ngFor="let item of filteredShops" [value]="item.id">
               <span>{{ item.id }} - {{ item.name }}</span>
             </mat-option>
           </mat-select>

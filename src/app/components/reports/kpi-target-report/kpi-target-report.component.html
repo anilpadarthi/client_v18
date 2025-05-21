@@ -17,8 +17,11 @@
                 <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
                     <mat-label>Manager</mat-label>
                     <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
+                        <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
                             <span>{{ item.name }}</span>
                         </mat-option>
                     </mat-select>
@@ -67,8 +70,10 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
             </div>
-            <div class="zero-records p-b-8" *ngIf="kpiTargetList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="kpiTargetList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

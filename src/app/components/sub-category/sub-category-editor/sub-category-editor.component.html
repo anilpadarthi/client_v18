@@ -7,8 +7,11 @@
             <form [formGroup]="subCategoryForm" (ngSubmit)="onSave()">
                 <mat-form-field appearance="outline" class="w-100 hide-hint">
                     <mat-select formControlName="categoryId" placeholder="Select Category">
+                         <ngx-mat-select-search [formControl]="categoryFilterCtrl" placeholderLabel="Search here..."
+                                noEntriesFoundLabel="No matching found">
+                            </ngx-mat-select-search>
                         <mat-option [value]="null">-Select-</mat-option>
-                        <mat-option *ngFor="let item of categoryLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredCategories" [value]="item.id">
                             <span>{{ item.name }}</span>
                         </mat-option>
                     </mat-select>

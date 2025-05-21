@@ -1,15 +1,15 @@
 <mat-toolbar class="topbar">
-    <div class="d-none d-lg-flex">
-        <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <div class="branding">
+    <div class="d-flex align-items-center">
+        <div class="branding" *ngIf="!isMobile">
             <a href="/home">
                 <img src="./assets/images/logos/logo.png" class="align-middle m-2 leap-logo" alt="logo" />
             </a>
         </div>
+        <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+            <mat-icon>menu_open</mat-icon>
+        </button>
         <button mat-icon-button (click)="toggleSidebar()" class="hamburg" *ngIf="!isMobile">
-            <mat-icon>menu</mat-icon>
+            <mat-icon>menu_open</mat-icon>
         </button>
     </div>
     <div class="end-sction d-flex align-items-center">
@@ -29,7 +29,12 @@
 <mat-sidenav-container class="mainWrapper">
     <!-- Sidebar Navigation -->
     <mat-sidenav #sidenav mode="side" opened class="sidebarNav">
-        <h3 class="sidebar-title">Categories</h3>
+        <h3 class="sidebar-title d-flex justify-content-between align-items-center">
+            <span>Categories</span>
+            <button class="sidebar-title__close-btn" mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+                <mat-icon>close</mat-icon>
+            </button>
+        </h3>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let item of categories">
                 <!-- Main Category -->

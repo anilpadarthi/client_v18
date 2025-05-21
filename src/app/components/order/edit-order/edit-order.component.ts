@@ -195,6 +195,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   viewCart(): void {
     this.isCartView = true;
     this.isMainView = false;
+    this.isDisplayProductDetails = false;
     this.updateCalculations();
   }
 

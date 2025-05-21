@@ -72,6 +72,7 @@
                 <img src="/assets/images/landingpage/background/no-records.svg" />
                 <span>No records found</span>
             </div>
+            
             <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
                 [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
             </mat-paginator>

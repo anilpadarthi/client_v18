@@ -1,7 +1,7 @@
 import { NavItem } from "../nav-item/nav-item";
 
 
-export const adminItems: NavItem[] = [
+export const AdminItems: NavItem[] = [
 
   // {
   //   displayName: 'Dashboards',
@@ -10,12 +10,12 @@ export const adminItems: NavItem[] = [
   //   children: [
   //     {
   //       displayName: 'Main',
-  //       iconName: 'arrow_right',
+  //       iconName: 'fiber_manual_record',
   //       route: 'dashboard/main',
   //     },
   //     {
   //       displayName: 'Analytics',
-  //       iconName: 'arrow_right',
+  //       iconName: 'fiber_manual_record',
   //       route: 'dashboard/analytics',
   //     },
   //   ],
@@ -50,52 +50,52 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'Monthly Activations',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/monthly/activations',
       },
       {
         displayName: 'Analysis Report',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/historical/activations',
       },
       {
         displayName: 'Network Report',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/network-report',
       },
       {
         displayName: 'Sim Allocations',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/simallocation-report',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/kpi-target',
       },
       {
         displayName: 'Commission Statements',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/commission-statement',
       },
       {
         displayName: 'Area Commissions',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/area-commissions',
       },
       {
         displayName: 'Monthly Accessories Report',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/monthly-accessories-report',
       },
       {
         displayName: 'Daily Reports',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/daily-report',
       },
       {
         displayName: 'Track',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'report/track',
       },
     ],
@@ -107,42 +107,42 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'User',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'users',
       },
       {
         displayName: 'Area',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'areas',
       },
       {
         displayName: 'Shop',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'shops',
       },
       {
         displayName: 'Network',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'networks',
       },
       {
         displayName: 'Supplier',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'suppliers',
       },
       {
         displayName: 'Category',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'categories',
       },
       {
         displayName: 'Sub-Category',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'sub-categories',
       },
       {
         displayName: 'Product',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'products',
       },
 
@@ -156,47 +156,47 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'Payslip',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/payslip',
       },
       {
         displayName: 'Uploads',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/bulk-upload',
       },
       {
         displayName: 'WhatsApp Reports',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/whatsapp',
       },
       {
         displayName: 'Agreement Requests',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/agreement-requests',
       },
       {
         displayName: 'Commission Tier Requests',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/commission-tier-requests',
       },
       {
         displayName: 'Attendance',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/attendance-report',
       },
       {
         displayName: 'Expenses',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/expenses',
       },
       {
         displayName: 'Shop Commission Cheques',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/shop-commission-cheques',
       },
       {
         displayName: 'Bank Cheques',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'management/bank-cheques',
       },
     ],
@@ -210,7 +210,7 @@ export const adminItems: NavItem[] = [
     children: [
       {
         displayName: 'Sales',
-        iconName: 'arrow_right',
+        iconName: 'fiber_manual_record',
         route: 'accessories/sales',
       }, 
     ],
@@ -240,168 +240,3 @@ export const adminItems: NavItem[] = [
 ];
 
 
-export const managerItems: NavItem[] = [
-
-  // {
-  //   displayName: 'Dashboards',
-  //   iconName: 'home',
-  //   route: '',
-  //   children: [
-  //     {
-  //       displayName: 'Main',
-  //       iconName: 'arrow_right',
-  //       route: 'dashboard/main',
-  //     },
-  //     {
-  //       displayName: 'Analytics',
-  //       iconName: 'arrow_right',
-  //       route: 'dashboard/analytics',
-  //     },
-  //   ],
-  // },
-  {
-    displayName: 'Dashboard',
-    iconName: 'home',
-    route: 'dashboard/main',
-  },
- 
-  {
-    displayName: 'IMEI',
-    iconName: 'manage_search',
-    route: 'imei/search',
-  },
-  {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
-  },
-  {
-    displayName: 'Allocate',
-    iconName: 'inventory',
-    route: '',
-    children: [
-      {
-        displayName: 'Allocate Areas',
-        iconName: 'arrow_right',
-        route: 'allocatearea',
-      },
-    ],
-  },
-  {
-    displayName: 'Reports',
-    iconName: 'monitoring',
-    route: '',
-    children: [
-      {
-        displayName: 'Monthly Activations',
-        iconName: 'arrow_right',
-        route: 'report/monthly/activations',
-      },
-      {
-        displayName: 'Analysis Reports',
-        iconName: 'arrow_right',
-        route: 'report/historical/activations',
-      },
-      
-      {
-        displayName: 'Sim Allocations',
-        iconName: 'file-description',
-        route: 'report/simallocation-report',
-      },
-      {
-        displayName: 'KPI Targets',
-        iconName: 'file-description',
-        route: 'report/kpi-target',
-      },   
-    ],
-  },
-  {
-    displayName: 'Setup',
-    iconName: 'manage_accounts',
-    route: '',
-    children: [
-      {
-        displayName: 'Area',
-        iconName: 'arrow_right',
-        route: 'areas',
-      },
-      {
-        displayName: 'Shop',
-        iconName: 'arrow_right',
-        route: 'shops',
-      },
-    ],
-  },
-
-  {
-    displayName: 'Management',
-    iconName: 'widgets',
-    route: '',
-    children: [
-      {
-        displayName: 'Payslip',
-        iconName: 'file-description',
-        route: 'management/payslip',
-      },
-
-      {
-        displayName: 'Agreement Requests',
-        iconName: 'arrow_right',
-        route: 'management/agreement-requests',
-      },
-      {
-        displayName: 'Commission Tier Requests',
-        iconName: 'arrow_right',
-        route: 'management/commission-tier-requests',
-      },
-      {
-        displayName: 'Attendance',
-        iconName: 'arrow_right',
-        route: 'management/attendance-report',
-      },
-
-      {
-        displayName: 'Shop Commission Cheques',
-        iconName: 'arrow_right',
-        route: 'shop-commission-cheques',
-      },
-      {
-        displayName: 'Bank Cheques',
-        iconName: 'arrow_right',
-        route: 'bank-cheques',
-      },
-    ],
-  },
-
-  {
-    displayName: 'Accessories',
-    iconName: 'point_of_sale',
-    route: '',
-    children: [
-      {
-        displayName: 'Sales',
-        iconName: 'arrow_right',
-        route: 'accessories/sales',
-      },
-      {
-        displayName: 'Create Order',
-        iconName: 'arrow_right',
-        route: 'accessories/create-order',
-        target: '_blank'
-      },
-    ],
-  },
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
-  },
-
-  // {
-  //   displayName: 'Edit Profile',
-  //   iconName: 'account_circle',
-  //   route: 'profile/edit',
-  // },
-
-
-];

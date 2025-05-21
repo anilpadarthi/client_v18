@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class AreaCommissionsComponent implements OnInit {
   commissionList: any = [];
   isLoading = false;
   isAdmin = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
 
   displayedColumns: string[] = [
     'UserName',
@@ -49,11 +52,22 @@ export class AreaCommissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAreaLookup();
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+  }
+
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 

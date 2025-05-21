@@ -7,6 +7,7 @@ import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-monthly-accessories-report',
@@ -22,6 +23,9 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
   managerLookup: any = [];
   activationList: any = [];
   isDisplay = false;
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredManagers: any[] = [];
+
   displayedColumns: string[] = [
     'UserId',
     'UserName',
@@ -45,11 +49,23 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
       this.isDisplay = true;
       this.getManagerLookup();
     }
+
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getManagerLookup() {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 

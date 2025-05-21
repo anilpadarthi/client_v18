@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -43,6 +44,15 @@ export class MonthlyActivationReportComponent implements OnInit {
   totalSum: number = 0;
   isDisplay = false;
   isAdmin = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  shopFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+  filteredShops: any[] = [];
+  userFilterCtrl: FormControl = new FormControl();
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  filteredManagers: any[] = [];
+
   displayedColumns: string[] = [
     'ID',
     'NAME',
@@ -68,12 +78,12 @@ export class MonthlyActivationReportComponent implements OnInit {
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' ){
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isAdmin = true;
     }
 
     if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
-      this.isDisplay = true;      
+      this.isDisplay = true;
       this.getAgentLookup();
       this.getManagerLookup();
     }
@@ -81,29 +91,76 @@ export class MonthlyActivationReportComponent implements OnInit {
       this.selectedUserId = loggedInUserId;
     }
     this.getAreaLookup();
+
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+    this.shopFilterCtrl.valueChanges.subscribe(() => {
+      this.filterShops();
+    });
+
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+  }
+
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterShops() {
+    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
+    this.filteredShops = this.shopLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
   getManagerLookup() {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 
   areaChange(): void {
     this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
       this.shopLookup = res.data;
+      this.filteredShops = res.data;
       this.selectedShopId = null;
     });
   }

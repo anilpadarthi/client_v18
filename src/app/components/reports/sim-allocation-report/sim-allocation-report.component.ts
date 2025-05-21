@@ -5,6 +5,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sim-allocation-report',
@@ -25,6 +26,9 @@ export class SimAllocationReportComponent implements OnInit {
   totalFreeAllocations = 0;
   userLookup: any = [];
   activationList: any = [];
+  userFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+
   displayedColumns: string[] = [
     'Name',
     'LastMonthActivaitons',
@@ -43,11 +47,23 @@ export class SimAllocationReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAgentLookup();
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 

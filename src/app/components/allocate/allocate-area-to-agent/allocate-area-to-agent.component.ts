@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-allocate-area-to-agent',
@@ -38,6 +39,9 @@ export class AllocateAreaToAgentComponent implements OnInit {
   selectedAreasToTransfer: any = [];
   selectedMonth: string | null = null;
   isBackToSelection = true;
+  userFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+
 
   constructor(
     public datePipe: DatePipe,
@@ -50,11 +54,22 @@ export class AllocateAreaToAgentComponent implements OnInit {
   ngOnInit(): void {
     this.getAgentLookup();
     this.loadData();
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.agentLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.agentLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
@@ -173,15 +188,15 @@ export class AllocateAreaToAgentComponent implements OnInit {
 
 
   // Handle Year Selection (no action needed)
-    chosenYearHandler(normalizedYear: any) {
-      // No action required, just wait for month selection
-    }
-  
-    // Handle Month Selection
-    chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-      this.selectedMonth = formattedMonth + "-01";
-      datepicker.close(); // Close picker after selection
-    }
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+  }
 
 }

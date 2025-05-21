@@ -36,6 +36,7 @@
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 10px;
   color: #333;
+  margin-top: 0px !important;
 }
 
 .summary-row {
@@ -47,7 +48,7 @@
 }
 
 .label {
-  flex: 1;
+  flex: 4;
   text-align: right;
   color: #666;
   margin-right: 10px;
@@ -83,3 +84,20 @@
   margin-top: 24px;
 }
 
+/* Responsive layout tweaks for tablets and up */
+@media (max-width: 360px) {
+
+  .label {
+    flex: 2;
+  }
+
+  .button-group {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+
+}

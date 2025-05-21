@@ -4,7 +4,7 @@ import { NavItem } from "../nav-item/nav-item";
 
 
 
-export const agentItems: NavItem[] = [
+export const AgentItems: NavItem[] = [
 
 
 

@@ -12,6 +12,7 @@ import { environment } from '../../../../environments/environment';
 import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-shop-editor',
@@ -33,6 +34,8 @@ export class ShopEditorComponent {
   addressSuggestions: any = [];
   apiAddressSuggestions: any = [];
   isDisplay = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
 
   constructor
     (
@@ -119,6 +122,10 @@ export class ShopEditorComponent {
     ).subscribe((response: any) => {
       this.addressSuggestions = response;
     });
+
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
   }
 
   populatePostCodeAddressList(): void {
@@ -139,9 +146,17 @@ export class ShopEditorComponent {
     return of(filteredResults);
   }
 
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
   getAreaRoleLookup(): void {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 

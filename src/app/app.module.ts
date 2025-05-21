@@ -17,6 +17,7 @@ import { SpinnerInterceptor } from '../app/interceptors/spinner.interceptor';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 //Import Layouts
@@ -110,6 +111,7 @@ import { GroupChatComponent } from './components/chat/group-chat/group-chat.comp
 import { AreaCommissionsComponent } from './components/reports/area-commissions/area-commissions.component';
 import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
 import { OnFieldShopOrderListComponent } from './components/on-field/on-field-shop-order-list/on-field-shop-order-list.component';
+import { MessagePopupComponent } from './components/shared/message-popup/message-popup.component';
 
 
 registerLocaleData(localeGb, 'en-GB');
@@ -203,7 +205,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     GroupChatComponent,
     AreaCommissionsComponent,
     MonthlyAccessoriesReportComponent,
-    OnFieldShopOrderListComponent
+    OnFieldShopOrderListComponent,
+    MessagePopupComponent
   ],
   imports: [
     BrowserModule,
@@ -216,6 +219,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     BrowserAnimationsModule,
     ReactiveFormsModule,
     NgScrollbarModule,
+    NgxMatSelectSearchModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

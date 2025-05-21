@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-shop-list',
@@ -26,6 +27,9 @@ export class ShopListComponent implements OnInit {
   selectedAreaId!: 0;
   areaLookup: any = [];
   isDisplay = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+
   displayedColumns: string[] = [
     'shopId',
     'shopName',
@@ -53,11 +57,23 @@ export class ShopListComponent implements OnInit {
       this.loadData();
     }
     this.getAreaLookup();
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+  }
+
+
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 

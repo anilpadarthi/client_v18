@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
-
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sub-category-list',
@@ -27,6 +27,8 @@ export class SubCategoryListComponent implements OnInit {
   categories: any[] = [];
   searchText!: string | null;
   selectedCategoryId = null;
+  categoryFilterCtrl: FormControl = new FormControl();
+  filteredCategories: any[] = [];
 
   constructor
     (
@@ -40,11 +42,23 @@ export class SubCategoryListComponent implements OnInit {
   ngOnInit(): void {
     this.getCategoryLookup();
     this.loadData();
+
+    this.categoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterCategories();
+    });
+  }
+
+  private filterCategories() {
+    const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredCategories = this.categories.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
+      this.filteredCategories = res.data;
     });
   }
 
@@ -111,7 +125,7 @@ export class SubCategoryListComponent implements OnInit {
   onReset(): void {
     this.pageNo = 0;
     this.searchText = null;
-    this.selectedCategoryId =  null;
+    this.selectedCategoryId = null;
     this.loadData();
   }
 

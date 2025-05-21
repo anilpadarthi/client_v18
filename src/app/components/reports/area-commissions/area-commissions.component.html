@@ -18,8 +18,11 @@
                 <mat-form-field appearance="outline" class="col-sm-3">
                     <mat-label>Area</mat-label>
                     <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area">
+                        <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
                             <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
                         </mat-option>
                     </mat-select>

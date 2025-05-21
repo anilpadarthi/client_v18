@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
-
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -33,6 +33,13 @@ export class CommissionStatementReportComponent implements OnInit {
   isLoading = false;
   userRole = '';
   isAdmin = false;
+   areaFilterCtrl: FormControl = new FormControl();
+  shopFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+  filteredShops: any[] = [];
+   userFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+
   displayedColumns: string[] = [
     'UserName',
     'AreaName',
@@ -61,23 +68,56 @@ export class CommissionStatementReportComponent implements OnInit {
     this.getAreaLookup();
     this.getAgentLookup();
 
+     this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+    this.shopFilterCtrl.valueChanges.subscribe(() => {
+      this.filterShops();
+    });
+     this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+
+  }
+
+   private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterShops() {
+    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
+    this.filteredShops = this.shopLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 
   areaChange() {
     this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
       this.shopLookup = res.data;
+      this.filteredShops = res.data;
     });
   }
 

@@ -9,6 +9,7 @@ import { PopupTableComponent } from '../common/popup-table/popup-table.component
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { OrderService } from '../../services/order.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-on-field',
@@ -27,6 +28,10 @@ export class OnFieldComponent implements OnInit {
   isMainSection = true;
   refreshCounter = 0;
   geoLocation: any;
+  areaFilterCtrl: FormControl = new FormControl();
+  shopFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+  filteredShops: any[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -42,6 +47,13 @@ export class OnFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAreaLookup();
+
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+    this.shopFilterCtrl.valueChanges.subscribe(() => {
+      this.filterShops();
+    });
   }
 
   ngOnChanges() {
@@ -66,15 +78,31 @@ export class OnFieldComponent implements OnInit {
     }
   }
 
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterShops() {
+    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
+    this.filteredShops = this.shopLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
   getAreaLookup() {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
   }
 
   areaChange() {
     this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
       this.shopLookup = res.data;
+      this.filteredShops = res.data;
       this.selectedShopId = null;
     });
   }

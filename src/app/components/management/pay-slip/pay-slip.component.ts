@@ -5,6 +5,7 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment from 'moment';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -35,6 +36,10 @@ export class PaySlipComponent implements OnInit {
   loggedInUserId: any;
   kpi1Target = 0;
   kpi1Percentage = 0.00;
+  userFilterCtrl: FormControl = new FormControl();
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  filteredManagers: any[] = [];
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount','Rate', 'Total'];
@@ -64,17 +69,40 @@ export class PaySlipComponent implements OnInit {
       this.selectedAgentId = this.loggedInUserId;
     }
 
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item:any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item:any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
   }
 
   getManagerLookup() {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 

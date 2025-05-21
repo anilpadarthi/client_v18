@@ -5,6 +5,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-editor',
@@ -19,6 +20,10 @@ export class ProductEditorComponent {
   subCategories: any[] = [];
   categories: any[] = [];
   productImagePreview: any = null;
+  categoryFilterCtrl: FormControl = new FormControl();
+  filteredCategories: any[] = [];
+  subCategoryFilterCtrl: FormControl = new FormControl();
+  filteredSubCategories: any[] = [];
 
   constructor
     (
@@ -57,17 +62,40 @@ export class ProductEditorComponent {
     this.productImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryLookup();
     this.getProductDetails();
+    this.categoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterCategories();
+    });
+
+    this.subCategoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterSubCategories();
+    });
+  }
+
+  private filterCategories() {
+    const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredCategories = this.categories.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterSubCategories() {
+    const search = this.subCategoryFilterCtrl.value?.toLowerCase() || '';
+    this.filteredSubCategories = this.subCategories.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
+      this.filteredCategories = res.data;
     });
   }
 
   getSubCategoryLookup(categoryId: number) {
     this.lookupService.getSubCategories(categoryId).subscribe((res) => {
       this.subCategories = res.data;
+      this.filteredSubCategories = res.data;
     });
   }
 

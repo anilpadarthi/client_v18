@@ -20,9 +20,13 @@
         <div class="col">
           <mat-form-field appearance="outline" *ngIf="isAdmin" style="width: 100%;">
             <mat-label>Manager</mat-label>
-            <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="onManagerChanged()">
+            <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
+              (selectionChange)="onManagerChanged()">
+              <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
               <mat-option [value]="0">All</mat-option>
-              <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+              <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
                 <span>{{ item.id }} - {{ item.name }}</span>
               </mat-option>
             </mat-select>
@@ -32,8 +36,11 @@
           <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" style="width: 100%;">
             <mat-label>User</mat-label>
             <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+              <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
               <mat-option [value]="0">All</mat-option>
-              <mat-option *ngFor="let item of userLookup" [value]="item.id">
+              <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
                 <span>{{ item.id }} - {{ item.name }}</span>
               </mat-option>
             </mat-select>

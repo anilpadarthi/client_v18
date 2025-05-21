@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-allocate-agent-to-manager',
@@ -38,6 +39,8 @@ export class AllocateAgentToManagerComponent implements OnInit {
   selectedAgentsToTransfer: any = [];
   selectedMonth: string | null = null;
   isBackToSelection = true;
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredManagers: any[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -50,11 +53,23 @@ export class AllocateAgentToManagerComponent implements OnInit {
   ngOnInit(): void {
     this.getManagerLookup();
     this.loadData();
+
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item:any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   getManagerLookup() {
     this.lookupService.getManagers().subscribe((res) => {
       this.managerLookup = res.data;
+      this.filteredManagers = res.data;
     });
   }
 

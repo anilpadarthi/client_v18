@@ -9,8 +9,11 @@
             <mat-form-field appearance="outline">
               <mat-label>Manger</mat-label>
               <mat-select [(ngModel)]="selectedManagerId" (selectionChange)="onFilter()">
+                 <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                noEntriesFoundLabel="No matching found">
+              </ngx-mat-select-search>
                 <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let item of managerLookup" [value]="item.id">
+                <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
                   <span>{{item.name}}</span>
                 </mat-option>
               </mat-select>
