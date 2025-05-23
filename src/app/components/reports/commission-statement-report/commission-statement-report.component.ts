@@ -33,21 +33,22 @@ export class CommissionStatementReportComponent implements OnInit {
   isLoading = false;
   userRole = '';
   isAdmin = false;
-   areaFilterCtrl: FormControl = new FormControl();
+  areaFilterCtrl: FormControl = new FormControl();
   shopFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
   filteredShops: any[] = [];
-   userFilterCtrl: FormControl = new FormControl();
+  userFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
 
   displayedColumns: string[] = [
+    'Action',
     'UserName',
     'AreaName',
     'ShopName',
     'CommissionDate',
     'CommissionAmount',
     'BonusAmount',
-    'Action'
+    'OptInType'
   ];
 
   constructor(
@@ -68,19 +69,19 @@ export class CommissionStatementReportComponent implements OnInit {
     this.getAreaLookup();
     this.getAgentLookup();
 
-     this.areaFilterCtrl.valueChanges.subscribe(() => {
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
       this.filterAreas();
     });
     this.shopFilterCtrl.valueChanges.subscribe(() => {
       this.filterShops();
     });
-     this.userFilterCtrl.valueChanges.subscribe(() => {
+    this.userFilterCtrl.valueChanges.subscribe(() => {
       this.filterUsers();
     });
 
   }
 
-   private filterAreas() {
+  private filterAreas() {
     const search = this.areaFilterCtrl.value?.toLowerCase() || '';
     this.filteredAreas = this.areaLookup.filter((item: any) =>
       `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
@@ -211,8 +212,12 @@ export class CommissionStatementReportComponent implements OnInit {
 
   exportToPDF(mode: any): void {
     let requestBody = {
-      isOptedForCheques: this.isOptedIn,
-      fromDate: this.fromMonth
+      fromDate: this.fromMonth,
+      toDate: this.toMonth,
+      areaId: this.selectedAreaId,
+      shopId: this.selectedShopId,
+      userId: this.selectedUserId,
+      reportType: mode
 
     }
     this.toasterService.showMessage("Downloading...");
@@ -229,22 +234,22 @@ export class CommissionStatementReportComponent implements OnInit {
   }
 
   // Handle Year Selection (no action needed)
-    chosenYearHandler(normalizedYear: any) {
-      // No action required, just wait for month selection
-    }
-  
-    // Handle Month Selection
-    choseFromMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-      this.fromMonth = formattedMonth + "-01";
-      datepicker.close(); // Close picker after selection
-      return formattedMonth + "-01";
-    }
-  
-    choseToMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-      const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-      this.toMonth = formattedMonth + "-01";
-      datepicker.close(); // Close picker after selection
-    }
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  choseFromMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.fromMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+    return formattedMonth + "-01";
+  }
+
+  choseToMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.toMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+  }
 
 }

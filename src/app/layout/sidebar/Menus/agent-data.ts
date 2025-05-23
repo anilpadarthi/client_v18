@@ -6,10 +6,6 @@ import { NavItem } from "../nav-item/nav-item";
 
 export const AgentItems: NavItem[] = [
 
-
-
-
-
   {
     displayName: 'Dashboard',
     iconName: 'home',
