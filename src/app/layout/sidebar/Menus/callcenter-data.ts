@@ -25,7 +25,7 @@ export const CallCenterItems: NavItem[] = [
     children: [
       {
         displayName: 'Allocate Areas',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'allocatearea',
       },
     ],
@@ -37,12 +37,12 @@ export const CallCenterItems: NavItem[] = [
     children: [
       {
         displayName: 'Monthly Activations',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/monthly/activations',
       },
       {
         displayName: 'Analysis Reports',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/historical/activations',
       },
 
@@ -65,12 +65,12 @@ export const CallCenterItems: NavItem[] = [
     children: [
       {
         displayName: 'Area',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'areas',
       },
       {
         displayName: 'Shop',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'shops',
       },
     ],
@@ -89,28 +89,28 @@ export const CallCenterItems: NavItem[] = [
 
       {
         displayName: 'Agreement Requests',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/agreement-requests',
       },
       {
         displayName: 'Commission Tier Requests',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/commission-tier-requests',
       },
       {
         displayName: 'Attendance',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/attendance-report',
       },
 
       {
         displayName: 'Shop Commission Cheques',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'shop-commission-cheques',
       },
       {
         displayName: 'Bank Cheques',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'bank-cheques',
       },
     ],
@@ -123,12 +123,12 @@ export const CallCenterItems: NavItem[] = [
     children: [
       {
         displayName: 'Sales',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'accessories/sales',
       },
       {
         displayName: 'Create Order',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'accessories/create-order',
         target: '_blank'
       },

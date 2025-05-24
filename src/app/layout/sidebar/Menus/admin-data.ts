@@ -10,12 +10,12 @@ export const AdminItems: NavItem[] = [
   //   children: [
   //     {
   //       displayName: 'Main',
-  //       iconName: 'fiber_manual_record',
+  //       iconName: 'arrow_right',
   //       route: 'dashboard/main',
   //     },
   //     {
   //       displayName: 'Analytics',
-  //       iconName: 'fiber_manual_record',
+  //       iconName: 'arrow_right',
   //       route: 'dashboard/analytics',
   //     },
   //   ],
@@ -32,12 +32,12 @@ export const AdminItems: NavItem[] = [
     children: [
       {
         displayName: 'Allocate Areas',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'allocatearea',
       },
       {
         displayName: 'Allocate Agents',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'allocateagent',
       },
     ],
@@ -50,52 +50,52 @@ export const AdminItems: NavItem[] = [
     children: [
       {
         displayName: 'Monthly Activations',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/monthly/activations',
       },
       {
         displayName: 'Analysis Report',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/historical/activations',
       },
       {
         displayName: 'Network Report',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/network-report',
       },
       {
         displayName: 'Sim Allocations',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/simallocation-report',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/kpi-target',
       },
       {
         displayName: 'Commission Statements',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/commission-statement',
       },
       {
         displayName: 'Area Commissions',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/area-commissions',
       },
       {
         displayName: 'Monthly Accessories Report',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/monthly-accessories-report',
       },
       {
         displayName: 'Daily Reports',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/daily-report',
       },
       {
         displayName: 'Track',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/track',
       },
     ],
@@ -107,42 +107,42 @@ export const AdminItems: NavItem[] = [
     children: [
       {
         displayName: 'User',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'users',
       },
       {
         displayName: 'Area',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'areas',
       },
       {
         displayName: 'Shop',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'shops',
       },
       {
         displayName: 'Network',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'networks',
       },
       {
         displayName: 'Supplier',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'suppliers',
       },
       {
         displayName: 'Category',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'categories',
       },
       {
         displayName: 'Sub-Category',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'sub-categories',
       },
       {
         displayName: 'Product',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'products',
       },
 
@@ -156,47 +156,47 @@ export const AdminItems: NavItem[] = [
     children: [
       {
         displayName: 'Payslip',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/payslip',
       },
       {
         displayName: 'Uploads',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/bulk-upload',
       },
       {
         displayName: 'WhatsApp Reports',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/whatsapp',
       },
       {
         displayName: 'Agreement Requests',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/agreement-requests',
       },
       {
         displayName: 'Commission Tier Requests',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/commission-tier-requests',
       },
       {
         displayName: 'Attendance',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/attendance-report',
       },
       {
         displayName: 'Expenses',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/expenses',
       },
       {
         displayName: 'Shop Commission Cheques',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/shop-commission-cheques',
       },
       {
         displayName: 'Bank Cheques',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/bank-cheques',
       },
     ],
@@ -210,7 +210,7 @@ export const AdminItems: NavItem[] = [
     children: [
       {
         displayName: 'Sales',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'accessories/sales',
       }, 
     ],
