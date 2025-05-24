@@ -48,12 +48,12 @@ export const ManagerItems: NavItem[] = [
 
       {
         displayName: 'Sim Allocations',
-        iconName: 'file-description',
+        iconName: 'fiber_manual_record',
         route: 'report/simallocation-report',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'file-description',
+        iconName: 'fiber_manual_record',
         route: 'report/kpi-target',
       },
     ],
@@ -83,7 +83,7 @@ export const ManagerItems: NavItem[] = [
     children: [
       {
         displayName: 'Payslip',
-        iconName: 'file-description',
+        iconName: 'fiber_manual_record',
         route: 'management/payslip',
       },
 

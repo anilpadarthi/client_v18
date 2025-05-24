@@ -8,9 +8,9 @@ export const environment = {
 
   host: 'http://localhost:5170',
   backend:  {
-    host: 'https://api.leap-tel.com'
+    host: 'https://uat-api.leap-tel.com'
   },
   frontend:  {
-    host: 'https://app.leap-tel.com' 
+    host: 'https://uat.leap-tel.com' 
   }
 };

@@ -3,12 +3,12 @@
   <span class="page-title__info"></span>
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
-      <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+      <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
         <mat-spinner></mat-spinner>
-      </div>
+      </div> -->
       <div class="row ng-custom-fileds m-r-2">
         <div class="col">
-          <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Choose a Month</mat-label>
             <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
             <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
@@ -18,7 +18,7 @@
           </mat-form-field>
         </div>
         <div class="col">
-          <mat-form-field appearance="outline" *ngIf="isAdmin" style="width: 100%;">
+          <mat-form-field appearance="outline" *ngIf="isAdmin" class="w-100">
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
               (selectionChange)="onManagerChanged()">
@@ -33,7 +33,7 @@
           </mat-form-field>
         </div>
         <div class="col">
-          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" style="width: 100%;">
+          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" class="w-100">
             <mat-label>User</mat-label>
             <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
               <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
@@ -50,7 +50,7 @@
           <button class="primary-btn" mat-flat-button (click)="onSubmit()">Submit</button>
         </div>
       </div>
-      <p class="info-msg">Accounts are calculated from 26th to 25th</p>
+      <p class="info-msg m-t-10">Accounts are calculated from 26th to 25th</p>
       <div class="row">
         <div class="col-lg-3 col-sm-3 col-12">
           <mat-card class="shadow-none text-center link accounts-cards">
