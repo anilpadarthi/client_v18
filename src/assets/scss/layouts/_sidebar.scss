@@ -7,7 +7,7 @@
 }
 
 .branding {
-  padding: 0em 2em;
+  padding: 0em 1em;
 }
 .leap-logo {
   height: 50px !important;
@@ -147,7 +147,7 @@
     .menu-list-item {
       border-radius: 7px;
       height: 50px;
-      padding: 8px 28px !important;
+      padding: 8px 14px !important;
       margin-bottom: 2px;
 
       &.twoline {
@@ -210,7 +210,7 @@
         color: #ffffff;
         .hide-menu {
           margin-left: 10px;
-          font-size: 16px;
+          font-size: 13px;
         }
 
         .arrow-icon {
@@ -233,6 +233,15 @@
       &:hover {
         background-color: $black;
         border-radius: 0;
+      }
+      &.ng-star-inserted {
+        padding: 8px 12px !important;
+        &.activeMenu {
+          .routeIcon {
+            background-color: transparent;
+            color: red;
+          }
+        }
       }
     }
   }
