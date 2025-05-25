@@ -84,7 +84,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.agentId = this.webstorgeService.getUserInfo().userId;
     this.orderService.getShoppingPageDetails().subscribe((res) => {
-      let categories = res.data?.categories.filter((c: any) => c.categoryId == 40);
+      let categories = res.data?.categories.filter((c: any) => c.categoryName == 'SIMS & Stands');
       categories?.forEach((category: any) => {
         category.image = environment.backend.host + '/' + category.image;
         category.subCategories?.forEach((subCategory: any) => {

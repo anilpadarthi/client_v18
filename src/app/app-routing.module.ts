@@ -48,6 +48,7 @@ import { AgreementNotificationsComponent } from './components/management/agreeme
 import { GroupChatComponent } from './components/chat/group-chat/group-chat.component';
 import { AreaCommissionsComponent } from './components/reports/area-commissions/area-commissions.component';
 import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
+import { OpenAccessoriesComponent } from './components/order/open-accessories/open-accessories.component';
 
 
 const routes: Routes = [
@@ -125,23 +126,20 @@ const routes: Routes = [
 
 
 
-      { path: 'accessories/sales', component: OrderListComponent },
-
-
-
-
+      { path: 'accessories/sales', component: OrderListComponent },      
 
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
-
+      { path: 'chat', component: GroupChatComponent },
     ],
   },
   { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent },
   { path: 'accessories/edit-order/:id', component: EditOrderComponent },
   { path: 'accessories/agent-sim-request', component: AgentSimOrderComponent },
+  { path: 'accessories/list', component: OpenAccessoriesComponent },
 
   { path: 'login', component: LoginComponent },
-  { path: 'chat', component: GroupChatComponent },
+
   { path: '**', redirectTo: '/login' }
 ];
 

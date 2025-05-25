@@ -3,7 +3,7 @@
     <span class="page-title__info"></span>
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
-            <div class="row">
+            <!-- <div class="row">
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Status</mat-label>
                     <mat-select [(ngModel)]="selectedStatusId">
@@ -25,8 +25,11 @@
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isAdmin">
                     <mat-label>Manager</mat-label>
                     <mat-select [(ngModel)]="selectedManagerId" (selectionChange)="managerChange()">
+                        <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let subCategory of managerLookup" [value]="subCategory.id">
+                        <mat-option *ngFor="let subCategory of filteredManagers" [value]="subCategory.id">
                             <span>{{subCategory.name}}</span>
                         </mat-option>
                     </mat-select>
@@ -35,8 +38,11 @@
                     *ngIf="(userRole == 'Manager' || isAdmin)">
                     <mat-label>Agent</mat-label>
                     <mat-select [(ngModel)]="selectedAgentId">
+                        <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let subCategory of agentLookup" [value]="subCategory.id">
+                        <mat-option *ngFor="let subCategory of filteredUsers" [value]="subCategory.id">
                             <span>{{subCategory.name}}</span>
                         </mat-option>
                     </mat-select>
@@ -45,8 +51,11 @@
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Area</mat-label>
                     <mat-select [(ngModel)]="selectedAreaId" (selectionChange)="areaChange()">
+                        <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let item of areaLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
                             <span>{{item.name}}</span>
                         </mat-option>
                     </mat-select>
@@ -54,8 +63,11 @@
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Shop</mat-label>
                     <mat-select [(ngModel)]="selectedShopId">
+                        <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let item of shopLookup" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredShops" [value]="item.id">
                             <span>{{item.name}}</span>
                         </mat-option>
                     </mat-select>
@@ -106,7 +118,133 @@
                     <mat-icon>filter_list</mat-icon>
                     View OutStanding
                 </button>
+            </div> -->
+
+            <div class="row">
+                <!-- Basic Filters -->
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="selectedStatusId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let category of statusLookup"
+                            [value]="category.id">{{category.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Payment Method</mat-label>
+                    <mat-select [(ngModel)]="selectedPaymentMethodId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of paymentMethodLookup"
+                            [value]="subCategory.id">{{subCategory.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isAdmin">
+                    <mat-label>Manager</mat-label>
+                    <mat-select [(ngModel)]="selectedManagerId" (selectionChange)="managerChange()">
+                        <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found"></ngx-mat-select-search>
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of filteredManagers"
+                            [value]="subCategory.id">{{subCategory.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12"
+                    *ngIf="(userRole == 'Manager' || isAdmin)">
+                    <mat-label>Agent</mat-label>
+                    <mat-select [(ngModel)]="selectedAgentId">
+                        <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found"></ngx-mat-select-search>
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of filteredUsers"
+                            [value]="subCategory.id">{{subCategory.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
+
+
+            <!-- Toggle Button for Advanced Filters -->
+
+
+            <!-- Advanced Filters -->
+            <div class="row" *ngIf="showAdvancedFilters">
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Area</mat-label>
+                    <mat-select [(ngModel)]="selectedAreaId" (selectionChange)="areaChange()">
+                        <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found"></ngx-mat-select-search>
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let item of filteredAreas" [value]="item.id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Shop</mat-label>
+                    <mat-select [(ngModel)]="selectedShopId">
+                        <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found"></ngx-mat-select-search>
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let item of filteredShops" [value]="item.id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Shipping Type</mat-label>
+                    <mat-select [(ngModel)]="selectedShippingMethodId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let subCategory of shippingMethodLookup"
+                            [value]="subCategory.id">{{subCategory.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Order Number</mat-label>
+                    <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>Track Number</mat-label>
+                    <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>From Month</mat-label>
+                    <input matInput [(ngModel)]="selectedFromDate" [matDatepicker]="fromPicker"
+                        placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
+                    <mat-label>To Month</mat-label>
+                    <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker"
+                        placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-checkbox color="primary" [(ngModel)]="isVat" class="col-lg-3 col-xs-12 m-3">IS VAT</mat-checkbox>
+            </div>
+
+            <!-- Buttons -->
+            <div class="row col-lg-12 space-between-buttons m-b-10">
+                <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
+                    <mat-icon>filter_list</mat-icon> Filter
+                </button>
+                <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
+                    <mat-icon>clear_all</mat-icon> Clear
+                </button>
+                <button mat-flat-button class="bg-primary text-white" (click)="loadOutstandingMetrics()">
+                    <mat-icon>filter_list</mat-icon> View OutStanding
+                </button>
+                <div class="col-lg-3 col-xs-12">
+                    <a (click)="toggleAdvancedFilters()" class="advance-filter-link">
+                        {{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters' }}
+                    </a>
+                </div>
+            </div>
+
 
             <div class="row outstanding-metrics" *ngIf="isAdmin && isShowOutstandingMetrics">
                 <div class="col-lg-4 col-12">
@@ -263,8 +401,10 @@
                     [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
                 </mat-paginator>
             </div>
-            <div class="zero-records p-b-8" *ngIf="orderList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="orderList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

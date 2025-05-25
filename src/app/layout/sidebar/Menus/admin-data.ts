@@ -212,6 +212,11 @@ export const AdminItems: NavItem[] = [
         displayName: 'Sales',
         iconName: 'fiber_manual_record',
         route: 'accessories/sales',
+      },
+      {
+        displayName: 'Open Accessories',
+        iconName: 'fiber_manual_record',
+        route: 'accessories/list',
       }, 
     ],
   },

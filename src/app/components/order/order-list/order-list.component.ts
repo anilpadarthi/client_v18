@@ -12,6 +12,7 @@ import { PopupTableComponent } from '../../common/popup-table/popup-table.compon
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payment-editor.component';
 import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-order-list',
@@ -62,10 +63,19 @@ export class OrderListComponent implements OnInit {
   isShowOutstandingMetrics = false;
   userRole = '';
   isAdmin = false;
+  areaFilterCtrl: FormControl = new FormControl();
+  shopFilterCtrl: FormControl = new FormControl();
+  filteredAreas: any[] = [];
+  filteredShops: any[] = [];
+  userFilterCtrl: FormControl = new FormControl();
+  managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  filteredManagers: any[] = [];
 
   totalOutstanding = 0.00;
   totalPPAAmount = 0.00;
   totalPPMAmount = 0.00;
+  showAdvancedFilters: boolean = false;
 
   orderList = [];
 
@@ -92,6 +102,20 @@ export class OrderListComponent implements OnInit {
     }
     this.loadData();
     this.loadDropDowns();
+
+    this.areaFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAreas();
+    });
+    this.shopFilterCtrl.valueChanges.subscribe(() => {
+      this.filterShops();
+    });
+
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
+    this.managerFilterCtrl.valueChanges.subscribe(() => {
+      this.filterManagers();
+    });
   }
 
   loadData(): void {
@@ -136,15 +160,18 @@ export class OrderListComponent implements OnInit {
 
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
+      this.filteredAreas = res.data;
     });
 
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.lookupService.getAgents().subscribe((res) => {
         this.agentLookup = res.data;
+        this.filteredUsers = res.data;
       });
 
       this.lookupService.getManagers().subscribe((res) => {
         this.managerLookup = res.data;
+        this.filteredManagers = res.data;
       });
     }
   }
@@ -164,15 +191,45 @@ export class OrderListComponent implements OnInit {
     }
   }
 
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.agentLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterManagers() {
+    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterAreas() {
+    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAreas = this.areaLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
+  private filterShops() {
+    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
+    this.filteredShops = this.shopLookup.filter((item: any) =>
+      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
 
   areaChange(): void {
     if (this.selectedAreaId) {
       this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
         this.shopLookup = res.data;
+        this.filteredShops = res.data;
       });
     }
     else {
       this.shopLookup = [];
+      this.filteredShops = [];
     }
   }
 
@@ -180,11 +237,13 @@ export class OrderListComponent implements OnInit {
     if (this.selectedManagerId) {
       this.lookupService.getAgentsByManager(this.selectedManagerId).subscribe((res) => {
         this.agentLookup = res.data;
+        this.filteredUsers = res.data;
       });
     }
     else {
       this.lookupService.getAgents().subscribe((res) => {
         this.agentLookup = res.data;
+        this.filteredUsers = res.data;
       });
     }
   }
@@ -299,7 +358,7 @@ export class OrderListComponent implements OnInit {
         this.toasterService.showMessage('Email sent successfully.');
       }
       else {
-        this.toasterService.showMessage('Something went wrong');
+        this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
       }
     });
   }
@@ -349,6 +408,9 @@ export class OrderListComponent implements OnInit {
     });
   }
 
+  toggleAdvancedFilters() {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+  }
 
 
 }

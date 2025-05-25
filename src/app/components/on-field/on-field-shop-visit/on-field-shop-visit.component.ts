@@ -48,7 +48,7 @@ export class OnFieldShopVisitComponent {
     try {
       // Try back camera first
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: 'environment' } }
+        video: { facingMode: { exact: 'ideal' } }
       });
       this.setVideoStream(stream);
     } catch (err) {

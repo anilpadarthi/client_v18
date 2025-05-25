@@ -49,6 +49,7 @@ export class AppNavItemComponent implements OnChanges {
   }
 
   onItemSelected(item: NavItem) {
+    console.log(item.children);
     if (!item.children || !item.children.length) {
       if (item.target) {
 
