@@ -164,7 +164,6 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
       item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
       this.cartItems.push(item);
     }
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
@@ -182,13 +181,11 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     }
     existingItem.netAmount = Number(existingItem.qty) * existingItem.salePrice;
     existingItem.vatAmount = (existingItem.netAmount * this.vatPercentage) / 100;
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
   removeCartItem(item: any): void {
     this.cartItems = this.cartItems.filter(cartItem => cartItem.productId !== item.productId);
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
@@ -200,13 +197,14 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   saveCartToSession(): void {
-    sessionStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+    sessionStorage.setItem('editcartItems', JSON.stringify(this.cartItems));
   }
 
   loadCartFromSession(): void {
-    const savedCart = sessionStorage.getItem('cartItems');
+    const savedCart = sessionStorage.getItem('editcartItems');
     if (savedCart) {
       this.cartItems = JSON.parse(savedCart);
+      this.updateCalculations();
     }
   }
 
@@ -221,6 +219,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.grandTotalWithVAT = (this.subTotal + this.deliveryCharges) - this.discountAmount;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - (this.netTotal * this.discountPercentage) / 100;
     this.grandTotal = this.grandTotalWithVAT;
+    this.saveCartToSession();
   }
 
   continueShopping(): void {
@@ -229,7 +228,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   updateOrder(): void {
@@ -285,6 +284,21 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isCartView = false;
     this.isMainView = false;
     this.selectedProduct = item;
+  }
+
+  loadNewArrivals() {
+    this.isDisplayProducts = true;
+    this.isDisplayCatgories = false;
+    this.isDisplaySubCatgories = false;
+    this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
+    this.orderService.loadNewArrivals().subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data;
+      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    });
+    this.closeSidebar();
   }
 
 }

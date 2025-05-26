@@ -9,18 +9,21 @@
 .branding {
   padding: 0em 1em;
 }
+
 .leap-logo {
   height: 50px !important;
   margin: 6px 0 4px;
 }
+
 .mobile-logo {
   display: none;
 }
-.app-sidebar{
+
+.app-sidebar {
   margin-top: 2px;
 }
 
-.topbar{
+.topbar {
   border-bottom-style: inset;
   border-bottom: 0;
 }
@@ -91,7 +94,7 @@
     overflow: hidden;
   }
 
-  
+
 
   .sidebar-list {
     &.mdc-list {
@@ -106,9 +109,11 @@
   .contentWrapper {
     transition: swift-ease-out(width);
   }
+
   .leap-logo {
     display: none;
   }
+
   .mobile-logo {
     display: block;
     height: 40px !important;
@@ -175,6 +180,7 @@
       &.activeMenu {
         background-color: $black !important;
         border-radius: 0;
+
         .mdc-list-item__primary-text {
           color: $white !important;
         }
@@ -182,11 +188,14 @@
         .mat-mdc-list-item-icon {
           color: $white !important;
         }
+
         .routeIcon {
-          background-color: #EF0000;
+          color: #EF0000 !important;
+          background-color: none !important;
           border-radius: 8px;
         }
       }
+
       .routeIcon {
         width: 33px;
         height: 33px;
@@ -208,6 +217,7 @@
         display: flex;
         align-items: center;
         color: #ffffff;
+
         .hide-menu {
           margin-left: 10px;
           font-size: 13px;
@@ -230,12 +240,15 @@
           }
         }
       }
+
       &:hover {
         background-color: $black;
         border-radius: 0;
       }
+
       &.ng-star-inserted {
         padding: 8px 12px !important;
+
         &.activeMenu {
           .routeIcon {
             background-color: transparent;

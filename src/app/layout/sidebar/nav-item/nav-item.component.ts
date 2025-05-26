@@ -49,11 +49,9 @@ export class AppNavItemComponent implements OnChanges {
   }
 
   onItemSelected(item: NavItem) {
-    console.log(item.children);
     if (!item.children || !item.children.length) {
-      if (item.target) {
-
-        // if(item.route == 'accessories/agent-sim-request'){
+      if (item.target || item.displayName == 'Open Accessories') {
+        // if(item.route == 'accessories/sim-request'){
         //   let loggedInUserId = this.webstorgeService.getUserInfo().userId;
         //   item.route+=`/${loggedInUserId}`;
         // }

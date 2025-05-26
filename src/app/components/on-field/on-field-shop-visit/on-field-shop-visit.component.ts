@@ -46,20 +46,34 @@ export class OnFieldShopVisitComponent {
 
   async startCamera() {
     try {
-      // Try back camera first
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: 'ideal' } }
-      });
+      // Step 1: Get all video input devices
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+      // Step 2: Try to find a rear camera by its label (e.g., "back", "rear")
+      let rearCamera = videoDevices.find(device =>
+        /back|rear|environment/i.test(device.label)
+      );
+
+      let stream: MediaStream;
+
+      if (rearCamera) {
+        this.toasterService.showMessage('Rare camera found.')
+        // Step 3: Request the rear camera by deviceId
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: { exact: rearCamera.deviceId } }
+        });
+      } else {
+        this.toasterService.showMessage('No Rare camera found,  Falling back to default.')
+        // Step 4: Fallback to any camera
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+      }
+
       this.setVideoStream(stream);
     } catch (err) {
-      console.warn('Back camera not available. Falling back to default camera.', err);
-      try {
-        // Fallback to default camera (usually front)
-        const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        this.setVideoStream(fallbackStream);
-      } catch (error) {
-        console.error('Unable to access any camera:', error);
-      }
+      this.toasterService.showMessage('Unable to access any camera:' + err)
     }
   }
 

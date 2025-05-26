@@ -1,140 +1,144 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-card-header>
-        <mat-card-title>{{ productId != null ? 'Edit Product' : 'Create Product' }}</mat-card-title>
-    </mat-card-header>
+<div class="page-title">
+    <h1>{{ productId != null ? 'Edit Product' : 'Create Product' }}</h1>
+    <span class="page-title__info"></span>
 
-    <mat-card-content>
-        <form [formGroup]="productForm" (ngSubmit)="onSave()">
-            <mat-accordion>
-                <!-- Basic Details Section -->
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Basic Details</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="col-lg-12">
-                        <div class="d-flex align-items-center m-b-16">
-                            <img *ngIf="productImagePreview" [src]="productImagePreview" class="rounded-image"
-                                alt="Image Preview" />
-                            <button mat-flat-button color="primary" class="m-l-16 input-file-button">
-                                <input type="file" accept="image/*" (change)="imageUpload($event)" />
-                            </button>
-                        </div>
-                    </div>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <form [formGroup]="productForm" (ngSubmit)="onSave()">
+                <mat-accordion>
+                    <!-- Basic Details Section -->
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Basic Details</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="col-lg-12">
 
-                    <mat-form-field appearance="outline" class="col-lg-6">
-                        <mat-label>Category</mat-label>
-                        <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event)">
-                            <ngx-mat-select-search [formControl]="categoryFilterCtrl" placeholderLabel="Search here..."
-                                noEntriesFoundLabel="No matching found">
-                            </ngx-mat-select-search>
-                            <mat-option [value]="null">All</mat-option>
-                            <mat-option *ngFor="let category of filteredCategories" [value]="category.id">
-                                <span>{{category.name}}</span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-lg-6">
-                        <mat-label>Sub-Category</mat-label>
-                        <mat-select formControlName="subCategoryId">
-                            <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"
-                                placeholderLabel="Search here..." noEntriesFoundLabel="No matching found">
-                            </ngx-mat-select-search>
-                            <mat-option [value]="null">All</mat-option>
-                            <mat-option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">
-                                <span>{{subCategory.name}}</span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" class="col-lg-6">
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName="productName" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="col-lg-6">
-                        <mat-label>Code</mat-label>
-                        <input matInput formControlName="productCode" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="col-lg-12">
-                        <mat-label>Description</mat-label>
-                        <textarea matInput formControlName="description" cols="3"></textarea>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="col-lg-12">
-                        <mat-label>Specification</mat-label>
-                        <textarea matInput formControlName="specification" cols="3"></textarea>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-lg-6">
-                        <mat-label>Buying Price</mat-label>
-                        <input matInput formControlName="buyingPrice" />
-                    </mat-form-field>
-
-                    <!-- MComm Access -->
-                    <mat-checkbox class="col-lg-3" formControlName="isNewArrival">New Arrival</mat-checkbox>
-
-                    <!-- Leap Access -->
-                    <mat-checkbox class="col-lg-3" formControlName="isOutOfStock">Out of Stock</mat-checkbox>
-                    <mat-checkbox class="col-lg-3" formControlName="isBundle">Is Bundle</mat-checkbox>
-
-                </mat-expansion-panel>
-
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Pricing</mat-panel-title>
-                    </mat-expansion-panel-header>
-
-                    <div class="row m-10">
-                        <div class="col-lg-10">
-                            <mat-card-title>To add more files hit Add button</mat-card-title>
-                        </div>
-                        <div class="col-lg-2">
-                            <button mat-flat-button color="primary" (click)="addChildProduct()">
-                                <mat-icon>add</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div *ngIf="productPrices.controls">
-                        <div formArrayName="productPrices" *ngFor="let t of productPrices.controls; let i = index">
-                            <div class="col-lg-12" [formGroupName]="i">
-                                <mat-card class="cardWithShadow theme-card">
-                                    <mat-card-content>
-                                        <mat-form-field appearance="outline" class="col-lg-3">
-                                            <mat-label>From Qty</mat-label>
-                                            <input matInput formControlName='fromQty' id="{{'fromQty'+i}}" required
-                                                (change)="validate($event, i)">
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="col-lg-3">
-                                            <mat-label>To Qty</mat-label>
-                                            <input matInput formControlName='toQty' id="{{'toQty'+i}}" required
-                                                (change)="validate($event, i)">
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="col-lg-3">
-                                            <mat-label>Sale Price</mat-label>
-                                            <input formControlName='salePrice' id="{{'salePrice'+i}}" matInput required>
-                                        </mat-form-field>
-
-                                        <button type="button" mat-flat-button color="warn" class="col-lg-3"
-                                            (click)="removeChildProduct(i);">Remove</button>
-                                    </mat-card-content>
-                                </mat-card>
+                            <div class="d-flex align-items-center m-b-16">
+                                <label style="margin-right:1em">Product Image: </label>
+                                <img *ngIf="productImagePreview" [src]="productImagePreview" class="rounded-image"
+                                    alt="Image Preview" />
+                                <button mat-flat-button color="primary" class="m-l-16 input-file-button">
+                                    <input type="file" accept="image/*" (change)="imageUpload($event)" />
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                </mat-expansion-panel>
-            </mat-accordion>
-            <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
-                Is Active
-            </mat-checkbox>
-            <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="productForm.invalid">
-                Save
-            </button>
-        </form>
-    </mat-card-content>
-</mat-card>
+                        <mat-form-field appearance="outline" class="col-lg-6">
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event)">
+                                <ngx-mat-select-search [formControl]="categoryFilterCtrl"
+                                    placeholderLabel="Search here..." noEntriesFoundLabel="No matching found">
+                                </ngx-mat-select-search>
+                                <mat-option [value]="null">All</mat-option>
+                                <mat-option *ngFor="let category of filteredCategories" [value]="category.id">
+                                    <span>{{category.name}}</span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-lg-6">
+                            <mat-label>Sub-Category</mat-label>
+                            <mat-select formControlName="subCategoryId">
+                                <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"
+                                    placeholderLabel="Search here..." noEntriesFoundLabel="No matching found">
+                                </ngx-mat-select-search>
+                                <mat-option [value]="null">All</mat-option>
+                                <mat-option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">
+                                    <span>{{subCategory.name}}</span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" class="col-lg-6">
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="productName" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-lg-6">
+                            <mat-label>Code</mat-label>
+                            <input matInput formControlName="productCode" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-lg-12">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" cols="3"></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-lg-12">
+                            <mat-label>Specification</mat-label>
+                            <textarea matInput formControlName="specification" cols="3"></textarea>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-lg-6">
+                            <mat-label>Buying Price</mat-label>
+                            <input matInput formControlName="buyingPrice" />
+                        </mat-form-field>
+
+                        <!-- MComm Access -->
+                        <mat-checkbox class="col-lg-3" formControlName="isNewArrival">New Arrival</mat-checkbox>
+
+                        <!-- Leap Access -->
+                        <mat-checkbox class="col-lg-3" formControlName="isOutOfStock">Out of Stock</mat-checkbox>
+                        <mat-checkbox class="col-lg-3" formControlName="isBundle">Is Bundle</mat-checkbox>
+
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Pricing</mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row m-10">
+                            <div class="col-lg-10">
+                                <mat-card-title>To add more files hit Add button</mat-card-title>
+                            </div>
+                            <div class="col-lg-2">
+                                <button mat-flat-button color="primary" (click)="addChildProduct()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="productPrices.controls">
+                            <div formArrayName="productPrices" *ngFor="let t of productPrices.controls; let i = index">
+                                <div class="col-lg-12" [formGroupName]="i">
+                                    <mat-card class="cardWithShadow theme-card">
+                                        <mat-card-content>
+                                            <mat-form-field appearance="outline" class="col-lg-3">
+                                                <mat-label>From Qty</mat-label>
+                                                <input matInput formControlName='fromQty' id="{{'fromQty'+i}}" required
+                                                    (change)="validate($event, i)">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="col-lg-3">
+                                                <mat-label>To Qty</mat-label>
+                                                <input matInput formControlName='toQty' id="{{'toQty'+i}}" required
+                                                    (change)="validate($event, i)">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="col-lg-3">
+                                                <mat-label>Sale Price</mat-label>
+                                                <input formControlName='salePrice' id="{{'salePrice'+i}}" matInput
+                                                    required>
+                                            </mat-form-field>
+
+                                            <button type="button" mat-flat-button color="warn" class="col-lg-3"
+                                                (click)="removeChildProduct(i);">Remove</button>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                    Is Active
+                </mat-checkbox>
+                <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="productForm.invalid">
+                    Save
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

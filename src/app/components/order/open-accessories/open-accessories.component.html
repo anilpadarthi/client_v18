@@ -25,6 +25,14 @@
             </button>
         </h3>
         <mat-accordion>
+            <mat-expansion-panel>
+                <!-- New Arrival Category -->
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        New Arrivals
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
             <mat-expansion-panel *ngFor="let item of categories">
                 <!-- Main Category -->
                 <mat-expansion-panel-header>
@@ -36,7 +44,6 @@
                 <!-- Subcategories -->
                 <div *ngIf="item.subCategories.length > 0">
                     <div class="subcategory" *ngFor="let sub of item.subCategories">
-
                         <a mat-button (click)="loadProducts(sub.categoryId,sub.subCategoryId)">
                             <mat-icon>arrow_right</mat-icon>
                             {{ sub.subCategoryName }}</a>
@@ -51,6 +58,15 @@
         <div *ngIf="isMainView">
             <!-- Categories -->
             <div class="row" *ngIf="isDisplayCatgories">
+                <div class="col-sm-6 col-lg-3">
+                    <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadNewArrivals()">
+                        <img src="/assets/images/logos/NewArrivals.jpg" alt="imgSrc" class="w-100 product-image"
+                            mat-card-image />
+                        <h3 class="product-title">
+                            New Arrivals
+                        </h3>
+                    </mat-card>
+                </div>
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
                     <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadSubCategories(item)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
@@ -76,7 +92,8 @@
             <div class="row" *ngIf="isDisplayProducts">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of products">
                     <mat-card class="cardWithShadow productcard overflow-hidden">
-                        <img src="{{ item.productImage }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
+                        <img src="{{ item.productImage }}" alt="imgSrc" class="w-100 product-image" mat-card-image
+                            (click)="viewProductDetails(item)" />
                         <h3 class="product-title text-center" title="{{item.productName}}"> {{
                             item.productName }}
                         </h3>
@@ -84,9 +101,18 @@
                             <p class="product-code"> {{ item.productCode }}</p>
                             <p class="sale-price text-right">£{{ item.salePrice | number: '1.2-2' }}</p>
                         </div>
+                        <div class="d-flex">
+                            <div class="d-flex quantity-container" style="color:green">
+                                In Stock
+                            </div>
+                        </div>
                     </mat-card>
                 </div>
             </div>
+        </div>
+
+        <div *ngIf="isDisplayProductDetails">
+            <app-product-detail [selectedProduct]="selectedProduct"></app-product-detail>
         </div>
 
 

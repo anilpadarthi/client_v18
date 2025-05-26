@@ -33,6 +33,7 @@ export class OpenAccessoriesComponent implements OnInit, AfterViewInit {
   categories: any[] = [];
   subCategories: any[] = [];
   products: any[] = [];
+  selectedProduct: any = null;
 
   constructor(
     private orderService: OrderService,
@@ -74,7 +75,7 @@ export class OpenAccessoriesComponent implements OnInit, AfterViewInit {
       });
       this.categories = categories;
     });
-   
+
   }
 
   loadProducts(categoryId: number, subCategoryId: number) {
@@ -102,11 +103,27 @@ export class OpenAccessoriesComponent implements OnInit, AfterViewInit {
     this.subCategories = item.subCategories;
   }
 
-  
+  loadNewArrivals() {
+    this.isDisplayProducts = true;
+    this.isDisplayCatgories = false;
+    this.isDisplaySubCatgories = false;
+    this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
+    this.orderService.loadNewArrivals().subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data;
+      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+    });
+    this.closeSidebar();   
+  }
+
+
   viewProductDetails(item: any): void {
     this.isDisplayProductDetails = true;
     this.isCartView = false;
     this.isMainView = false;
+    this.selectedProduct = item;
   }
 
 }

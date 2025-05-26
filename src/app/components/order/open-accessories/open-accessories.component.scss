@@ -1,0 +1,103 @@
+.contentWrapper {
+  padding: 20px !important;
+}
+
+.branding {
+  padding: 0em !important;
+}
+
+.continue-shopping {
+  display: block !important;
+
+  button,
+  mat-form-field {
+    margin-left: 1em !important;
+    margin-bottom: 1em !important;
+  }
+}
+
+.hamburg {
+  margin-left: 5em !important
+}
+
+.order-summary-card {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  color: #333;
+  margin-top: 0px !important;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.label {
+  flex: 4;
+  text-align: right;
+  color: #666;
+  margin-right: 10px;
+}
+
+.value {
+  flex: 1;
+  text-align: right;
+  font-weight: 500;
+  color: #333;
+}
+
+.value.orange {
+  color: #f57c00;
+}
+
+.input-row .discount-input {
+  width: 120px;
+}
+
+.total-row {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.total {
+  color: #1a237e;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+/* Responsive layout tweaks for tablets and up */
+@media (max-width: 360px) {
+
+  .label {
+    flex: 2;
+  }
+
+  .button-group {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+
+}
