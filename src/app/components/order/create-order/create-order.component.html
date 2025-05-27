@@ -263,7 +263,7 @@
                         <textarea matInput [(ngModel)]="shippingAddress" [disabled]="!isEditAddress"
                             placeholder="Update your address here" cols="10"></textarea>
                     </mat-form-field>
-                    <div class="d-flex float-right">
+                    <div class="d-flex float-right summary-row__action">
                         <a class="m-r-10 cursor-pointer" (click)="editAddress()">
                             <mat-icon>edit</mat-icon>
                         </a>
@@ -273,7 +273,7 @@
                     </div>
                 </div>
 
-                <mat-divider></mat-divider>
+                <mat-divider class="summary-row__divider"></mat-divider>
 
                 <div class="summary-row total-row">
                     <div class="label">Grand Total:</div>
