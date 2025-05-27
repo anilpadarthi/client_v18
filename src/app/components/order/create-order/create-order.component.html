@@ -46,6 +46,14 @@
             </button>
         </h3>
         <mat-accordion>
+            <mat-expansion-panel>
+                <!-- New Arrival Category -->
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        New Arrivals
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
             <mat-expansion-panel *ngFor="let item of categories">
                 <!-- Main Category -->
                 <mat-expansion-panel-header>
@@ -73,6 +81,15 @@
         <div *ngIf="isMainView">
             <!-- Categories -->
             <div class="row" *ngIf="isDisplayCatgories">
+                <div class="col-sm-6 col-lg-3">
+                    <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadNewArrivals()">
+                        <img src="/assets/images/logos/NewArrivals.jpg" alt="imgSrc" class="w-100 product-image"
+                            mat-card-image />
+                        <h3 class="product-title">
+                            New Arrivals
+                        </h3>
+                    </mat-card>
+                </div>
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
                     <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadSubCategories(item)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />

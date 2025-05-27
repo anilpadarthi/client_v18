@@ -22,7 +22,7 @@ export const AdminItems: NavItem[] = [
   // },
   {
     displayName: 'Dashboard',
-    iconName: 'roofing',
+    iconName: 'home',
     route: 'dashboard/main',
   },
   {
@@ -215,7 +215,7 @@ export const AdminItems: NavItem[] = [
       },
       {
         displayName: 'Open Accessories',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'accessories/list',
       }, 
     ],

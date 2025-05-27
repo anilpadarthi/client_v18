@@ -1,68 +1,69 @@
 <mat-card class="cardWithShadow">
-<div class="product-container" *ngIf="selectedProduct!=null">
-  <!-- Left Section: Product Images -->
-  <div class="product-images">
-    <img *ngIf="selectedProduct.productImage" [src]="selectedProduct.productImage" class="main-image" alt="Image Preview" />
+  <div class="product-container" *ngIf="selectedProduct!=null">
+    <!-- Left Section: Product Images -->
+    <div class="product-images">
+      <img *ngIf="selectedProduct.productImage" [src]="selectedProduct.productImage" class="main-image"
+        alt="Image Preview" />
 
-    <!-- <div class="thumbnail-container">
+      <!-- <div class="thumbnail-container">
       <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" [class.selected]="img === product.image"
         (click)="selectImage(img)" />
     </div> -->
+    </div>
+
+    <!-- Right Section: Product Info -->
+    <div class="product-info">
+      <h2 class="product-title">{{ selectedProduct.productName }}</h2>
+      <p class="f-w-600">Product Code: {{ selectedProduct.productCode }}</p>
+      <p class="availability">Availability: {{ 0 }}</p>
+      <div class="price-container">
+        <span class="price">
+          £{{ selectedProduct?.productPrices[0].salePrice | number: '1.2-2' }}
+        </span>
+      </div>
+
+      <h4>Pricing Table</h4>
+
+      <table mat-table [dataSource]="selectedProduct.productPrices" class="w-100 custom-table">
+        <ng-container matColumnDef="fromQty">
+          <th mat-header-cell *matHeaderCellDef>Min Qty</th>
+          <td mat-cell *matCellDef="let row">{{ row.fromQty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="toQty">
+          <th mat-header-cell *matHeaderCellDef>Max Qty</th>
+          <td mat-cell *matCellDef="let row">{{ row.toQty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="salePrice">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let row"> £{{ row.salePrice | number: '1.2-2' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+
+
+      <div class="quality-section">
+        <!-- Quantity Selector -->
+        <div class="quantity-container">
+          <p>Quantity</p>
+          <button mat-icon-button (click)="decreaseQuantity()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <input matInput type="number" [(ngModel)]="quantity" min="1" class="item-qty" />
+          <button mat-icon-button (click)="increaseQuantity()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons d-flex justify-content-end">
+          <button mat-flat-button class="primary-btn" (click)="addToCart()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Right Section: Product Info -->
-  <div class="product-info">
-    <h2 class="product-title">{{ selectedProduct.productName }}</h2>
-    <p class="f-w-600">Product Code: {{ selectedProduct.productCode }}</p>
-    <p class="availability">Availability: {{ 0 }}</p>
-    <div class="price-container">
-      <span class="price" *ngFor="let item of selectedProduct.productPrices">
-        £{{ item.salePrice | number: '1.2-2' }}
-      </span>
-    </div>
-
-    <h4>Pricing Table</h4>
-
-    <table mat-table [dataSource]="selectedProduct.productPrices" class="w-100 custom-table">
-      <ng-container matColumnDef="fromQty">
-        <th mat-header-cell *matHeaderCellDef>Min Qty</th>
-        <td mat-cell *matCellDef="let row">{{ row.fromQty }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="toQty">
-        <th mat-header-cell *matHeaderCellDef>Max Qty</th>
-        <td mat-cell *matCellDef="let row">{{ row.toQty }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="salePrice">
-        <th mat-header-cell *matHeaderCellDef>Price</th>
-        <td mat-cell *matCellDef="let row"> £{{ row.salePrice | number: '1.2-2' }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-
-
-   <div class="quality-section">
-     <!-- Quantity Selector -->
-     <div class="quantity-container">
-      <p>Quantity</p>
-      <button mat-icon-button (click)="decreaseQuantity()">
-        <mat-icon>remove</mat-icon>
-      </button>
-      <input matInput type="number" [(ngModel)]="quantity" min="1" class="item-qty" />
-      <button mat-icon-button (click)="increaseQuantity()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-
-    <!-- Buttons -->
-    <div class="buttons d-flex justify-content-end">
-      <button mat-flat-button class="primary-btn" (click)="addToCart()">Add to Cart</button>
-    </div>
-   </div>
-  </div>
-</div>
 </mat-card>

@@ -135,7 +135,7 @@ const routes: Routes = [
   },
   { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent },
   { path: 'accessories/edit-order/:id', component: EditOrderComponent },
-  { path: 'accessories/agent-sim-request', component: AgentSimOrderComponent },
+  { path: 'accessories/sim-request', component: AgentSimOrderComponent },
   { path: 'accessories/list', component: OpenAccessoriesComponent },
 
   { path: 'login', component: LoginComponent },

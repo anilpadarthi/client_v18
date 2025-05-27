@@ -132,7 +132,6 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       item.amount = Number(item.qty) * item.salePrice;
       this.cartItems.push(item);
     }
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
@@ -163,13 +162,11 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       existingItem.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
     }
     existingItem.amount = Number(existingItem.qty) * existingItem.salePrice;
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
   removeCartItem(item: any): void {
     this.cartItems = this.cartItems.filter(cartItem => cartItem.productId !== item.productId);
-    this.saveCartToSession();
     this.updateCalculations();
   }
 
@@ -182,13 +179,14 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
   saveCartToSession(): void {
-    sessionStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+    sessionStorage.setItem('simcartItems', JSON.stringify(this.cartItems));
   }
 
   loadCartFromSession(): void {
-    const savedCart = sessionStorage.getItem('cartItems');
+    const savedCart = sessionStorage.getItem('simcartItems');
     if (savedCart) {
       this.cartItems = JSON.parse(savedCart);
+      this.updateCalculations();
     }
   }
 
@@ -197,6 +195,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     this.cartItems?.forEach((product) => {
       this.subTotal += product.qty * product.salePrice;
     });
+    this.saveCartToSession();
   }
 
   continueShopping(): void {

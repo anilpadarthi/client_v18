@@ -22,6 +22,10 @@ export class OrderService {
     return this.http.get<any>(`${this.url}/GetProductList?categoryId=` + categoryId + '&subCategoryId=' + subCategoryId);
   }
 
+  loadNewArrivals(): Observable<any> {
+    return this.http.get<any>(`${this.url}/GetNewArrivals`);
+  }
+
 
   getPagedOrderList(requestBody: any): Observable<any> {
     return this.http.post<any>(`${this.url}/GetPagedOrderList`, requestBody);

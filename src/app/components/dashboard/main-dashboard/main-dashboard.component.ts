@@ -52,7 +52,7 @@ export class MainDashboardComponent implements OnInit {
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     this.filterId = loggedInUserId;
     this.filterType = userRole;
-    //this.selectedMonth = new Date().toDateString('dd/MM/YYYY');
+    this.selectedMonth = this.getCurrentMonthString();
     if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
@@ -125,7 +125,6 @@ export class MainDashboardComponent implements OnInit {
         this.givenCount = res.data[0].givenToShopCount;
         this.activationCount = res.data[0].activationCount;
         this.instantActivationCount = res.data[0].instantActivationCount;
-
       }
     });
   }
@@ -163,5 +162,12 @@ export class MainDashboardComponent implements OnInit {
     datepicker.close(); // Close picker after selection
     this.loadDashboardMetrics();
   }
+
+  getCurrentMonthString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
+  return `${year}-${month}-01`;
+}
 
 }

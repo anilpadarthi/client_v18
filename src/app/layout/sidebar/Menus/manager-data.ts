@@ -48,12 +48,12 @@ export const ManagerItems: NavItem[] = [
 
       {
         displayName: 'Sim Allocations',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/simallocation-report',
       },
       {
         displayName: 'KPI Targets',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'report/kpi-target',
       },
     ],
@@ -83,7 +83,7 @@ export const ManagerItems: NavItem[] = [
     children: [
       {
         displayName: 'Payslip',
-        iconName: 'fiber_manual_record',
+        iconName: 'arrow_right',
         route: 'management/payslip',
       },
 
@@ -106,12 +106,12 @@ export const ManagerItems: NavItem[] = [
       {
         displayName: 'Shop Commission Cheques',
         iconName: 'arrow_right',
-        route: 'shop-commission-cheques',
+        route: 'management/shop-commission-cheques',
       },
       {
         displayName: 'Bank Cheques',
         iconName: 'arrow_right',
-        route: 'bank-cheques',
+        route: 'management/bank-cheques',
       },
     ],
   },
@@ -127,9 +127,9 @@ export const ManagerItems: NavItem[] = [
         route: 'accessories/sales',
       },
       {
-        displayName: 'Create Order',
+        displayName: 'Request Sims',
         iconName: 'arrow_right',
-        route: 'accessories/create-order',
+        route: 'accessories/sim-request',
         target: '_blank'
       },
     ],

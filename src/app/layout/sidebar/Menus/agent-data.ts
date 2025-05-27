@@ -33,7 +33,7 @@ export const AgentItems: NavItem[] = [
     children: [
       {
         displayName: 'Monthly Activations',
-        iconName: 'monitoring',
+        iconName: 'arrow_right',
         route: 'report/monthly/activations',
       },
       {
@@ -43,19 +43,14 @@ export const AgentItems: NavItem[] = [
       },
       {
         displayName: 'Payslip',
-        iconName: 'text_snippet',
+        iconName: 'arrow_right',
         route: 'management/payslip',
       },
       {
         displayName: 'Monthly Accessories Report',
         iconName: 'arrow_right',
         route: 'report/monthly-accessories-report',
-      },
-      {
-        displayName: 'Sim Allocations',
-        iconName: 'arrow_right',
-        route: 'report/simallocation-report',
-      },
+      },     
     ]
   },
 
@@ -72,16 +67,11 @@ export const AgentItems: NavItem[] = [
       {
         displayName: 'Request Sims',
         iconName: 'arrow_right',
-        route: 'accessories/agent-sim-request',
+        route: 'accessories/sim-request',
         target: '_blank'
       },
     ],
   },
-
-
-
-
-
   {
     displayName: 'Chat',
     iconName: 'chat',
