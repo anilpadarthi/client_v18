@@ -40,10 +40,12 @@ export class OrderPaymentEditorComponent {
     this.balanceAmount = data.balanceAmount;
     this.paymentForm = this.fb.group(
       {
-        referenceNumber: ['', [Validators.required, Validators.minLength(2)]],
-        amount: ['', [Validators.required]],
-        paymentMode: ['', [Validators.required]],
+        referenceNumber: [null, [Validators.required, Validators.minLength(2)]],
+        amount: [null, [Validators.required]],
+        paymentMode: [null, [Validators.required]],
+        chequeNumber: [null],
         comments: [''],
+        amountType: [''],
         image: null as File | null,
       },
     );
@@ -60,7 +62,7 @@ export class OrderPaymentEditorComponent {
     if (event.value === 'FA') {
       this.paymentForm.get('amount')?.setValue(this.balanceAmount);
     }
-    else{
+    else {
       this.paymentForm.get('amount')?.setValue('');
     }
   }
@@ -131,25 +133,29 @@ export class OrderPaymentEditorComponent {
       this.IsDisabled = true;
     }
     else {
-      this.paymentForm.patchValue({ referenceNumber: '' });
-      this.paymentForm.patchValue({ amount: '' });
+      this.paymentForm.patchValue({ referenceNumber: null });
+      this.paymentForm.patchValue({ amount: null });
       this.IsDisabled = false;
     }
   }
 
   onPaymentModeChange(event: any): void {
-    this.paymentForm.patchValue({ referenceNumber: '' });
-    this.paymentForm.patchValue({ amount: '' });
+    this.paymentForm.patchValue({ referenceNumber: null });
+    this.paymentForm.patchValue({ amount: null });
+    this.paymentForm.patchValue({ chequeNumber: null });
 
     if (event.value == 'CommissionCheque') {
       this.IsDisplayAvailableCheques = true;
       this.paymentForm.get('referenceNumber')?.disable();
       this.paymentForm.get('amount')?.disable();
+      this.paymentForm.get('chequeNumber')?.setValidators(Validators.required);
     }
     else {
       this.IsDisplayAvailableCheques = false;
       this.paymentForm.get('referenceNumber')?.enable();
       this.paymentForm.get('amount')?.enable();
+      this.paymentForm.get('amountType')?.reset();
+      this.paymentForm.get('chequeNumber')?.clearValidators();
     }
   }
 

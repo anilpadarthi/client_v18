@@ -45,12 +45,7 @@ export const AgentItems: NavItem[] = [
         displayName: 'Payslip',
         iconName: 'arrow_right',
         route: 'management/payslip',
-      },
-      {
-        displayName: 'Monthly Accessories Report',
-        iconName: 'arrow_right',
-        route: 'report/monthly-accessories-report',
-      },     
+      },      
     ]
   },
 

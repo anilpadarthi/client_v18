@@ -45,6 +45,11 @@ export const ManagerItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/historical/activations',
       },
+      {
+        displayName: 'Area Commissions',
+        iconName: 'arrow_right',
+        route: 'report/area-commissions',
+      },
 
       {
         displayName: 'Sim Allocations',

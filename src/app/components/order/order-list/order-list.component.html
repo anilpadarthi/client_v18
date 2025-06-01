@@ -205,7 +205,7 @@
                     <mat-datepicker #fromPicker></mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIF="showAdvancedFilters">
+                <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="showAdvancedFilters">
                     <mat-label>To Month</mat-label>
                     <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker"
                         placeholder="Choose a Month" />
@@ -230,7 +230,7 @@
                 <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
                     <mat-icon>clear_all</mat-icon> Clear
                 </button>
-                <button mat-flat-button class="bg-primary text-white" (click)="loadOutstandingMetrics()">
+                <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin" (click)="loadOutstandingMetrics()">
                     <mat-icon>filter_list</mat-icon> View OutStanding
                 </button>
                 <div class="col-lg-3 col-xs-12">

@@ -297,13 +297,12 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   updateCalculations() {
     this.subTotal = 0;
     this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
-    this.totalVatAmount = this.cartItems?.reduce((total1, product) => total1 + product.vatAmount, 0) || 0;
+
+    this.discountAmount = (this.netTotal * this.discountPercentage) / 100;
+    this.totalVatAmount = (this.netTotal - this.discountAmount) * this.vatPercentage / 100;
     this.subTotal = this.netTotal + this.totalVatAmount;
-
-
-    this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    this.grandTotalWithVAT = (this.subTotal + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - (this.netTotal * this.discountPercentage) / 100;
+    this.grandTotalWithVAT = (this.netTotal + this.totalVatAmount + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - this.discountAmount;
     this.grandTotal = this.grandTotalWithVAT;
     this.saveCartToSession();
   }
@@ -339,18 +338,22 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         requestType: this.requestType,
         isVat: this.requestType == 'B' ? 1 : 0
       };
-
-      this.orderService.create(requestBody).subscribe((res) => {
-        if (res.statusCode == 201) {
-          this.toasterService.showMessage("Created Successfully.");
-          this.cartItems = [];
-          setTimeout(() => this.closeWindow(), 2000);
-          //window.close();
-        }
-        else {
-          this.toasterService.showMessage(res.message);
-        }
-      });
+      if (this.selectedPaymentMethodId) {
+        this.orderService.create(requestBody).subscribe((res) => {
+          if (res.statusCode == 201) {
+            this.toasterService.showMessage("Created Successfully.");
+            this.cartItems = [];
+            setTimeout(() => this.closeWindow(), 2000);
+            //window.close();
+          }
+          else {
+            this.toasterService.showMessage(res.message);
+          }
+        });
+      }
+      else {
+        this.toasterService.showMessage("Please select Payment Method, before to place an order.");
+      }
     }
   }
 

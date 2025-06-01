@@ -1,4 +1,4 @@
-<h2 mat-dialog-title class="modal-header-title">{{header}} 
+<h2 mat-dialog-title class="modal-header-title">{{header}}
     <button mat-dialog-close class="modal-header-close-btn">
         <mat-icon>close</mat-icon>
     </button>
@@ -15,16 +15,16 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" >
+        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
             <mat-label>Payment Method</mat-label>
-            <mat-select [(ngModel)]="selectedPaymentMethodId" [disabled]="true">
+            <mat-select [(ngModel)]="selectedPaymentMethodId" [disabled]="!isAdmin">
                 <mat-option [value]="null">All</mat-option>
                 <mat-option *ngFor="let subCategory of paymentMethodLookup" [value]="subCategory.id">
                     <span>{{subCategory.name}}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" >
+        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
             <mat-label>Shipping Type</mat-label>
             <mat-select [(ngModel)]="selectedShippingMethodId">
                 <mat-option [value]="null">All</mat-option>
@@ -81,14 +81,45 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
     </div>
+
+    <!-- <div class="order-summary-card mat-elevation-z2">
+        <h2 class="summary-title">Order Summary</h2>
+
+        <div class="summary-row">
+            <div class="label">Net total:</div>
+            <div class="value">£{{ subTotal | number : "1.2-2" }}</div>
+        </div>
+        <div class="summary-row">
+            <div class="label">VAT:</div>
+            <div class="value">£{{ vatAmount | number : "1.2-2" }}</div>
+        </div>
+        <div class="summary-row">
+            <div class="label">Delivery Charges:</div>
+            <div class="value">£{{ deliveryCharges | number : "1.2-2" }}</div>
+        </div>
+        <div class="summary-row">
+            <div class="label">Discount Amount:</div>
+            <div class="value">£{{ discountAmount | number : "1.2-2" }}</div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="summary-row total-row">
+            <div class="label">Grand Total:</div>
+            <div class="value total">£{{ grandTotal | number : "1.2-2" }}</div>
+        </div>
+    </div> -->
+
     <div class="text-right totals">
         <h5 class="m-b-5 f-w-600 f-s-16">Sub total: £{{ subTotal | number : "1.2-2" }}</h5>
-        <h5 class="f-w-600 f-s-16">VAT: £{{ vatAmount | number : "1.2-2" }}</h5>
+        <h5 class="f-w-600 f-s-16" *ngIf="isVAT" >VAT: £{{ vatAmount | number : "1.2-2" }}</h5>
         <h5 class="f-w-600 f-s-16">Delivery Charges: £{{ deliveryCharges | number : "1.2-2" }}</h5>
         <h5 class="f-w-600 f-s-16 discount">Discount: £{{ discountAmount | number : "1.2-2" }}</h5>
         <mat-divider></mat-divider>
         <h3 class="m-b-5 f-s-18">Grand Total: £{{ grandTotal | number : "1.2-2" }}</h3>
     </div>
-    <div class="zero-records p-b-8" *ngIf="orderItems.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-        <span>No records found</span></div>
+    <div class="zero-records p-b-8" *ngIf="orderItems.length == 0"><img
+            src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+    </div>
 </mat-dialog-content>

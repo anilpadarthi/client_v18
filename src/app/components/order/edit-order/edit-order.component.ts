@@ -211,13 +211,12 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   updateCalculations() {
     this.subTotal = 0;
     this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
-    this.totalVatAmount = this.cartItems?.reduce((total1, product) => total1 + product.vatAmount, 0) || 0;
+
+    this.discountAmount = (this.netTotal * this.discountPercentage) / 100;
+    this.totalVatAmount = (this.netTotal - this.discountAmount) * this.vatPercentage / 100;
     this.subTotal = this.netTotal + this.totalVatAmount;
-
-
-    this.discountAmount = (this.subTotal * this.discountPercentage) / 100;
-    this.grandTotalWithVAT = (this.subTotal + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - (this.netTotal * this.discountPercentage) / 100;
+    this.grandTotalWithVAT = (this.netTotal + this.totalVatAmount + this.deliveryCharges) - this.discountAmount;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - this.discountAmount;
     this.grandTotal = this.grandTotalWithVAT;
     this.saveCartToSession();
   }

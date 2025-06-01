@@ -6,15 +6,11 @@
 </h2>
 
 <mat-dialog-content class="mat-typography" style="max-width: 600px">
-    <h3 class="balance"> Outstanding Balance: £ {{balanceAmount | number: '1.2-2'}}</h3>
+
     <form [formGroup]="paymentForm" (ngSubmit)="onSave()" class="m-t-15">
-        <mat-radio-group [(ngModel)]="selectedOption" (change)="onRadioChange($event)">
-            <mat-radio-button value="FA">Full Amount</mat-radio-button>
-            <mat-radio-button value="OA">Other Amount</mat-radio-button>
-          </mat-radio-group>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Payment Mode</mat-label>
-            <mat-select formControlName="paymentMode" (selectionChange)="onPaymentModeChange($event)">
+            <mat-select formControlName="paymentMode" (selectionChange)="onPaymentModeChange($event)" required>
                 <mat-option value=''>--Select--</mat-option>
                 <mat-option value="Cash">Cash</mat-option>
                 <!-- <mat-option value="LeapCheque">Leap Cheque</mat-option>
@@ -26,21 +22,29 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="IsDisplayAvailableCheques">
-            <mat-select placeholder="Select Cheque" (selectionChange)="onChequeNumberChange($event)">
+            <mat-label>Select Commission Cheque</mat-label>
+            <mat-select formControlName="chequeNumber" (selectionChange)="onChequeNumberChange($event)" required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
                     <span>{{item.id}} - {{ item.name }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Reference Number</mat-label>
-            <input matInput formControlName="referenceNumber" [disabled]="IsDisabled" />
+
+        <mat-radio-group formControlName="amountType" (change)="onRadioChange($event)" *ngIf="!IsDisplayAvailableCheques">
+            <mat-radio-button value="FA">Full Amount</mat-radio-button>
+            <mat-radio-button value="OA">Other Amount</mat-radio-button>
+        </mat-radio-group>
+       
+
+        <mat-form-field appearance="outline" class="w-100 m-t-10">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount" type="number" />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount" [disabled]="IsDisabled" type="number" />
+         <mat-form-field appearance="outline" class="w-100 ">
+            <mat-label>Reference Number</mat-label>
+            <input matInput formControlName="referenceNumber" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
