@@ -36,6 +36,7 @@ export class MainDashboardComponent implements OnInit {
   managerFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
   filteredManagers: any[] = [];
+  filterMode = '';
 
   constructor(
     private webstorgeService: WebstorgeService,
@@ -80,14 +81,14 @@ export class MainDashboardComponent implements OnInit {
 
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
-    this.filteredUsers = this.userLookup.filter((item:any) =>
+    this.filteredUsers = this.userLookup.filter((item: any) =>
       `${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 
   private filterManagers() {
     const search = this.managerFilterCtrl.value?.toLowerCase() || '';
-    this.filteredManagers = this.managerLookup.filter((item:any) =>
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
       `${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
@@ -107,7 +108,14 @@ export class MainDashboardComponent implements OnInit {
   }
 
   onManagerChanged(): void {
-    this.selectedUserId = null;
+    if (this.selectedManagerId) {
+      this.filterMode = 'Manager';
+      this.selectedUserId = null;
+    }
+    else {
+      this.filterMode = '';
+      this.selectedUserId = null;
+    }
   }
 
   loadDashboardMetrics(): void {
@@ -141,10 +149,27 @@ export class MainDashboardComponent implements OnInit {
         this.filterId = this.selectedUserId;
         this.filterType = 'Agent';
       }
-      else if (this.selectedManagerId) {
+      else if (this.selectedManagerId && this.filterMode == 'Manager') {
         this.dashboardViewMode = 'Manager';
         this.filterId = this.selectedManagerId;
         this.filterType = 'Manager';
+      }
+      else {
+        let userRole = this.webstorgeService.getUserRole();
+        let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+        this.filterId = loggedInUserId;
+        this.filterType = userRole;
+        if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+          this.isAdmin = true;
+          this.dashboardViewMode = 'Admin'
+        }
+        else if (userRole == 'Manager') {
+          this.isManager = true;
+          this.dashboardViewMode = 'Manager'
+        }
+        else if (userRole == 'Agent') {
+          this.dashboardViewMode = 'Agent'
+        }
       }
       this.loadDashboardMetrics();
     }
@@ -164,10 +189,10 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getCurrentMonthString(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
-  return `${year}-${month}-01`;
-}
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
+    return `${year}-${month}-01`;
+  }
 
 }

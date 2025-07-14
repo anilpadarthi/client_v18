@@ -17,7 +17,7 @@ export class ReportService {
   getLastDailyActivationReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetLastDailyActivationReport', requestBody);
   }
-  
+
   getSpamReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetSpamReport', requestBody);
   }
@@ -64,7 +64,7 @@ export class ReportService {
 
   getMonthlyShopActivations(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetMonthlyShopActivations', requestBody);
-  } 
+  }
 
   getSalaryReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetSalaryReport', requestBody);
@@ -82,7 +82,7 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetSupplierReport', requestBody);
   }
 
- 
+
 
   getSimAllocationReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetSimAllocationReport', requestBody);
@@ -90,6 +90,10 @@ export class ReportService {
 
   getMonthlyAccessoriesReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetMonthlyAccessoriesReport', requestBody);
+  }
+
+  getChequeWithdrawnReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetChequeWithdrawnReport', requestBody);
   }
 
 }

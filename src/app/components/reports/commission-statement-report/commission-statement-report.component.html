@@ -70,25 +70,25 @@
                 </button>
 
                 <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToPDF('NONVAT')">Download
-                    <mat-icon>download</mat-icon>
+                    <mat-icon style="color: red;">picture_as_pdf</mat-icon>
                 </button>
                 <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToPDF('VAT')">Download VAT
-                    <mat-icon>download</mat-icon>
+                    <mat-icon>receipt_long</mat-icon>
                 </button>
                 <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToExcel()">Export to excel
-                    <mat-icon>download</mat-icon>
+                    <mat-icon style="color: green;">grid_on</mat-icon>
                 </button>
             </div>
 
             <div *ngIf="!isLoading && commissionList?.length > 0"
-                class="table-responsive table-scroll example-container">
+                class="table-responsive table-scroll example-container m-t-10">
                 <table mat-table [dataSource]="commissionList" class="w-100 custom-table">
 
                      <ng-container matColumnDef="Action">
-                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <th mat-header-cell *matHeaderCellDef></th>
                         <td mat-cell *matCellDef="let element">
-                            <a mat-button (click)="downloadCommissionStatement(element.shopId, element.commissionDate)">
-                                <mat-icon>download</mat-icon> Download
+                            <a (click)="downloadCommissionStatement(element.shopId, element.commissionDate)">
+                                <mat-icon>download</mat-icon>
                             </a>
                         </td>
                     </ng-container>
@@ -119,7 +119,7 @@
                     </ng-container>
                     <ng-container matColumnDef="OptInType">
                         <th mat-header-cell *matHeaderCellDef>Opt In Type</th>
-                        <td mat-cell *matCellDef="let element">{{ element.optInType | currency:'GBP' }}</td>
+                        <td mat-cell *matCellDef="let element">{{ element.optInType }}</td>
                     </ng-container>                   
 
                     <!-- Header and Row Declarations -->

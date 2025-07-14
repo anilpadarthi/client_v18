@@ -3,7 +3,7 @@ import { NavItem } from "../nav-item/nav-item";
 export const CallCenterItems: NavItem[] = [
 
   {
-    displayName: 'IMEI',
+    displayName: 'Sim Info',
     iconName: 'manage_search',
     route: 'imei/search',
   },
@@ -23,10 +23,10 @@ export const CallCenterItems: NavItem[] = [
     route: 'management/bulk-upload',
   },
   {
-    displayName: 'Payslip',
+    displayName: 'WhatsApp Reports',
     iconName: 'receipt',
-    route: 'management/payslip',
-  },
+    route: 'management/whatsapp',
+  },  
   {
     displayName: 'Sales',
     iconName: 'orders',

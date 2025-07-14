@@ -38,7 +38,7 @@ export class AreaCommissionsComponent implements OnInit {
     'TopupSystemId',
     // 'BonusAmount',
     'OptedCheque',
-    'OptedTopup',
+    // 'OptedTopup',
     'OptedWallet',
     'Accessories',
   ];
@@ -79,8 +79,8 @@ export class AreaCommissionsComponent implements OnInit {
       areaId: this.selectedAreaId,
     };
 
-    this.commissionStatementService.getCommissionList(requestBody).subscribe((res) => {
-      if (res.data.length > 0) {
+    this.commissionStatementService.getAreaCommissionList(requestBody).subscribe((res) => {
+      if (res.data?.length > 0) {
         this.commissionList = res.data;
       }
       else {

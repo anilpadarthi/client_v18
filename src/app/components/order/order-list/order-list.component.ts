@@ -53,10 +53,10 @@ export class OrderListComponent implements OnInit {
   selectedAgentId = null;
   selectedManagerId = null;
   selectedAreaId = null;
-  selectedShopId = null;
+  selectedShopId: any = null;
   selectedShippingMethodId = null;
-  orderNumberSearch = null;
-  trackNumberSearch = null;
+  orderNumberSearch: any = null;
+  trackNumberSearch: any = null;
   selectedFromDate = null;
   selectedToDate = null;
   isVat = false;
@@ -93,7 +93,7 @@ export class OrderListComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       //this.loadOutstandingMetrics();
     }
@@ -127,7 +127,7 @@ export class OrderListComponent implements OnInit {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
       areaId: this.selectedAreaId,
-      shopId: this.selectedShopId,
+      shopId: this.selectedShopId?.trim() || null,
       orderStatusId: this.selectedStatusId,
       paymentMethodId: this.selectedPaymentMethodId,
       shippingModeId: this.selectedShippingMethodId,
@@ -135,8 +135,8 @@ export class OrderListComponent implements OnInit {
       managerId: this.selectedManagerId,
       fromDate: this.selectedFromDate,
       toDate: this.selectedToDate,
-      orderId: this.orderNumberSearch,
-      trackingNumber: this.trackNumberSearch,
+      orderId: this.orderNumberSearch?.trim() || null,
+      trackingNumber: this.trackNumberSearch?.trim() || null,
       isVat: this.isVat ? 1 : 0,
     };
 
@@ -172,7 +172,7 @@ export class OrderListComponent implements OnInit {
         this.filteredUsers = res.data;
       });
     }
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' ) {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.lookupService.getManagers().subscribe((res) => {
         this.managerLookup = res.data;
         this.filteredManagers = res.data;
@@ -356,13 +356,13 @@ export class OrderListComponent implements OnInit {
   }
 
   sendEmail(orderId: number): void {
-    console.log('test');
     this.orderService.sendVATInvoice(orderId).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage('Email sent successfully.');
       }
       else {
-        this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
+        this.toasterService.showMessage(res.message);
+        //this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
       }
     });
   }
@@ -416,5 +416,26 @@ export class OrderListComponent implements OnInit {
     this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
+  onExport(): void {
+
+    const requestBody = {
+      pageNo: this.pageNo + 1,
+      pageSize: this.pageSize,
+      areaId: this.selectedAreaId,
+      shopId: this.selectedShopId?.trim() || null,
+      orderStatusId: this.selectedStatusId,
+      paymentMethodId: this.selectedPaymentMethodId,
+      shippingModeId: this.selectedShippingMethodId,
+      agentId: this.selectedAgentId,
+      managerId: this.selectedManagerId,
+      fromDate: this.selectedFromDate,
+      toDate: this.selectedToDate,
+      orderId: this.orderNumberSearch?.trim() || null,
+      trackingNumber: this.trackNumberSearch?.trim() || null,
+      isVat: this.isVat ? 1 : 0,
+    };
+
+    this.orderService.downloadOrders(requestBody);
+  }
 
 }

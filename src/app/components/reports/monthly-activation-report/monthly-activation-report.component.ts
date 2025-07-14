@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -69,10 +69,10 @@ export class MonthlyActivationReportComponent implements OnInit {
 
   constructor(
     private datePipe: DatePipe,
-    private _snackBar: MatSnackBar,
     private reportService: ReportService,
     private lookupService: LookupService,
-    private webstorgeService: WebstorgeService
+    private webstorgeService: WebstorgeService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit(): void {
@@ -184,7 +184,7 @@ export class MonthlyActivationReportComponent implements OnInit {
         isInstantActivation: this.isInstantActivation,
       };
       this.reportService.getMonthlyActivations(requestBody).subscribe((res) => {
-        if (res.data) {
+        if (res.data?.length > 0) {
           let result = res.data;
           result.forEach((e: any) => {
             e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
@@ -192,10 +192,13 @@ export class MonthlyActivationReportComponent implements OnInit {
           this.activationList = result;
           this.calculateSums();
         }
+        else {
+          this.activationList = [];
+        }
       });
     }
     else {
-      this._snackBar.open("Please select any month");
+      this.toasterService.showMessage("Please select any month");
     }
   }
 

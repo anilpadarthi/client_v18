@@ -24,13 +24,15 @@ export class HeaderComponent {
 
   showFiller = false;
   loggedInUser: any;
-  
+   userRole = '';
 
   constructor(
     public dialog: MatDialog,
     public webstorgeService: WebstorgeService
   ) {
     this.loggedInUser = this.webstorgeService.getUserInfo();
+    this.userRole = this.webstorgeService.getUserRole();
+
   }
 
   logout(): void {

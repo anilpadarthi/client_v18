@@ -113,6 +113,7 @@ import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-
 import { OnFieldShopOrderListComponent } from './components/on-field/on-field-shop-order-list/on-field-shop-order-list.component';
 import { MessagePopupComponent } from './components/shared/message-popup/message-popup.component';
 import { OpenAccessoriesComponent } from './components/order/open-accessories/open-accessories.component';
+import { ChequeWithdrawnReportComponent } from './components/reports/cheque-withdrawn-report/cheque-withdrawn-report.component';
 
 
 registerLocaleData(localeGb, 'en-GB');
@@ -208,7 +209,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MonthlyAccessoriesReportComponent,
     OnFieldShopOrderListComponent,
     MessagePopupComponent,
-    OpenAccessoriesComponent
+    OpenAccessoriesComponent,
+    ChequeWithdrawnReportComponent
   ],
   imports: [
     BrowserModule,

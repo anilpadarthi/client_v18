@@ -3,7 +3,7 @@
   <span class="page-title__info"></span>
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
-      <div class="row justify-content-between">
+      <div class="row">
         <mat-form-field appearance="outline" class="col-lg-3">
           <mat-label>Choose a Month</mat-label>
           <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
@@ -16,9 +16,9 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay && isAdmin">
           <mat-label>Manager</mat-label>
           <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="managerChange()">
-             <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
               <span>{{ item.name }}</span>
@@ -29,9 +29,9 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Agent</mat-label>
           <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent" (selectionChange)="agentChange()">
-             <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
               <span>{{ item.name }}</span>
@@ -39,12 +39,12 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
+        <mat-form-field appearance="outline" class="col-lg-3">
           <mat-label>Area</mat-label>
           <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
-             <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
               <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
@@ -55,19 +55,19 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Shop</mat-label>
           <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
-             <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredShops" [value]="item.id">
               <span>{{ item.id }} - {{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="col-sm-12 col-lg-3">
+        <div class="col-xs-12 col-lg-3">
           <mat-checkbox color="primary" [(ngModel)]="isInstantActivation">Instant Act.</mat-checkbox>
         </div>
-        <div class="col-sm-12 col-lg-6 space-between-buttons">
+        <div class="col-xs-12 col-lg-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
           <button mat-flat-button color="primary" (click)="onFilter()" *ngIf="isDisplay">
@@ -76,8 +76,8 @@
         </div>
       </div>
 
-      <p *ngIf="activationList.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
-      <div *ngIf="activationList.length > 0" class="table-responsive table-scroll example-container">
+      <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
+      <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container">
         <table mat-table [dataSource]="activationList" class="w-100 custom-table">
           <ng-container matColumnDef="ID">
             <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -96,50 +96,50 @@
 
           <ng-container matColumnDef="EE">
             <th mat-header-cell *matHeaderCellDef>EE</th>
-            <td mat-cell *matCellDef="let element">{{ element.ee }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ eeSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.ee ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ eeSum }}</td>
           </ng-container>
 
           <ng-container matColumnDef="THREE">
             <th mat-header-cell *matHeaderCellDef>THREE</th>
-            <td mat-cell *matCellDef="let element">{{ element.three }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ threeSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.three ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ threeSum }}</td>
           </ng-container>
 
           <ng-container matColumnDef="O2">
             <th mat-header-cell *matHeaderCellDef>O2</th>
-            <td mat-cell *matCellDef="let element">{{ element.o2 }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ o2Sum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.o2 ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center"> {{ o2Sum }}</td>
           </ng-container>
           <ng-container matColumnDef="GIFFGAFF">
             <th mat-header-cell *matHeaderCellDef>GIFFGAFF</th>
-            <td mat-cell *matCellDef="let element">{{ element.giffgaff }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ gifgafSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.giffgaff ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ gifgafSum }}</td>
           </ng-container>
           <ng-container matColumnDef="LEBARA">
             <th mat-header-cell *matHeaderCellDef>LEBARA</th>
-            <td mat-cell *matCellDef="let element">{{ element.lebara }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ lebaraSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.lebara ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ lebaraSum }}</td>
           </ng-container>
           <ng-container matColumnDef="VODAFONE">
             <th mat-header-cell *matHeaderCellDef>VODAFONE</th>
-            <td mat-cell *matCellDef="let element">{{ element.vodafone }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ vodafoneSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.vodafone ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ vodafoneSum }}</td>
           </ng-container>
           <ng-container matColumnDef="VOXI">
             <th mat-header-cell *matHeaderCellDef>VOXI</th>
-            <td mat-cell *matCellDef="let element">{{ element.voxi }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ voxiSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.voxi ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ voxiSum }}</td>
           </ng-container>
           <ng-container matColumnDef="SMARTY">
             <th mat-header-cell *matHeaderCellDef>SMARTY</th>
-            <td mat-cell *matCellDef="let element">{{ element.smarty }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ smartySum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.smarty ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ smartySum }}</td>
           </ng-container>
           <ng-container matColumnDef="TOTAL">
             <th mat-header-cell *matHeaderCellDef>TOTAL</th>
-            <td mat-cell *matCellDef="let element">{{ element.total }}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ totalSum }}</td>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.total ?? 0 }}</td>
+            <td mat-footer-cell *matFooterCellDef class="center">{{ totalSum }}</td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
@@ -147,8 +147,10 @@
           <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
         </table>
       </div>
-      <div class="zero-records p-b-8" *ngIf="activationList.length == 0"> <img src="/assets/images/landingpage/background/no-records.svg" />
-        <span>No records found</span> </div>
+      <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"> <img
+          src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

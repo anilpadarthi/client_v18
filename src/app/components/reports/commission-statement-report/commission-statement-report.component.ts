@@ -130,11 +130,15 @@ export class CommissionStatementReportComponent implements OnInit {
       areaId: this.selectedAreaId,
       shopId: this.selectedShopId,
       userId: this.selectedUserId,
+      isOptedForCheque: this.isOptedIn
     };
 
     this.commissionStatementService.getCommissionList(requestBody).subscribe((res) => {
-      if (res.data.length > 0) {
+      if (res.data?.length > 0) {
         this.commissionList = res.data;
+      }
+      else {
+        this.commissionList = null;
       }
       this.isLoading = false;
     });
@@ -217,7 +221,8 @@ export class CommissionStatementReportComponent implements OnInit {
       areaId: this.selectedAreaId,
       shopId: this.selectedShopId,
       userId: this.selectedUserId,
-      reportType: mode
+      reportType: mode,
+      isOptedForCheque: this.isOptedIn
 
     }
     this.toasterService.showMessage("Downloading...");

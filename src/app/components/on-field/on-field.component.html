@@ -8,7 +8,7 @@
           <mat-form-field appearance="outline" class="w-100 hide-hint">
             <mat-label>Area</mat-label>
             <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
-               <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+              <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
                 noEntriesFoundLabel="No matching found">
               </ngx-mat-select-search>
               <mat-option [value]=null>All</mat-option>
@@ -22,7 +22,7 @@
           <mat-form-field appearance="outline" class="w-100 hide-hint">
             <mat-label>Shop</mat-label>
             <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop" (selectionChange)="shopChange()">
-               <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
+              <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
                 noEntriesFoundLabel="No matching found">
               </ngx-mat-select-search>
               <mat-option [value]=null>All</mat-option>
@@ -64,36 +64,64 @@
               <mat-icon>history</mat-icon>
               Order History
             </button>
+            <button mat-menu-item>
+              <mat-icon>history</mat-icon>
+              Cheque History
+            </button>
+            <button mat-menu-item>
+              <mat-icon>history</mat-icon>
+              Shop Portal
+            </button>
             <button mat-menu-item (click)="openShoppingPage('COD')">
               <mat-icon>open_in_new</mat-icon>
               Create Order
             </button>
-            <button mat-menu-item (click)="openShoppingPage('B')">
-              <mat-icon>open_in_new</mat-icon>
-              Create Bonus Order
-            </button>
           </mat-menu>
         </div>
+      </div>
+
+
+      <div *ngIf="outstandingBalanceAmount != null" style="display: inline-flex;">
+        <p>Accessories outstanding balance : </p> &nbsp;
+        <p style="color: red;">  £{{ outstandingBalanceAmount | number : "1.2-2" }} </p>
       </div>
     </mat-card-content>
   </mat-card>
 </div>
 
 <div *ngIf="selectedShopId > 0" [hidden]="!isMainSection">
-
-  <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
-  <app-on-field-given-vs-activations [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-given-vs-activations>
-  <app-on-field-activations [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-activations>
-  <app-on-field-instant-activations [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-instant-activations>
-  <app-on-field-commissions [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-commissions>
-  <app-on-field-spam-activations [selectedShopId]="selectedShopId"
-    [refreshValue]="refreshCounter"></app-on-field-spam-activations>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="Daily Activations">
+          <div class="mat-body-1 rounded m-t-12">
+            <app-on-field-given-vs-activations [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-given-vs-activations>
+            <app-on-field-activations [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-activations>
+            <app-on-field-instant-activations [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-instant-activations>
+            <app-on-field-spam-activations [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-spam-activations>
+          </div>
+        </mat-tab>
+        <mat-tab label="Commissions">
+          <div class="mat-body-1 rounded m-t-12">
+            <app-on-field-commissions [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-commissions>
+          </div>
+        </mat-tab>
+        <mat-tab label="Wallet">
+          <div class="mat-body-1 rounded m-t-12">
+            <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
 </div>
+
 
 <div *ngIf="selectedShopId > 0 && !isMainSection">
   <div class="row col-lg-12">

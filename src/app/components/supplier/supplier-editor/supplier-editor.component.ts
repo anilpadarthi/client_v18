@@ -33,8 +33,8 @@ export class SupplierEditorComponent {
         supplierId: 0,
         supplierName: [null, Validators.required],
         status: [true],
-        supplierAccounts: this.fb.array([this.createSupplierAccount()], Validators.required),
-        supplierProducts: this.fb.array([this.createSupplierProduct()], Validators.required)
+        supplierAccounts: this.fb.array([this.createSupplierAccount()]),
+        supplierProducts: this.fb.array([this.createSupplierProduct()])
       },
     );
   }
@@ -51,8 +51,8 @@ export class SupplierEditorComponent {
     if (this.supplierId) {
       this.supplierService.getSupplier(this.supplierId).subscribe((res) => {
         this.supplierForm.patchValue(res.data.supplier);
-        this.populateSupplierAccounts(res.data.supplierAccounts || []);
-        this.populateSupplierProducts(res.data.supplierProducts || []);
+         this.populateSupplierAccounts(res.data.supplierAccounts || []);
+         this.populateSupplierProducts(res.data.supplierProducts || []);
       });
     }
   }
@@ -139,8 +139,8 @@ export class SupplierEditorComponent {
   createSupplierAccount(): FormGroup {
     return this.fb.group({
       supplierAccountId: 0,
-      AccountName: ['', Validators.required],
-      AccountNumber: ['', Validators.required],
+      accountName: ['', Validators.required],
+      accountNumber: ['', Validators.required],
     })
   }
 

@@ -42,7 +42,55 @@ export const AdminItems: NavItem[] = [
       },
     ],
   },
- 
+  {
+    displayName: 'Setup',
+    iconName: 'settings',
+    route: '',
+    children: [
+      {
+        displayName: 'User',
+        iconName: 'arrow_right',
+        route: 'users',
+      },
+      {
+        displayName: 'Area',
+        iconName: 'arrow_right',
+        route: 'areas',
+      },
+      {
+        displayName: 'Shop',
+        iconName: 'arrow_right',
+        route: 'shops',
+      },
+      {
+        displayName: 'Network',
+        iconName: 'arrow_right',
+        route: 'networks',
+      },
+      {
+        displayName: 'Supplier',
+        iconName: 'arrow_right',
+        route: 'suppliers',
+      },
+      {
+        displayName: 'Category',
+        iconName: 'arrow_right',
+        route: 'categories',
+      },
+      {
+        displayName: 'Sub-Category',
+        iconName: 'arrow_right',
+        route: 'sub-categories',
+      },
+      {
+        displayName: 'Product',
+        iconName: 'arrow_right',
+        route: 'products',
+      },
+
+    ],
+  },
+
   {
     displayName: 'Reports',
     iconName: 'finance_mode',
@@ -100,54 +148,7 @@ export const AdminItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'Setup',
-    iconName: 'settings',
-    route: '',
-    children: [
-      {
-        displayName: 'User',
-        iconName: 'arrow_right',
-        route: 'users',
-      },
-      {
-        displayName: 'Area',
-        iconName: 'arrow_right',
-        route: 'areas',
-      },
-      {
-        displayName: 'Shop',
-        iconName: 'arrow_right',
-        route: 'shops',
-      },
-      {
-        displayName: 'Network',
-        iconName: 'arrow_right',
-        route: 'networks',
-      },
-      {
-        displayName: 'Supplier',
-        iconName: 'arrow_right',
-        route: 'suppliers',
-      },
-      {
-        displayName: 'Category',
-        iconName: 'arrow_right',
-        route: 'categories',
-      },
-      {
-        displayName: 'Sub-Category',
-        iconName: 'arrow_right',
-        route: 'sub-categories',
-      },
-      {
-        displayName: 'Product',
-        iconName: 'arrow_right',
-        route: 'products',
-      },
 
-    ],
-  },
 
   {
     displayName: 'Management',
@@ -190,6 +191,11 @@ export const AdminItems: NavItem[] = [
         route: 'management/expenses',
       },
       {
+        displayName: 'Commission Cheque Withdraw',
+        iconName: 'arrow_right',
+        route: 'management/commission-cheque-withdraw',
+      },
+      {
         displayName: 'Shop Commission Cheques',
         iconName: 'arrow_right',
         route: 'management/shop-commission-cheques',
@@ -217,11 +223,11 @@ export const AdminItems: NavItem[] = [
         displayName: 'Open Accessories',
         iconName: 'arrow_right',
         route: 'accessories/list',
-      }, 
+      },
     ],
   },
   {
-    displayName: 'IMEI',
+    displayName: 'Sim Info',
     iconName: 'barcode_scanner',
     route: 'imei/search',
   },

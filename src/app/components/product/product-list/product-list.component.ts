@@ -17,7 +17,7 @@ import { FormControl } from '@angular/forms';
 
 export class ProductListComponent implements OnInit {
 
-  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Actions"];
+  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "Actions"];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.STANDARD_PAGE_OPTIONS;
   pageNo = 0;

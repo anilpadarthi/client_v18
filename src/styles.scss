@@ -83,6 +83,10 @@ body {
         color: #ff6161 !important;
         cursor: pointer;
     }
+
+    .center {
+        text-align: center;
+    }
 }
 
 
@@ -263,12 +267,26 @@ mat-mdc-form-field-required-marker {
     white-space: nowrap;
 }
 
+.mat-mdc-tab-labels {
+    flex-grow: 1;
+    overflow: hidden;
+    z-index: 1;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: lightgray;
+    border-radius: 0px;
+}
+
+.mat-mdc-tab-body-content {
+    overflow: hidden !important;
+}
+
 .mat-mdc-card-header {
-    padding: 1em !important;
+    padding: 1em 1em 0em 1em !important;
 }
 
 .mat-mdc-card-content {
-    padding: 18px !important;
+    padding: 1em !important;
 }
 
 .rounded-image {

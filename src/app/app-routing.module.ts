@@ -49,7 +49,7 @@ import { GroupChatComponent } from './components/chat/group-chat/group-chat.comp
 import { AreaCommissionsComponent } from './components/reports/area-commissions/area-commissions.component';
 import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
 import { OpenAccessoriesComponent } from './components/order/open-accessories/open-accessories.component';
-
+import { ChequeWithdrawnReportComponent } from './components/reports/cheque-withdrawn-report/cheque-withdrawn-report.component';
 
 const routes: Routes = [
 
@@ -116,6 +116,7 @@ const routes: Routes = [
       { path: 'management/revenue', component: ExpensesFormComponent },
       { path: 'management/shop-commission-cheques', component: ExpensesFormComponent },
       { path: 'management/bank-cheques', component: ExpensesFormComponent },
+      { path: 'management/commission-cheque-withdraw', component: ChequeWithdrawnReportComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
 
 

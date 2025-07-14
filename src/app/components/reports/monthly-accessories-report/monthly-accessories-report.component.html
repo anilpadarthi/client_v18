@@ -2,10 +2,8 @@
     <h1>Monthly Accessories Report</h1>
     <span class="page-title__info"></span>
     <mat-card class="cardWithShadow theme-card">
-
-
         <mat-card-content>
-            <div class="row justify-content-between">
+            <div class="row">
                 <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Choose a Month</mat-label>
                     <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker"
@@ -16,10 +14,11 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
+                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay && isAdmin">
                     <mat-label>Manager</mat-label>
-                    <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
-                         <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                    <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
+                        (selectionChange)="managerChange()">
+                        <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
                             noEntriesFoundLabel="No matching found">
                         </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
@@ -28,7 +27,21 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div class="col-lg-6 space-between-buttons">
+
+                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
+                    <mat-label>Agent</mat-label>
+                    <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent"
+                        (selectionChange)="agentChange()">
+                        <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
+                        <mat-option [value]=null>All</mat-option>
+                        <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
+                            <span>{{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="col-lg-3 col-xs-12 space-between-buttons">
                     <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
                     <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
                 </div>
@@ -70,8 +83,10 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
             </div>
-            <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
 
         </mat-card-content>
     </mat-card>

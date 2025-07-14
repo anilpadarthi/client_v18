@@ -19,11 +19,16 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
 
   selectedMonth: string | null = null;
   selectedManagerId = null;
+  selectedUserId = null;
   bonusAmount = 0;
   managerLookup: any = [];
+  userLookup: any = [];
   activationList: any = [];
   isDisplay = false;
+  isAdmin = false;
+  userFilterCtrl: FormControl = new FormControl();
   managerFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
   filteredManagers: any[] = [];
 
   displayedColumns: string[] = [
@@ -45,14 +50,35 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     if (userRole == 'Admin' || userRole == 'SuperAdmin') {
-      this.isDisplay = true;
-      this.getManagerLookup();
+      this.isAdmin = true;
     }
 
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
+      this.isDisplay = true;
+      this.getAgentLookup();
+      this.getManagerLookup();
+    }
+    else if (userRole == 'Agent') {
+      this.selectedUserId = loggedInUserId;
+    }
+
+    
+
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
     this.managerFilterCtrl.valueChanges.subscribe(() => {
       this.filterManagers();
     });
+  }
+
+   private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   private filterManagers() {
@@ -67,6 +93,21 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
       this.managerLookup = res.data;
       this.filteredManagers = res.data;
     });
+  }
+
+   getAgentLookup() {
+    this.lookupService.getAgents().subscribe((res) => {
+      this.userLookup = res.data;
+      this.filteredUsers = res.data;
+    });
+  }
+
+  managerChange(): void {
+    this.selectedUserId = null;
+  }
+
+  agentChange(): void {
+    this.selectedManagerId = null;
   }
 
   loadData(): void {

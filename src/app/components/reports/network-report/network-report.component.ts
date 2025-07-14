@@ -36,7 +36,12 @@ export class NetworkReportComponent implements OnInit {
     };
 
     this.reportService.getNetworkUsageReport(requestBody).subscribe((res) => {
-      this.networkUsageList = res.data;
+      if (res.data?.length > 0) {
+        this.networkUsageList = res.data;
+      }
+      else {
+        this.networkUsageList = null;
+      }
     });
   }
 

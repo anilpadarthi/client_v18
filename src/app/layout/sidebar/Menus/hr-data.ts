@@ -9,7 +9,7 @@ export const HRItems: NavItem[] = [
   },
 
   {
-    displayName: 'IMEI',
+    displayName: 'Sim Info',
     iconName: 'manage_search',
     route: 'imei/search',
   },

@@ -3,6 +3,7 @@ import { OnFieldService } from '../../../services/on-field.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 import { OnFieldShopWalletHistoryComponent } from '../on-field-shop-wallet-history/on-field-shop-wallet-history.component';
 
 
@@ -25,6 +26,7 @@ export class OnFieldShopWalletComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    private router: Router,
     private dialog: MatDialog,
     private onFieldService: OnFieldService,
     private webstorgeService: WebstorgeService,
@@ -44,11 +46,11 @@ export class OnFieldShopWalletComponent implements OnInit {
     this.isLoading = true;
     this.onFieldService.onFieildCommissionWalletAmounts(this.selectedShopId).subscribe((res) => {
       this.isLoading = false;
-      if (res.data!=null) {
+      if (res.data != null) {
         this.commissionAmount = res.data?.outstandingCommissionAmount;
         this.bonusAmount = res.data?.outstandingBonusAmount;
       }
-      else{
+      else {
         this.commissionAmount = 0;
         this.bonusAmount = 0;
         this.instantBonusAmount = 0;
@@ -62,7 +64,7 @@ export class OnFieldShopWalletComponent implements OnInit {
       return; // Skip logic on the first change detection pass
     }
 
-    if (changes['selectedShopId'] || changes['refreshValue']  ) {
+    if (changes['selectedShopId'] || changes['refreshValue']) {
       this.loadData();
     }
   }
@@ -76,6 +78,14 @@ export class OnFieldShopWalletComponent implements OnInit {
     const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
       data
     });
+  }
+
+  openShoppingPage(type: any): void {
+
+    const fullPath = this.router.serializeUrl(
+      this.router.createUrlTree([`accessories/create-order/${this.selectedShopId}/${type}`])
+    );
+    window.open(fullPath, '_blank');
   }
 
 }

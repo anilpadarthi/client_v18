@@ -226,7 +226,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data;
-      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+      this.products?.forEach(e => {
+        e.salePrice = e.productPrices[0].salePrice;
+        e.qty = 0;
+      });
     });
 
     this.closeSidebar();
@@ -243,6 +246,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   addToCart(item: any): void {
+    if (item.qty == 0) {
+      item.qty = 1;
+    }
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
 
     if (!existingItem) {
@@ -384,7 +390,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       }
     }
     else {
-      if (this.subTotal < this.minimumCartAmount) {
+      if (this.netTotal < this.minimumCartAmount) {
         this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 50.00 pounds.");
         isValid = false;
       }
@@ -448,7 +454,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   increaseQuantity(item: any) {
-    if (item.qty == undefined) {
+    if (item.qty == undefined || item.qty == 0) {
       item.qty = 1;
     }
     else if (item.qty > 0)
@@ -478,7 +484,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.orderService.loadNewArrivals().subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data;
-      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+      this.products?.forEach(e => {
+        e.salePrice = e.productPrices[0].salePrice;
+        e.qty = 0;
+      });
     });
     this.closeSidebar();
   }

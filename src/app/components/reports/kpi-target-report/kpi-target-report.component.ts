@@ -76,9 +76,14 @@ export class KpiTargetReportComponent implements OnInit {
     };
 
     this.reportService.getKPITargetReport(requestBody).subscribe((res) => {
-      this.kpiTargetList = res.data;
-      if (this.kpiTargetList.length > 0) {
-        this.bonusAmount = this.kpiTargetList[0].kpI1Bonus;
+      if (res.data?.length > 0) {
+        this.kpiTargetList = res.data;
+        if (this.kpiTargetList.length > 0) {
+          this.bonusAmount = this.kpiTargetList[0].kpI1Bonus;
+        }
+      }
+      else {
+        this.kpiTargetList = null;
       }
     });
 

@@ -94,34 +94,36 @@ export class ShopEditorComponent {
     this.getShopDetails();
     //this.shopForm.get('latitude')?.disable();
     //this.shopForm.get('longitude')?.disable();
+    if (environment.isAddressSearch) {
+      this.shopForm.get('postCode')?.valueChanges.pipe(
+        debounceTime(300), // Wait 300ms after typing
+        distinctUntilChanged(), // Prevent duplicate API calls
+        filter((value: any) => value && value.trim().length > 0),
+        switchMap(value => this.postcodeService.autoCompletePostCodeList(value))
+      )
+        .subscribe(response => {
+          this.postCodeList = response;
+        });
 
-    this.shopForm.get('postCode')?.valueChanges.pipe(
-      debounceTime(300), // Wait 300ms after typing
-      distinctUntilChanged(), // Prevent duplicate API calls
-      filter((value: any) => value && value.trim().length > 0),
-      switchMap(value => this.postcodeService.autoCompletePostCodeList(value))
-    )
-      .subscribe(response => {
-        this.postCodeList = response;
+
+      // this.shopForm.get('searchAddress')?.valueChanges.pipe(
+      //   debounceTime(300), // Wait 300ms after typing
+      //   distinctUntilChanged(), // Prevent duplicate API calls
+      //   filter((value: any) => value && value.trim().length > 1),
+      //   switchMap(value => this.postcodeService.autoCompleteAddresList(value))
+      // ).subscribe((response: any) => {
+      //   this.addressSuggestions = response.suggestions;
+      // });
+
+      this.shopForm.get('searchAddress')?.valueChanges.pipe(
+        debounceTime(300), // Wait 300ms after typing
+        distinctUntilChanged(), // Prevent duplicate API calls
+        filter((value: any) => value && value.trim().length > 1),
+        switchMap((value: any) => this.filterAddressList(value))
+      ).subscribe((response: any) => {
+        this.addressSuggestions = response;
       });
-
-    // this.shopForm.get('searchAddress')?.valueChanges.pipe(
-    //   debounceTime(300), // Wait 300ms after typing
-    //   distinctUntilChanged(), // Prevent duplicate API calls
-    //   filter((value: any) => value && value.trim().length > 1),
-    //   switchMap(value => this.postcodeService.autoCompleteAddresList(value))
-    // ).subscribe((response: any) => {
-    //   this.addressSuggestions = response.suggestions;
-    // });
-
-    this.shopForm.get('searchAddress')?.valueChanges.pipe(
-      debounceTime(300), // Wait 300ms after typing
-      distinctUntilChanged(), // Prevent duplicate API calls
-      filter((value: any) => value && value.trim().length > 1),
-      switchMap((value: any) => this.filterAddressList(value))
-    ).subscribe((response: any) => {
-      this.addressSuggestions = response;
-    });
+    }
 
     this.areaFilterCtrl.valueChanges.subscribe(() => {
       this.filterAreas();
@@ -129,15 +131,17 @@ export class ShopEditorComponent {
   }
 
   populatePostCodeAddressList(): void {
-    if (this.shopForm.value.postCode != null && this.shopForm.value.postCode != '') {
-      this.postcodeService.autoCompleteAddresList(this.shopForm.value.postCode).subscribe((response: any) => {
-        let addressSuggestions = response.suggestions;
-        this.apiAddressSuggestions = addressSuggestions;
-        this.addressSuggestions = addressSuggestions;
-      });
-    }
-    else {
-      this.toasterService.showMessage("please enter valid postcode");
+    if (environment.isAddressSearch) {
+      if (this.shopForm.value.postCode != null && this.shopForm.value.postCode != '') {
+        this.postcodeService.autoCompleteAddresList(this.shopForm.value.postCode).subscribe((response: any) => {
+          let addressSuggestions = response.suggestions;
+          this.apiAddressSuggestions = addressSuggestions;
+          this.addressSuggestions = addressSuggestions;
+        });
+      }
+      else {
+        this.toasterService.showMessage("please enter valid postcode");
+      }
     }
   }
 
@@ -359,7 +363,14 @@ export class ShopEditorComponent {
   }
 
   sendActivationEmail(): void {
-    this.shopService.sendActivationEmail(this.shopId);
+    this.shopService.sendActivationEmail(this.shopId).subscribe((res) => {
+      if(res.statusCode == 200 ){
+        this.toasterService.showMessage("Action email has been sent.");
+      }
+      else {
+        this.toasterService.showMessage(res.message);
+      }
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { OnFieldService } from '../../../services/on-field.service';
 import { DatePipe } from '@angular/common';
 
@@ -14,32 +14,11 @@ export class OnFieldGivenVsActivationsComponent implements OnInit {
   private isFirstChange = true;
   searchText: any;
   isLoading = false;
-  displayedColumns: string[] = [
-    'EE',
-    'THREE',
-    'O2',
-    'LEBARA',
-    'GIFFGAFF',
-    'VODAFONE',
-    'VOXI',
-    'SMARTY',
-    'TOTAL'
-  ];
-
-  givenListColumns: string[] = [
-    'EE',
-    'THREE',
-    'O2',
-    'LEBARA',
-    'GIFFGAFF',
-    'VODAFONE',
-    'VOXI',
-    'SMARTY',
-  ];
 
   givenList: any = [];
   activationList: any = [];
   mergedDataSource: any = [];
+  mergedRow:any;
   dynamicColumns: string[] = [];
 
 
@@ -61,6 +40,7 @@ export class OnFieldGivenVsActivationsComponent implements OnInit {
       toDate: new Date(),
       activationType: 'D',
     };
+    
     this.onFieldService.onFieldGivenVSActivationList(request).subscribe((res) => {
       this.isLoading = false;
       if (res.data?.length > 0) {
@@ -70,35 +50,40 @@ export class OnFieldGivenVsActivationsComponent implements OnInit {
         if (this.givenList.length > 0) {
           this.mergedDataSource = this.givenList.map((givenRow: any, index: any) => {
             const activatedRow = this.activationList[index];
-            const mergedRow: any = { AssignedDate: givenRow.AssignedDate };
+            this.mergedRow = { AssignedDate: givenRow.AssignedDate };
+            let rowTotalGiven = 0;
+            let rowTotalActivated = 0;
 
             // Merge "Given" and "Activated" columns for each network
             Object.keys(givenRow).forEach((key) => {
-              if (key !== 'AssignedDate') {
-                mergedRow[`${key}_Given`] = givenRow[key] ?? 0;
-                mergedRow[`${key}_Activated`] = activatedRow[key] ?? 0;
+              if (key !== 'AssignedDate' && key !== 'LYCA') {
+                this.mergedRow[`${key}_Given`] = givenRow[key] ?? 0;
+                this.mergedRow[`${key}_Activated`] = activatedRow[key] ?? 0;
+                rowTotalGiven += givenRow[key] ?? 0;
+                rowTotalActivated += activatedRow[key] ?? 0;
               }
             });
-
-            return mergedRow;
-
-          });
-          this.dynamicColumns = Object.keys(this.mergedDataSource[0]);
+            this.mergedRow['TotalGiven'] = rowTotalGiven;
+            this.mergedRow['TotalActivated'] = rowTotalActivated;
+            this.dynamicColumns = Object.keys(this.mergedRow);
+            return this.mergedRow;
+          });          
         }
       }
     });
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (this.isFirstChange) {
-        this.isFirstChange = false; // Mark first change as handled
-        return; // Skip logic on the first change detection pass
-      }
-  
-      if (changes['selectedShopId'] || changes['refreshValue']  ) {
-        this.loadData();
-      }
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
     }
-  
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.loadData();
+    }
+  }
+
 
 }

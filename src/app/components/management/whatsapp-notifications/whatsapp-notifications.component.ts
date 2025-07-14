@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToasterService } from '../../../services/toaster.service';
-import { BulkUploadService } from '../../../services/bulk-upload.service';
+import { ManagementService } from '../../../services/management.service';
 
 @Component({
   selector: 'app-whatsapp-notifications',
@@ -15,12 +15,26 @@ export class WhatsappNotificationsComponent {
 
   constructor
     (
-      private bulkUploadService: BulkUploadService,
+      private managementService: ManagementService,
       private toasterService: ToasterService,
     ) { }
 
 
   onSubmit(): void {
+    let requestBody = {
+      RequestType: this.reportType,
+      FromDate: this.fromDate,
+      ToDate: this.toDate
+    }
+    this.managementService.CreateWhatsAppNotificationRequest(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Request submitted, It is being processed soon.");
+        this.onClear();
+      }
+      else {
+        this.toasterService.showMessage(res.message);
+      }
+    });
 
   }
 

@@ -9,7 +9,7 @@ export const RetailerItems: NavItem[] = [
   },
 
   {
-    displayName: 'IMEI',
+    displayName: 'Sim Info',
     iconName: 'manage_search',
     route: 'imei/search',
   },

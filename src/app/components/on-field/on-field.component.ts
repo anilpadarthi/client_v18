@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../common/popup-table/popup-table.component';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { OrderService } from '../../services/order.service';
+import { OnFieldService } from '../../services/on-field.service';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -32,13 +32,16 @@ export class OnFieldComponent implements OnInit {
   shopFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
   filteredShops: any[] = [];
+  commissionAmount = null;
+  bonusAmount = null;
+  outstandingBalanceAmount = 0;
 
   constructor(
     public datePipe: DatePipe,
     private dialog: MatDialog,
     private lookupService: LookupService,
     private shopService: ShopService,
-    private orderService: OrderService,
+    private onFieldService: OnFieldService,
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
     private router: Router
@@ -111,6 +114,7 @@ export class OnFieldComponent implements OnInit {
     this.fetchLocation();
     this.getShopAddressDetails();
     this.displayMainSection();
+    this.getOutstandingBalanceAmount();
   }
 
   fetchLocation(): void {
@@ -232,6 +236,12 @@ export class OnFieldComponent implements OnInit {
   getShopAddressDetails(): void {
     this.shopService.getShopAddressDetails(this.selectedShopId).subscribe((res) => {
       this.shopAddressDetails = res.data;
+    });
+  }
+
+  getOutstandingBalanceAmount(): void {
+    this.onFieldService.outstandingBalance(this.selectedShopId).subscribe((res: any) => {
+      this.outstandingBalanceAmount = res;
     });
   }
 

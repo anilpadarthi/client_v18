@@ -19,9 +19,10 @@ export class AgentActivationsComponent implements OnInit {
   isLoading = false;
   displayedColumns: string[] = [
     'Name',
+    'PreviousActivations',
     'DailyActivations',
+    'IncreaseDailyActivations',
     'InstantActivations',
-    'LastActivated',
     'Total'
   ];
 

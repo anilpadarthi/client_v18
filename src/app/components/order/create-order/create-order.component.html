@@ -27,9 +27,14 @@
             Cart Amount (£{{ subTotal | number: '1.2-2' }})
         </button>
 
-        <button mat-flat-button color="primary" class="m-r-10" *ngIf="!isMobile && commissionAmount>0"
+        <button mat-flat-button color="primary" class="m-r-10" *ngIf="!isMobile && commissionAmount > 0 && requestType != 'B' "
             (click)="viewCart()">
             Commission Amount (£{{ commissionAmount | number: '1.2-2'}})
+        </button>
+
+        <button mat-flat-button color="primary" class="m-r-10" *ngIf="!isMobile && commissionAmount > 0 && requestType == 'B' "
+            (click)="viewCart()">
+            Bonus Amount (£{{ commissionAmount | number: '1.2-2'}})
         </button>
     </div>
 
@@ -274,7 +279,7 @@
                     </div>
                 </div>
 
-                <div class="summary-row">
+                <!-- <div class="summary-row">
                     <mat-form-field appearance="outline">
                         <mat-label>Shipping Address</mat-label>
                         <textarea matInput [(ngModel)]="shippingAddress" [disabled]="!isEditAddress"
@@ -288,7 +293,7 @@
                             <mat-icon>cancel</mat-icon>
                         </a>
                     </div>
-                </div>
+                </div> -->
 
                 <mat-divider class="summary-row__divider"></mat-divider>
 

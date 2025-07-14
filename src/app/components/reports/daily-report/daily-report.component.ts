@@ -71,7 +71,7 @@ export class DailyReportComponent implements OnInit {
     };
     this.reportService.getDailyGivenCount(requestBody).subscribe((res) => {
       this.resultList = res.data;
-      if(this.resultList.length > 0){
+      if(this.resultList?.length > 0){
         this.resultList.forEach((e: any) => {
           e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
         });

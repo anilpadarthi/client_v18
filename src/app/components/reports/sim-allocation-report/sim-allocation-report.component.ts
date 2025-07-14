@@ -24,6 +24,7 @@ export class SimAllocationReportComponent implements OnInit {
   totalDifference = 0;
   lastMonthTotalActivations = 0;
   totalFreeAllocations = 0;
+  totalCarryForward = 0;
   userLookup: any = [];
   activationList: any = [];
   userFilterCtrl: FormControl = new FormControl();
@@ -33,9 +34,10 @@ export class SimAllocationReportComponent implements OnInit {
     'Name',
     'LastMonthActivaitons',
     'FreeAllocations',
-    'AssignedToAgent',
+    'CarryForward',
+    'GivenToAgent',
     'AssignedToShop',
-    'Difference',
+    'TotalLeft',
   ];
 
   constructor(
@@ -77,13 +79,18 @@ export class SimAllocationReportComponent implements OnInit {
     this.reportService.getSimAllocationReport(requestBody).subscribe((res) => {
       this.activationList = res.data;
 
-      if (res.data.length > 0) {
-        this.totalAssignedToAgent = this.activationList.reduce((sum: any, item: any) => sum + item.allocatedToAgent, 0);
+      if (res.data?.length > 0) {
+        this.totalAssignedToAgent = this.activationList.reduce((sum: any, item: any) => sum + item.givenToAgent, 0);
         this.totalAssignedToShop = this.activationList.reduce((sum: any, item: any) => sum + item.allocatedToShop, 0);
-        this.totalDifference = this.activationList.reduce((sum: any, item: any) => sum + item.difference, 0);
+        this.totalDifference = this.activationList.reduce((sum: any, item: any) => sum + item.totalLeft, 0);
         this.lastMonthTotalActivations = this.activationList.reduce((sum: any, item: any) => sum + item.lastMonthActivations, 0);
         this.totalFreeAllocations = this.activationList.reduce((sum: any, item: any) => sum + item.freeAllocations, 0);
+        this.totalCarryForward = this.activationList.reduce((sum: any, item: any) => sum + item.carryForward, 0);
       }
+      else {
+        this.activationList = [];
+      }
+      
     });
 
   }

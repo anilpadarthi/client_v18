@@ -65,6 +65,7 @@ export class HistoricalActivationReportComponent implements OnInit {
     }
     else if (userRole == 'Manager') {
       this.isDisplay = true;
+      this.getAgentLookup();
       this.selectedManagerId = loggedInUserId;
     }
     this.getAreaLookup();
@@ -164,9 +165,12 @@ export class HistoricalActivationReportComponent implements OnInit {
       };
       this.reportService.getMonthlyHistoryActivations(requestBody).subscribe((res) => {
 
-        if (res.data.length > 0) {
+        if (res.data?.length > 0) {
           this.displayedColumns = Object.keys(res.data[0]);
           this.activationList = res.data;
+        }
+        else {
+          this.activationList = null;
         }
       });
     }

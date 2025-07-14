@@ -259,6 +259,8 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
 
   }
 
+
+
   closeWindow() {
     window.close();  // Attempt to close the window/tab
   }
@@ -295,7 +297,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.orderService.loadNewArrivals().subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data;
-      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+      this.products?.forEach(e => {
+        e.salePrice = e.productPrices[0].salePrice;
+        e.qty = 0;
+      });
     });
     this.closeSidebar();
   }

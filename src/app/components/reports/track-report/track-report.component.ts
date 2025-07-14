@@ -42,7 +42,7 @@ export class TrackReportComponent implements OnInit {
     private lookupService: LookupService
   ) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.getUserLookup();
   }
 
@@ -60,7 +60,12 @@ export class TrackReportComponent implements OnInit {
     };
 
     this.trackingService.getTrackReport(requestBody).subscribe((res) => {
-      this.dataSource = res.data;
+      if (res.data?.length > 0) {
+        this.dataSource = res.data;
+      }
+      else {
+        this.dataSource = null;
+      }
     });
   }
 
@@ -79,7 +84,7 @@ export class TrackReportComponent implements OnInit {
   }
 
   openModel(popupData: any, headerName: string): void {
-    var data ={
+    var data = {
       result: popupData,
       headerName: headerName
     }
@@ -110,7 +115,7 @@ export class TrackReportComponent implements OnInit {
 
     this.trackingService.getAreasVisitedReport(requestBody).subscribe((res) => {
       const popupData = res.data;
-      this.openModel(popupData,'Areas Visited');
+      this.openModel(popupData, 'Areas Visited');
     });
   }
 
@@ -123,12 +128,12 @@ export class TrackReportComponent implements OnInit {
 
     this.trackingService.getShopsVisitedReport(requestBody).subscribe((res) => {
       const popupData = res.data;
-      this.openModel(popupData,'Shops Visited');
+      this.openModel(popupData, 'Shops Visited');
     });
   }
 
   onShopsSimsGiven(id: any): void {
-    
+
     const requestBody = {
       fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
       filterType: 'Shops Sims Given',
@@ -137,7 +142,7 @@ export class TrackReportComponent implements OnInit {
 
     this.trackingService.getShopsSimsGivenReport(requestBody).subscribe((res) => {
       const popupData = res.data;
-      this.openModel(popupData,'Shops Sims Given');
+      this.openModel(popupData, 'Shops Sims Given');
     });
   }
 

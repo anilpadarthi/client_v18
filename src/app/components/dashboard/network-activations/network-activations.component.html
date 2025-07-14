@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>Network Activations </mat-card-title>
   </mat-card-header>
-  <mat-card-content class="p-t-0">
+  <mat-card-content>
     <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
       <mat-spinner></mat-spinner>
     </div> -->
@@ -14,32 +14,48 @@
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
+        <ng-container matColumnDef="PreviousActivations">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Prev Daily Act.</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.previousActivations }}</td>
+          <td mat-footer-cell *matFooterCellDef class="text-center">
+            {{ getTotal('previousActivations') }}
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="DailyActivations">
-          <th mat-header-cell *matHeaderCellDef>Daily ACT.</th>
-          <td mat-cell *matCellDef="let element">{{ element.dailyActivations }}</td>
-          <td mat-footer-cell *matFooterCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">Daily Act.</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.dailyActivations }}</td>
+          <td mat-footer-cell *matFooterCellDef class="text-center">
             {{ getTotal('dailyActivations') }}
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="IncreaseDailyActivations">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Increase in Act.</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.dailyActivations - element.previousActivations  }}</td>
+          <td mat-footer-cell *matFooterCellDef class="text-center">
+            {{ getTotal('dailyActivations') - getTotal('previousActivations') }}
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="InstantActivations">
-          <th mat-header-cell *matHeaderCellDef>Instant ACT.</th>
-          <td mat-cell *matCellDef="let element">{{ element.instantActivations }}</td>
-          <td mat-footer-cell *matFooterCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">Instant Act.</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.instantActivations }}</td>
+          <td mat-footer-cell *matFooterCellDef class="text-center">
             {{ getTotal('instantActivations') }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="LastActivated">
-          <th mat-header-cell *matHeaderCellDef>Last Activated</th>
-          <td mat-cell *matCellDef="let element">{{ element.lastActivatedDate | date: 'dd/MM/yyyy' }}</td>
+          <th mat-header-cell *matHeaderCellDef class="text-center">Last Activated</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.lastActivatedDate | date: 'dd/MM/yyyy' }}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="Total">
-          <th mat-header-cell *matHeaderCellDef>Total</th>
-          <td mat-cell *matCellDef="let element">{{ element.total }}</td>
-          <td mat-footer-cell *matFooterCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">Total</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.total }}</td>
+          <td mat-footer-cell *matFooterCellDef class="text-center">
             {{ getTotal('total') }}
           </td>
         </ng-container>

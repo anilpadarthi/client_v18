@@ -2,47 +2,50 @@
   <mat-spinner></mat-spinner>
 </div> -->
 <div class="row">
-  <div class="col-lg-4 col-sm-4 col-12 m-b-20" *ngIf="!isLoading">
-    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
-      (click)="openShopWalletHistoryDialog('Commission')">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="!isLoading">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
           Commission
         </h4>
-        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+        <a class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8" (click)="openShopWalletHistoryDialog('Commission')">
           £ {{ commissionAmount | number:'1.2-2' }}
-        </h4>
+        </a>
       </mat-card-content>
     </mat-card>
   </div>
 
 
-  <div class="col-lg-4 col-sm-4 col-12 m-b-20" *ngIf="isDisplayInstantBonus">
-    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
-      (click)="openShopWalletHistoryDialog('Bonus')">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
           Bonus
         </h4>
-        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
-          £ {{ bonusAmount | number:'1.2-2' }}
-        </h4>
+        <div style="display: inline-flex;">
+          <a class="mat-subtitle-1 f-w-600 text-primary" (click)="openShopWalletHistoryDialog('Bonus')">
+            £ {{ bonusAmount | number:'1.2-2' }}
+          </a>
+          <a class="m-l-10 mat-subtitle-1 f-w-600 text-primary" (click)="openShoppingPage('B')">
+            Place Order <span style="color: red;"></span>
+          </a>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-lg-4 col-sm-4 col-12 m-b-20" *ngIf="isDisplayInstantBonus">
-    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link"
-      (click)="openShopWalletHistoryDialog('InstantBonus')">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="isDisplayInstantBonus">
+    <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
         <h4 class="mat-subtitle-2 f-w-600 text-primary m-t-8">
           Instant Bonus
         </h4>
-        <h4 class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8">
+        <a class="m-t-4 mat-subtitle-1 f-w-600 text-primary m-t-8"
+          (click)="openShopWalletHistoryDialog('InstantBonus')">
           £ {{ instantBonusAmount | number:'1.2-2' }}
-        </h4>
+        </a>
       </mat-card-content>
     </mat-card>
   </div>

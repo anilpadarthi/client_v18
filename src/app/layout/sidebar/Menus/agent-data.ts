@@ -22,7 +22,7 @@ export const AgentItems: NavItem[] = [
     route: 'shops',
   },
   {
-    displayName: 'IMEI Search',
+    displayName: 'Sim Info',
     iconName: 'manage_search',
     route: 'imei/search',
   },
@@ -35,6 +35,11 @@ export const AgentItems: NavItem[] = [
         displayName: 'Monthly Activations',
         iconName: 'arrow_right',
         route: 'report/monthly/activations',
+      },
+      {
+        displayName: 'Analysis Reports',
+        iconName: 'arrow_right',
+        route: 'report/historical/activations',
       },
       {
         displayName: 'Area Commissions',
@@ -69,6 +74,12 @@ export const AgentItems: NavItem[] = [
   },
   {
     displayName: 'Chat',
+    iconName: 'chat',
+    route: 'chat',
+  },
+
+  {
+    displayName: 'Your Digital ID',
     iconName: 'chat',
     route: 'chat',
   },

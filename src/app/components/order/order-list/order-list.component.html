@@ -142,17 +142,20 @@
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Order Number</mat-label>
-                    <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
+                    <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off"
+                        (change)="onFilter()" (keyup.enter)="onFilter()">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Shop Id</mat-label>
-                    <input matInput placeholder="Shop Id" [(ngModel)]="selectedShopId" autocomplete="off">
+                    <input matInput placeholder="Shop Id" [(ngModel)]="selectedShopId" autocomplete="off"
+                        (change)="onFilter()" (keyup.enter)="onFilter()">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
                     <mat-label>Track Number</mat-label>
-                    <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
+                    <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off"
+                        (change)="onFilter()" (keyup.enter)="onFilter()">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="isAdmin && showAdvancedFilters">
@@ -216,28 +219,24 @@
             </div>
 
 
-
-
-
-
-
-
             <!-- Buttons -->
-            <div class="row col-lg-12 space-between-buttons m-b-10">
+            <div class="row col-lg-12 col-xs-12 space-between-buttons m-b-10">
+                <button mat-flat-button class="bg-error text-white" (mousedown)="onExport()">
+                    <mat-icon>download</mat-icon> Download
+                </button>
                 <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
                     <mat-icon>filter_list</mat-icon> Filter
                 </button>
                 <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
                     <mat-icon>clear_all</mat-icon> Clear
                 </button>
-                <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin" (click)="loadOutstandingMetrics()">
-                    <mat-icon>filter_list</mat-icon> View OutStanding
+                <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin"
+                    (click)="loadOutstandingMetrics()">
+                    <mat-icon>filter_list</mat-icon> OutStanding
                 </button>
-                <div class="col-lg-3 col-xs-12">
-                    <a (click)="toggleAdvancedFilters()" class="advance-filter-link">
-                        {{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters' }}
-                    </a>
-                </div>
+                <a (click)="toggleAdvancedFilters()" class="advance-filter-link">
+                    {{ showAdvancedFilters ? 'Hide Filters' : 'Show Filters' }}
+                </a>
             </div>
 
 
@@ -297,8 +296,8 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button *ngIf="element.orderStatusId == 1 || isAdmin" mat-menu-item
-                                    (click)="editOrder(element.orderId)">
+                                <button *ngIf="element.orderStatusId == 1 || element.orderStatusId == 10 || isAdmin"
+                                    mat-menu-item (click)="editOrder(element.orderId)">
                                     <mat-icon>edit</mat-icon>
                                     Edit Order
                                 </button>

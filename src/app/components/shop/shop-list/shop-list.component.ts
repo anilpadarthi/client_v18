@@ -165,7 +165,7 @@ export class ShopListComponent implements OnInit {
   }
 
   exportToExcel(): void {
-    this.shopService.exportToExcel();
+    this.shopService.exportToExcel(this.selectedAreaId);
   }
 
 }

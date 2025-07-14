@@ -32,12 +32,12 @@
 
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>Account Name</mat-label>
-                                <input formControlName='AccountName' id="{{'AccountName'+i}}" matInput isNumeric
+                                <input formControlName='accountName' id="{{'accountName'+i}}" matInput isNumeric
                                     required>
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>Account Number</mat-label>
-                                <input formControlName='AccountNumber' id="{{'AccountNumber'+i}}" matInput isNumeric
+                                <input formControlName='accountNumber' id="{{'accountNumber'+i}}" matInput isNumeric
                                     required>
                             </mat-form-field>
                             <div class="col-lg-4">
@@ -64,7 +64,7 @@
                         <div class="row" [formGroupName]="i">
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>Product</mat-label>
-                                <mat-select formControlName="productId" placeholder="Select Product"
+                                <mat-select formControlName="productId" placeholder="Select Product" id="{{'productId'+i}}"
                                     (optionSelected)="validate($event, i)">
                                     <mat-option [value]="null">-Select-</mat-option>
                                     <mat-option *ngFor="let item of networkLookup" [value]="item.id">
@@ -74,7 +74,7 @@
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>Price</mat-label>
-                                <input formControlName='productCost' id="{{'Price'+i}}" matInput isNumeric required>
+                                <input formControlName='productCost' id="{{'price'+i}}" matInput isNumeric required>
                             </mat-form-field>
                             <div class="col-lg-4">
                                 <button type="button" mat-flat-button color="warn" class="remove-button"

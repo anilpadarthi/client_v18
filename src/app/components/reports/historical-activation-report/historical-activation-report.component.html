@@ -58,45 +58,29 @@
               <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
             </mat-option>
           </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
-          <mat-label>Shop</mat-label>
-          <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop">
-             <ngx-mat-select-search [formControl]="shopFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
-            <mat-option [value]=null>All</mat-option>
-            <mat-option *ngFor="let item of filteredShops" [value]="item.id">
-              <span>{{ item.id }} - {{ item.name }}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        </mat-form-field>        
 
         <div class="col-sm-12 col-lg-2">
           <mat-checkbox color="primary" [(ngModel)]="isInstantActivation">Instant Act.</mat-checkbox>
         </div>
 
-        <div class="col-sm-12 col-lg-4 space-between-buttons">
+        <div class="col-sm-12 col-lg-10 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-          <button mat-flat-button color="primary" (click)="onFilter()">
-            <mat-icon>download</mat-icon> Download
-          </button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>          
         </div>
       </div>
-      <p *ngIf="activationList.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
+      <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
       <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container">
         <table mat-table [dataSource]="activationList" class="w-100 custom-table">
           <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef [class.sticky-column]="stickyColumns.includes(column)">
+            <th mat-header-cell *matHeaderCellDef [class.sticky-column]="stickyColumns.includes(column)" [ngClass]="column !== 'Name' ? 'center' : ''">
               {{ column }}
             </th>
-            <td mat-cell *matCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)">
+            <td mat-cell *matCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)"  [ngClass]="column !== 'Name' ? 'center' : ''">
               {{ row[column] }}
             </td>
 
-            <td mat-footer-cell *matFooterCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)">
+            <td mat-footer-cell *matFooterCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)"  [ngClass]="column !== 'Name' ? 'center' : ''">
               {{ getTotal(column)}}
             </td>
           </ng-container>

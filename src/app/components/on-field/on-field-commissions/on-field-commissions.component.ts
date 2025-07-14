@@ -47,7 +47,6 @@ export class OnFieldCommissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.isAdmin = true;
     }
@@ -67,6 +66,9 @@ export class OnFieldCommissionsComponent implements OnInit {
       this.isLoading = false;
       if (res.data) {
         let result = res.data;
+        if (!this.isAdmin) {
+          result = result.filter((r: any) => r.commissionAmount > 12);
+        }
         result.forEach((e: any) => {
           e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
         });

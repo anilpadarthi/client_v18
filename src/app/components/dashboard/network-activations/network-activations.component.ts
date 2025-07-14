@@ -18,7 +18,9 @@ export class NetworkActivationsComponent implements OnInit {
   isLoading = false;
   displayedColumns: string[] = [
     'Network',
+    'PreviousActivations',
     'DailyActivations',
+    'IncreaseDailyActivations',
     'InstantActivations',
     'LastActivated',
     'Total'

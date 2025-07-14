@@ -46,22 +46,24 @@ export class OnFieldShopVisitComponent {
 
   async startCamera() {
     try {
+      await navigator.mediaDevices.getUserMedia({ video: true });
       // Step 1: Get all video input devices
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
       // Step 2: Try to find a rear camera by its label (e.g., "back", "rear")
       let rearCamera = videoDevices.find(device =>
-        /back|rear|environment/i.test(device.label)
+        /(back|rear|environment|main|world|triple|dual)/i.test(device.label)
       );
 
       let stream: MediaStream;
+      const selectedDeviceId = rearCamera?.deviceId || videoDevices[0]?.deviceId;
 
       if (rearCamera) {
         this.toasterService.showMessage('Rare camera found.')
         // Step 3: Request the rear camera by deviceId
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: { exact: rearCamera.deviceId } }
+          video: { deviceId: { exact: selectedDeviceId } }
         });
       } else {
         this.toasterService.showMessage('No Rare camera found,  Falling back to default.')

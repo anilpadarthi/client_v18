@@ -43,4 +43,8 @@ export class OnFieldService {
         return this.http.get<ICommonResponse>(this.url + '/OnFieldShopVisitHistory/?shopId='+shopId);
     }
 
+    outstandingBalance(shopId: number): Observable<ICommonResponse> {
+        return this.http.get<ICommonResponse>(this.url + '/OutstandingBalance/?shopId='+shopId);
+    }
+
 }

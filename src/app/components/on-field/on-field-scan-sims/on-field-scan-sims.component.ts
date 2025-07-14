@@ -94,18 +94,16 @@ export class OnFieldScanSimsComponent {
       if (request.imeiNumbers.length > 0) {
         const hasLeabaraSims = this.dataSource.some((f: any) => f.netWorkName.toUpperCase() === 'LEBARA');
         if (!this.isLebaraSims && hasLeabaraSims) {
-          this.toasterService.showMessage('Processing.. You are allocating LEBARA Sims, Please assign PHONE numbers for instant activations.');
+          this.toasterService.showMessage('Processing... You are allocating LEBARA Sims, Please assign PHONE numbers for instant activations.');
         }
         this.simService.allocateSims(request).subscribe((res) => {
           if (res.data?.length > 0) {
             this.dataSource = null;
             this.toasterService.showMessage(res.data);
-            if (this.isLebaraSims || !hasLeabaraSims) {
-              const parentData= {
-                fromAction: 'Scan'
-              }
-              this.notifyParent.emit(parentData);
+            const parentData = {
+              fromAction: 'Scan'
             }
+            this.notifyParent.emit(parentData);
           }
           else {
             this.toasterService.showMessage('Something went wrong.');
@@ -132,6 +130,10 @@ export class OnFieldScanSimsComponent {
         if (res.data.length > 0) {
           this.dataSource = null;
           this.toasterService.showMessage(res.data);
+          const parentData = {
+            fromAction: 'Scan'
+          }
+          this.notifyParent.emit(parentData);
         }
       });
     }
@@ -143,6 +145,10 @@ export class OnFieldScanSimsComponent {
   onClear(): void {
     this.dataSource = null;
     this.searchText = null;
+    const parentData = {
+      fromAction: 'Scan'
+    }
+    this.notifyParent.emit(parentData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

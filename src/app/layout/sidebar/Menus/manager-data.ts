@@ -9,7 +9,7 @@ export const ManagerItems: NavItem[] = [
   },
 
   {
-    displayName: 'IMEI',
+    displayName: 'Sim Info',
     iconName: 'manage_search',
     route: 'imei/search',
   },
@@ -44,6 +44,11 @@ export const ManagerItems: NavItem[] = [
         displayName: 'Analysis Reports',
         iconName: 'arrow_right',
         route: 'report/historical/activations',
+      },
+      {
+        displayName: 'Daily Reports',
+        iconName: 'arrow_right',
+        route: 'report/daily-report',
       },
       {
         displayName: 'Area Commissions',

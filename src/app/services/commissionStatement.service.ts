@@ -19,6 +19,11 @@ export class CommissionStatementService {
     return this.http.post<any>(this.url + '/GetCommissionList', requestBody);
   }
 
+  getAreaCommissionList(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetAreaCommissionList', requestBody);
+  }
+
+
   getCommissionStatementReport(requestBody: any): Observable<boolean> {
     const url = this.url + '/GetCommissionStatementReport';
     return this.exportService.downloadToPDF(url, requestBody, 'Commission_Statement.pdf');
@@ -43,9 +48,9 @@ export class CommissionStatementService {
     return this.exportService.downloadPDF(url, 'Commission_Statement_' + shopId + '.pdf');
   }
 
-  exportCommissionChequeExcel(isOptedIn:boolean,fromDate:any): void {
-    let url =  this.url +'/ExportCommissionChequeExcel?isOptedIn=' + isOptedIn + '&fromDate=' + fromDate;
-    return this.exportService.downloadExcel(url,'Commission_List');
+  exportCommissionChequeExcel(isOptedIn: boolean, fromDate: any): void {
+    let url = this.url + '/ExportCommissionChequeExcel?isOptedIn=' + isOptedIn + '&fromDate=' + fromDate;
+    return this.exportService.downloadExcel(url, 'Commission_List');
   }
 
   hideBonus(shopCommissionHistoryId: number, isDisplayBonus: any): Observable<any> {

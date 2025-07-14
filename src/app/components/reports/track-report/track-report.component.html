@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div *ngIf="dataSource.length > 0" class="table-responsive table-scroll example-container">
+      <div *ngIf="dataSource?.length > 0" class="table-responsive table-scroll example-container">
         <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
           <ng-container matColumnDef="UserId">
             <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -101,7 +101,7 @@
 
         </table>
       </div>
-      <div class="zero-records p-b-8" *ngIf="dataSource.length == 0">
+      <div class="zero-records p-b-8" *ngIf="dataSource?.length == 0">
         <img src="/assets/images/landingpage/background/no-records.svg" />
                 <span>No records found</span>
       </div>

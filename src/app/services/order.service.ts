@@ -63,10 +63,6 @@ export class OrderService {
     return this.http.get<any>(this.url + "/HideOrder?orderId=" + orderId + '&isHide=' + isHide);
   }
 
-  downloadOrders(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + "/DownloadOrders", requestBody);
-  }
-
   downloadOrdersPDF(invoiceNo: any): Observable<any> {
     return this.http.get<any>(this.url + "/GeneratePdfInvoice?orderId=" + invoiceNo);
   }
@@ -112,4 +108,9 @@ export class OrderService {
     return this.http.get<Response>(this.url + `/LoadOutstandingMetrics?filterType=${requestBody.filterType}&filterId=${requestBody.filterId}`);
   }
 
+  downloadOrders(requestBody: any): void {
+    let url = this.url + '/DownloadOrders';
+    return this.exportService.exportToExcel(url, requestBody, 'SalesList');
+  }
+  
 }
