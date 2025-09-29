@@ -27,7 +27,7 @@
             Cart Amount (£{{ subTotal | number: '1.2-2' }})
         </button>
 
-        <button mat-flat-button color="primary" class="m-r-10" *ngIf="!isMobile && commissionAmount > 0 && requestType != 'B' "
+        <button mat-flat-button color="primary" class="m-r-10" *ngIf=" isHideTemporarly && !isMobile && isAdmin && commissionAmount > 0 && requestType != 'B'"
             (click)="viewCart()">
             Commission Amount (£{{ commissionAmount | number: '1.2-2'}})
         </button>
@@ -127,7 +127,16 @@
                         </h3>
                         <div class="w-100 d-flex justify-content-between">
                             <p class="product-code"> {{ item.productCode }}</p>
-                            <p class="sale-price text-right">£{{ item.salePrice | number: '1.2-2' }}</p>
+                            <p class="sale-price text-right">
+                                <ng-container *ngIf="item.hasPriceStructure; else normalPrice">
+                                  <span class="strike-out">£{{ item.salePrice | number:'1.2-2' }}</span>
+                                  <span> £{{ item.lowestPrice | number:'1.2-2' }}</span>
+                                </ng-container>
+                            
+                                <ng-template #normalPrice>
+                                  £{{ item.salePrice | number:'1.2-2' }}
+                                </ng-template>
+                            </p>
                         </div>
                         <div class="d-flex">
                             <div class="d-flex quantity-container">
@@ -150,7 +159,7 @@
         </div>
 
         <div *ngIf="isCartView">
-            <h1>Cart Items</h1>
+            <h2>Cart Items</h2>
             <mat-card class="m-t-12" *ngIf="cartItems.length > 0">
                 <div class="table-responsive table-scroll example-container">
                     <table mat-table [dataSource]="cartItems" class="w-100 custom-table">
@@ -171,7 +180,7 @@
                         <ng-container matColumnDef="quantity" class="text-center">
                             <th mat-header-cell *matHeaderCellDef>Quantity</th>
                             <td mat-cell *matCellDef="let element" class="text-center">
-                                <input type="number" matInput #quantityInput class="item-qty" value="{{ element.qty }}"
+                                <input type="number" min="0" matInput #quantityInput class="item-qty" value="{{ element.qty }}"
                                     (change)="updateCartItemQuantity(element,quantityInput.value)" />
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
@@ -181,30 +190,24 @@
                             <td mat-cell *matCellDef="let element">
                                 £{{ element.salePrice | number: '1.2-2' }}
                             </td>
-                            <td mat-footer-cell *matFooterCellDef>Total</td>
+                            <td mat-footer-cell *matFooterCellDef>Sub Total</td>
                         </ng-container>
 
                         <ng-container matColumnDef="netAmount">
-                            <th mat-header-cell *matHeaderCellDef>Net</th>
+                            <th mat-header-cell *matHeaderCellDef>Item Total</th>
                             <td mat-cell *matCellDef="let element">
                                 £{{ element.netAmount | number: '1.2-2' }}
                             </td>
                             <td mat-footer-cell *matFooterCellDef> £{{ netTotal | number: '1.2-2'}} </td>
                         </ng-container>
-                        <ng-container matColumnDef="vatAmount">
-                            <th mat-header-cell *matHeaderCellDef>VAT</th>
-                            <td mat-cell *matCellDef="let element">
-                                £{{ element.vatAmount | number: '1.2-2' }}
-                            </td>
-                            <td mat-footer-cell *matFooterCellDef> £{{ totalVatAmount | number: '1.2-2'}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="total">
+                       
+                        <!-- <ng-container matColumnDef="total">
                             <th mat-header-cell *matHeaderCellDef>Total</th>
                             <td mat-cell *matCellDef="let element">
                                 £{{ (element.netAmount + element.vatAmount) | number: '1.2-2' }}
                             </td>
                             <td mat-footer-cell *matFooterCellDef> £{{ subTotal | number: '1.2-2'}} </td>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container matColumnDef="action">
                             <th mat-header-cell *matHeaderCellDef></th>
                             <td mat-cell *matCellDef="let element" class="action-link">
@@ -225,30 +228,39 @@
                 <h2 class="summary-title">Order Summary</h2>
 
                 <div class="summary-row">
-                    <div class="label">Net total:</div>
+                    <div class="label">Sub Total:</div>
                     <div class="value">£{{ netTotal | number : "1.2-2" }}</div>
-                </div>
-                <div class="summary-row">
-                    <div class="label">VAT:</div>
-                    <div class="value">£{{ totalVatAmount | number : "1.2-2" }}</div>
-                </div>
+                </div>                
                 <div class="summary-row">
                     <div class="label">Delivery Charges:</div>
                     <div class="value">£{{ deliveryCharges | number : "1.2-2" }}</div>
                 </div>
-                <div class="summary-row" *ngIf="isAdmin">
-                    <div class="label discount">Discount Amount:</div>
-                    <div class="value discount">£{{ discountAmount | number : "1.2-2" }}</div>
+                <div class="summary-row">
+                    <div class="label">Gross Total:</div>
+                    <div class="value">£{{ (netTotal + deliveryCharges) | number : "1.2-2" }}</div>
+                </div>
+                <div class="summary-row vat-amount">
+                    <div class="label">VAT ({{ vatPercentage }}%):</div>
+                    <div class="value">£{{ totalVatAmount | number : "1.2-2" }}</div>
+                </div>
+               
+                <div class="summary-row" *ngIf="isAdmin && discountAmount > 0">
+                    <div class="label discount">Discount ({{ discountPercentage }}):</div>
+                    <div class="value discount"> - £{{ discountAmount | number : "1.2-2" }}</div>
                 </div>
 
-                <div class="summary-row">
+                <div class="summary-row" *ngIf="isAdmin">
                     <div class="label">Discount (%):</div>
                     <div class="value">
                         <input type="number" matInput class="item-qty" [(ngModel)]="discountPercentage"
                             (change)="updateCalculations()">
                     </div>
                 </div>
-                <div class="summary-row" *ngIf="commissionAmount > 0 && requestType == 'COD'">
+                <div class="summary-row total-row">
+                    <div class="label">Grand Total:</div>
+                    <div class="value total">£{{ grandTotal | number : "1.2-2" }}</div>
+                </div>
+                <div class="summary-row" *ngIf="isHideTemporarly && commissionAmount > 0 && isAdmin && requestType == 'COD'">
                     <div class="label"></div>
                     <div class="value">
                         <mat-form-field appearance="outline">
@@ -295,12 +307,7 @@
                     </div>
                 </div> -->
 
-                <mat-divider class="summary-row__divider"></mat-divider>
-
-                <div class="summary-row total-row">
-                    <div class="label">Grand Total:</div>
-                    <div class="value total">£{{ grandTotal | number : "1.2-2" }}</div>
-                </div>
+                <mat-divider class="summary-row__divider"></mat-divider>                
 
                 <div class="button-group">
                     <button mat-stroked-button color="primary" (click)="continueShopping()">Continue Shopping</button>

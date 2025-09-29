@@ -39,7 +39,7 @@
       <ng-container matColumnDef="DEBIT">
         <th mat-header-cell *matHeaderCellDef>Debit</th>
         <td mat-cell *matCellDef="let element">
-          <span class="debit" *ngIf="element.transactionType=='Debit'"> - £{{ element.amount | number : "1.2-2" }}</span>
+          <span class="debit" *ngIf="element.transactionType=='Debit'"> -£{{ element.amount | number : "1.2-2" }}</span>
         </td>
       </ng-container>
 

@@ -62,9 +62,32 @@
                         <textarea matInput formControlName="specification" rows="3"></textarea>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="col-lg-6">
+                    <mat-form-field appearance="outline" class="col-lg-3">
                         <mat-label>Buying Price</mat-label>
                         <input matInput formControlName="buyingPrice" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Commission Percentage</mat-label>
+                        <input matInput formControlName="commissionToAgent" placeholder="Commission To Agent" />
+                        <mat-error *ngIf="productForm.get('commissionToAgent')?.hasError('required')">
+                            Agent Percentage is required.
+                        </mat-error>
+                    </mat-form-field><mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Commission Percentage</mat-label>
+                        <input matInput formControlName="commissionToManager" placeholder="Commission To Manager" />
+                        <mat-error *ngIf="productForm.get('commissionToManager')?.hasError('required')">
+                            Manager Percentage is required.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Mix And Match Group</mat-label>
+                        <mat-select formControlName="mixMatchGroupId">
+                            <ngx-mat-select-search [formControl]="mixMatchGroupCtrl" placeholderLabel="Search here..."
+                                noEntriesFoundLabel="No matching found"></ngx-mat-select-search>
+                            <mat-option [value]="null">All</mat-option>
+                            <mat-option *ngFor="let item of filteredMixAndMatchGroups" [value]="item.id">{{
+                                item.name }}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
 

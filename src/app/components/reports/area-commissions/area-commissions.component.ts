@@ -31,15 +31,15 @@ export class AreaCommissionsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'UserName',
-    'AreaName',
     'ShopName',
     'CommissionDate',
     'CommissionAmount',
     'TopupSystemId',
-    // 'BonusAmount',
+    'Opted',
+    //'ReferenceNumber',    
     'OptedCheque',
-    // 'OptedTopup',
-    'OptedWallet',
+    'OptedTopup',
+    //'OptedWallet',
     'Accessories',
   ];
 

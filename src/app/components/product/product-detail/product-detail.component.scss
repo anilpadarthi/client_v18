@@ -39,7 +39,6 @@
   }
   
   .product-title {
-    font-size: 22px;
     font-weight: bold;
   }
   
@@ -54,10 +53,7 @@
     font-size: 20px;
   }
   
-  .price {
-    color: blue;
-    font-weight: bold;
-  }
+  
   
   .old-price {
     text-decoration: line-through;
@@ -82,5 +78,12 @@
   }
   .custom-table {
     // border: 1px solid #DCDCE0;
+  }
+
+  .strike-out {
+    text-decoration: line-through;
+  }
+  .price-container {
+    color: red;    
   }
   

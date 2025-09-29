@@ -166,13 +166,13 @@ export class OrderListComponent implements OnInit {
       this.filteredAreas = res.data;
     });
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager' || this.userRole == 'CallCenter') {
       this.lookupService.getAgents().subscribe((res) => {
         this.agentLookup = res.data;
         this.filteredUsers = res.data;
       });
     }
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.lookupService.getManagers().subscribe((res) => {
         this.managerLookup = res.data;
         this.filteredManagers = res.data;

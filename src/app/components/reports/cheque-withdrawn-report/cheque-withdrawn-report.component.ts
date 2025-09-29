@@ -7,6 +7,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-cheque-withdrawn-report',
@@ -40,21 +42,18 @@ export class ChequeWithdrawnReportComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.loadData();
   }
 
   loadData(): void {
     const requestBody = {
-      pageNo: this.pageNo + 1,
-      pageSize: this.pageSize,
       fromDate: this.fromMonth,
       toDate: this.toMonth,
     };
 
     this.reportService.getChequeWithdrawnReport(requestBody).subscribe((res) => {
-      if (res.data.results) {
-        this.chequeList = res.data.results;
-        this.totalCount = res.data.totalRecords;       
+      if (res.data) {
+        this.chequeList = res.data;
+        this.exportToExcel(this.chequeList, "cheques_withdrawn_" + this.fromMonth);
       }
       else {
         this.chequeList = [];
@@ -63,30 +62,20 @@ export class ChequeWithdrawnReportComponent implements OnInit {
   }
 
 
-  handlePageEvent(event: PageEvent): void {
-    this.totalCount = event.length;
-    this.pageNo = (this.pageSize === event.pageSize) ? event.pageIndex : 1;
-    this.pageSize = event.pageSize;
-    this.loadData();
-  }
-
   onFilter(): void {
     this.loadData();
   }
 
   onReset(): void {
-    this.pageNo = 0;
     this.fromMonth = null;
     this.toMonth = null;
-    this.loadData();
+    this.chequeList = [];
   }
 
 
-  
 
-  exportToExcel(): void {
-    //this.reportService.exportToExcel();
-  }
+
+
 
   choseFromMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
@@ -104,5 +93,30 @@ export class ChequeWithdrawnReportComponent implements OnInit {
   chosenYearHandler(normalizedYear: any) {
     // No action required, just wait for month selection
   }
+
+  exportToExcel(jsonData: any[], fileName: string): void {
+    // Convert JSON to worksheet
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
+
+    // Create workbook and add the worksheet
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'data': worksheet },
+      SheetNames: ['data']
+    };
+
+    // Generate Excel buffer
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    // Save to file
+    const data: Blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    FileSaver.saveAs(data, `${fileName}.xlsx`);
+  }
+
 
 }

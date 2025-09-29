@@ -14,7 +14,7 @@ export const WarehouseItems: NavItem[] = [
     route: 'imei/search',
   },
   {
-    displayName: 'OnField',
+    displayName: 'On-Field',
     iconName: 'store',
     route: 'onfield',
   },

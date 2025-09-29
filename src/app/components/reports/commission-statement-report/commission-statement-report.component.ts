@@ -22,7 +22,7 @@ export class CommissionStatementReportComponent implements OnInit {
   selectedAreaId = null;
   selectedShopId = null;
   selectedUserId = null;
-  isOptedIn = false;
+  filterMode = null;
   totalCount = 0;
   fromMonth: string | null = null;
   toMonth: string | null = null;
@@ -32,7 +32,6 @@ export class CommissionStatementReportComponent implements OnInit {
   commissionList: any = [];
   isLoading = false;
   userRole = '';
-  isAdmin = false;
   areaFilterCtrl: FormControl = new FormControl();
   shopFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
@@ -62,10 +61,7 @@ export class CommissionStatementReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
-      this.isAdmin = true;
-    }
+   
     this.getAreaLookup();
     this.getAgentLookup();
 
@@ -78,7 +74,6 @@ export class CommissionStatementReportComponent implements OnInit {
     this.userFilterCtrl.valueChanges.subscribe(() => {
       this.filterUsers();
     });
-
   }
 
   private filterAreas() {
@@ -94,6 +89,7 @@ export class CommissionStatementReportComponent implements OnInit {
       `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
+  
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
     this.filteredUsers = this.userLookup.filter((item: any) =>
@@ -130,7 +126,7 @@ export class CommissionStatementReportComponent implements OnInit {
       areaId: this.selectedAreaId,
       shopId: this.selectedShopId,
       userId: this.selectedUserId,
-      isOptedForCheque: this.isOptedIn
+      filterMode: this.filterMode
     };
 
     this.commissionStatementService.getCommissionList(requestBody).subscribe((res) => {
@@ -142,9 +138,7 @@ export class CommissionStatementReportComponent implements OnInit {
       }
       this.isLoading = false;
     });
-
   }
-
 
   onFilter(): void {
     this.loadData();
@@ -156,59 +150,9 @@ export class CommissionStatementReportComponent implements OnInit {
     this.fromMonth = null;
     this.toMonth = null;
     this.selectedUserId = null;
-    this.isOptedIn = false;
+    this.filterMode = null;
     this.commissionList = [];
-  }
-
-
-  onAccessoreisPage(shopCommissionHistoryId: number): void {
-    const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`accessories/create-order/${shopCommissionHistoryId}/MC`])
-    );
-    window.open(fullPath, '_blank');
-  }
-
-  optedForCheque(shopCommissionHistoryId: number, isChecked: boolean): void {
-    if (isChecked) {
-      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Cheque').subscribe((res) => {
-        if (res.statusCode == 200) {
-          this.loadData();
-          this.toasterService.showMessage("Successfully opted.");
-        }
-        else {
-          this.toasterService.showMessage(res.data);
-        }
-      });
-    }
-  }
-
-  optedForTopup(shopCommissionHistoryId: number, isChecked: boolean): void {
-    if (isChecked) {
-      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Topup').subscribe((res) => {
-        if (res.statusCode == 200) {
-          this.loadData();
-          this.toasterService.showMessage("Successfully opted.");
-        }
-        else {
-          this.toasterService.showMessage(res.data);
-        }
-      });
-    }
-  }
-
-  optedForWallet(shopCommissionHistoryId: number, isChecked: boolean): void {
-    if (isChecked) {
-      this.commissionStatementService.optInForShopCommission(shopCommissionHistoryId, 'Wallet').subscribe((res) => {
-        if (res.statusCode == 200) {
-          this.loadData();
-          this.toasterService.showMessage("Successfully opted.");
-        }
-        else {
-          this.toasterService.showMessage(res.data);
-        }
-      });
-    }
-  }
+  }  
 
   downloadCommissionStatement(shopId: number, fromDate: string): void {
     this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
@@ -222,7 +166,7 @@ export class CommissionStatementReportComponent implements OnInit {
       shopId: this.selectedShopId,
       userId: this.selectedUserId,
       reportType: mode,
-      isOptedForCheque: this.isOptedIn
+      filterMode: this.filterMode
 
     }
     this.toasterService.showMessage("Downloading...");
@@ -235,7 +179,7 @@ export class CommissionStatementReportComponent implements OnInit {
 
   exportToExcel(): void {
     this.toasterService.showMessage("Downloading...");
-    this.commissionStatementService.exportCommissionChequeExcel(this.isOptedIn, this.fromMonth);
+    this.commissionStatementService.exportCommissionChequeExcel(this.filterMode, this.fromMonth);
   }
 
   // Handle Year Selection (no action needed)

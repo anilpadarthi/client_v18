@@ -1,0 +1,53 @@
+<div class="page-title">
+  <h1>Your Digital ID</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+
+      <div class="digital-card">
+        <div class="id-card-tag"></div>
+        <div class="id-card-tag-strip"></div>
+        <div class="id-card-hook"></div>
+        <div class="id-card-holder">
+          <div class="id-card">
+            <img style="height: 75px;max-width:100%" src="assets/images/logos/logo.png" alt="">
+            <div class="header">
+
+              <img *ngIf="userInfo.userImage != null && userInfo.userImage.Length > 5"
+                src="~/UserImages/main/passport/@userInfo.UserImage" />
+
+              <img src="assets/images/logos/default_user.png" class="img-fluid img-radius" alt="User-Profile-Image" />
+
+            </div>
+
+            <h2>{{ userInfo.firstName + " " + userInfo.lastName }}</h2>
+
+            <h3 style="font-weight:bold">{{userInfo.designation}} </h3>
+
+            <div class="row" style="margin-left: 1%; text-align: left;">
+              <div class="col-lg-2 no-padding">
+                <mat-icon>mail</mat-icon>
+              </div>
+              <div class="col-lg-10 no-padding">
+                {{ userInfo.email }}
+              </div>
+              <div class="col-lg-2 no-padding">
+                <mat-icon>call</mat-icon>
+              </div>
+              <div class="col-lg-10 no-padding">
+                {{ userInfo.mobile }}
+              </div>
+              <div class="col-lg-2 no-padding">
+                <mat-icon>access_time</mat-icon>
+              </div>
+              <div class="col-lg-10 no-padding">
+                {{ userInfo.doj }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

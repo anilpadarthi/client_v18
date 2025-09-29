@@ -20,54 +20,16 @@
                         (monthSelected)="choseToMonthHandler($event, toPicker)" panelClass="month-picker">
                     </mat-datepicker>
                 </mat-form-field>
-                <div class="col-lg-6 ">
-                    <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
-                        <mat-icon>filter_list</mat-icon> Filter
-                    </button>
+                <div class="col-lg-6 col-xs-12 space-between-buttons">
                     <button mat-flat-button class="bg-error text-white" (mousedown)="onReset()">
                         <mat-icon>clear_all</mat-icon> Clear
                     </button>
-                    <button mat-flat-button color="primary" (click)="exportToExcel()" class="card-container-right">
+                    <button mat-flat-button color="primary" (click)="loadData()" class="card-container-right">
                         <mat-icon>download</mat-icon>
-                        Export
+                        Download
                     </button>
                 </div>
-            </div>
-
-            <div class="table-responsive table-scroll example-container">
-                <table mat-table [dataSource]="chequeList" class="w-100 custom-table">
-                    <ng-container matColumnDef="areaId">
-                        <th mat-header-cell *matHeaderCellDef>ID</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{ element.areaId }}
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef>NAME</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{ element.areaName }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef>STATUS</th>
-                        <td mat-cell *matCellDef="let element">{{ element.status ? 'Active' : 'InActive' }}
-                        </td>
-                    </ng-container>
-
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                </table>
-            </div>
-            <div class="zero-records p-b-8" *ngIf="chequeList?.length == 0">
-                <img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span>
-            </div>
-
-            <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
-                [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
-            </mat-paginator>
+            </div>          
         </mat-card-content>
     </mat-card>
 </div>

@@ -36,6 +36,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   grandTotalWithVAT = 0.00;
   grandTotalWithOutVAT = 0.00;
   isEditAddress = false;
+  isHideTemporarly = false;
   availableCommissionChequeNumbers: any[] = [];
 
   cartItems: any[] = [];
@@ -83,8 +84,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     'quantity',
     'salePrice',
     'netAmount',
-    'vatAmount',
-    'total',
+    //'total',
     'action'
   ];
 
@@ -127,9 +127,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
         if (res.data != null) {
           this.commissionAmount = res.data?.outstandingCommissionAmount;
-          if (this.commissionAmount > 0) {
-            this.loadAvailableCheques();
-          }
+          // if (this.commissionAmount > 0) {
+          //   this.loadAvailableCheques();
+          // }
         }
       });
     }
@@ -176,7 +176,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         this.selectedPaymentMethodId = paymentTypes.find((f: any) => f.name == "Monthly Commission").id;
       }
       else {
-        this.paymentMethodLookup = paymentTypes.filter((f: any) => f.name != "Bonus" && f.name != "Monthly Commission")
+        this.paymentMethodLookup = paymentTypes.filter((f: any) => f.name != "Bonus" && f.name != "Monthly Commission"
+          && f.name != 'SimRequest' && f.name != 'Sim Request' && f.name != 'Against Commission')
       }
 
     });
@@ -229,6 +230,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;
         e.qty = 0;
+        e.hasPriceStructure =  e.productPrices.length > 1;
+        e.lowestPrice = Math.min(...e.productPrices.map((p:any) => p.salePrice));
       });
     });
 
@@ -300,7 +303,38 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  updateSalePrices() {
+    // 1. Calculate total qty per group
+    const groupTotals: Record<number, number> = {};
+
+    this.cartItems.forEach(item => {
+      if (item.mixMatchGroupId) {
+        const groupId = item.mixMatchGroupId ?? 0;
+        groupTotals[groupId] = (groupTotals[groupId] || 0) + item.qty;
+      }
+    });
+
+    this.cartItems.forEach(item => {
+      if (item.mixMatchGroupId) {
+        let totalGroupQty = this.cartItems
+          .filter(x => x.mixMatchGroupId === item.mixMatchGroupId)
+          .reduce((sum, x) => sum + x.qty, 0);
+
+        let prodPrice = item.productPrices.filter((f: any) => totalGroupQty >= f.fromQty && totalGroupQty <= f.toQty);
+        if (prodPrice != null && prodPrice.length > 0) {
+          item.salePrice = prodPrice[0].salePrice;
+        }
+        else {
+          item.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
+        }
+        item.netAmount = Number(item.qty) * item.salePrice;
+        item.vatAmount = (item.netAmount * this.vatPercentage) / 100;       
+      }      
+    });
+  }
+
   updateCalculations() {
+    this.updateSalePrices();
     this.subTotal = 0;
     this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
 
@@ -456,14 +490,20 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   increaseQuantity(item: any) {
     if (item.qty == undefined || item.qty == 0) {
       item.qty = 1;
+      this.addToCart(item);
     }
-    else if (item.qty > 0)
+    else if (item.qty > 0) {
       item.qty++;
+      this.updateCartItemQuantity(item, item.qty)
+    }
   }
 
   decreaseQuantity(item: any) {
     if (item.qty > 0) {
       item.qty--;
+    }
+    if (item.qty == 0) {
+      this.removeCartItem(item);
     }
   }
 
@@ -491,5 +531,38 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     });
     this.closeSidebar();
   }
+
+  // applyPricing(cart: any[] ): any[] {
+  //   // 1. Calculate total quantities per group
+  //   const groupTotals: Record<number, number> = {};
+
+  //   cart.forEach(item => {
+
+  //     const groupId = product.mixMatchGroupId ?? product.productId; // standalone if no group
+  //     groupTotals[groupId] = (groupTotals[groupId] || 0) + item.qty;
+  //   });
+
+  //   // 2. Update cart items with correct pricing
+  //   return cart.map(item => {
+  //     const product = products.find(p => p.productId === item.productId);
+  //     if (!product) return item;
+
+  //     const groupId = product.mixMatchGroupId ?? product.productId;
+  //     const totalGroupQty = groupTotals[groupId];
+
+  //     // Find price tier
+  //     const priceTier = product.productPrices.find(
+  //       pp => totalGroupQty >= pp.fromQty && totalGroupQty <= pp.toQty
+  //     );
+
+  //     const unitPrice = priceTier ? priceTier.salePrice : 0;
+
+  //     return {
+  //       ...item,
+  //       unitPrice,
+  //       lineTotal: +(unitPrice * item.qty).toFixed(2)
+  //     };
+  //   });
+  // }
 
 }

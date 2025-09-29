@@ -58,7 +58,11 @@ export class UserService {
   }
 
   sendActivationEmail(userId: number): Observable<ICommonResponse> {
-    return this.http.get<ICommonResponse>(this.url+ `/SendActivationEmail?userId=${userId}`);
+    return this.http.get<ICommonResponse>(this.url + `/SendActivationEmail?userId=${userId}`);
+  }
+
+  changePassword(payload: { oldPassword: string; newPassword: string }): Observable<ICommonResponse> {
+    return this.http.post<any>(`${this.url}/change-password`, payload);
   }
 
 }

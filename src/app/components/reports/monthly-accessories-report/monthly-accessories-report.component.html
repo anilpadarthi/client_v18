@@ -28,19 +28,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
-                    <mat-label>Agent</mat-label>
-                    <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent"
-                        (selectionChange)="agentChange()">
-                        <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
-                            noEntriesFoundLabel="No matching found">
-                        </ngx-mat-select-search>
-                        <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
-                            <span>{{ item.name }}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                
                 <div class="col-lg-3 col-xs-12 space-between-buttons">
                     <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
                     <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
@@ -61,22 +49,58 @@
                             {{ element.userName }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="TotalOrderAmount">
-                        <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                    <ng-container matColumnDef="COD">
+                        <th mat-header-cell *matHeaderCellDef>COD</th>
                         <td mat-cell *matCellDef="let element">
-                            £{{ element.totalOrderAmount | number: '1.2-2' }}
+                            £{{ element.cod ?? 0 | number: '1.2-2' }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="TotalPaidAmount">
-                        <th mat-header-cell *matHeaderCellDef>Paid Amount</th>
-                        <td mat-cell *matCellDef="let element">
-                            £{{ element.totalPaidAmount | number: '1.2-2' }}
+                    <ng-container matColumnDef="BT">
+                        <th mat-header-cell *matHeaderCellDef class="center">BT</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.bt ?? 0 | number: '1.2-2' }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="Action">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <a (click)="viewDetails(element.userId)">View Details</a>
+                    <ng-container matColumnDef="AC">
+                        <th mat-header-cell *matHeaderCellDef class="center">AC</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.ac ?? 0 | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Bonus">
+                        <th mat-header-cell *matHeaderCellDef class="center">Bonus</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.bonus ?? 0  | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Free">
+                        <th mat-header-cell *matHeaderCellDef class="center">Free</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.free ?? 0 | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="SaleOrReturn">
+                        <th mat-header-cell *matHeaderCellDef class="center">SaleOrReturn</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.saleOrReturn ?? 0 | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ReturnOrDamaged">
+                        <th mat-header-cell *matHeaderCellDef class="center">ReturnOrDamaged</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.returnOrDamaged ?? 0 | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="MC">
+                        <th mat-header-cell *matHeaderCellDef class="center">MC</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £ {{ element.mc ?? 0 | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Total">
+                        <th mat-header-cell *matHeaderCellDef class="center">Total</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            £{{ element.total ?? 0 | number: '1.2-2' }}
                         </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

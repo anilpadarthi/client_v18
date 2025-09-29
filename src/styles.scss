@@ -331,7 +331,7 @@ video {
 
 .product-title {
     width: 100%;
-    font-size: 14px !important;
+    font-size: 12px !important;
     display: -webkit-box !important;
     /* Enables flexible box layout */
     -webkit-box-orient: vertical;
@@ -376,7 +376,7 @@ video {
 
 .product-code {
     color: black !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: bold !important;
     text-align: left !important;
     margin: 0px !important;
@@ -387,7 +387,7 @@ video {
 
 .sale-price {
     color: #ef0000 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
     width: 100%;
     font-weight: bold;
     text-align: left !important;
@@ -449,7 +449,7 @@ video {
 .productcard img {
     max-width: 100% !important;
     /* Ensure image is responsive */
-    max-height: 200px !important;
+    max-height: 175px !important;
     /* Maintain aspect ratio */
     object-fit: contain;
     /* Prevent distortion */
@@ -675,7 +675,7 @@ html {
 
 .page-title {
     h1 {
-        font-size: 20px;
+        font-size: 18px;
         color: #262A2D;
         font-weight: 600;
         margin: 0;

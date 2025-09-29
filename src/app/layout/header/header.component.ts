@@ -7,6 +7,11 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebstorgeService } from '../../services/web-storage.service';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap, filter, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { ShopService } from '../../services/shop.service';
+
 
 @Component({
   selector: 'app-header',
@@ -24,18 +29,43 @@ export class HeaderComponent {
 
   showFiller = false;
   loggedInUser: any;
-   userRole = '';
+  userRole = '';
+  searchControl = new FormControl('');
+  shopLookup = [];
+  filteredItems!: any[];
 
   constructor(
     public dialog: MatDialog,
-    public webstorgeService: WebstorgeService
+    public webstorgeService: WebstorgeService,
+    public router: Router,
+    public shopService: ShopService
   ) {
     this.loggedInUser = this.webstorgeService.getUserInfo();
     this.userRole = this.webstorgeService.getUserRole();
+  }
 
+  ngOnInit() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300), // wait for user to stop typing
+      distinctUntilChanged(),
+      filter((value: any) => value && value.trim().length > 0),
+      switchMap(value => this.shopService.globalShopSearch(value))
+    )
+      .subscribe((response: any) => {
+        this.filteredItems = response.data;
+      });
   }
 
   logout(): void {
     this.webstorgeService.logout();
   }
+
+  onOptionSelected(option: any) {
+    if (option) {
+      this.searchControl.setValue(option.shopName);
+      // Navigate to detail page (example: /product/1)
+      this.router.navigate(['/onfield', option.areaId, option.shopId]);
+    }
+  }
+
 }

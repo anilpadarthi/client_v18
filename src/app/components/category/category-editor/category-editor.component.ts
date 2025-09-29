@@ -29,7 +29,6 @@ export class CategoryEditorComponent {
     this.categoryForm = this.fb.group(
       {
         categoryName: ['', [Validators.required, Validators.minLength(2)]],
-        commissionPercent: ['', [Validators.required, Validators.minLength(1)]],
         image: null as File | null,
         status: [true],
       },
@@ -59,7 +58,6 @@ export class CategoryEditorComponent {
       const formBody = new FormData();
       formBody.append('categoryId', this.categoryId != null ? this.categoryId : 0);
       formBody.append('categoryName', this.categoryForm.value.categoryName);
-      formBody.append('commissionPercent', this.categoryForm.value.commissionPercent);
       formBody.append('status', this.categoryForm.value.status ? '1' : '0');
       formBody.append('imageFile', this.categoryForm.value.image);
 

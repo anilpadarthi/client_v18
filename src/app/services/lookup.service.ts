@@ -22,6 +22,10 @@ export class LookupService {
     return this.http.get<any>(this.url +'/'+ categoryId + "/SubCategories");
   }
 
+   getMixAndMatchGroups(): Observable<any> {
+    return this.http.get<any>(this.url + "/MixAndMatchGroups");
+  }
+
   getColours(): Observable<any> {
     return this.http.get<any>(this.url + "/Colours");
   }

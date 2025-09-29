@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Cheque History
+  <button mat-dialog-close class="modal-header-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <div *ngIf="commissionChequeList.length > 0" class="table-responsive table-scroll example-container">
+    <table mat-table [dataSource]="commissionChequeList" class="w-100 custom-table">
+
+      <ng-container matColumnDef="CommissionDate">
+        <th mat-header-cell *matHeaderCellDef>Commission Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.commissionDate | date:'dd/MM/yyyy'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ChequeNumber">
+        <th mat-header-cell *matHeaderCellDef>Cheque Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.chequeNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Amount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let element">£{{ element.totalAmount | number : "1.2-2" }}</td>
+      </ng-container>
+
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <div class="zero-records p-b-8" *ngIf="commissionChequeList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+    <span>No records found</span></div>
+</mat-dialog-content>

@@ -11,6 +11,8 @@ export class ProductDetailComponent implements OnInit {
   @Input() selectedProduct!: any;
   @Output() notifyParent = new EventEmitter<any>();
   quantity = 1;
+  hasPriceStructure = false;
+  lowestPrice:any;
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
 
@@ -25,6 +27,7 @@ export class ProductDetailComponent implements OnInit {
 
   selectImage(img: string) {
   }
+ 
 
   increaseQuantity() {
     if (this.selectedProduct.qty == undefined || this.selectedProduct.qty == null) {
@@ -38,6 +41,11 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if(this.selectedProduct?.productPrices.length > 1) {
+      this.hasPriceStructure = true;
+      this.lowestPrice = Math.min(...this.selectedProduct.productPrices.map((p:any) => p.salePrice));
+    }
 
   }
   addToCart(): void {

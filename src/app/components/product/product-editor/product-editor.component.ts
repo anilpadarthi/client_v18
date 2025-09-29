@@ -19,11 +19,14 @@ export class ProductEditorComponent {
   productId: any;
   subCategories: any[] = [];
   categories: any[] = [];
+  mixAndMatchGroups: any[] = [];
   productImagePreview: any = null;
   categoryFilterCtrl: FormControl = new FormControl();
+  mixMatchGroupCtrl: FormControl = new FormControl();
   filteredCategories: any[] = [];
   subCategoryFilterCtrl: FormControl = new FormControl();
   filteredSubCategories: any[] = [];
+  filteredMixAndMatchGroups: any[] = [];
 
   constructor
     (
@@ -46,9 +49,12 @@ export class ProductEditorComponent {
       isVatEnabled: false,
       categoryId: [null, Validators.required],
       subCategoryId: [null, Validators.required],
+      mixMatchGroupId: [null],
       description: null,
       specification: null,
       buyingPrice: null,
+      commissionToAgent: ['', [Validators.required, Validators.minLength(1)]],
+      commissionToManager: ['', [Validators.required, Validators.minLength(1)]],
       //colourList: [[]],
       //sizeList: [[]],
       status: true,
@@ -62,12 +68,17 @@ export class ProductEditorComponent {
     this.productImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryLookup();
     this.getProductDetails();
+    this.getMixAndMatchGroups();
     this.categoryFilterCtrl.valueChanges.subscribe(() => {
       this.filterCategories();
     });
 
     this.subCategoryFilterCtrl.valueChanges.subscribe(() => {
       this.filterSubCategories();
+    });
+
+    this.mixMatchGroupCtrl.valueChanges.subscribe(() => {
+      this.filterMixAndMatchGroups();
     });
   }
 
@@ -85,6 +96,13 @@ export class ProductEditorComponent {
     );
   }
 
+  private filterMixAndMatchGroups() {
+    const search = this.mixMatchGroupCtrl.value?.toLowerCase() || '';
+    this.filteredMixAndMatchGroups = this.mixAndMatchGroups.filter((item: any) =>
+      `${item.name}`.toLowerCase().includes(search)
+    );
+  }
+
   getCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
@@ -99,6 +117,13 @@ export class ProductEditorComponent {
     });
   }
 
+  getMixAndMatchGroups() {
+    this.lookupService.getMixAndMatchGroups().subscribe((res) => {
+      this.mixAndMatchGroups = res.data;
+      this.filteredMixAndMatchGroups = res.data;
+    });
+  }
+
   onCategoryChange(event: any) {
     if (event.value) {
       this.getSubCategoryLookup(event.value);
@@ -109,6 +134,10 @@ export class ProductEditorComponent {
     if (this.productId) {
       this.productService.getProduct(this.productId).subscribe((res) => {
         this.productForm.patchValue(res.data.product);
+        this.productForm.patchValue({
+          commissionToAgent: res.data.productCommission?.commissionToAgent || 0,
+          commissionToManager: res.data.productCommission?.commissionToManager || 0
+        });
         if (res.data.product?.productImage) {
           this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
         }
@@ -155,7 +184,10 @@ export class ProductEditorComponent {
       formBody.append('isOutOfStock', this.productForm.value.isOutOfStock == null ? false : this.productForm.value.isOutOfStock);
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
+      formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId);
       formBody.append('status', this.productForm.value.status ? '1' : '0');
+      formBody.append('commissionToAgent', this.productForm.value.commissionToAgent);
+      formBody.append('commissionToManager', this.productForm.value.commissionToManager);
 
       if (this.productForm.value.productImage) {
         formBody.append('productImageFile', this.productForm.value.productImage);

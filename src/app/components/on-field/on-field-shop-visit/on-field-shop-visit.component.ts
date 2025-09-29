@@ -46,36 +46,46 @@ export class OnFieldShopVisitComponent {
 
   async startCamera() {
     try {
-      await navigator.mediaDevices.getUserMedia({ video: true });
-      // Step 1: Get all video input devices
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-      // Step 2: Try to find a rear camera by its label (e.g., "back", "rear")
-      let rearCamera = videoDevices.find(device =>
-        /(back|rear|environment|main|world|triple|dual)/i.test(device.label)
-      );
-
       let stream: MediaStream;
-      const selectedDeviceId = rearCamera?.deviceId || videoDevices[0]?.deviceId;
 
-      if (rearCamera) {
-        this.toasterService.showMessage('Rare camera found.')
-        // Step 3: Request the rear camera by deviceId
+      // Try rear (environment) camera first (works on Android and iOS)
+      try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: { exact: selectedDeviceId } }
+          video: { facingMode: { exact: 'environment' } }
         });
-      } else {
-        this.toasterService.showMessage('No Rare camera found,  Falling back to default.')
-        // Step 4: Fallback to any camera
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: true
-        });
+        this.toasterService.showMessage('Rear camera opened.');
+      } catch (errFacingMode) {
+        // If environment not available, get permission with any camera
+        this.toasterService.showMessage('Rear camera not available. Using default camera.');
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        // After permission, enumerate devices
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+        // Try to find rear camera by label now that labels are populated
+        const rearCamera = videoDevices.find(d =>
+          /(back|rear|environment|main|world|triple|dual)/i.test(d.label)
+        );
+
+        if (rearCamera) {
+          try {
+            // Switch to rear camera by deviceId
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { deviceId: { exact: rearCamera.deviceId } }
+            });
+            this.toasterService.showMessage('Switched to rear camera.');
+          } catch (errDevice) {
+            // Ignore if switching fails
+          }
+        }
       }
 
+      this.stream = stream;
       this.setVideoStream(stream);
+
     } catch (err) {
-      this.toasterService.showMessage('Unable to access any camera:' + err)
+      this.toasterService.showMessage('Unable to access any camera: ' + err);
     }
   }
 
@@ -87,8 +97,7 @@ export class OnFieldShopVisitComponent {
 
   async stopCamera() {
     if (this.stream) {
-      const tracks = this.stream.getTracks();
-      tracks.forEach(track => track.stop()); // Stops each track (video/audio)
+      this.stream.getTracks().forEach(track => track.stop());
       this.videoElement.nativeElement.srcObject = null;
       this.stream = null;
     }

@@ -13,18 +13,22 @@
 
     <!-- Right Section: Product Info -->
     <div class="product-info">
-      <h2 class="product-title">{{ selectedProduct.productName }}</h2>
+      <p class="f-w-600">{{ selectedProduct.productName }}</p>
       <p class="f-w-600">Product Code: {{ selectedProduct.productCode }}</p>
-      <p class="availability">Availability: {{ 0 }}</p>
+      
       <div class="price-container">
-        <span class="price">
+        <span [ngClass]="{ 'strike-out': hasPriceStructure }">
           £{{ selectedProduct?.productPrices[0].salePrice | number: '1.2-2' }}
+        </span>
+        <span *ngIf="hasPriceStructure">
+          £{{ lowestPrice | number: '1.2-2' }} onwards
         </span>
       </div>
 
-      <h4>Pricing Table</h4>
+      <div *ngIf="selectedProduct?.productPrices.length > 1">
+        <h4>Pricing</h4>
 
-      <table mat-table [dataSource]="selectedProduct.productPrices" class="w-100 custom-table">
+        <table mat-table [dataSource]="selectedProduct.productPrices" class="w-100 custom-table">
         <ng-container matColumnDef="fromQty">
           <th mat-header-cell *matHeaderCellDef>Min Qty</th>
           <td mat-cell *matCellDef="let row">{{ row.fromQty }}</td>
@@ -42,9 +46,8 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
-
+        </table>
+      </div>
 
       <div class="quality-section">
         <!-- Quantity Selector -->

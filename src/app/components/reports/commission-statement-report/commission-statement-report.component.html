@@ -15,7 +15,7 @@
                         (monthSelected)="choseFromMonthHandler($event, fromPicker)" panelClass="month-picker">
                     </mat-datepicker>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdmin">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>To Month</mat-label>
                     <input matInput [(ngModel)]="toMonth" [matDatepicker]="toPicker" placeholder="Choose a Month" />
                     <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -23,7 +23,7 @@
                         (monthSelected)="choseToMonthHandler($event, toPicker)" panelClass="month-picker">
                     </mat-datepicker>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-sm-3" *ngIf="isAdmin">
+                <mat-form-field appearance="outline" class="col-sm-3">
                     <mat-label>User</mat-label>
                     <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
                         <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
@@ -59,8 +59,17 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-checkbox *ngIf="isAdmin" class="col-sm-3" [(ngModel)]="isOptedIn" color="primary">Opted for
-                    Cheques</mat-checkbox>
+                <mat-form-field appearance="outline" class="col-lg-4">
+                    <mat-label>Mode</mat-label>
+                    <mat-select [(ngModel)]="filterMode">
+                      <mat-option value="null">-Select-</mat-option>
+                      <mat-option value="all">All</mat-option>
+                      <mat-option value="OptedForCheque">Opted For Cheque</mat-option>
+                      <mat-option value="OptedForCheque">Not Opted For Cheque</mat-option>
+                      <mat-option value="History">History</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-checkbox class="col-lg-4" [(ngModel)]="isDisplayChequeInfo">Cheque Information</mat-checkbox>
             </div>
 
             <div class="row col-sm-12 space-between-buttons">
@@ -69,13 +78,13 @@
                 <button mat-flat-button color="primary" (click)="onReset()">Clear
                 </button>
 
-                <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToPDF('NONVAT')">Download
+                <button  mat-flat-button color="primary" (click)="exportToPDF('NONVAT')">Download
                     <mat-icon style="color: red;">picture_as_pdf</mat-icon>
                 </button>
-                <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToPDF('VAT')">Download VAT
+                <button  mat-flat-button color="primary" (click)="exportToPDF('VAT')">Download VAT
                     <mat-icon>receipt_long</mat-icon>
                 </button>
-                <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="exportToExcel()">Export to excel
+                <button  mat-flat-button color="primary" (click)="exportToExcel()">Export to excel
                     <mat-icon style="color: green;">grid_on</mat-icon>
                 </button>
             </div>

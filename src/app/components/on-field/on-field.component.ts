@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { OnFieldService } from '../../services/on-field.service';
 import { FormControl } from '@angular/forms';
+import { OnFieldShopCommissionChequesComponent } from '../on-field-shop-commission-cheques/on-field-shop-commission-cheques.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-on-field',
@@ -37,6 +39,7 @@ export class OnFieldComponent implements OnInit {
   outstandingBalanceAmount = 0;
 
   constructor(
+    private route: ActivatedRoute,
     public datePipe: DatePipe,
     private dialog: MatDialog,
     private lookupService: LookupService,
@@ -99,6 +102,11 @@ export class OnFieldComponent implements OnInit {
     this.lookupService.getAreas().subscribe((res) => {
       this.areaLookup = res.data;
       this.filteredAreas = res.data;
+      let areaId = Number(this.route.snapshot.paramMap.get('areaId'));
+      if (areaId) {
+        this.selectedAreaId = areaId;
+        this.areaChange();
+      }
     });
   }
 
@@ -107,6 +115,10 @@ export class OnFieldComponent implements OnInit {
       this.shopLookup = res.data;
       this.filteredShops = res.data;
       this.selectedShopId = null;
+      let shopId = Number(this.route.snapshot.paramMap.get('shopId'));
+      if (shopId) {
+        this.selectedShopId = shopId;
+      }
     });
   }
 
@@ -243,6 +255,20 @@ export class OnFieldComponent implements OnInit {
     this.onFieldService.outstandingBalance(this.selectedShopId).subscribe((res: any) => {
       this.outstandingBalanceAmount = res;
     });
+  }
+
+  openShopCommissionChequeListModel(): void {
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+      const data = {
+        shopId: this.selectedShopId,
+      };
+      const dialogRef = this.dialog.open(OnFieldShopCommissionChequesComponent, {
+        data
+      });
+    }
   }
 
 }

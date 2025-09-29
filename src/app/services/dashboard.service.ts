@@ -42,6 +42,10 @@ export class DashboardService {
   getAreaWiseActivations(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetAreaWiseActivations', requestBody);
   }
+
+  getDahboardAccessoriesMetrics(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetDahboardAccessoriesMetrics', requestBody);
+  }
   
   
 }

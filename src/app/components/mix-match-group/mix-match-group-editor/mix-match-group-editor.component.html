@@ -1,0 +1,30 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>{{ mixMatchGroupId != null ? 'Edit Mix  Match Group' : 'Create Mix  Match Group' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="col-lg-6">
+            <form [formGroup]="mixMatchGroupForm" (ngSubmit)="onSave()">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Mix Match Group Name</mat-label>
+                    <input matInput formControlName="groupName" placeholder="Enter your Mix Match Group Name" />
+                    <mat-error *ngIf="mixMatchGroupForm.get('groupName')?.hasError('required')">
+                        Mix Match Group Name is required.
+                    </mat-error>
+                    <mat-error *ngIf="mixMatchGroupForm.get('groupName')?.hasError('minlength')">
+                        Mix Match Group Name must be at least 2 characters long.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                    Is Active
+                </mat-checkbox>               
+
+                <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="mixMatchGroupForm.invalid">
+                    Save
+                </button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -16,7 +16,7 @@ export class OrderDetailsComponent implements OnInit {
   orderItems: any[] = [];
   header = '';
   orderId = null;
-  selectedStatusId = null;
+  selectedStatusId: any;
   selectedPaymentMethodId = null;
   selectedShippingMethodId = null;
   statusLookup: any[] = [];
@@ -84,10 +84,8 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
-
   }
+
   updateOrder(): void {
     const requestBody = {
       orderId: this.orderId,
@@ -117,6 +115,12 @@ export class OrderDetailsComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close(false);
+  }
+
+  markDelivered(): void {
+    this.selectedStatusId = 11;
+    this.updateOrder();
+
   }
 
 

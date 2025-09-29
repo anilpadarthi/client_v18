@@ -1,6 +1,9 @@
 .contentWrapper {
   padding: 20px !important;
 }
+.vat-amount{
+  color: green !important;
+}
 
 .branding {
   padding: 0em !important;
@@ -30,7 +33,7 @@
 }
 
 .summary-title {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
@@ -59,6 +62,9 @@
   text-align: right;
   font-weight: 500;
   color: #333;
+}
+.strike-out {
+    text-decoration: line-through;
 }
 
 .discount {

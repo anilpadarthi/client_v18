@@ -50,6 +50,21 @@ import { AreaCommissionsComponent } from './components/reports/area-commissions/
 import { MonthlyAccessoriesReportComponent } from './components/reports/monthly-accessories-report/monthly-accessories-report.component';
 import { OpenAccessoriesComponent } from './components/order/open-accessories/open-accessories.component';
 import { ChequeWithdrawnReportComponent } from './components/reports/cheque-withdrawn-report/cheque-withdrawn-report.component';
+import { MonthlyAccessoriesCommissioinPercentReportComponent } from './components/reports/monthly-accessories-commissioin-percent-report/monthly-accessories-commissioin-percent-report.component';
+import { CommissionChequeStatusComponent } from './components/management/commission-cheque-status/commission-cheque-status.component';
+import { DigitalIdComponent } from './components/digital-id/digital-id.component';
+import { MixMatchGroupEditorComponent } from './components/mix-match-group/mix-match-group-editor/mix-match-group-editor.component';
+import { MixMatchGroupListComponent } from './components/mix-match-group/mix-match-group-list/mix-match-group-list.component';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { RetailerComponent } from './components/retailer/retailer.component';
+import { StockComponent } from './components/retailer/stock/stock.component';
+import { ActivationsComponent } from './components/retailer/activations/activations.component';
+import { CommissionStatementsComponent } from './components/retailer/commission-statements/commission-statements.component';
+import { StockConversionComponent } from './components/retailer/stock-conversion/stock-conversion.component';
+import { SalesManagerComponent } from './components/retailer/sales-manager/sales-manager.component';
+import { ContactusComponent } from './components/retailer/contactus/contactus.component';
+
+
 
 const routes: Routes = [
 
@@ -84,6 +99,11 @@ const routes: Routes = [
       { path: 'category/create', component: CategoryEditorComponent },
       { path: 'category/edit/:id', component: CategoryEditorComponent },
 
+      { path: 'mix-match-groups', component: MixMatchGroupListComponent },
+      { path: 'mix-match-groups/create', component: MixMatchGroupEditorComponent },
+      { path: 'mix-match-groups/edit/:id', component: MixMatchGroupEditorComponent },
+      
+
       { path: 'sub-categories', component: SubCategoryListComponent },
       { path: 'sub-category/create', component: SubCategoryEditorComponent },
       { path: 'sub-category/edit/:id', component: SubCategoryEditorComponent },
@@ -95,6 +115,7 @@ const routes: Routes = [
 
 
       { path: 'onfield', component: OnFieldComponent },
+      { path: 'onfield/:areaId/:shopId', component: OnFieldComponent },
       { path: 'report/track', component: TrackReportComponent },
       { path: 'report/monthly/activations', component: MonthlyActivationReportComponent },
       { path: 'report/historical/activations', component: HistoricalActivationReportComponent },
@@ -103,6 +124,7 @@ const routes: Routes = [
       { path: 'report/kpi-target', component: KpiTargetReportComponent },
       { path: 'report/commission-statement', component: CommissionStatementReportComponent },
       { path: 'report/monthly-accessories-report', component: MonthlyAccessoriesReportComponent },
+      { path: 'report/monthly-accessories-commision-percent-report', component: MonthlyAccessoriesCommissioinPercentReportComponent },
       { path: 'report/area-commissions', component: AreaCommissionsComponent },
       { path: 'report/daily-report', component: DailyReportComponent },
       { path: 'management/payslip', component: PaySlipComponent },
@@ -114,10 +136,11 @@ const routes: Routes = [
       { path: 'management/expenses', component: ExpensesComponent },
       { path: 'management/expenses-form', component: ExpensesFormComponent },
       { path: 'management/revenue', component: ExpensesFormComponent },
-      { path: 'management/shop-commission-cheques', component: ExpensesFormComponent },
+      { path: 'commission-cheque-status', component:  CommissionChequeStatusComponent},
       { path: 'management/bank-cheques', component: ExpensesFormComponent },
       { path: 'management/commission-cheque-withdraw', component: ChequeWithdrawnReportComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
+      { path: 'change-password', component: ChangePasswordComponent },
 
 
       { path: 'dashboard/main', component: MainDashboardComponent },
@@ -127,7 +150,8 @@ const routes: Routes = [
 
 
 
-      { path: 'accessories/sales', component: OrderListComponent },      
+      { path: 'accessories/sales', component: OrderListComponent },
+      { path: 'digitalId', component: DigitalIdComponent },
 
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
@@ -138,6 +162,17 @@ const routes: Routes = [
   { path: 'accessories/edit-order/:id', component: EditOrderComponent },
   { path: 'accessories/sim-request', component: AgentSimOrderComponent },
   { path: 'accessories/list', component: OpenAccessoriesComponent },
+
+  { path: 'retailer/dashboard', component: RetailerComponent },
+  { path: 'retailer/siminfo', component: ImeiSearchComponent },
+  { path: 'retailer/stock', component: StockComponent },
+  { path: 'retailer/activations', component: ActivationsComponent },
+  { path: 'retailer/commissions', component: CommissionStatementsComponent },
+  { path: 'retailer/stockvsconnections', component: StockConversionComponent },
+  { path: 'retailer/sales', component: OrderListComponent },
+  { path: 'retailer/sales-manager', component: SalesManagerComponent },
+  { path: 'retailer/changepassword', component: ChangePasswordComponent },
+  { path: 'retailer/profile', component: ChangePasswordComponent },
 
   { path: 'login', component: LoginComponent },
 

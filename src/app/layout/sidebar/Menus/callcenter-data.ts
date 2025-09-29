@@ -8,7 +8,7 @@ export const CallCenterItems: NavItem[] = [
     route: 'imei/search',
   },
   {
-    displayName: 'OnField',
+    displayName: 'On-Field',
     iconName: 'store',
     route: 'onfield',
   },
@@ -26,7 +26,7 @@ export const CallCenterItems: NavItem[] = [
     displayName: 'WhatsApp Reports',
     iconName: 'receipt',
     route: 'management/whatsapp',
-  },  
+  },
   {
     displayName: 'Sales',
     iconName: 'orders',
@@ -36,6 +36,11 @@ export const CallCenterItems: NavItem[] = [
     displayName: 'Bank Cheques',
     iconName: 'checkbook',
     route: 'management/bank-cheques',
+  },
+  {
+    displayName: 'Payslip',
+    iconName: 'arrow_right',
+    route: 'management/payslip',
   },
 
   {

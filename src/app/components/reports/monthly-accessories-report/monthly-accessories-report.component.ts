@@ -34,9 +34,15 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
   displayedColumns: string[] = [
     'UserId',
     'UserName',
-    'TotalOrderAmount',
-    'TotalPaidAmount',
-    'Action'
+    'COD',
+    'BT',
+    'AC',
+    'Bonus',
+    'Free',
+    'SaleOrReturn',
+    'MC',
+    'ReturnOrDamaged',
+    'Total'
   ];
 
   constructor(
@@ -64,7 +70,7 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
       this.selectedUserId = loggedInUserId;
     }
 
-    
+
 
     this.userFilterCtrl.valueChanges.subscribe(() => {
       this.filterUsers();
@@ -74,7 +80,7 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
     });
   }
 
-   private filterUsers() {
+  private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
     this.filteredUsers = this.userLookup.filter((item: any) =>
       `${item.id} - ${item.name}`.toLowerCase().includes(search)
@@ -95,7 +101,7 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
     });
   }
 
-   getAgentLookup() {
+  getAgentLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
       this.filteredUsers = res.data;
@@ -117,8 +123,12 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
     };
 
     this.reportService.getMonthlyAccessoriesReport(requestBody).subscribe((res) => {
-      if (res.data.length > 0) {
-        this.activationList = res.data;
+      if (res.data?.length > 0) {
+        let result = res.data;
+        result.forEach((e: any) => {
+          e.total = e.cod + e.bt + e.free + e.bonus + e.ac + e.saleOrReturn  + e.mc;
+        });
+        this.activationList = result;
       }
       else {
         this.activationList = [];

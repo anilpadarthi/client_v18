@@ -8,9 +8,7 @@ import { ICommonResponse } from '../models/common-response';
 })
 
 export class OnFieldService {
-
     url: string;
-
     constructor(public http: HttpClient) {
         this.url = `api/OnField`
     }

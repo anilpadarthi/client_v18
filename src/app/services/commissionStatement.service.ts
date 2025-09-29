@@ -48,8 +48,8 @@ export class CommissionStatementService {
     return this.exportService.downloadPDF(url, 'Commission_Statement_' + shopId + '.pdf');
   }
 
-  exportCommissionChequeExcel(isOptedIn: boolean, fromDate: any): void {
-    let url = this.url + '/ExportCommissionChequeExcel?isOptedIn=' + isOptedIn + '&fromDate=' + fromDate;
+  exportCommissionChequeExcel(filterMode: any, fromDate: any): void {
+    let url = this.url + '/ExportCommissionChequeExcel?filterMode=' + filterMode + '&fromDate=' + fromDate;
     return this.exportService.downloadExcel(url, 'Commission_List');
   }
 

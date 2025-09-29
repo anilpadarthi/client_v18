@@ -1,0 +1,70 @@
+import { Component, OnInit, Input,SimpleChanges } from '@angular/core';
+import { DashboardService } from '../../../services/dashboard.service';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-accessories-sale',
+  templateUrl: './accessories-sale.component.html',
+  styleUrl: './accessories-sale.component.scss'
+})
+
+
+export class AccessoriesSaleComponent implements OnInit {
+  @Input() selectedDate: any;
+  @Input() filterId: any;
+  @Input() filterType: any;
+  dataSource: any = [];
+  @Input() refreshCounter: any;
+  private isFirstChange = true;
+  isLoading = false;
+  displayedColumns: string[] = [
+    'PaymentType',
+    'SaleAmount'
+  ];
+
+  constructor(
+    public datePipe: DatePipe,
+    private dashboardService: DashboardService,
+  ) { }
+
+  ngOnInit(): void {
+    if (this.selectedDate != null) {
+      this.loadData();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedDate'] || changes['refreshCounter']) {
+      this.loadData();
+    }
+  }
+
+  loadData(): void {
+    this.isLoading = true;
+    const requestBody = {
+      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      filterId: this.filterId,
+      filterType: this.filterType
+    };
+
+    this.dashboardService.getDahboardAccessoriesMetrics(requestBody).subscribe((res) => {
+      this.dataSource = res.data;
+      this.isLoading = false;
+    });
+  }
+
+  getTotal(column: string): any {
+    if (column == 'Id') {
+      return "";
+    }
+    else if (column == 'Name') {
+      return "Total";
+    }
+    return this.dataSource.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  } 
+}

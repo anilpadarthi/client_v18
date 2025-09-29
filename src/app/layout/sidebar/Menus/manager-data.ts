@@ -14,7 +14,7 @@ export const ManagerItems: NavItem[] = [
     route: 'imei/search',
   },
   {
-    displayName: 'OnField',
+    displayName: 'On-Field',
     iconName: 'store',
     route: 'onfield',
   },
@@ -106,6 +106,11 @@ export const ManagerItems: NavItem[] = [
         displayName: 'Commission Tier Requests',
         iconName: 'arrow_right',
         route: 'management/commission-tier-requests',
+      },
+      {
+        displayName: 'Cheque Info',
+        iconName: 'checkbook',
+        route: 'commission-cheque-status',
       },
       {
         displayName: 'Attendance',

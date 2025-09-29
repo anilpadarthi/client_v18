@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule,HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
 import { SpinnerInterceptor } from '../app/interceptors/spinner.interceptor';
@@ -114,6 +114,21 @@ import { OnFieldShopOrderListComponent } from './components/on-field/on-field-sh
 import { MessagePopupComponent } from './components/shared/message-popup/message-popup.component';
 import { OpenAccessoriesComponent } from './components/order/open-accessories/open-accessories.component';
 import { ChequeWithdrawnReportComponent } from './components/reports/cheque-withdrawn-report/cheque-withdrawn-report.component';
+import { AccessoriesSaleComponent } from './components/dashboard/accessories-sale/accessories-sale.component';
+import { MonthlyAccessoriesCommissioinPercentReportComponent } from './components/reports/monthly-accessories-commissioin-percent-report/monthly-accessories-commissioin-percent-report.component';
+import { OnFieldShopCommissionChequesComponent } from './components/on-field-shop-commission-cheques/on-field-shop-commission-cheques.component';
+import { DigitalIdComponent } from './components/digital-id/digital-id.component';
+import { RetailerComponent } from './components/retailer/retailer.component';
+import { StockComponent } from './components/retailer/stock/stock.component';
+import { ActivationsComponent } from './components/retailer/activations/activations.component';
+import { CommissionStatementsComponent } from './components/retailer/commission-statements/commission-statements.component';
+import { StockConversionComponent } from './components/retailer/stock-conversion/stock-conversion.component';
+import { SalesManagerComponent } from './components/retailer/sales-manager/sales-manager.component';
+import { ContactusComponent } from './components/retailer/contactus/contactus.component';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { CommissionChequeStatusComponent } from './components/management/commission-cheque-status/commission-cheque-status.component';
+import { MixMatchGroupEditorComponent } from './components/mix-match-group/mix-match-group-editor/mix-match-group-editor.component';
+import { MixMatchGroupListComponent } from './components/mix-match-group/mix-match-group-list/mix-match-group-list.component';
 
 
 registerLocaleData(localeGb, 'en-GB');
@@ -210,7 +225,22 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     OnFieldShopOrderListComponent,
     MessagePopupComponent,
     OpenAccessoriesComponent,
-    ChequeWithdrawnReportComponent
+    ChequeWithdrawnReportComponent,
+    AccessoriesSaleComponent,
+    MonthlyAccessoriesCommissioinPercentReportComponent,
+    OnFieldShopCommissionChequesComponent,
+    DigitalIdComponent,
+    StockComponent,
+    ActivationsComponent,
+    CommissionStatementsComponent,
+    StockConversionComponent,
+    SalesManagerComponent,
+    ContactusComponent,
+    ChangePasswordComponent,
+    CommissionChequeStatusComponent,
+    MixMatchGroupListComponent,
+    MixMatchGroupEditorComponent,
+    RetailerComponent
   ],
   imports: [
     BrowserModule,

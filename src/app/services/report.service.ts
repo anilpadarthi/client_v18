@@ -92,8 +92,16 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetMonthlyAccessoriesReport', requestBody);
   }
 
+  getMonthlyAccessoriesCommissionPercentReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetMonthlyAccessoriesCommissionPercentReport', requestBody);
+  }
+
   getChequeWithdrawnReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetChequeWithdrawnReport', requestBody);
+  }
+
+  getBankChequeStatus(chequeNumber: any): Observable<any> {
+    return this.http.get<any>(this.url + '/GetBankChequeStatus?chequeNumber=' + chequeNumber);
   }
 
 }

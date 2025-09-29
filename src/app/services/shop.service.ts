@@ -77,4 +77,24 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url + `/SendActivationEmail?shopId=${shopId}`);
   }
 
+  getShopCommissionCheques(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/GetShopCommissionCheques?shopId=${shopId}`);
+  }
+
+  getShopCommissionCheque(sno: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/GetShopCommissionCheque?sno=${sno}`);
+  }
+
+  updateShopCommissionCheque(sno: number, chequeNumber: string): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/UpdateShopCommissionCheque?sno=${sno}&chequeNumber='${chequeNumber}'`);
+  }
+
+  deleteShopCommissionCheque(sno: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/DeleteShopCommissionCheque?sno=${sno}`);
+  }
+
+  globalShopSearch(searchText: any): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/GlobalShopSearch?searchText=${searchText}`);
+  }
+
 }

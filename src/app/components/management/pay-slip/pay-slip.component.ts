@@ -57,7 +57,7 @@ export class PaySlipComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       this.getAgentLookup();
       this.getManagerLookup();

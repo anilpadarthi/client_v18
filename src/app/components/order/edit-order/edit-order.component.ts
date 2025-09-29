@@ -48,6 +48,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   selectedProduct: any = null;
   isDisplayProductDetails = false;
   isAdmin = false;
+  isHideTemporarly = false;
   userRole = '';
 
   constructor(
@@ -67,8 +68,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     'quantity',
     'salePrice',
     'netAmount',
-    'vatAmount',
-    'total',
+    //'total',
     'action'
   ];
 
@@ -142,7 +142,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data;
-      this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
+      this.products?.forEach(e => {e.salePrice = e.productPrices[0].salePrice;
+        e.hasPriceStructure =  e.productPrices.length > 1;
+        e.lowestPrice = Math.min(...e.productPrices.map((p:any) => p.salePrice));
+      });
     });
     this.closeSidebar();
   }
@@ -208,7 +211,39 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  updateSalePrices() {
+    // 1. Calculate total qty per group
+    const groupTotals: Record<number, number> = {};
+
+    this.cartItems?.forEach(item => {
+      if (item.mixMatchGroupId) {
+        const groupId = item.mixMatchGroupId ?? 0;
+        groupTotals[groupId] = (groupTotals[groupId] || 0) + item.qty;
+      }
+    });
+
+    this.cartItems?.forEach(item => {
+      if (item.mixMatchGroupId) {
+        let totalGroupQty = this.cartItems
+          .filter(x => x.mixMatchGroupId === item.mixMatchGroupId)
+          .reduce((sum, x) => sum + x.qty, 0);
+
+        let prodPrice = item.productPrices.filter((f: any) => totalGroupQty >= f.fromQty && totalGroupQty <= f.toQty);
+        if (prodPrice != null && prodPrice.length > 0) {
+          item.salePrice = prodPrice[0].salePrice;
+        }
+        else {
+          item.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
+        }
+        item.netAmount = Number(item.qty) * item.salePrice;
+        item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
+      }
+    });
+  }
+
   updateCalculations() {
+    console.log(this.cartItems);
+    this.updateSalePrices();
     this.subTotal = 0;
     this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
 
@@ -266,17 +301,22 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   increaseQuantity(item: any) {
-
-    if (item.qty == undefined) {
+    if (item.qty == undefined || item.qty == 0) {
       item.qty = 1;
+      this.addToCart(item);
     }
-    else if (item.qty > 0)
+    else if (item.qty > 0) {
       item.qty++;
+      this.updateCartItemQuantity(item, item.qty)
+    }
   }
 
   decreaseQuantity(item: any) {
     if (item.qty > 0) {
       item.qty--;
+    }
+    if (item.qty == 0) {
+      this.removeCartItem(item);
     }
   }
 

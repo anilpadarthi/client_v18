@@ -1,121 +1,37 @@
 import { NavItem } from "../nav-item/nav-item";
 
 export const RetailerItems: NavItem[] = [
-
   {
     displayName: 'Dashboard',
     iconName: 'home',
-    route: 'dashboard/main',
+    route: 'retailer/dashboard',
   },
 
   {
     displayName: 'Sim Info',
     iconName: 'manage_search',
-    route: 'imei/search',
+    route: 'retailer/siminfo',
   },
   {
-    displayName: 'OnField',
-    iconName: 'store',
-    route: 'onfield',
+    displayName: 'Stock',
+    iconName: 'manage_search',
+    route: 'retailer/stock',
+  },  
+  {
+    displayName: 'Activations',
+    iconName: 'manage_search',
+    route: 'retailer/activations',
+  },  
+  {
+    displayName: 'Commission Statements',
+    iconName: 'manage_search',
+    route: 'retailer/commissions',
   },
   {
-    displayName: 'Allocate',
-    iconName: 'inventory',
-    route: '',
-    children: [
-      {
-        displayName: 'Allocate Areas',
-        iconName: 'arrow_right',
-        route: 'allocatearea',
-      },
-    ],
-  },
-  {
-    displayName: 'Reports',
-    iconName: 'monitoring',
-    route: '',
-    children: [
-      {
-        displayName: 'Monthly Activations',
-        iconName: 'arrow_right',
-        route: 'report/monthly/activations',
-      },
-      {
-        displayName: 'Analysis Reports',
-        iconName: 'arrow_right',
-        route: 'report/historical/activations',
-      },
-
-      {
-        displayName: 'Sim Allocations',
-        iconName: 'file-description',
-        route: 'report/simallocation-report',
-      },
-      {
-        displayName: 'KPI Targets',
-        iconName: 'file-description',
-        route: 'report/kpi-target',
-      },
-    ],
-  },
-  {
-    displayName: 'Setup',
-    iconName: 'manage_accounts',
-    route: '',
-    children: [
-      {
-        displayName: 'Area',
-        iconName: 'arrow_right',
-        route: 'areas',
-      },
-      {
-        displayName: 'Shop',
-        iconName: 'arrow_right',
-        route: 'shops',
-      },
-    ],
-  },
-
-  {
-    displayName: 'Management',
-    iconName: 'widgets',
-    route: '',
-    children: [
-      {
-        displayName: 'Payslip',
-        iconName: 'file-description',
-        route: 'management/payslip',
-      },
-
-      {
-        displayName: 'Agreement Requests',
-        iconName: 'arrow_right',
-        route: 'management/agreement-requests',
-      },
-      {
-        displayName: 'Commission Tier Requests',
-        iconName: 'arrow_right',
-        route: 'management/commission-tier-requests',
-      },
-      {
-        displayName: 'Attendance',
-        iconName: 'arrow_right',
-        route: 'management/attendance-report',
-      },
-
-      {
-        displayName: 'Shop Commission Cheques',
-        iconName: 'arrow_right',
-        route: 'shop-commission-cheques',
-      },
-      {
-        displayName: 'Bank Cheques',
-        iconName: 'arrow_right',
-        route: 'bank-cheques',
-      },
-    ],
-  },
-
+    displayName: 'Given vs Activations',
+    iconName: 'manage_search',
+    route: 'retailer/stockvsconnections',
+  },    
   {
     displayName: 'Accessories',
     iconName: 'point_of_sale',
@@ -124,7 +40,7 @@ export const RetailerItems: NavItem[] = [
       {
         displayName: 'Sales',
         iconName: 'arrow_right',
-        route: 'accessories/sales',
+        route: 'retailer/sales',
       },
       {
         displayName: 'Create Order',
@@ -135,16 +51,23 @@ export const RetailerItems: NavItem[] = [
     ],
   },
   {
-    displayName: 'Chat',
+    displayName: 'Your Manager',
     iconName: 'chat',
-    route: 'chat',
+    route: 'retailer/sales-manager',
   },
-
-  // {
-  //   displayName: 'Edit Profile',
-  //   iconName: 'account_circle',
-  //   route: 'profile/edit',
-  // },
-
-
+  {
+    displayName: 'Contact Us',
+    iconName: 'chat',
+    route: 'retailer/contactus',
+  },
+  {
+    displayName: 'Edit Profile',
+    iconName: 'chat',
+    route: 'retailer/profile',
+  },
+  {
+    displayName: 'Change Password',
+    iconName: 'chat',
+    route: 'retailer/changepassword',
+  },
 ];

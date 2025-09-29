@@ -87,7 +87,11 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'products',
       },
-
+       {
+        displayName: 'Mix Match Group',
+        iconName: 'arrow_right',
+        route: 'mix-match-groups',
+      },
     ],
   },
 
@@ -135,6 +139,11 @@ export const AdminItems: NavItem[] = [
         displayName: 'Monthly Accessories Report',
         iconName: 'arrow_right',
         route: 'report/monthly-accessories-report',
+      },
+      {
+        displayName: 'Accessories Commission Percent Report',
+        iconName: 'arrow_right',
+        route: 'report/monthly-accessories-commision-percent-report',
       },
       {
         displayName: 'Daily Reports',
@@ -196,14 +205,9 @@ export const AdminItems: NavItem[] = [
         route: 'management/commission-cheque-withdraw',
       },
       {
-        displayName: 'Shop Commission Cheques',
+        displayName: 'Commission Cheque Status',
         iconName: 'arrow_right',
-        route: 'management/shop-commission-cheques',
-      },
-      {
-        displayName: 'Bank Cheques',
-        iconName: 'arrow_right',
-        route: 'management/bank-cheques',
+        route: 'commission-cheque-status',
       },
     ],
   },
@@ -232,7 +236,7 @@ export const AdminItems: NavItem[] = [
     route: 'imei/search',
   },
   {
-    displayName: 'OnField',
+    displayName: 'On-Field',
     iconName: 'home_work',
     route: 'onfield',
   },

@@ -1,0 +1,76 @@
+<div class="page-title">
+    <h1>Cheque Status</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row space-between-buttons">
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Search Cheque Number</mat-label>
+                        <input matInput #searchInput placeholder="Search Cheque Number" [(ngModel)]="searchText"
+                            (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-8 ">
+                    <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
+                        <mat-icon>filter_list</mat-icon> Filter
+                    </button>
+                    <button mat-flat-button class="bg-error text-white" (mousedown)="onReset()">
+                        <mat-icon>clear_all</mat-icon> Clear
+                    </button>
+                   
+                </div>
+            </div>
+
+            <div class="table-responsive table-scroll example-container">
+                <table mat-table [dataSource]="chequeList" class="w-100 custom-table">
+                    <ng-container matColumnDef="ShopId">
+                        <th mat-header-cell *matHeaderCellDef>Shop Id</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.shopId }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ChequeNumber">
+                        <th mat-header-cell *matHeaderCellDef>Cheque Number</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.chequeNumber }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="TotalAmount">
+                        <th mat-header-cell *matHeaderCellDef class="center" >Total Amount</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.totalAmount  }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="CommissionDate">
+                        <th mat-header-cell *matHeaderCellDef class="center">Commission Date</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.commissionDate | date: 'dd/MM/yyyy'  }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let element">{{ element.status  }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="PaidDate">
+                        <th mat-header-cell *matHeaderCellDef class="center">Paid Date</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.paidDate | date: 'dd/MM/yyyy'  }}
+                        </td>
+                    </ng-container>
+
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </div>
+            <div class="zero-records p-b-8" *ngIf="chequeList?.length == 0">
+                <img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>            
+        </mat-card-content>
+    </mat-card>
+</div>

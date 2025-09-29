@@ -12,7 +12,7 @@ export const AgentItems: NavItem[] = [
     route: 'dashboard/main',
   },
   {
-    displayName: 'OnField',
+    displayName: 'On-Field',
     iconName: 'store',
     route: 'onfield',
   },
@@ -79,9 +79,21 @@ export const AgentItems: NavItem[] = [
   },
 
   {
+    displayName: 'Cheque Info',
+    iconName: 'checkbook',
+    route: 'commission-cheque-status',
+  },
+
+  {
     displayName: 'Your Digital ID',
     iconName: 'chat',
-    route: 'chat',
+    route: 'digitalId',
+  },
+
+  {
+    displayName: 'Change Password',
+    iconName: 'lock_reset',
+    route: 'change-password',
   },
 
 
