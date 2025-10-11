@@ -59,86 +59,62 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-4">
+                <mat-form-field appearance="outline" class="col-sm-3">
                     <mat-label>Mode</mat-label>
                     <mat-select [(ngModel)]="filterMode">
-                      <mat-option value="null">-Select-</mat-option>
-                      <mat-option value="all">All</mat-option>
+                      <mat-option value="All">All</mat-option>
                       <mat-option value="OptedForCheque">Opted For Cheque</mat-option>
-                      <mat-option value="OptedForCheque">Not Opted For Cheque</mat-option>
                       <mat-option value="History">History</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-checkbox class="col-lg-4" [(ngModel)]="isDisplayChequeInfo">Cheque Information</mat-checkbox>
+                <mat-checkbox class="col-sm-3" [(ngModel)]="isDisplayChequeInfo">Cheque Information</mat-checkbox>
             </div>
 
             <div class="row col-sm-12 space-between-buttons">
-                <button mat-flat-button color="primary" (click)="loadData()">Submit
-                </button>
+               
                 <button mat-flat-button color="primary" (click)="onReset()">Clear
                 </button>
 
-                <button  mat-flat-button color="primary" (click)="exportToPDF('NONVAT')">Download
+                <button  mat-flat-button color="primary" (click)="exportToPDF('NONVAT')">Download PDF
                     <mat-icon style="color: red;">picture_as_pdf</mat-icon>
                 </button>
-                <button  mat-flat-button color="primary" (click)="exportToPDF('VAT')">Download VAT
+                <button  mat-flat-button color="primary" (click)="exportToPDF('VAT')">Download VAT PDF
                     <mat-icon>receipt_long</mat-icon>
-                </button>
-                <button  mat-flat-button color="primary" (click)="exportToExcel()">Export to excel
+                </button>              
+            </div>            
+            
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="page-title">
+    <h1>Download Commission File</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+        </div> -->
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-lg-3">
+                    <mat-label>From Month</mat-label>
+                    <input matInput [(ngModel)]="monthDate" [matDatepicker]="fromPicker1" placeholder="Choose a Month" />
+                    <mat-datepicker-toggle matIconSuffix [for]="fromPicker1"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker1 startView="year" (yearSelected)="chosenYearHandler($event)"
+                        (monthSelected)="choseFromMonth1Handler($event, fromPicker1)" panelClass="month-picker">
+                    </mat-datepicker>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="col-sm-3">
+                    <mat-label>Mode</mat-label>
+                    <mat-select [(ngModel)]="filterExcelMode">
+                      <mat-option value="All">All</mat-option>
+                      <mat-option value="OptedForCheque">Opted For Cheque</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                  <button  mat-flat-button color="primary" (click)="exportToExcel()">Download Excel
                     <mat-icon style="color: green;">grid_on</mat-icon>
                 </button>
-            </div>
-
-            <div *ngIf="!isLoading && commissionList?.length > 0"
-                class="table-responsive table-scroll example-container m-t-10">
-                <table mat-table [dataSource]="commissionList" class="w-100 custom-table">
-
-                     <ng-container matColumnDef="Action">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <a (click)="downloadCommissionStatement(element.shopId, element.commissionDate)">
-                                <mat-icon>download</mat-icon>
-                            </a>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="UserName">
-                        <th mat-header-cell *matHeaderCellDef>User Name</th>
-                        <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="AreaName">
-                        <th mat-header-cell *matHeaderCellDef>Area Name</th>
-                        <td mat-cell *matCellDef="let element">{{ element.areaName }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="ShopName">
-                        <th mat-header-cell *matHeaderCellDef>Shop Name</th>
-                        <td mat-cell *matCellDef="let element">{{element.shopId}} - {{ element.shopName }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="CommissionDate">
-                        <th mat-header-cell *matHeaderCellDef>Date</th>
-                        <td mat-cell *matCellDef="let element">{{ element.commissionDate | date:'dd/MM/yyyy' }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="CommissionAmount">
-                        <th mat-header-cell *matHeaderCellDef>Commission</th>
-                        <td mat-cell *matCellDef="let element">{{ element.commissionAmount | currency:'GBP' }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="BonusAmount">
-                        <th mat-header-cell *matHeaderCellDef>Bonus</th>
-                        <td mat-cell *matCellDef="let element">{{ element.bonusAmount | currency:'GBP' }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="OptInType">
-                        <th mat-header-cell *matHeaderCellDef>Opt In Type</th>
-                        <td mat-cell *matCellDef="let element">{{ element.optInType }}</td>
-                    </ng-container>                   
-
-                    <!-- Header and Row Declarations -->
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
-                </table>
-            </div>
-            <div class="zero-records p-b-8" *ngIf="!isLoading && commissionList?.length == 0"><img
-                    src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span>
             </div>
         </mat-card-content>
     </mat-card>

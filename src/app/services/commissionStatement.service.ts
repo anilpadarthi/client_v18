@@ -24,8 +24,8 @@ export class CommissionStatementService {
   }
 
 
-  getCommissionStatementReport(requestBody: any): Observable<boolean> {
-    const url = this.url + '/GetCommissionStatementReport';
+  downloadPDFStatementReport(requestBody: any): Observable<boolean> {
+    const url = this.url + '/DownloadPDFStatementReport';
     return this.exportService.downloadToPDF(url, requestBody, 'Commission_Statement.pdf');
   }
 

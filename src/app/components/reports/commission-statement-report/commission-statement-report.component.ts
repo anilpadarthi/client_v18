@@ -22,8 +22,10 @@ export class CommissionStatementReportComponent implements OnInit {
   selectedAreaId = null;
   selectedShopId = null;
   selectedUserId = null;
-  filterMode = null;
+  filterMode = 'All';
+  filterExcelMode = 'All';
   totalCount = 0;
+  monthDate: string | null = null;
   fromMonth: string | null = null;
   toMonth: string | null = null;
   areaLookup: any = [];
@@ -38,6 +40,7 @@ export class CommissionStatementReportComponent implements OnInit {
   filteredShops: any[] = [];
   userFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
+  isDisplayChequeInfo = true;
 
   displayedColumns: string[] = [
     'Action',
@@ -150,7 +153,7 @@ export class CommissionStatementReportComponent implements OnInit {
     this.fromMonth = null;
     this.toMonth = null;
     this.selectedUserId = null;
-    this.filterMode = null;
+    this.filterMode = 'All';
     this.commissionList = [];
   }  
 
@@ -166,20 +169,26 @@ export class CommissionStatementReportComponent implements OnInit {
       shopId: this.selectedShopId,
       userId: this.selectedUserId,
       reportType: mode,
-      filterMode: this.filterMode
+      filterMode: this.filterMode,
+      isDisplayChequeInfo: this.isDisplayChequeInfo
 
     }
     this.toasterService.showMessage("Downloading...");
-    this.commissionStatementService.getCommissionStatementReport(requestBody).subscribe((res) => {
+    this.commissionStatementService.downloadPDFStatementReport(requestBody).subscribe((res) => {
       if (res) {
         this.toasterService.showMessage("Successfully downloaded.");
       }
     });
   }
 
-  exportToExcel(): void {
-    this.toasterService.showMessage("Downloading...");
-    this.commissionStatementService.exportCommissionChequeExcel(this.filterMode, this.fromMonth);
+  exportToExcel(): void {    
+     if(this.monthDate && this.filterExcelMode){
+      this.toasterService.showMessage("Downloading...");
+      this.commissionStatementService.exportCommissionChequeExcel(this.filterExcelMode, this.monthDate);
+    }
+    else {
+      this.toasterService.showMessage('Please select month before proceeding.')
+    }
   }
 
   // Handle Year Selection (no action needed)
@@ -191,6 +200,14 @@ export class CommissionStatementReportComponent implements OnInit {
   choseFromMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.fromMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+    return formattedMonth + "-01";
+  }
+
+  // Handle Month Selection
+  choseFromMonth1Handler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.monthDate = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
     return formattedMonth + "-01";
   }

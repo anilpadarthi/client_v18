@@ -12,7 +12,7 @@ export const environment = {
 
   host: 'http://localhost:5170',
   backend:  {
-    host: 'https://uat-api.leap-tel.com'
+      host: 'https://localhost:51544'
   },
   frontend:  {
    host: 'https://localhost:4200' 

@@ -93,7 +93,12 @@ export class AreaCommissionsComponent implements OnInit {
 
 
   onFilter(): void {
-    this.loadData();
+    if(this.selectedAreaId && this.fromMonth ){
+      this.loadData();
+    }
+    else {
+      this.toasterService.showMessage('Please select both a month and an area before proceeding.')
+    }
   }
 
   onReset(): void {
