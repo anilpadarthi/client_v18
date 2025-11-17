@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
+import { ToasterService } from '../../../services/toaster.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -46,7 +46,7 @@ export class HistoricalActivationReportComponent implements OnInit {
 
   constructor(
     private datePipe: DatePipe,
-    private _snackBar: MatSnackBar,
+    private toasterService: ToasterService,
     private router: Router,
     private reportService: ReportService,
     private lookupService: LookupService,
@@ -83,8 +83,8 @@ export class HistoricalActivationReportComponent implements OnInit {
     this.managerFilterCtrl.valueChanges.subscribe(() => {
       this.filterManagers();
     });
-
   }
+  
 
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
@@ -153,7 +153,7 @@ export class HistoricalActivationReportComponent implements OnInit {
 
   loadData(): void {
 
-    if (this.fromMonth) {
+    if (this.fromMonth && this.toMonth) {
       const requestBody = {
         fromDate: this.fromMonth,
         toDate: this.toMonth,
@@ -175,7 +175,7 @@ export class HistoricalActivationReportComponent implements OnInit {
       });
     }
     else {
-      this._snackBar.open("Please select any month");
+       this.toasterService.showMessage('Please select both a month and an area before proceeding.')
     }
   }
 

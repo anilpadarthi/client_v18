@@ -54,6 +54,8 @@ export class OnFieldShopOrderListComponent implements OnInit {
   orderNumberSearch = null;
   trackNumberSearch = null;
   orderList = [];
+  hasVATInvoiceAccess = false;
+  userRole = '';
 
   constructor(
     public dialog: MatDialog,
@@ -65,7 +67,12 @@ export class OnFieldShopOrderListComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void { 
+    this.userRole = this.webstorgeService.getUserRole();
+
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+      this.hasVATInvoiceAccess = true;
+    }
     this.loadData();
     this.loadDropDowns();
   }
@@ -205,8 +212,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
   }
 
   sendEmail(orderId: number): void {
-    console.log('test');
-    this.orderService.sendVATInvoice(orderId).subscribe((res) => {
+    this.orderService.sendInvoice(orderId,true).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage('Email sent successfully.');
       }

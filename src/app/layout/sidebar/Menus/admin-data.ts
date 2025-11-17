@@ -141,7 +141,7 @@ export const AdminItems: NavItem[] = [
         route: 'report/monthly-accessories-report',
       },
       {
-        displayName: 'Accessories Commission Percent Report',
+        displayName: 'Accessories Commission Percent',
         iconName: 'arrow_right',
         route: 'report/monthly-accessories-commision-percent-report',
       },

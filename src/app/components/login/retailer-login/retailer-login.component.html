@@ -1,0 +1,53 @@
+<div class="blank-layout-container justify-content-center login-container">
+  <div class="position-relative row w-100 h-100">
+    <div class="col-lg-7 col-xl-12 bg-gredient" *ngIf="!isMobile">
+      
+    </div>
+    <div class="col-xl-12" *ngIf="isMobile"></div>
+    <div class="col-lg-5 col-xl-12">
+      <div class="h-100 d-flex align-items-start align-items-lg-center justify-content-center">
+      <div class="p-32 login-form">
+        <div class="row justify-content-center m-t-30">
+          <div class="col-lg-10 max-width-form">
+            <h2 class="login-label">Retailer Login</h2>
+            <div class="text-center mb-4">
+              <a [routerLink]="['/dashboards/dashboard1']">
+                <img src="./assets/images/logos/logo.png" class="leap-logo" alt="logo" />
+              </a>
+            </div>
+            <form class="m-t-30" [formGroup]="loginForm" (ngSubmit)="submit()">
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">UserName or Email</mat-label>
+              <mat-form-field class="w-100">
+                <input matInput formControlName="email" />
+                <mat-icon class="material-symbols-outlined" matSuffix>mail</mat-icon>
+                <mat-error *ngIf="hasError('email', 'required')">This field is required</mat-error>
+                <!-- <mat-error *ngIf="hasError('email', 'email')">Email is not valid</mat-error> -->
+              </mat-form-field>
+
+              <!-- password -->
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block m-t-10">Password</mat-label>
+              <mat-form-field class="w-100">
+                <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+                  <mat-icon class="material-symbols-outlined">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="hasError('password', 'required')">password is required</mat-error>
+                <mat-error *ngIf="hasError('password', 'minlength')">password is not valid</mat-error>
+              </mat-form-field>
+              <div style="text-align: center; margin:1em">
+                <span style="color:red" *ngIf="!isValidLogin">Invalid email or password</span>
+              </div>
+              <button mat-flat-button class="w-100 primary-btn login-btn" [disabled]="!loginForm.valid">
+                <mat-icon>login</mat-icon>
+                Sign In
+              </button>
+              <!-- input -->
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

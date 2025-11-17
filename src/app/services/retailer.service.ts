@@ -14,15 +14,19 @@ export class RetailerService {
     this.url = `api/Retailer`
   }
 
-  
+
   getActivations(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetActvations', requestBody);
   }
 
-  getCommissions(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + '/GetCommissions', requestBody);
+  getSimGiven(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetSimGiven', requestBody);
   }
-  
+
+  getRetailerCommissionList(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetRetailerCommissionList', requestBody);
+  }
+
   getStockVsConnections(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetStockVsConnections', requestBody);
   }

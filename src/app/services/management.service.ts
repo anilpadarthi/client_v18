@@ -15,4 +15,27 @@ export class ManagementService {
     CreateWhatsAppNotificationRequest(requestBody: any): Observable<ICommonResponse> {
         return this.http.post<ICommonResponse>(this.url + '/CreateWhatsAppNotificationRequest', requestBody);
     }
+
+    salaryInAdvance(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/SalaryInAdvance', requestBody);
+    }
+
+    getUserSalaryTransaction(id: number): Observable<ICommonResponse> {
+        return this.http.get<ICommonResponse>(this.url + `/GetUserSalaryTransaction?userSalaryTransactionID=${id}`);
+    }
+
+    createUserSalaryTransaction(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/CreateUserSalaryTransaction', requestBody);
+    }
+
+    updateUserSalaryTransaction(requestBody: any): Observable<ICommonResponse> {
+        return this.http.put<ICommonResponse>(this.url + '/UpdateUserSalaryTransaction', requestBody);
+    }
+
+    deleteUserSalaryTransaction(id: any): Observable<ICommonResponse> {
+        return this.http.delete<ICommonResponse>(this.url + `/DeleteUserSalaryTransaction?userSalaryTransactionID=${id}`);
+    }
+
+
+
 }

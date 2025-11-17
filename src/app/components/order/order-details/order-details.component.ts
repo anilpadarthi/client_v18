@@ -46,7 +46,8 @@ export class OrderDetailsComponent implements OnInit {
   ];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private orderService: OrderService,
     private toasterService: ToasterService,
     private webstorgeService: WebstorgeService,

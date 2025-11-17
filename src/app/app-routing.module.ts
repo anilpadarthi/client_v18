@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { RetailerLoginComponent } from './components/login/retailer-login/retailer-login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AreaListComponent } from './components/area/area-list/area-list.component';
 import { AreaEditorComponent } from './components/area/area-editor/area-editor.component';
@@ -63,6 +64,7 @@ import { CommissionStatementsComponent } from './components/retailer/commission-
 import { StockConversionComponent } from './components/retailer/stock-conversion/stock-conversion.component';
 import { SalesManagerComponent } from './components/retailer/sales-manager/sales-manager.component';
 import { ContactusComponent } from './components/retailer/contactus/contactus.component';
+import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
 
 
 
@@ -102,7 +104,7 @@ const routes: Routes = [
       { path: 'mix-match-groups', component: MixMatchGroupListComponent },
       { path: 'mix-match-groups/create', component: MixMatchGroupEditorComponent },
       { path: 'mix-match-groups/edit/:id', component: MixMatchGroupEditorComponent },
-      
+
 
       { path: 'sub-categories', component: SubCategoryListComponent },
       { path: 'sub-category/create', component: SubCategoryEditorComponent },
@@ -136,7 +138,7 @@ const routes: Routes = [
       { path: 'management/expenses', component: ExpensesComponent },
       { path: 'management/expenses-form', component: ExpensesFormComponent },
       { path: 'management/revenue', component: ExpensesFormComponent },
-      { path: 'commission-cheque-status', component:  CommissionChequeStatusComponent},
+      { path: 'commission-cheque-status', component: CommissionChequeStatusComponent },
       { path: 'management/bank-cheques', component: ExpensesFormComponent },
       { path: 'management/commission-cheque-withdraw', component: ChequeWithdrawnReportComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
@@ -156,6 +158,20 @@ const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
       { path: 'chat', component: GroupChatComponent },
+
+
+      { path: 'retailer/dashboard', component: RetailerComponent },
+      { path: 'retailer/siminfo', component: ImeiSearchComponent },
+      { path: 'retailer/stock', component: StockComponent },
+      { path: 'retailer/activations', component: ActivationsComponent },
+      { path: 'retailer/commissions', component: CommissionStatementsComponent },
+      { path: 'retailer/stockvsconnections', component: StockConversionComponent },
+      { path: 'retailer/sales', component: OrderListComponent },
+      { path: 'retailer/sales-manager', component: SalesManagerComponent },
+      { path: 'retailer/profile', component: EditProfileComponent },
+      { path: 'retailer/changepassword', component: ChangePasswordComponent },
+      { path: 'retailer/contactus', component: ContactusComponent },
+
     ],
   },
   { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent },
@@ -163,18 +179,9 @@ const routes: Routes = [
   { path: 'accessories/sim-request', component: AgentSimOrderComponent },
   { path: 'accessories/list', component: OpenAccessoriesComponent },
 
-  { path: 'retailer/dashboard', component: RetailerComponent },
-  { path: 'retailer/siminfo', component: ImeiSearchComponent },
-  { path: 'retailer/stock', component: StockComponent },
-  { path: 'retailer/activations', component: ActivationsComponent },
-  { path: 'retailer/commissions', component: CommissionStatementsComponent },
-  { path: 'retailer/stockvsconnections', component: StockConversionComponent },
-  { path: 'retailer/sales', component: OrderListComponent },
-  { path: 'retailer/sales-manager', component: SalesManagerComponent },
-  { path: 'retailer/changepassword', component: ChangePasswordComponent },
-  { path: 'retailer/profile', component: ChangePasswordComponent },
 
   { path: 'login', component: LoginComponent },
+  { path: 'retailer/login', component: RetailerLoginComponent },
 
   { path: '**', redirectTo: '/login' }
 ];

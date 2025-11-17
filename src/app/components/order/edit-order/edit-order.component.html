@@ -38,7 +38,7 @@
         <mat-accordion>
             <mat-expansion-panel>
                 <!-- New Arrival Category -->
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header (click)="loadNewArrivals()">
                     <mat-panel-title>
                         New Arrivals
                     </mat-panel-title>
@@ -113,7 +113,7 @@
                             <p class="sale-price text-right">
                                 <ng-container *ngIf="item.hasPriceStructure; else normalPrice">
                                   <span class="strike-out">£{{ item.salePrice | number:'1.2-2' }}</span>
-                                  <span> £{{ item.lowestPrice | number:'1.2-2' }}</span>
+                                  <span> £{{ item.lowestPrice | number:'1.2-2' }} onwards</span>
                                 </ng-container>
                             
                                 <ng-template #normalPrice>

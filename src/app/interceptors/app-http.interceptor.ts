@@ -4,13 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-import { WebstorgeService } from '../services/web-storage.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {
 
   constructor(
-    private webstorgeService: WebstorgeService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -26,11 +26,11 @@ export class AppHttpInterceptor implements HttpInterceptor {
         url: `${environment.backend.host}/${req.url}`
       });
 
-      const token = this.webstorgeService.getSession();
-      if (token) {
+       const accessToken = this.authService.getAccessToken();
+      if (accessToken) {
         req = req.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
             Accept: req.url.includes('Pdf')
               ? 'application/pdf'
               : 'application/json',

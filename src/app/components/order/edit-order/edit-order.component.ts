@@ -139,9 +139,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplaySubCatgories = false;
     this.isCartView = false;
     this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
-      this.products = res.data;
+      this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {e.salePrice = e.productPrices[0].salePrice;
         e.hasPriceStructure =  e.productPrices.length > 1;
         e.lowestPrice = Math.min(...e.productPrices.map((p:any) => p.salePrice));
@@ -156,6 +157,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplaySubCatgories = true;
     this.isCartView = false;
     this.isMainView = true;
+    this.isDisplayProductDetails = false;
     this.subCategories = item.subCategories;
   }
 
@@ -262,6 +264,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayCatgories = true;
     this.isDisplaySubCatgories = false;
     this.isDisplayProducts = false;
+    this.isDisplayProductDetails = false;
     window.scrollTo(0, 0);
   }
 
@@ -336,7 +339,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayProductDetails = false;
     this.orderService.loadNewArrivals().subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
-      this.products = res.data;
+      this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;
         e.qty = 0;

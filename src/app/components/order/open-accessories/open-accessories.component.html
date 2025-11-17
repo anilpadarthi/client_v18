@@ -27,7 +27,7 @@
         <mat-accordion>
             <mat-expansion-panel>
                 <!-- New Arrival Category -->
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header (click)="loadNewArrivals()">
                     <mat-panel-title>
                         New Arrivals
                     </mat-panel-title>
@@ -102,8 +102,11 @@
                             <p class="sale-price text-right">£{{ item.salePrice | number: '1.2-2' }}</p>
                         </div>
                         <div class="d-flex">
-                            <div class="d-flex quantity-container" style="color:green">
+                            <div class="d-flex quantity-container" *ngIf="!item.isOutOfStock" style="color:green">
                                 In Stock
+                            </div>
+                            <div class="d-flex quantity-container" *ngIf="item.isOutOfStock" style="color:red">
+                              Out of Stock
                             </div>
                         </div>
                     </mat-card>

@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { RetailerLoginComponent } from './components/login/retailer-login/retailer-login.component';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -13,11 +14,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { SpinnerInterceptor } from '../app/interceptors/spinner.interceptor';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { NgIdleModule } from '@ng-idle/core';
+
 
 
 //Import Layouts
@@ -129,6 +134,7 @@ import { ChangePasswordComponent } from './components/user/change-password/chang
 import { CommissionChequeStatusComponent } from './components/management/commission-cheque-status/commission-cheque-status.component';
 import { MixMatchGroupEditorComponent } from './components/mix-match-group/mix-match-group-editor/mix-match-group-editor.component';
 import { MixMatchGroupListComponent } from './components/mix-match-group/mix-match-group-list/mix-match-group-list.component';
+import { SalaryTransactionEditorComponent } from './components/management/salary-transaction-editor/salary-transaction-editor.component';
 
 
 registerLocaleData(localeGb, 'en-GB');
@@ -140,13 +146,14 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent,    
     HomeComponent,
     LayoutComponent,
     SidebarComponent,
     HeaderComponent,
     BrandingComponent,
     AppNavItemComponent,
+    RetailerLoginComponent,
     AreaListComponent,
     AreaEditorComponent,
     ShopListComponent,
@@ -240,7 +247,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CommissionChequeStatusComponent,
     MixMatchGroupListComponent,
     MixMatchGroupEditorComponent,
-    RetailerComponent
+    RetailerComponent,
+    SalaryTransactionEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -254,6 +262,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ReactiveFormsModule,
     NgScrollbarModule,
     NgxMatSelectSearchModule,
+    NgIdleModule.forRoot(),
+    NgIdleKeepaliveModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -269,6 +279,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

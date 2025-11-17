@@ -4,8 +4,8 @@
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
       <div class="row">
-        <div class="col-sm-3">
-          <mat-form-field appearance="outline">
+        <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Select Month</mat-label>
             <input matInput [matDatepicker]="monthPicker" [(ngModel)]="selectedMonth" readonly>
             <mat-datepicker-toggle matSuffix [for]="monthPicker"></mat-datepicker-toggle>
@@ -14,7 +14,7 @@
             </mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-sm-3" *ngIf="isAdmin">
+        <div class="col-sm-2" *ngIf="isAdmin">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
@@ -28,7 +28,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-3" *ngIf="isAdmin">
+        <div class="col-sm-2" *ngIf="isAdmin">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Agent</mat-label>
             <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">
@@ -42,9 +42,11 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-3 space-between-buttons">
+        <div class="col-sm-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+
+          <button mat-flat-button color="primary" (click)="addTransaction()">Add Salary</button>
         </div>
       </div>
       <p class="info-msg">** Accounts are calculated from 26th to 25th **</p>
@@ -54,7 +56,7 @@
           <table mat-table [dataSource]="salaryDetails" class="w-100 custom-table">
 
             <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef></th>
+              <th mat-header-cell *matHeaderCellDef>Description</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.description }}</td>
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
@@ -159,11 +161,11 @@
         </div>
       </div>
 
-      <div *ngIf="salaryInAdvance.length > 0">
-        <h3>Advance Payments</h3>
+      <div *ngIf="salaryTransactions.length > 0">
+        <h3>Payments</h3>
         <div class="table-responsive table-scroll example-container m-t-12">
 
-          <table mat-table [dataSource]="salaryInAdvance" class="w-100 custom-table">
+          <table mat-table [dataSource]="salaryTransactions" class="w-100 custom-table">
 
             <ng-container matColumnDef="comments">
               <th mat-header-cell *matHeaderCellDef class="center">Description</th>
@@ -172,12 +174,24 @@
 
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef class="center">Date</th>
-              <td mat-cell *matCellDef="let element" class="center">{{ element.createdDate }}</td>
+              <td mat-cell *matCellDef="let element" class="center">{{ element.transactionDate | date: 'dd/MM/yyyy' }}</td>
             </ng-container>
 
             <ng-container matColumnDef="amount">
               <th mat-header-cell *matHeaderCellDef class="center">Rate</th>
               <td mat-cell *matCellDef="let element" class="center">£{{ element.amount | number : "1.2-2" }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="center"></th>
+              <td mat-cell *matCellDef="let element" class="center">
+                <a class="m-r-10 cursor-pointer" (click)="editTransaction(element.userSalaryTransactionID)">
+                  <mat-icon>edit</mat-icon>
+                </a>
+                <a class="m-r-10 cursor-pointer" (click)="deleteTransaction(element.userSalaryTransactionID)">
+                  <mat-icon>delete</mat-icon>
+                </a>
+              </td>
             </ng-container>
 
 
@@ -203,7 +217,8 @@
           </tr>
           <tr>
             <td class="text-right">Grand Total :</td>
-            <td class="text-right">£{{ (totalSalary + totalSimCommission + totalAccessoriesCommission) | number : "1.2-2"}}
+            <td class="text-right">£{{ (totalSalary + totalSimCommission + totalAccessoriesCommission) | number :
+              "1.2-2"}}
             </td>
           <tr>
             <td class="text-right">Salary In Advance :</td>

@@ -30,6 +30,18 @@
                         <td mat-cell *matCellDef="let element">
                             {{ element.shopId }}
                         </td>
+                    </ng-container>                    
+                     <ng-container matColumnDef="ShopName">
+                        <th mat-header-cell *matHeaderCellDef>Shop Name</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.shopName }}
+                        </td>
+                    </ng-container>
+                     <ng-container matColumnDef="PostCode">
+                        <th mat-header-cell *matHeaderCellDef>Post Code</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.postCode }}
+                        </td>
                     </ng-container>
                     <ng-container matColumnDef="ChequeNumber">
                         <th mat-header-cell *matHeaderCellDef>Cheque Number</th>

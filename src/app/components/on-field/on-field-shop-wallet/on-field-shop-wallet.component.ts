@@ -21,6 +21,7 @@ export class OnFieldShopWalletComponent implements OnInit {
   bonusAmount = 0.00;
   instantBonusAmount = 0.00;
   isDisplayInstantBonus = false;
+  hasViewWalletHistory = false;
   private isFirstChange = true;
   isLoading = false;
 
@@ -39,6 +40,7 @@ export class OnFieldShopWalletComponent implements OnInit {
     let userRole = this.webstorgeService.getUserRole();
     if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.isDisplayInstantBonus = true;
+      this.hasViewWalletHistory = true;
     }
   }
 
@@ -71,13 +73,15 @@ export class OnFieldShopWalletComponent implements OnInit {
 
 
   openShopWalletHistoryDialog(walletType: string): void {
-    const data = {
-      shopId: this.selectedShopId,
-      walletType: walletType,
-    };
-    const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
-      data
-    });
+    if (this.hasViewWalletHistory) {
+      const data = {
+        shopId: this.selectedShopId,
+        walletType: walletType,
+      };
+      const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
+        data
+      });
+    }
   }
 
   openShoppingPage(type: any): void {

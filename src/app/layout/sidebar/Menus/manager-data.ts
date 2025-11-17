@@ -118,11 +118,11 @@ export const ManagerItems: NavItem[] = [
         route: 'management/attendance-report',
       },
 
-      {
-        displayName: 'Shop Commission Cheques',
-        iconName: 'arrow_right',
-        route: 'management/shop-commission-cheques',
-      },
+      // {
+      //   displayName: 'Shop Commission Cheques',
+      //   iconName: 'arrow_right',
+      //   route: 'management/shop-commission-cheques',
+      // },
       {
         displayName: 'Bank Cheques',
         iconName: 'arrow_right',

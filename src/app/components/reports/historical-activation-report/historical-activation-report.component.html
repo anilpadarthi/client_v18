@@ -24,9 +24,9 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay && isAdmin">
           <mat-label>Manager</mat-label>
           <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager" (selectionChange)="managerChange()">
-             <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
               <span>{{ item.name }}</span>
@@ -37,9 +37,9 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Agent</mat-label>
           <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent" (selectionChange)="agentChange()">
-             <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
               <span>{{ item.name }}</span>
@@ -50,15 +50,15 @@
         <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
           <mat-label>Area</mat-label>
           <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
-             <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
               <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
             </mat-option>
           </mat-select>
-        </mat-form-field>        
+        </mat-form-field>
 
         <div class="col-sm-12 col-lg-2">
           <mat-checkbox color="primary" [(ngModel)]="isInstantActivation">Instant Act.</mat-checkbox>
@@ -66,31 +66,42 @@
 
         <div class="col-sm-12 col-lg-4 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>          
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
         </div>
       </div>
       <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
       <div *ngIf="activationList?.length > 0" class="table-responsive table-scroll example-container">
-        <table mat-table [dataSource]="activationList" class="w-100 custom-table">
-          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef [class.sticky-column]="stickyColumns.includes(column)" [ngClass]="column !== 'Name' ? 'center' : ''">
+
+        <table mat-table [dataSource]="activationList" class="custom-table mat-elevation-z8">
+
+          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
+            [sticky]="stickyColumns.includes(column)">
+
+            <th mat-header-cell *matHeaderCellDef
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
               {{ column }}
             </th>
-            <td mat-cell *matCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)"  [ngClass]="column !== 'Name' ? 'center' : ''">
+
+            <td mat-cell *matCellDef="let row"
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
               {{ row[column] }}
             </td>
 
-            <td mat-footer-cell *matFooterCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)"  [ngClass]="column !== 'Name' ? 'center' : ''">
-              {{ getTotal(column)}}
+            <td mat-footer-cell *matFooterCellDef
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
+              {{ getTotal(column) }}
             </td>
           </ng-container>
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
         </table>
       </div>
-      <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-        <span>No records found</span></div>
+      <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img
+          src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

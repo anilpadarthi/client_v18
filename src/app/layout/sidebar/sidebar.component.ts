@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit {
   @Input() showToggle = true;
   @Output() toggleMobileNav = new EventEmitter<void>();
   @Output() toggleCollapsed = new EventEmitter<void>();
+  
   constructor(
     public navService: NavService,
     public webstorgeService: WebstorgeService,

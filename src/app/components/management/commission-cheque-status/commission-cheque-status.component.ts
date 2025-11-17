@@ -16,6 +16,8 @@ export class CommissionChequeStatusComponent implements OnInit {
 
   displayedColumns: string[] = [
     'ShopId',
+    'ShopName',
+    'PostCode',
     'ChequeNumber',
     'TotalAmount',
     'CommissionDate',

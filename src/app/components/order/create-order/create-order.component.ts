@@ -226,12 +226,12 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     //this.products = this.totalProducts.filter(f => f.subCategoryId == subCategoryId);
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
-      this.products = res.data;
+      this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;
         e.qty = 0;
-        e.hasPriceStructure =  e.productPrices.length > 1;
-        e.lowestPrice = Math.min(...e.productPrices.map((p:any) => p.salePrice));
+        e.hasPriceStructure = e.productPrices.length > 1;
+        e.lowestPrice = Math.min(...e.productPrices.map((p: any) => p.salePrice));
       });
     });
 
@@ -328,8 +328,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
           item.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
         }
         item.netAmount = Number(item.qty) * item.salePrice;
-        item.vatAmount = (item.netAmount * this.vatPercentage) / 100;       
-      }      
+        item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
+      }
     });
   }
 
@@ -523,7 +523,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayProductDetails = false;
     this.orderService.loadNewArrivals().subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
-      this.products = res.data;
+      this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;
         e.qty = 0;

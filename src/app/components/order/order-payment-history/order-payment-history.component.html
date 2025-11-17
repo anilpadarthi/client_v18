@@ -48,10 +48,10 @@
                     
                 </th>
                 <td mat-cell *matCellDef="let element" class="action-link">
-                    <a class="m-r-10 cursor-pointer" *ngIf="isDisplay && element.collectedStatus!='PPS'" (click)="collectedByAdmin(element.orderPaymentId)">
+                    <a class="m-r-10 cursor-pointer" *ngIf="canDeletePayment && element.collectedStatus !='PPS'" (click)="collectedByAdmin(element.orderPaymentId)">
                         Collect by Admin
                     </a>
-                    <a class="m-r-10 cursor-pointer" *ngIf="isDisplay" (click)="deleteclick(element.orderPaymentId)">
+                    <a class="m-r-10 cursor-pointer" *ngIf="canDeletePayment || element.collectedStatus =='PPA' " (click)="deleteclick(element.orderPaymentId)">
                         <mat-icon>delete</mat-icon>
                     </a>
                 </td>

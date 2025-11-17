@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
+import { ManagementService } from '../../../services/management.service';
 import { LookupService } from '../../../services/lookup.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
+import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment from 'moment';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { SalaryTransactionEditorComponent } from '../salary-transaction-editor/salary-transaction-editor.component';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+
 
 
 @Component({
@@ -30,7 +36,7 @@ export class PaySlipComponent implements OnInit {
   accessoriesCommisssionDetails: any = [];
   simCommissionDetails: any = [];
   salaryDetails: any = [];
-  salaryInAdvance: any = [];
+  salaryTransactions: any = [];
   isAdmin = false;
   userRole: any;
   loggedInUserId: any;
@@ -42,15 +48,18 @@ export class PaySlipComponent implements OnInit {
   filteredManagers: any[] = [];
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
-  displayedColumns1: string[] = ['NetworkName', 'ActivationCount','Rate', 'Total'];
+  displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
   displayedColumns2: string[] = ['saleType', 'totalSale', 'rate', 'total'];
-  displayedColumns3: string[] = ['comments', 'date', 'amount'];
+  displayedColumns3: string[] = ['comments', 'date', 'amount', 'action'];
 
   constructor(
     public datePipe: DatePipe,
     private reportService: ReportService,
     private lookupService: LookupService,
-    private webstorgeService: WebstorgeService
+    private webstorgeService: WebstorgeService,
+    private managementService: ManagementService,
+    private toasterService: ToasterService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -80,14 +89,14 @@ export class PaySlipComponent implements OnInit {
 
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
-    this.filteredUsers = this.userLookup.filter((item:any) =>
+    this.filteredUsers = this.userLookup.filter((item: any) =>
       `${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 
   private filterManagers() {
     const search = this.managerFilterCtrl.value?.toLowerCase() || '';
-    this.filteredManagers = this.managerLookup.filter((item:any) =>
+    this.filteredManagers = this.managerLookup.filter((item: any) =>
       `${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
@@ -118,13 +127,13 @@ export class PaySlipComponent implements OnInit {
         this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
         this.accessoriesCommisssionDetails = res.data.salaryAccessoriesCommissionDetailsModel;
         this.salaryDetails = res.data.salaryDetailsModel;
-        this.salaryInAdvance = res.data.salaryInAdvanceModel;
+        this.salaryTransactions = res.data.salaryTransactions;
         this.totalSalary = this.salaryDetails.reduce((sum: any, item: any) => sum + item.total, 0);
         this.totalActivations = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.activationCount, 0);
         this.totalSimCommission = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
         this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.totalSale, 0);
         this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
-        this.totalSalaryInAdvance = this.salaryInAdvance.reduce((sum: any, item: any) => sum + item.amount, 0);
+        this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
         this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
         this.kpi1Percentage = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1AchivedPercentage : 0.00;
       }
@@ -156,6 +165,52 @@ export class PaySlipComponent implements OnInit {
     this.accessoriesCommisssionDetails = [];
     this.simCommissionDetails = [];
     this.salaryDetails = [];
+  }
+
+  addTransaction(): void {
+    if (this.selectedAgentId && this.selectedMonth) {
+      var data = {
+        userId: this.selectedAgentId,
+      }
+      this.dialog.open(SalaryTransactionEditorComponent, {
+        data
+      });
+    }
+    else {
+      this.toasterService.showMessage("Please select agent before to proceed.");
+    }
+  }
+
+  editTransaction(userSalaryTransactionID: number): void {
+    this.managementService.getUserSalaryTransaction(userSalaryTransactionID).subscribe((res) => {
+      this.dialog.open(SalaryTransactionEditorComponent, {
+        data: res.data
+      });
+    });
+  }
+
+  deleteTransaction(userSalaryTransactionID: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: 'Are you sure you want to delete?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.managementService.deleteUserSalaryTransaction(userSalaryTransactionID).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage("Deleted successfully");
+            this.loadData();
+          }
+          else {
+            this.toasterService.showMessage(res.data);
+          }
+        });
+      }
+    });
   }
 
 }

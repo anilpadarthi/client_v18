@@ -3,9 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from '../../../services/order.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { OnFieldService } from '../../../services/on-field.service';
 import { environment } from '../../../../environments/environment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
+import { WebstorgeService } from '../../../services/web-storage.service';
 
 @Component({
   selector: 'app-order-payment-editor',
@@ -20,11 +22,16 @@ export class OrderPaymentEditorComponent {
   paymentId: any = null;
   orderId: any = null;
   shopId: any = null;
-  IsDisplayAvailableCheques = false;
+  paymentType = '';
   IsDisabled = false;
   availableCommissionChequeNumbers: any[] = [];
   balanceAmount = 0.00;
+  commissionWalletAmount = 0.00;
+  bonusWalletAmount = 0.00;
+  instantBonusWalletAmount = 0.00;
   selectedOption: any = '';
+  isAdmin = false;
+  isLoading = false;
 
   constructor
     (
@@ -32,6 +39,8 @@ export class OrderPaymentEditorComponent {
       private orderService: OrderService,
       private toasterService: ToasterService,
       private lookupService: LookupService,
+      private onFieldService: OnFieldService,
+      private webstorgeService: WebstorgeService,
       private fb: FormBuilder,
       public dialogRef: MatDialogRef<OrderPaymentEditorComponent>,
     ) {
@@ -52,8 +61,13 @@ export class OrderPaymentEditorComponent {
   }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
     this.referenceImagePreview = '/assets/images/profile/user-1.jpg';
     this.loadAvailableCheques();
+    this.loadShopWallets();
     this.getOrderPaymentDetails();
   }
 
@@ -73,6 +87,21 @@ export class OrderPaymentEditorComponent {
     });
   }
 
+  loadShopWallets() {
+    this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
+      if (res.data != null) {
+        this.commissionWalletAmount = res.data?.outstandingCommissionAmount;
+        this.bonusWalletAmount = res.data?.outstandingBonusAmount;
+        console.log(this.bonusWalletAmount);
+      }
+      else {
+        this.commissionWalletAmount = 0;
+        this.bonusWalletAmount = 0;
+        this.instantBonusWalletAmount = 0;
+      }
+    });
+  }
+
   getOrderPaymentDetails() {
     if (this.paymentId != null && this.paymentId > 0) {
       this.orderService.getPayment(this.paymentId).subscribe((res) => {
@@ -86,6 +115,19 @@ export class OrderPaymentEditorComponent {
 
   onSave() {
     if (this.paymentForm.valid) {
+      if (this.paymentType == "Commission" && this.paymentForm.getRawValue().amount > this.commissionWalletAmount) {
+        this.toasterService.showMessage("You cann not redem using commission wallet, It exceeds the amount");
+        return;
+      }
+      else if (this.paymentType == "Bonus" && this.paymentForm.getRawValue().amount > this.bonusWalletAmount) {
+        this.toasterService.showMessage("You cann not redem using bonus wallet, It exceeds the amount");
+        return;
+      }
+      else if (this.paymentType == "InstantBonus" && this.paymentForm.getRawValue().amount > this.instantBonusWalletAmount) {
+        this.toasterService.showMessage("You cann not redem using instant bonus wallet, It exceeds the amount");
+        return;
+      }
+      this.isLoading = true;
       const formBody = new FormData();
       formBody.append('orderId', this.orderId != null ? this.orderId : 0);
       formBody.append('shopId', this.shopId != null ? this.shopId : 0);
@@ -94,6 +136,7 @@ export class OrderPaymentEditorComponent {
       formBody.append('referenceNumber', this.paymentForm.getRawValue().referenceNumber);
       formBody.append('amount', this.paymentForm.getRawValue().amount);
       formBody.append('comments', this.paymentForm.value.comments);
+
       if (this.referenceImagePreview != null) {
         formBody.append('referenceImage', this.paymentForm.value.image);
       }
@@ -106,6 +149,7 @@ export class OrderPaymentEditorComponent {
         else {
           this.toasterService.showMessage(res.data);
         }
+        this.isLoading = false;
       });
 
     }
@@ -143,20 +187,45 @@ export class OrderPaymentEditorComponent {
     this.paymentForm.patchValue({ referenceNumber: null });
     this.paymentForm.patchValue({ amount: null });
     this.paymentForm.patchValue({ chequeNumber: null });
+    this.paymentType = event.value;
 
-    if (event.value == 'CommissionCheque') {
-      this.IsDisplayAvailableCheques = true;
-      this.paymentForm.get('referenceNumber')?.disable();
-      this.paymentForm.get('amount')?.disable();
-      this.paymentForm.get('chequeNumber')?.setValidators(Validators.required);
+    const ref = this.paymentForm.get('referenceNumber');
+    const amt = this.paymentForm.get('amount');
+    const cheque = this.paymentForm.get('chequeNumber');
+    const amountType = this.paymentForm.get('amountType');
+
+    if (event.value === 'CommissionCheque') {
+
+      ref?.disable();
+      amt?.disable();
+
+      // Remove validators from referenceNumber and amount
+      ref?.clearValidators();
+      amt?.clearValidators();
+
+      // Add validator for chequeNumber
+      cheque?.setValidators([Validators.required]);
+
+    } else {
+
+      ref?.enable();
+      amt?.enable();
+
+      // Reset amount type if needed
+      amountType?.reset();
+
+      // Restore validators
+      ref?.setValidators([Validators.required, Validators.minLength(2)]);
+      amt?.setValidators([Validators.required]);
+
+      cheque?.clearValidators();
     }
-    else {
-      this.IsDisplayAvailableCheques = false;
-      this.paymentForm.get('referenceNumber')?.enable();
-      this.paymentForm.get('amount')?.enable();
-      this.paymentForm.get('amountType')?.reset();
-      this.paymentForm.get('chequeNumber')?.clearValidators();
-    }
+
+    // 🔥 VERY IMPORTANT (refresh validation)
+    ref?.updateValueAndValidity();
+    amt?.updateValueAndValidity();
+    cheque?.updateValueAndValidity();
+
   }
 
 }

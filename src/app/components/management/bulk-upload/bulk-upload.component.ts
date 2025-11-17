@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToasterService } from '../../../services/toaster.service';
 import { BulkUploadService } from '../../../services/bulk-upload.service';
+import { ServiceControlService } from '../../../services/service-control.service';
 
 @Component({
   selector: 'app-bulk-upload',
@@ -11,11 +12,13 @@ import { BulkUploadService } from '../../../services/bulk-upload.service';
 export class BulkUploadComponent {
   importFile: File | null = null;
   importFileType: string | null = '';
+  status = '';
 
   constructor
     (
       private bulkUploadService: BulkUploadService,
       private toasterService: ToasterService,
+      private svc: ServiceControlService
     ) { }
 
   onFileChange(event: any): void {
@@ -46,6 +49,18 @@ export class BulkUploadComponent {
       this.toasterService.showMessage('Please select both import file type and file to process further.');
     }
 
+  }
+
+  startService() {
+    this.svc.startService().subscribe(() => this.refreshStatus());
+  }
+
+  stopService() {
+    this.svc.stopService().subscribe(() => this.refreshStatus());
+  }
+
+  refreshStatus() {
+    this.svc.getStatus().subscribe(s => this.status = s);
   }
 
 }

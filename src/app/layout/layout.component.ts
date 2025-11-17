@@ -56,6 +56,8 @@ export class LayoutComponent implements OnInit {
   ) {
     this.options = this.settings.getOptions();
     this.htmlElement = document.querySelector('html')!;
+    if(this.webstorgeService.getUserInfo()) 
+      {
     var userRole = this.webstorgeService.getUserInfo().userRoleId;
     switch (userRole) {
       case 1: this.navItems = AdminItems; break;
@@ -82,6 +84,10 @@ export class LayoutComponent implements OnInit {
         this.isContentWidthFixed = state.breakpoints[MONITOR_VIEW];
         this.resView = state.breakpoints[BELOWMONITOR];
       });
+    }
+    else {
+      this.logout();
+    }
 
   }
 

@@ -25,7 +25,7 @@ export class OrderPaymentHistoryComponent implements OnInit {
     'action',
   ];
   orderId = 0;
-  isDisplay = false;
+  canDeletePayment = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,8 +39,8 @@ export class OrderPaymentHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
-      this.isDisplay = true;
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == "CallCenter") {
+      this.canDeletePayment = true;
     }
     this.loadData();
   }

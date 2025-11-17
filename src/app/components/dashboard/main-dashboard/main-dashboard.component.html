@@ -7,8 +7,7 @@
         <mat-spinner></mat-spinner>
       </div> -->
       <div class="row ng-custom-fileds m-r-2">
-        <div class="col">
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline" class="col-sm-3 w-100">
             <mat-label>Choose a Month</mat-label>
             <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
             <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
@@ -16,9 +15,7 @@
               (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
             </mat-datepicker>
           </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field appearance="outline" *ngIf="isAdmin" class="w-100">
+          <mat-form-field appearance="outline" *ngIf="isAdmin" class="col-sm-3 w-100">
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
               (selectionChange)="onManagerChanged()">
@@ -31,9 +28,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" class="w-100">
+          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" class="col-sm-3 w-100">
             <mat-label>User</mat-label>
             <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
               <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
@@ -45,7 +40,6 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
         <div class="col-auto d-flex align-items-center responsive-submit">
           <button class="primary-btn" mat-flat-button (click)="onSubmit()">Submit</button>
         </div>

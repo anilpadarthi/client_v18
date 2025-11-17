@@ -180,12 +180,13 @@ export class ProductEditorComponent {
       formBody.append('description', this.productForm.value.description || '');
       formBody.append('specification', this.productForm.value.specification || '');
       formBody.append('buyingPrice', this.productForm.value.buyingPrice || '');
-      formBody.append('isNewArrival', this.productForm.value.isNewArrival == null ? false : this.productForm.value.isNewArrival);
-      formBody.append('isOutOfStock', this.productForm.value.isOutOfStock == null ? false : this.productForm.value.isOutOfStock);
+      formBody.append('isNewArrival', this.productForm.value.isNewArrival ?? false);
+      formBody.append('isOutOfStock', this.productForm.value.isOutOfStock ?? false);
+      formBody.append('isBundle', this.productForm.value.isBundle ?? false);
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
-      formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId);
-      formBody.append('status', this.productForm.value.status ? '1' : '0');
+      formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId ?? 0);
+      formBody.append('status', this.productForm.value.status ?? '0');
       formBody.append('commissionToAgent', this.productForm.value.commissionToAgent);
       formBody.append('commissionToManager', this.productForm.value.commissionToManager);
 

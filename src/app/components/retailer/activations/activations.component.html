@@ -5,12 +5,14 @@
     <mat-card-content>
       <div class="row justify-content-between">
         <div class="col-lg-3">
-          <mat-form-field appearance="outline">
-            <mat-label>From Month</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedMonth" placeholder="Choose a Month" />
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+           <mat-form-field appearance="outline">
+          <mat-label>Choose a Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+          </mat-datepicker>
+        </mat-form-field>
         </div>
 
         <div class="col-lg-9 space-between-buttons">
@@ -19,27 +21,28 @@
         </div>
       </div>
 
-      <div *ngIf="resultList?.length > 0" class="table-responsive table-scroll example-container">
-        <table mat-table [dataSource]="resultList" class="w-100 custom-table">
-          <ng-container matColumnDef="Date">
-            <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.date }}
-            </td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
+      <div *ngIf="groupedList.length > 0" class="table-responsive table-scroll example-container">
+        <table mat-table [dataSource]="groupedList" class="w-100 custom-table">
+          
           <ng-container matColumnDef="Network">
-            <th mat-header-cell *matHeaderCellDef>Network</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.network }}
+            <th mat-header-cell *matHeaderCellDef class="center">Network</th>
+            <td mat-cell *matCellDef="let element" class="center">
+              {{ element.baseNetwork }}
             </td>
-            <td mat-footer-cell *matFooterCellDef>Total Activations</td>
+            <td mat-footer-cell *matFooterCellDef class="center">Total Activations</td>
           </ng-container>
           <ng-container matColumnDef="Activations">
             <th mat-header-cell *matHeaderCellDef class="center">Activations</th>
-            <td mat-cell *matCellDef="let element" class="center"> {{ element.activated ?? 0 }} </td>
+            <td mat-cell *matCellDef="let element" class="center"> {{ element.activationCount ?? 0 }} </td>
             <td mat-footer-cell *matFooterCellDef class="center">{{ totalActivated }}</td>
-          </ng-container>          
+          </ng-container>   
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" class="center">
+              <button (click)="loadDetails(element.baseNetwork)"> View</button>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>       
 
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

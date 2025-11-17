@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class WebstorgeService {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private authService: AuthService) { }
 
     public setSession(key: string) {
         localStorage.setItem('token', key);
@@ -19,11 +20,11 @@ export class WebstorgeService {
     }
 
     public setUserInfo(user: any) {
-        localStorage.setItem('userSession', JSON.stringify(user));
+        localStorage.setItem('userDetailsInfo', JSON.stringify(user));
     }
 
     public getUserInfo() {
-        const userInfo: string | null = localStorage.getItem('userSession');
+        const userInfo: string | null = localStorage.getItem('userDetailsInfo');
         if (userInfo)
             return JSON.parse(userInfo);
         else
@@ -31,7 +32,7 @@ export class WebstorgeService {
     }
 
     public getUserRole() {
-        const userInfo: string | null = localStorage.getItem('userSession');
+        const userInfo: string | null = localStorage.getItem('userDetailsInfo');
         if (userInfo) {
             var userDetails = JSON.parse(userInfo);
             return userDetails.userRole.roleName;

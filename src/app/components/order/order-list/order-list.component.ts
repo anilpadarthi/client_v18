@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -32,7 +31,7 @@ export class OrderListComponent implements OnInit {
     "collected",
     "status",
     "paymentMethod",
-    "courier"
+    "courier",
   ];
 
   pageEvent: PageEvent | undefined;
@@ -57,6 +56,7 @@ export class OrderListComponent implements OnInit {
   selectedShippingMethodId = null;
   orderNumberSearch: any = null;
   trackNumberSearch: any = null;
+  shopNameSearch: any = null;
   selectedFromDate = null;
   selectedToDate = null;
   isVat = false;
@@ -127,7 +127,7 @@ export class OrderListComponent implements OnInit {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
       areaId: this.selectedAreaId,
-      shopId: this.selectedShopId?.trim() || null,
+      shopName: this.shopNameSearch?.trim() || null,
       orderStatusId: this.selectedStatusId,
       paymentMethodId: this.selectedPaymentMethodId,
       shippingModeId: this.selectedShippingMethodId,
@@ -355,8 +355,8 @@ export class OrderListComponent implements OnInit {
     this.orderService.downloadNonVATInvoice(orderId);
   }
 
-  sendEmail(orderId: number): void {
-    this.orderService.sendVATInvoice(orderId).subscribe((res) => {
+  sendEmail(orderId: number, isVAT: boolean): void {
+    this.orderService.sendInvoice(orderId, isVAT).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage('Email sent successfully.');
       }

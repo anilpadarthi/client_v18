@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RetailerService } from '../../../services/retailer.service';
 import { DatePipe } from '@angular/common';
+import { WebstorgeService } from '../../../services/web-storage.service';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-activations',
@@ -12,37 +18,64 @@ export class ActivationsComponent implements OnInit {
 
   selectedMonth: string | null = null;
   totalCount = 0;
-  resultList: any = [];
+  resultList: any[] = [];
+  groupedList: any[] = [];
   displayedColumns: string[] = [
-    'Date',
     'Network',
-    'Activations',    
+    'Activations',
+    'Action'
   ];
 
   constructor(
     public datePipe: DatePipe,
+    private dialog: MatDialog,
     private retailerService: RetailerService,
+    private webstorgeService: WebstorgeService
   ) { }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
   }
 
-   get totalActivated(): number {
-    return this.resultList.reduce((sum: any, item: any) => sum + item.activated, 0);
+  get totalActivated(): number {
+    return this.groupedList.reduce((sum: any, item: any) => sum + item.activationCount, 0);
   }
 
   loadData(): void {
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
     const requestBody = {
-      fromDate: this.selectedMonth
+      fromDate: this.selectedMonth,
+      filterId: loggedInUserId
     };
 
     this.retailerService.getActivations(requestBody).subscribe((res) => {
       if (res.data?.length > 0) {
         this.resultList = res.data;
+        const groupedResult = Object.values(
+          res.data.reduce((acc: any, item: any) => {
+            if (!acc[item.baseNetwork]) {
+              acc[item.baseNetwork] = { baseNetwork: item.baseNetwork, activationCount: 0 };
+            }
+            acc[item.baseNetwork].activationCount++;
+            return acc;
+          }, {} as Record<string, { baseNetwork: string; activationCount: number }>)
+        );
+        this.groupedList = groupedResult;
       }
       else {
-        this.resultList = null;
+        this.groupedList = [];
       }
+    });
+  }
+
+  loadDetails(network: any): void {
+    var detailList = this.resultList.filter((f: any) => f.baseNetwork == network);
+    var data = {
+      result: detailList,
+      headerName: network
+    }
+
+    this.dialog.open(PopupTableComponent, {
+      data
     });
   }
 
@@ -53,5 +86,19 @@ export class ActivationsComponent implements OnInit {
 
   onClear(): void {
     this.selectedMonth = null;
+  }
+
+
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 }

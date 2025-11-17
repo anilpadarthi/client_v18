@@ -34,4 +34,12 @@
             </div>
         </mat-card-content>
     </mat-card>
+
+    <div class="card">
+      <h2>Windows Service Control</h2>
+      <p>Status: <b>{{ status }}</b></p>
+      <button (click)="startService()">Start</button>
+      <button (click)="stopService()">Stop</button>
+      <button (click)="refreshStatus()">Refresh</button>
+    </div>
 </div>

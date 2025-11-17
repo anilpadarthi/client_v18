@@ -9,11 +9,12 @@ export class AuthGuard {
   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.hasValidTokens()) {
       return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
     }
-    this.router.navigate(['/login']);
-    return false;
   }
   
 }

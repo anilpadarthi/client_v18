@@ -1,10 +1,8 @@
 
 import { Component, HostListener } from '@angular/core';
-import { LoginService } from '../../services/login.service';
-import { WebstorgeService } from '../../services/web-storage.service';
 import { ToasterService } from '../../services/toaster.service';
+import { AuthService } from '../../services/auth.service';
 import { GeolocationService } from '../../services/geolocation.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { environment } from '../../../environments/environment';
@@ -25,11 +23,9 @@ export class LoginComponent {
 
 
   constructor(private router: Router,
-    private loginService: LoginService,
-    private webstorgeService: WebstorgeService,
+    private authService: AuthService,
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
-    private _snackBar: MatSnackBar
   ) {
     this.checkScreenSize();
   }
@@ -41,10 +37,7 @@ export class LoginComponent {
 
   ngOnInit() {
     this.loginForm = new FormGroup({
-      //email: new FormControl("shah.00731@gmail.com", [Validators.required, Validators.email]),
-      // email: new FormControl("leapdist@gmail.com", [Validators.required, Validators.email]),
       email: new FormControl("", [Validators.required]),
-      //password: new FormControl("jannat", [Validators.required, Validators.minLength(4)])
       password: new FormControl("", [Validators.required, Validators.minLength(4)])
     });
     this.fetchLocation();
@@ -63,27 +56,32 @@ export class LoginComponent {
     if (this.geoLocation != null) {
       if (this.loginForm.valid) {
         var requestBody = {
-          'email': this.loginForm.value.email,
+          'username': this.loginForm.value.email,
           'password': this.loginForm.value.password,
           'latitude': String(this.geoLocation.latitude),
           'longitude': String(this.geoLocation.longitude),
         };
 
-        this.loginService.authenticate(requestBody).subscribe((res) => {
-          if (res && res.data && res.data.token) {
-            this.isValidLogin = true;
-            this.webstorgeService.setSession(res.data.token);
-            this.webstorgeService.setUserInfo(res.data.userDetails);
-            if (res.data.userNotifications != null && res.data.userNotifications.length > 0) {
-              this.toasterService.showMessage(res.data.userNotifications[0]);
-            }
-            this.router.navigate(['/home']);
-          }
-          else {
-            this.isValidLogin = false;
-            this.toasterService.showMessage("Invalid username or password");
-          }
+        this.authService.login(requestBody).subscribe({
+            next: () => this.router.navigate(['/home']),
+            error: err => this.toasterService.showMessage('Login Failed.')
         });
+
+        // this.loginService.authenticate(requestBody).subscribe((res) => {
+        //   if (res && res.data && res.data.token) {
+        //     this.isValidLogin = true;
+        //     this.webstorgeService.setSession(res.data.token);
+        //     this.webstorgeService.setUserInfo(res.data.userDetails);
+        //     if (res.data.userNotifications != null && res.data.userNotifications.length > 0) {
+        //       this.toasterService.showMessage(res.data.userNotifications[0]);
+        //     }
+        //     this.router.navigate(['/home']);
+        //   }
+        //   else {
+        //     this.isValidLogin = false;
+        //     this.toasterService.showMessage("Invalid username or password");
+        //   }
+        // });
       }
     }
     else {

@@ -1,1 +1,56 @@
-<p>commission-statements works!</p>
+<div class="page-title">
+  <h1>Commissions</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="row justify-content-between">
+        <div class="col-lg-3">
+           <mat-form-field appearance="outline">
+          <mat-label>Choose a Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+        </div>
+
+        <div class="col-lg-9 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+        </div>
+      </div>
+
+      <div *ngIf="resultList.length > 0" class="table-responsive table-scroll example-container">
+        <table mat-table [dataSource]="resultList" class="w-100 custom-table">
+          
+          <ng-container matColumnDef="CommissionDate">
+            <th mat-header-cell *matHeaderCellDef class="center">Commission Date</th>
+            <td mat-cell *matCellDef="let element" class="center">
+              {{ element.commissionDate  | date:'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="CommissionAmount">
+            <th mat-header-cell *matHeaderCellDef class="center">Commission Amount</th>
+            <td mat-cell *matCellDef="let element" class="center"> {{ element.commissionAmount ?? 0 | currency:'GBP'}} </td>
+          </ng-container>   
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" class="center">
+              <button (click)="downloadCommissionStatement(element.commissionDate)"> Download</button>
+            </td>
+          </ng-container>       
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <div class="zero-records p-b-8" *ngIf="resultList?.length == 0">
+        <img src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

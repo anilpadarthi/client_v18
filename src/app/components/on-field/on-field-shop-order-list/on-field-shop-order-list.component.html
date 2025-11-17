@@ -86,10 +86,10 @@
                             <button mat-menu-item (click)="downloadNonVAT(element.orderId)">
                                 <mat-icon>description</mat-icon>Delivery Note
                             </button>
-                            <button  mat-menu-item (click)="downloadVAT(element.orderId)">
+                            <button *ngIf="hasVATInvoiceAccess"  mat-menu-item (click)="downloadVAT(element.orderId)">
                                 <mat-icon>download</mat-icon>VAT Invoice
                             </button>
-                            <button  mat-menu-item (click)="sendEmail(element.orderId)">
+                            <button *ngIf="hasVATInvoiceAccess"  mat-menu-item (click)="sendEmail(element.orderId)">
                                 <mat-icon>mail</mat-icon>
                                 Send Email
                             </button>

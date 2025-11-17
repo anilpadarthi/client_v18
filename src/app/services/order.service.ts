@@ -100,8 +100,8 @@ export class OrderService {
     return this.exportService.downloadPDF(url, 'Invoice_' + orderId + '.pdf');
   }
 
-  sendVATInvoice(orderId: number): Observable<any> {
-    return this.http.get<Response>(this.url + "/SendVATInvoice/" + orderId);
+  sendInvoice(orderId: number, isVAT: boolean): Observable<any> {
+    return this.http.get<Response>(this.url + `/SendInvoice?orderId=${orderId}&isVAT=${isVAT}`);
   }
 
   loadOutstandingMetrics(requestBody: any): Observable<any> {
@@ -112,5 +112,5 @@ export class OrderService {
     let url = this.url + '/DownloadOrders';
     return this.exportService.exportToExcel(url, requestBody, 'SalesList');
   }
-  
+
 }
