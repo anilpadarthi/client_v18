@@ -65,6 +65,8 @@ import { StockConversionComponent } from './components/retailer/stock-conversion
 import { SalesManagerComponent } from './components/retailer/sales-manager/sales-manager.component';
 import { ContactusComponent } from './components/retailer/contactus/contactus.component';
 import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
+import { StockEntryListComponent } from './components/product/stock-entry-list/stock-entry-list.component';
+import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
 
 
 
@@ -114,6 +116,9 @@ const routes: Routes = [
       { path: 'products', component: ProductListComponent },
       { path: 'product/create', component: ProductEditorComponent },
       { path: 'product/edit/:id', component: ProductEditorComponent },
+      { path: 'invoice/list', component: StockEntryListComponent },
+      { path: 'invoice/create', component: StockEntryEditorComponent },
+      { path: 'invoice/:id', component: StockEntryEditorComponent },
 
 
       { path: 'onfield', component: OnFieldComponent },

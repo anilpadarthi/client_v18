@@ -1,44 +1,110 @@
-<h2 mat-dialog-title class="modal-header-title">
-    Add Transaction
-    <button mat-dialog-close class="modal-header-close-btn">
-        <mat-icon>close</mat-icon>
-    </button>
-</h2>
-<mat-dialog-content class="mat-typography" style="max-width: 600px">
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>{{ invoiceId != null ? 'Edit Invoice' : 'Create Invoice' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="col-lg-12">
 
-    <form [formGroup]="salaryInAdvanceForm" (ngSubmit)="onSave()" class="m-t-15">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="type"  required>
-                <mat-option value=''>--Select--</mat-option>
-                <mat-option value="Accessories Commission">Accessories  Commission</mat-option>
-                <mat-option value="Sim Commission">Sim Commission</mat-option>
-                <mat-option value="Salary In Advance">Salary In Advance</mat-option>
-                <mat-option value="Travel Allowance">Travel Allowance</mat-option>
-                <mat-option value="Other Allowance">Other Allowance</mat-option>
-            </mat-select>
-        </mat-form-field>
+            <form [formGroup]="invoiceForm">
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount" type="number" />
-        </mat-form-field>
+                <div class="row">
+                    <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Invoice Number</mat-label>
+                        <input matInput formControlName="invoiceNumber">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Invoice Date</mat-label>
+                        <input matInput [matDatepicker]="invoiceDatePicker" formControlName="invoiceDate" />
+                        <mat-datepicker-toggle matSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #invoiceDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Supplier</mat-label>
+                        <mat-select formControlName="supplierId">
+                            <mat-option *ngFor="let s of suppliers" [value]="s.id">
+                                {{ s.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-2">
+                        <mat-label>Amount</mat-label>
+                        <input matInput formControlName="totalAmount">
+                    </mat-form-field>
+                </div>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Payment Date</mat-label>
-            <input matInput [matDatepicker]="tansactionDatePicker" formControlName="transactionDate" />
-            <mat-datepicker-toggle matSuffix [for]="tansactionDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #tansactionDatePicker></mat-datepicker>
-          </mat-form-field>
+                <div class="row col-lg-12">
+                    <div class="table-responsive table-scroll example-container">
+                        <!-- INLINE GRID -->
+                        <table mat-table [dataSource]="items.controls" class="w-100 custom-table m-t-0"
+                            formArrayName="items" #table>
 
-         <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Comments</mat-label>
-            <textarea matInput formControlName="comments" cols="5"></textarea>
-        </mat-form-field>
+                            <!-- Product -->
+                            <ng-container matColumnDef="productId">
+                                <th mat-header-cell *matHeaderCellDef>Product</th>
+                                <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+                                    <mat-form-field>
+                                        <mat-label>Product</mat-label>
+                                        <input type="text" matInput placeholder="Search Product..."
+                                            formControlName="productSearch" [matAutocomplete]="auto"
+                                            #trigger="matAutocompleteTrigger" (click)="openAuto(trigger)" />
 
-        <button mat-flat-button color="warn" class="m-r-10" type="button" (click)="onCancel();">Cancel</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="salaryInAdvanceForm.invalid">
-            Save
-        </button>
-    </form>
-</mat-dialog-content>
+                                        <mat-autocomplete #auto="matAutocomplete"
+                                            (optionSelected)="onProductSelected($event.option.value, i)">
+                                            <mat-option *ngFor="let p of filteredProducts[i] | async" [value]="p">
+                                                {{ p.name }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Qty -->
+                            <ng-container matColumnDef="qty">
+                                <th mat-header-cell *matHeaderCellDef>Qty</th>
+                                <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+                                    <mat-form-field>
+                                        <mat-label>Quantity</mat-label>
+                                        <input matInput type="number" formControlName="quantity">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Price -->
+                            <ng-container matColumnDef="price">
+                                <th mat-header-cell *matHeaderCellDef>Price</th>
+                                <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+                                    <mat-form-field>
+                                        <mat-label>Price</mat-label>
+                                        <input matInput type="number" formControlName="purchasePrice">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Action</th>
+                                <td mat-cell *matCellDef="let row; let i = index">
+                                    <button mat-icon-button color="warn" (click)="removeRow(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 m-t-10">
+                    <button mat-raised-button color="primary" (click)="addItemRow()">Add Row</button>
+
+                    <button mat-raised-button color="accent" (click)="saveInvoice()">
+                        Save Invoice
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

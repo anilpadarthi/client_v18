@@ -209,6 +209,11 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'commission-cheque-status',
       },
+      {
+        displayName: 'Invoices',
+        iconName: 'arrow_right',
+        route: 'invoice/list',
+      },
     ],
   },
 

@@ -1,1 +1,92 @@
-<p>stock-entry-list works!</p>
+<div class="page-title">
+    <h1>Invoice List</h1>
+    <span class="page-title__info"></span>
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-content>
+            <div class="row space-between-buttons">
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Supplier</mat-label>
+                        <mat-select [(ngModel)]="selectedSupplierId" (selectionChange)="loadData()">
+                            <mat-option [value]="null">-Select-</mat-option>
+                            <mat-option *ngFor="let item of suppliers" [value]="item.id">
+                                <span>{{item.name}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Invoice Number</mat-label>
+                        <input matInput #searchInput placeholder="Invoice Number" [(ngModel)]="searchText"
+                            (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6 ">
+                    <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
+                        <mat-icon>filter_list</mat-icon> Filter
+                    </button>
+                    <button mat-flat-button class="bg-error text-white" (mousedown)="onReset()">
+                        <mat-icon>clear_all</mat-icon> Clear
+                    </button>
+                    <button mat-flat-button color="primary" (click)="addoreditclick(null)" class="card-container-right">
+                        <mat-icon>add</mat-icon>
+                        Add
+                    </button>                   
+                </div>
+            </div>
+
+            <div class="table-responsive table-scroll example-container">
+                <table mat-table [dataSource]="invoiceList" class="w-100 custom-table">
+                    <ng-container matColumnDef="InvoiceNumber">
+                        <th mat-header-cell *matHeaderCellDef>Invoice Number</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.invoiceNumber }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="SupplierId">
+                        <th mat-header-cell *matHeaderCellDef>Supplier</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.supplierId }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="TotalAmount">
+                        <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.totalAmount | number: '1.2-2' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="InvoiceDate">
+                        <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.invoiceDate | date: 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef>
+                            ACTION
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="action-link">
+                            <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.purchaseInvoiceId)">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                            <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.purchaseInvoiceId)">
+                                <mat-icon>delete</mat-icon>
+                            </a>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </div>
+            <div class="zero-records p-b-8" *ngIf="invoiceList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span></div>
+            <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
+                [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+            </mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

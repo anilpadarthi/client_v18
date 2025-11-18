@@ -135,7 +135,8 @@ import { CommissionChequeStatusComponent } from './components/management/commiss
 import { MixMatchGroupEditorComponent } from './components/mix-match-group/mix-match-group-editor/mix-match-group-editor.component';
 import { MixMatchGroupListComponent } from './components/mix-match-group/mix-match-group-list/mix-match-group-list.component';
 import { SalaryTransactionEditorComponent } from './components/management/salary-transaction-editor/salary-transaction-editor.component';
-
+import { StockEntryListComponent } from './components/product/stock-entry-list/stock-entry-list.component';
+import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -248,7 +249,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MixMatchGroupListComponent,
     MixMatchGroupEditorComponent,
     RetailerComponent,
-    SalaryTransactionEditorComponent
+    SalaryTransactionEditorComponent,
+    StockEntryListComponent,
+    StockEntryEditorComponent
   ],
   imports: [
     BrowserModule,
