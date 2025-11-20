@@ -8,30 +8,30 @@
     </div> -->
 
     <div *ngIf="!isLoading && activationList?.length>0" class="table-responsive table-scroll example-container">
-      <table class="table table-bordered nowrap w-100 custom-table kpi-table mat-table" >
+      <table class="table table-bordered nowrap w-100 custom-table kpi-table mat-table">
         <tbody>
           <tr style="background-color: #FF6347;">
-            <td >Name</td>
-            <td > Previous Act.</td>
-            <td > Current Act.</td>
-            <td > KPI Target</td>
-            <td></td>
-            <td >Act</td>
-            <td >Per Sim</td>
-            <td >Diff</td>
-            <td >TTL Comm</td>
+            <td>Name</td>
+            <td> Previous Act.</td>
+            <td> Current Act.</td>
+            <td> KPI Target</td>
+            <td>(%)</td>
+            <td>Act</td>
+            <td>Per Sim</td>
+            <td>Diff</td>
+            <td>TTL Comm</td>
           </tr>
           <tr>
-            <td rowspan="4" >
+            <td rowspan="4">
               {{activationList[0].name }}
             </td>
-            <td rowspan="4" >
+            <td rowspan="4">
               {{activationList[0].prevMonth }}
             </td>
-            <td rowspan="4" >
+            <td rowspan="4">
               {{activationList[0].currentMonth }}
             </td>
-            <td rowspan="4" >
+            <td rowspan="4">
               {{activationList[0].target }}
             </td>
             <td style="background-color:yellow;"> {{activationList[0].percentage }}
@@ -52,7 +52,9 @@
             </td>
             <td style="background-color:lightgreen;"> £{{activationList[1].rate | number : "1.2-2" }}
             </td>
-            <td style="background-color:lightgreen;"> {{activationList[1].diff }}
+            <td style="background-color:lightgreen;">
+              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
+              {{ (activationList[1].act - activationList[0].currentMonth) }}
             </td>
             <td style="background-color:lightgreen;">£{{activationList[1].total | number : "1.2-2" }}
             </td>
@@ -64,7 +66,9 @@
             </td>
             <td style="background-color:dodgerblue;"> £{{activationList[2].rate | number : "1.2-2" }}
             </td>
-            <td style="background-color:dodgerblue;"> {{activationList[2].diff }}
+            <td style="background-color:dodgerblue;">
+              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
+              {{ (activationList[1].act - activationList[0].currentMonth) }}
             </td>
             <td style="background-color:dodgerblue;"> £{{activationList[2].total | number : "1.2-2" }}
             </td>
@@ -76,7 +80,9 @@
             </td>
             <td style="background-color:salmon;"> £{{activationList[3].rate | number : "1.2-2" }}
             </td>
-            <td style="background-color:salmon;"> {{activationList[3].diff }}
+            <td style="background-color:salmon;">
+              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
+              {{ (activationList[1].act - activationList[0].currentMonth) }}
             </td>
             <td style="background-color:salmon;"> £{{activationList[3].total | number : "1.2-2"}}
             </td>

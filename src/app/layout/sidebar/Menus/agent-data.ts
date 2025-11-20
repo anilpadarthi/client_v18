@@ -46,11 +46,11 @@ export const AgentItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/area-commissions',
       },
-      {
-        displayName: 'Payslip',
-        iconName: 'arrow_right',
-        route: 'management/payslip',
-      },      
+      // {
+      //   displayName: 'Payslip',
+      //   iconName: 'arrow_right',
+      //   route: 'management/payslip',
+      // },      
     ]
   },
 
@@ -72,11 +72,11 @@ export const AgentItems: NavItem[] = [
       },
     ],
   },
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
-  },
+  // {
+  //   displayName: 'Chat',
+  //   iconName: 'chat',
+  //   route: 'chat',
+  // },
 
   {
     displayName: 'Cheque Info',

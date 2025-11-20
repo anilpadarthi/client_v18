@@ -12,6 +12,7 @@ import { OrderDetailsComponent } from '../order-details/order-details.component'
 import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payment-editor.component';
 import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
 import { FormControl } from '@angular/forms';
+import { cleanDate } from '../../../helpers/utils';
 
 @Component({
   selector: 'app-order-list',
@@ -57,8 +58,8 @@ export class OrderListComponent implements OnInit {
   orderNumberSearch: any = null;
   trackNumberSearch: any = null;
   shopNameSearch: any = null;
-  selectedFromDate = null;
-  selectedToDate = null;
+  selectedFromDate:any;
+  selectedToDate:any;
   isVat = false;
   isShowOutstandingMetrics = false;
   userRole = '';
@@ -133,8 +134,8 @@ export class OrderListComponent implements OnInit {
       shippingModeId: this.selectedShippingMethodId,
       agentId: this.selectedAgentId,
       managerId: this.selectedManagerId,
-      fromDate: this.selectedFromDate,
-      toDate: this.selectedToDate,
+      fromDate: cleanDate(this.selectedFromDate),
+      toDate: cleanDate(this.selectedToDate),
       orderId: this.orderNumberSearch?.trim() || null,
       trackingNumber: this.trackNumberSearch?.trim() || null,
       isVat: this.isVat ? 1 : 0,

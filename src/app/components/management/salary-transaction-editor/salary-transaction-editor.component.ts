@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ManagementService } from '../../../services/management.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { cleanDate } from '../../../helpers/utils';
 
 
 @Component({
@@ -42,9 +43,18 @@ export class SalaryTransactionEditorComponent {
 
   onSave() {
     if (this.salaryInAdvanceForm.valid) {
+      const requestBody = {
+        userSalaryTransactionID: this.salaryInAdvanceForm.value.userSalaryTransactionID,
+        amount: this.salaryInAdvanceForm.value.amount,
+        transactionDate: cleanDate(this.salaryInAdvanceForm.value.transactionDate),
+        type: this.salaryInAdvanceForm.value.type,
+        comments: this.salaryInAdvanceForm.value.comments,
+        userId: this.salaryInAdvanceForm.value.userId,
+
+      };
       if (this.data.userSalaryTransactionID) {
 
-        this.managementService.updateUserSalaryTransaction(this.salaryInAdvanceForm.value).subscribe((res) => {
+        this.managementService.updateUserSalaryTransaction(requestBody).subscribe((res) => {
           if (res.statusCode == 200) {
             this.toasterService.showMessage("Updated successfully.");
             this.dialogRef.close(true);
@@ -55,7 +65,7 @@ export class SalaryTransactionEditorComponent {
         });
       }
       else {
-        this.managementService.createUserSalaryTransaction(this.salaryInAdvanceForm.value).subscribe((res) => {
+        this.managementService.createUserSalaryTransaction(requestBody).subscribe((res) => {
           if (res.statusCode == 201) {
             this.toasterService.showMessage("Created successfully.");
             this.dialogRef.close(true);

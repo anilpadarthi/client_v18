@@ -4,6 +4,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import { cleanDate } from '../../../helpers/utils';
 
 @Component({
   selector: 'app-track-report',
@@ -54,7 +55,7 @@ export class TrackReportComponent implements OnInit {
 
   loadData(): void {
     const requestBody = {
-      fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+      fromDate: cleanDate(this.datePipe.transform(this.fromDate, 'yyyy-MM-dd')),
       filterType: this.filterType,
       filterId: this.selectedUserId
     };

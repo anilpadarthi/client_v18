@@ -8,6 +8,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { PurchaseService } from '../../../services/purchase.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { cleanDate } from '../../../helpers/utils';
 
 
 @Component({
@@ -127,12 +128,18 @@ export class StockEntryEditorComponent implements OnInit {
       return;
     }
 
-    const payload = {
-      ...this.invoiceForm.getRawValue()
+    const requestBody = {
+      purchaseInvoiceId: this.invoiceForm.value.purchaseInvoiceId,
+      invoiceNumber: this.invoiceForm.getRawValue().invoiceNumber,
+      invoiceDate: cleanDate(this.invoiceForm.value.invoiceDate),
+      totalAmount: this.invoiceForm.value.totalAmount,
+      items: this.invoiceForm.value.items
     };
 
+
+
     if (this.invoiceId) {
-      this.purchaseService.update(payload).subscribe((res) => {
+      this.purchaseService.update(requestBody).subscribe((res) => {
         if (res.statusCode == 200) {
           this.toasterService.showMessage("Updated successfully.");
           this.router.navigate(['/invoice/list']);
@@ -143,7 +150,7 @@ export class StockEntryEditorComponent implements OnInit {
       });
     }
     else {
-      this.purchaseService.create(payload).subscribe((res) => {
+      this.purchaseService.create(requestBody).subscribe((res) => {
         if (res.statusCode == 200) {
           this.toasterService.showMessage("Created successfully.");
           this.router.navigate(['/invoice/list']);

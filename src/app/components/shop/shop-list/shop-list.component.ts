@@ -26,7 +26,7 @@ export class ShopListComponent implements OnInit {
   searchText!: string | null;
   selectedAreaId!: 0;
   areaLookup: any = [];
-  isDisplay = false;
+  isAdmin = false;
   areaFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
 
@@ -53,7 +53,7 @@ export class ShopListComponent implements OnInit {
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
     if (userRole == 'Admin' || userRole == 'SuperAdmin') {
-      this.isDisplay = true;
+      this.isAdmin = true;
       this.loadData();
     }
     this.getAreaLookup();

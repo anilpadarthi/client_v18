@@ -33,20 +33,14 @@ export const CallCenterItems: NavItem[] = [
     route: 'accessories/sales',
   },
   {
-        displayName: 'Commission Cheque Status',
-        iconName: 'checkbook',
-        route: 'commission-cheque-status',
+    displayName: 'Commission Cheque Status',
+    iconName: 'checkbook',
+    route: 'commission-cheque-status',
   },
   {
-    displayName: 'Payslip',
-    iconName: 'receipt',
-    route: 'management/payslip',
-  },
-
-  {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
+    displayName: 'Change Password',
+    iconName: 'lock_reset',
+    route: 'change-password',
   },
 
 ];

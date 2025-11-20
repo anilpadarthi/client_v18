@@ -179,26 +179,26 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'management/whatsapp',
       },
-      {
-        displayName: 'Agreement Requests',
-        iconName: 'arrow_right',
-        route: 'management/agreement-requests',
-      },
-      {
-        displayName: 'Commission Tier Requests',
-        iconName: 'arrow_right',
-        route: 'management/commission-tier-requests',
-      },
-      {
-        displayName: 'Attendance',
-        iconName: 'arrow_right',
-        route: 'management/attendance-report',
-      },
-      {
-        displayName: 'Expenses',
-        iconName: 'arrow_right',
-        route: 'management/expenses',
-      },
+      // {
+      //   displayName: 'Agreement Requests',
+      //   iconName: 'arrow_right',
+      //   route: 'management/agreement-requests',
+      // },
+      // {
+      //   displayName: 'Commission Tier Requests',
+      //   iconName: 'arrow_right',
+      //   route: 'management/commission-tier-requests',
+      // },
+      // {
+      //   displayName: 'Attendance',
+      //   iconName: 'arrow_right',
+      //   route: 'management/attendance-report',
+      // },
+      // {
+      //   displayName: 'Expenses',
+      //   iconName: 'arrow_right',
+      //   route: 'management/expenses',
+      // },
       {
         displayName: 'Commission Cheque Withdraw',
         iconName: 'arrow_right',
@@ -245,11 +245,20 @@ export const AdminItems: NavItem[] = [
     iconName: 'home_work',
     route: 'onfield',
   },
+
   {
-    displayName: 'Chat',
-    iconName: 'sms',
-    route: 'chat',
+    displayName: 'Change Password',
+    iconName: 'lock_reset',
+    route: 'change-password',
   },
+  // {
+  //   displayName: 'Chat',
+  //   iconName: 'sms',
+  //   route: 'chat',
+  // },
+
+
+
   // {
   //   displayName: 'Edit Profile',
   //   iconName: 'account_circle',

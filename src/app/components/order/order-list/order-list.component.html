@@ -85,17 +85,17 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="showAdvancedFilters">
-                    <mat-label>From Month</mat-label>
+                    <mat-label>From Date</mat-label>
                     <input matInput [(ngModel)]="selectedFromDate" [matDatepicker]="fromPicker"
-                        placeholder="Choose a Month" />
+                        placeholder="Choose From Date" />
                     <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
                     <mat-datepicker #fromPicker></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="col-lg-3 col-xs-12" *ngIf="showAdvancedFilters">
-                    <mat-label>To Month</mat-label>
+                    <mat-label>To Date</mat-label>
                     <input matInput [(ngModel)]="selectedToDate" [matDatepicker]="toPicker"
-                        placeholder="Choose a Month" />
+                        placeholder="Choose To Date" />
                     <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
                     <mat-datepicker #toPicker></mat-datepicker>
                 </mat-form-field>

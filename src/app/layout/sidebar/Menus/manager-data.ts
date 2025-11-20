@@ -86,50 +86,7 @@ export const ManagerItems: NavItem[] = [
     ],
   },
 
-  {
-    displayName: 'Management',
-    iconName: 'widgets',
-    route: '',
-    children: [
-      {
-        displayName: 'Payslip',
-        iconName: 'arrow_right',
-        route: 'management/payslip',
-      },
-
-      {
-        displayName: 'Agreement Requests',
-        iconName: 'arrow_right',
-        route: 'management/agreement-requests',
-      },
-      {
-        displayName: 'Commission Tier Requests',
-        iconName: 'arrow_right',
-        route: 'management/commission-tier-requests',
-      },
-      {
-        displayName: 'Cheque Info',
-        iconName: 'checkbook',
-        route: 'commission-cheque-status',
-      },
-      {
-        displayName: 'Attendance',
-        iconName: 'arrow_right',
-        route: 'management/attendance-report',
-      },
-
-      // {
-      //   displayName: 'Shop Commission Cheques',
-      //   iconName: 'arrow_right',
-      //   route: 'management/shop-commission-cheques',
-      // },
-      {
-        displayName: 'Bank Cheques',
-        iconName: 'arrow_right',
-        route: 'management/bank-cheques',
-      },
-    ],
-  },
+ 
 
   {
     displayName: 'Accessories',
@@ -149,11 +106,23 @@ export const ManagerItems: NavItem[] = [
       },
     ],
   },
+
   {
-    displayName: 'Chat',
-    iconName: 'chat',
-    route: 'chat',
+    displayName: 'Cheque Info',
+    iconName: 'checkbook',
+    route: 'commission-cheque-status',
   },
+
+  {
+    displayName: 'Change Password',
+    iconName: 'lock_reset',
+    route: 'change-password',
+  },
+  // {
+  //   displayName: 'Chat',
+  //   iconName: 'chat',
+  //   route: 'chat',
+  // },
 
   // {
   //   displayName: 'Edit Profile',

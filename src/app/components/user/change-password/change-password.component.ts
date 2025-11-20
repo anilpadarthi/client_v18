@@ -28,7 +28,7 @@ export class ChangePasswordComponent {
           '',
           [
             Validators.required,
-            Validators.minLength(8),            
+            Validators.minLength(8),
           ]
         ],
         confirmPassword: ['', Validators.required]
@@ -42,20 +42,20 @@ export class ChangePasswordComponent {
   }
 
   passwordMatchValidator(form: FormGroup) {
-  const newPassword = form.get('newPassword');
-  const confirmPassword = form.get('confirmPassword');
+    const newPassword = form.get('newPassword');
+    const confirmPassword = form.get('confirmPassword');
 
-  if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
-    confirmPassword.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
-  } else {
-    // clear error if previously set
-    if (confirmPassword?.hasError('passwordMismatch')) {
-      confirmPassword.setErrors(null);
+    if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      // clear error if previously set
+      if (confirmPassword?.hasError('passwordMismatch')) {
+        confirmPassword.setErrors(null);
+      }
+      return null;
     }
-    return null;
   }
-}
 
 
   onSubmit() {
@@ -70,7 +70,9 @@ export class ChangePasswordComponent {
     this.userService.changePassword(payload).subscribe((res) => {
       this.loading = false;
       this.toasterService.showMessage(res.data);
-      this.changePasswordForm.reset();
+      if (res.statusCode == 200) {
+        this.changePasswordForm.reset();
+      }
     });
   }
 

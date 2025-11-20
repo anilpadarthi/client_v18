@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToasterService } from '../../../services/toaster.service';
 import { ManagementService } from '../../../services/management.service';
+import { cleanDate } from '../../../helpers/utils';
 
 @Component({
   selector: 'app-whatsapp-notifications',
@@ -23,8 +24,8 @@ export class WhatsappNotificationsComponent {
   onSubmit(): void {
     let requestBody = {
       RequestType: this.reportType,
-      FromDate: this.fromDate,
-      ToDate: this.toDate
+      FromDate: cleanDate(this.fromDate),
+      ToDate: cleanDate(this.toDate)
     }
     this.managementService.CreateWhatsAppNotificationRequest(requestBody).subscribe((res) => {
       if (res.statusCode == 200) {
