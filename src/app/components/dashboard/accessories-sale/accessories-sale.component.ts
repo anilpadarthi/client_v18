@@ -19,7 +19,8 @@ export class AccessoriesSaleComponent implements OnInit {
   isLoading = false;
   displayedColumns: string[] = [
     'PaymentType',
-    'SaleAmount'
+    'SaleAmount',
+    'PaidAmount'
   ];
 
   constructor(

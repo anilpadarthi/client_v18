@@ -215,7 +215,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       items: this.cartItems,
       itemTotal: this.subTotal,
       requestType: 'SimRequest',
-      paymentMethodId: 9,
+      paymentMethodId: 8,
       placedBy: this.agentId,
       shippingAddress: this.shippingAddress,
     };

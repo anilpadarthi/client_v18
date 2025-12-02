@@ -23,7 +23,7 @@
                         <mat-icon>add</mat-icon>
                         Add
                     </button>
-                    <button mat-flat-button color="primary" (click)="exportToExcel()" class="card-container-right">
+                    <button mat-flat-button color="primary" *ngIf="isAdmin" (click)="exportToExcel()" class="card-container-right">
                         <mat-icon>download</mat-icon>
                         Export
                     </button>
@@ -59,7 +59,7 @@
                             <a class="m-r-10 cursor-pointer" (click)="addoreditclick(element.areaId)">
                                 <mat-icon>edit</mat-icon>
                             </a>
-                            <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.areaId)">
+                            <a *ngIf="isAdmin" class="m-r-10 cursor-pointer" (click)="deleteclick(element.areaId)">
                                 <mat-icon>delete</mat-icon>
                             </a>
                         </td>

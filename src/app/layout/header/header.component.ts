@@ -48,7 +48,7 @@ export class HeaderComponent {
     this.searchControl.valueChanges.pipe(
       debounceTime(300), // wait for user to stop typing
       distinctUntilChanged(),
-      filter((value: any) => value && value.trim().length > 0),
+      filter((value: any) => value && value.trim().length > 3),
       switchMap(value => this.shopService.globalShopSearch(value))
     )
       .subscribe((response: any) => {
@@ -65,6 +65,8 @@ export class HeaderComponent {
       this.searchControl.setValue(option.shopName);
       // Navigate to detail page (example: /product/1)
       this.router.navigate(['/onfield', option.areaId, option.shopId]);
+     //this.searchControl.setValue('');
+     //this.filteredItems = [];
     }
   }
 

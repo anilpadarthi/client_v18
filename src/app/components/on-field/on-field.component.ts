@@ -60,6 +60,8 @@ export class OnFieldComponent implements OnInit {
     this.shopFilterCtrl.valueChanges.subscribe(() => {
       this.filterShops();
     });
+
+    
   }
 
   ngOnChanges() {
@@ -118,6 +120,7 @@ export class OnFieldComponent implements OnInit {
       let shopId = Number(this.route.snapshot.paramMap.get('shopId'));
       if (shopId) {
         this.selectedShopId = shopId;
+        this.shopChange();
       }
     });
   }

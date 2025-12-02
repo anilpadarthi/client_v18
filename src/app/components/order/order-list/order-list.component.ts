@@ -27,6 +27,7 @@ export class OrderListComponent implements OnInit {
     "orderId",
     "date",
     "user",
+    "area",
     "shop",
     "expected",
     "collected",
@@ -58,8 +59,8 @@ export class OrderListComponent implements OnInit {
   orderNumberSearch: any = null;
   trackNumberSearch: any = null;
   shopNameSearch: any = null;
-  selectedFromDate:any;
-  selectedToDate:any;
+  selectedFromDate: any;
+  selectedToDate: any;
   isVat = false;
   isShowOutstandingMetrics = false;
   userRole = '';
@@ -266,6 +267,7 @@ export class OrderListComponent implements OnInit {
     this.selectedAreaId = null;
     this.selectedManagerId = null;
     this.selectedShopId = null;
+    this.shopNameSearch = null;
     this.selectedStatusId = null;
     this.selectedPaymentMethodId = null;
     this.selectedShippingMethodId = null;
@@ -429,14 +431,38 @@ export class OrderListComponent implements OnInit {
       shippingModeId: this.selectedShippingMethodId,
       agentId: this.selectedAgentId,
       managerId: this.selectedManagerId,
-      fromDate: this.selectedFromDate,
-      toDate: this.selectedToDate,
+      fromDate: cleanDate(this.selectedFromDate),
+      toDate: cleanDate(this.selectedToDate),
       orderId: this.orderNumberSearch?.trim() || null,
       trackingNumber: this.trackNumberSearch?.trim() || null,
       isVat: this.isVat ? 1 : 0,
     };
 
     this.orderService.downloadOrders(requestBody);
+  }
+
+  markCCA(orderId: any): void {
+    this.updateOrder(orderId, 13);
+  }
+
+  markCCM(orderId: any): void {
+    this.updateOrder(orderId, 14);
+  }
+
+  updateOrder(orderId: any, orderStatusId: number): void {
+    const requestBody = {
+      OrderId: orderId,
+      OrderStatusId: orderStatusId,      
+    };
+
+    this.orderService.updateStatus(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Updated Successfully.");
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
   }
 
 }

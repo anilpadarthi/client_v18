@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
+import { DownloadService } from '../../../services/download.service';
 import { LookupService } from '../../../services/lookup.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -72,7 +73,8 @@ export class MonthlyActivationReportComponent implements OnInit {
     private reportService: ReportService,
     private lookupService: LookupService,
     private webstorgeService: WebstorgeService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private downloadService: DownloadService
   ) { }
 
   ngOnInit(): void {
@@ -243,6 +245,18 @@ export class MonthlyActivationReportComponent implements OnInit {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.selectedMonth = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
+  }
+
+  downloadDailyActivationList(): void {
+    const requestBody = {
+        fromDate: this.selectedMonth,
+        areaId: this.selectedAreaId,
+        shopId: this.selectedShopId,
+        userId: this.selectedUserId,
+        managerId: this.selectedManagerId,
+        isInstantActivation: this.isInstantActivation,
+      };
+    this.downloadService.downloadDailyActivationList(requestBody);
   }
 
 }

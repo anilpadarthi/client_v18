@@ -123,6 +123,11 @@
   </mat-card>
 </div>
 
+
+<div *ngIf="dashboardViewMode == 'Agent'">
+  <app-kpi-target-details [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
+    [filterType]="filterType"></app-kpi-target-details>  
+</div>
 <app-network-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
   [filterType]="filterType"></app-network-activations>
 
@@ -131,12 +136,11 @@
     [filterType]="filterType"></app-agent-activations>
 </div>
 
-<div *ngIf="dashboardViewMode == 'Agent'">
+<div *ngIf="dashboardViewMode == 'Agent'">  
   <app-area-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
-    [filterType]="filterType"></app-area-activations>
-  <app-kpi-target-details [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
-    [filterType]="filterType"></app-kpi-target-details>
+    [filterType]="filterType"></app-area-activations>  
 </div>
+
 <app-accessories-sale [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
   [filterType]="filterType"></app-accessories-sale>
 

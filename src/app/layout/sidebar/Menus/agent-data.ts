@@ -16,8 +16,13 @@ export const AgentItems: NavItem[] = [
     iconName: 'store',
     route: 'onfield',
   },
+   {
+    displayName: 'Manage Areas',
+    iconName: 'manage_accounts',
+    route: 'areas',
+  },
   {
-    displayName: 'Shop',
+    displayName: 'Manage Shops',
     iconName: 'manage_accounts',
     route: 'shops',
   },
@@ -46,11 +51,11 @@ export const AgentItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/area-commissions',
       },
-      // {
-      //   displayName: 'Payslip',
-      //   iconName: 'arrow_right',
-      //   route: 'management/payslip',
-      // },      
+      {
+        displayName: 'Payslip',
+        iconName: 'arrow_right',
+        route: 'management/payslip',
+      },
     ]
   },
 

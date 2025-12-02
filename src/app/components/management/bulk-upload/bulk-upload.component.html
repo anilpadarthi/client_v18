@@ -23,7 +23,7 @@
                     <div class="d-flex align-items-center m-b-16">
                         <mat-icon>upload_file</mat-icon>
                         <button mat-flat-button color="primary" class="m-l-16 input-file-button">
-                            <input type="file" accept=".xlsx" (change)="onFileChange($event)" />
+                            <input id="fileUpload" type="file" accept=".xlsx" (change)="onFileChange($event)" />
                         </button>
                         <button mat-flat-button color="primary" (click)="uploadFile()">
                             <mat-icon>upload</mat-icon> Upload

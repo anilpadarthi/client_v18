@@ -9,9 +9,9 @@
     <form [formGroup]="salaryInAdvanceForm" (ngSubmit)="onSave()" class="m-t-15">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Type</mat-label>
-            <mat-select formControlName="type"  required>
+            <mat-select formControlName="type" required>
                 <mat-option value=''>--Select--</mat-option>
-                <mat-option value="Accessories Commission">Accessories  Commission</mat-option>
+                <mat-option value="Accessories Commission">Accessories Commission</mat-option>
                 <mat-option value="Sim Commission">Sim Commission</mat-option>
                 <mat-option value="Salary In Advance">Salary In Advance</mat-option>
                 <mat-option value="Travel Allowance">Travel Allowance</mat-option>
@@ -24,14 +24,9 @@
             <input matInput formControlName="amount" type="number" />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Payment Date</mat-label>
-            <input matInput [matDatepicker]="tansactionDatePicker" formControlName="transactionDate" />
-            <mat-datepicker-toggle matSuffix [for]="tansactionDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #tansactionDatePicker></mat-datepicker>
-          </mat-form-field>
+      
 
-         <mat-form-field appearance="outline" class="w-100">
+        <mat-form-field appearance="outline" class="w-100">
             <mat-label>Comments</mat-label>
             <textarea matInput formControlName="comments" cols="5"></textarea>
         </mat-form-field>

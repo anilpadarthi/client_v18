@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ExportService } from './export.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class DownloadService {
 
   url: string;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,  public exportService: ExportService) {
     this.url = `api/Download`
   }
 
@@ -18,8 +19,9 @@ export class DownloadService {
     return this.http.post<any>(this.url + '/DownloadInstantActivationList', requestBody);
   }
   
-  downloadDailyActivationList(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + '/DownloadDailyActivationList', requestBody);
+  downloadDailyActivationList(requestBody: any): void {
+    let url = this.url + '/DownloadDailyActivationList';
+    return this.exportService.exportToExcel(url, requestBody, 'DailyActivationList');
   }
 
   downloadCommissionStatementList(requestBody: any): Observable<any> {

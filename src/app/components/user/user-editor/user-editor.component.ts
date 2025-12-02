@@ -48,7 +48,7 @@ export class UserEditorComponent {
       dob: ['', [Validators.required]],
       doj: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      userRoleId: ['', [Validators.required]],
+      userRoleId: [null, [Validators.required]],
       designation: ['', [Validators.required]],
       locality: [''],
       isMcomAccess: false,
@@ -89,7 +89,9 @@ export class UserEditorComponent {
     documentFormArray.clear();
     let documentIndex = 0;
     userDocuments.forEach(e => {
-      e.documentImage = environment.backend.host + '/' + e.documentImage;
+      if (e.documentImage) {
+        e.documentImage = `${environment.backend.host}/${e.documentImage}`;
+      }
       documentFormArray.push(this.loadChild(e));
       this.documentPreviews.push({ index: documentIndex, preview: e.documentImage as string });
       documentIndex++;
@@ -208,7 +210,7 @@ export class UserEditorComponent {
       documentNumber: [userDocument.documentNumber, [Validators.required]],
       validFrom: [userDocument.validFrom, [Validators.required]],
       validTo: [userDocument.validTo, [Validators.required]],
-      documentImage: [userDocument.documentImage, [Validators.required]],
+      documentImage: [userDocument.documentImage],
     })
   }
 
@@ -219,7 +221,7 @@ export class UserEditorComponent {
       documentNumber: ['', [Validators.required]],
       validFrom: ['', [Validators.required]],
       validTo: ['', [Validators.required]],
-      documentImage: ['', [Validators.required]],
+      documentImage: [null],
     })
   }
 

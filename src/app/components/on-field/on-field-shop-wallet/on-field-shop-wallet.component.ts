@@ -51,6 +51,7 @@ export class OnFieldShopWalletComponent implements OnInit {
       if (res.data != null) {
         this.commissionAmount = res.data?.outstandingCommissionAmount;
         this.bonusAmount = res.data?.outstandingBonusAmount;
+        this.instantBonusAmount = res.data?.outstandingInstantBonusAmount;
       }
       else {
         this.commissionAmount = 0;

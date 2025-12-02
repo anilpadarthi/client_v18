@@ -83,4 +83,6 @@ export class SalaryTransactionEditorComponent {
     this.dialogRef.close(false);
   }
 
+  
+
 }

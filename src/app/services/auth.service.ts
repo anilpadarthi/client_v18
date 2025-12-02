@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthResponse, LoginRequest } from '../models/auth.models';
+import { Router } from '@angular/router';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,7 +13,7 @@ export class AuthService {
   private loggedIn$ = new BehaviorSubject<boolean>(this.hasValidTokens());
   url: string;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private router: Router, private zone: NgZone) {
     this.url = `api/auth`
   }
 
@@ -30,10 +32,15 @@ export class AuthService {
 
   /** 🔹 Logout */
   logout() {
-    localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem(this.refreshTokenKey);
-    localStorage.removeItem('userDetailsInfo');
-    this.loggedIn$.next(false);
+    console.log('test');
+    localStorage.clear();
+   this.zone.run(() => {
+      this.router.navigate(['/login']);
+    });
+    // localStorage.removeItem(this.accessTokenKey);
+    // localStorage.removeItem(this.refreshTokenKey);
+    // localStorage.removeItem('userDetailsInfo');
+    // this.loggedIn$.next(false);
   }
 
   /** 🔹 Access token helpers */
@@ -49,12 +56,13 @@ export class AuthService {
   private storeTokens(response: AuthResponse) {
     localStorage.setItem(this.accessTokenKey, response.accessToken);
     localStorage.setItem(this.refreshTokenKey, response.refreshToken);
-    localStorage.setItem('userDetailsInfo', JSON.stringify(response.userDetails));   
+    localStorage.setItem('userDetailsInfo', JSON.stringify(response.userDetails));
     this.loggedIn$.next(true);
   }
 
   /** 🔹 Token validation (optional simple check) */
   hasValidTokens(): boolean {
+    console.log('valid token');
     return !!localStorage.getItem(this.accessTokenKey);
   }
 
@@ -98,9 +106,9 @@ export class AuthService {
 //     this.url = `api/login`
 //   }
 
-//   isLoggedIn(): boolean {    
-//     return !!localStorage.getItem('token');   
-//   }  
+//   isLoggedIn(): boolean {
+//     return !!localStorage.getItem('token');
+//   }
 
 //   logout(): void {
 //     localStorage.removeItem('token');

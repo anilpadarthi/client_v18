@@ -1,4 +1,4 @@
-<mat-card class="cardWithShadow">
+<mat-card class="cardWithShadow theme-card">
   <mat-card-header class="d-flex">
     <mat-card-title>KPI Targets </mat-card-title>
   </mat-card-header>
@@ -40,7 +40,9 @@
             </td>
             <td style="background-color:yellow;"> £{{activationList[0].rate | number : "1.2-2" }}
             </td>
-            <td style="background-color:yellow;"> {{activationList[0].diff }}
+            <td style="background-color:yellow;"> 
+              {{ (activationList[0].act - activationList[0].currentMonth) > 0 ? '' : '+' }}
+              {{ (activationList[0].currentMonth - activationList[0].act) }}
             </td>
             <td style="background-color:yellow;"> £{{activationList[0].total | number : "1.2-2" }}
             </td>
@@ -53,8 +55,8 @@
             <td style="background-color:lightgreen;"> £{{activationList[1].rate | number : "1.2-2" }}
             </td>
             <td style="background-color:lightgreen;">
-              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
-              {{ (activationList[1].act - activationList[0].currentMonth) }}
+              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (activationList[0].currentMonth - activationList[1].act) }}
             </td>
             <td style="background-color:lightgreen;">£{{activationList[1].total | number : "1.2-2" }}
             </td>
@@ -67,8 +69,8 @@
             <td style="background-color:dodgerblue;"> £{{activationList[2].rate | number : "1.2-2" }}
             </td>
             <td style="background-color:dodgerblue;">
-              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
-              {{ (activationList[1].act - activationList[0].currentMonth) }}
+              {{ (activationList[2].act - activationList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (activationList[0].currentMonth - activationList[2].act) }}
             </td>
             <td style="background-color:dodgerblue;"> £{{activationList[2].total | number : "1.2-2" }}
             </td>
@@ -81,8 +83,8 @@
             <td style="background-color:salmon;"> £{{activationList[3].rate | number : "1.2-2" }}
             </td>
             <td style="background-color:salmon;">
-              {{ (activationList[1].act - activationList[0].currentMonth) > 0 ? '-': '+' }}
-              {{ (activationList[1].act - activationList[0].currentMonth) }}
+              {{ (activationList[3].act - activationList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (activationList[0].currentMonth - activationList[3].act) }}
             </td>
             <td style="background-color:salmon;"> £{{activationList[3].total | number : "1.2-2"}}
             </td>

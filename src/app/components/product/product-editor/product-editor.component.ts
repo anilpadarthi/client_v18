@@ -57,7 +57,7 @@ export class ProductEditorComponent {
       commissionToManager: ['', [Validators.required, Validators.minLength(1)]],
       //colourList: [[]],
       //sizeList: [[]],
-      status: true,
+      status: false,
       productImage: null as File | null,
       productPrices: this.fb.array([this.createChild()], Validators.required)
     });
@@ -136,7 +136,8 @@ export class ProductEditorComponent {
         this.productForm.patchValue(res.data.product);
         this.productForm.patchValue({
           commissionToAgent: res.data.productCommission?.commissionToAgent || 0,
-          commissionToManager: res.data.productCommission?.commissionToManager || 0
+          commissionToManager: res.data.productCommission?.commissionToManager || 0,
+          status:  res.data.product?.status
         });
         if (res.data.product?.productImage) {
           this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
@@ -186,7 +187,7 @@ export class ProductEditorComponent {
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
       formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId ?? 0);
-      formBody.append('status', this.productForm.value.status ?? '0');
+      formBody.append('status', (this.productForm.value.status ?? false) ? '1' : '0' );
       formBody.append('commissionToAgent', this.productForm.value.commissionToAgent);
       formBody.append('commissionToManager', this.productForm.value.commissionToManager);
 

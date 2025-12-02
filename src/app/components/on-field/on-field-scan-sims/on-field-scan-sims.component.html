@@ -5,7 +5,7 @@
   <mat-card-content>
     <div class="row col-lg-12">
       <mat-checkbox [(ngModel)]="isLebaraSims"> Lebara Sims
-      </mat-checkbox> 
+      </mat-checkbox>
     </div>
 
     <div class="row">
@@ -53,7 +53,19 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
-    <div class="zero-records p-b-8" *ngIf="dataSource?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-      <span>No records found</span></div>
+    <div class="zero-records p-b-8" *ngIf="dataSource?.length == 0"><img
+        src="/assets/images/landingpage/background/no-records.svg" />
+      <span>No records found</span>
+    </div>
+    <div class="row m-t-10">
+      <mat-form-field appearance="outline" class="col-lg-6">
+        <mat-label>Invalid IMEI's</mat-label>
+        <textarea rows="10" [(ngModel)]="invalidSims" matInput ></textarea>
+      </mat-form-field>
+       <mat-form-field appearance="outline" class="col-lg-6">
+        <mat-label>Existing IMEI's</mat-label>
+        <textarea rows="10" [(ngModel)]="alredyGiven" matInput ></textarea>
+      </mat-form-field>
+    </div>
   </mat-card-content>
 </mat-card>

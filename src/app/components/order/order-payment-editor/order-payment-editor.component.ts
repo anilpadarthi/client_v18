@@ -49,7 +49,7 @@ export class OrderPaymentEditorComponent {
     this.balanceAmount = data.balanceAmount;
     this.paymentForm = this.fb.group(
       {
-        referenceNumber: [null, [Validators.required, Validators.minLength(2)]],
+        referenceNumber: [null],
         amount: [null, [Validators.required]],
         paymentMode: [null, [Validators.required]],
         chequeNumber: [null],
@@ -215,7 +215,6 @@ export class OrderPaymentEditorComponent {
       amountType?.reset();
 
       // Restore validators
-      ref?.setValidators([Validators.required, Validators.minLength(2)]);
       amt?.setValidators([Validators.required]);
 
       cheque?.clearValidators();

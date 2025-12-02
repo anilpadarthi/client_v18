@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getAccessToken();
@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(cloned).pipe(
       catchError(err => {
-        if (err instanceof HttpErrorResponse && err.status === 401) {
+        if (err instanceof HttpErrorResponse && err.status === 401 && !req.url.includes('/refresh')) {
           if (!this.isRefreshing) {
             this.isRefreshing = true;
             this.refreshTokenSubject.next(null);
@@ -32,9 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
               switchMap(tokens => {
                 this.isRefreshing = false;
                 this.refreshTokenSubject.next(tokens.accessToken);
-                const newReq = req.clone({
-                  setHeaders: { Authorization: `Bearer ${tokens.accessToken}` }
-                });
+                const newReq = req.clone({ setHeaders: { Authorization: `Bearer ${tokens.accessToken}` } });
                 return next.handle(newReq);
               }),
               catchError(refreshErr => {
@@ -43,19 +41,16 @@ export class AuthInterceptor implements HttpInterceptor {
                 return throwError(() => refreshErr);
               })
             );
-          } else {
-            // wait for refreshTokenSubject to emit
-            return this.refreshTokenSubject.pipe(
-              filter(token => token != null),
-              take(1),
-              switchMap(token => {
-                const newReq = req.clone({
-                  setHeaders: { Authorization: `Bearer ${token}` }
-                });
-                return next.handle(newReq);
-              })
-            );
           }
+
+          return this.refreshTokenSubject.pipe(
+            filter(token => token != null),
+            take(1),
+            switchMap(token => {
+              const newReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+              return next.handle(newReq);
+            })
+          );
         }
 
         return throwError(() => err);

@@ -105,7 +105,11 @@ export class OnFieldShopVisitComponent {
 
 
   // Convert Data URL to Blob
-  dataURItoBlob(dataURI: string): Blob {
+  dataURItoBlob(dataURI: string | null | undefined): Blob | null {
+    if (!dataURI || !dataURI.includes(',')) {
+      return null; // ⛔ No file selected or invalid data format
+    }
+
     const byteString = atob(dataURI.split(',')[1]);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const uintArray = new Uint8Array(arrayBuffer);
@@ -148,7 +152,9 @@ export class OnFieldShopVisitComponent {
     formData.append('comments', this.comments);
     formData.append('latitude', this.geoLocation.latitude);
     formData.append('longitude', this.geoLocation.longitude);
-    formData.append('imageFile', blob, 'captured-image.png');
+    if (blob) {
+      formData.append('imageFile', blob, 'captured-image.png');
+    }
 
 
     this.shopService.creteShopVisit(formData).subscribe((res) => {

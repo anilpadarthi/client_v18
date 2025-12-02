@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { cleanDate } from '../../../helpers/utils';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-track-report',
@@ -17,11 +18,16 @@ export class TrackReportComponent implements OnInit {
 
   fromDate: any = null;
   filterType = 'All';
+  mode = '';
   selectedUserId = null;
   totalCount = 0;
   isOpenModel = false;
   userLookup: any = [];
   dataSource: any = [];
+  detailData: any = [];
+  userFilterCtrl: FormControl = new FormControl();
+  filteredUsers: any[] = [];
+  displayedColumns1: string[] = [];
   displayedColumns: string[] = [
     'UserId',
     'UserName',
@@ -45,12 +51,23 @@ export class TrackReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserLookup();
+    this.userFilterCtrl.valueChanges.subscribe(() => {
+      this.filterUsers();
+    });
   }
 
   getUserLookup() {
     this.lookupService.getAgents().subscribe((res) => {
       this.userLookup = res.data;
+      this.filteredUsers = res.data;
     });
+  }
+
+  private filterUsers() {
+    const search = this.userFilterCtrl.value?.toLowerCase() || '';
+    this.filteredUsers = this.userLookup.filter((item: any) =>
+      `${item.id} - ${item.name}`.toLowerCase().includes(search)
+    );
   }
 
   loadData(): void {
@@ -74,8 +91,24 @@ export class TrackReportComponent implements OnInit {
     this.filterType = 'All';
     if (this.selectedUserId) {
       this.filterType = 'User Track';
+      this.mode = 'Details';
+      const requestBody = {
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        filterType: 'User Track',
+        filterId: this.selectedUserId
+      };
+
+      this.trackingService.getUserTrackDataReport(requestBody).subscribe((res) => {
+        if (res.data?.length > 0) {
+          this.detailData = res.data;
+          this.displayedColumns1 = Object.keys(res.data[0]);
+        }
+      });
     }
-    this.loadData();
+    else {
+      this.mode = 'All';
+      this.loadData();
+    }
   }
 
   onClear(): void {

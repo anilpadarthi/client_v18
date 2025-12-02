@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { AreaService } from '../../../services/area.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,6 +30,8 @@ export class AreaListComponent implements OnInit {
   totalCount = 0;
   areaList: any[] = [];
   searchText!: string | null;
+  userRole = '';
+  isAdmin = false;
 
 
   constructor
@@ -36,10 +39,15 @@ export class AreaListComponent implements OnInit {
       private router: Router,
       private toasterService: ToasterService,
       public dialog: MatDialog,
-      private areaService: AreaService
+      private areaService: AreaService,
+      public webstorgeService: WebstorgeService
     ) { }
 
   ngOnInit(): void {
+     this.userRole = this.webstorgeService.getUserRole();
+     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+      this.isAdmin = true;
+    }
     this.loadData();
   }
 

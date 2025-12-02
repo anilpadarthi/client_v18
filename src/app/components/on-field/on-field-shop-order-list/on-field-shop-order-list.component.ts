@@ -266,7 +266,29 @@ export class OnFieldShopOrderListComponent implements OnInit {
       }
     });
   }
+markCCA(orderId: any): void {
+    this.updateOrder(orderId, 13);
+  }
 
+  markCCM(orderId: any): void {
+    this.updateOrder(orderId, 14);
+  }
+
+  updateOrder(orderId: any, orderStatusId: number): void {
+    const requestBody = {
+      OrderId: orderId,
+      OrderStatusId: orderStatusId,      
+    };
+
+    this.orderService.updateStatus(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Updated Successfully.");
+      }
+      else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
+  }
 
 
 }

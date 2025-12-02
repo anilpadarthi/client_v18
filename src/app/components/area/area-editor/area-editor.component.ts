@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AreaService } from '../../../services/area.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { WebstorgeService } from '../../../services/web-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -14,6 +15,8 @@ export class AreaEditorComponent {
 
   areaForm: FormGroup;
   areaId: any;
+  userRole = '';
+  isAdmin = false;
 
   constructor
     (
@@ -21,6 +24,7 @@ export class AreaEditorComponent {
       private router: Router,
       private areaService: AreaService,
       private toasterService: ToasterService,
+      public webstorgeService: WebstorgeService,
       private fb: FormBuilder
     ) {
 
@@ -33,6 +37,10 @@ export class AreaEditorComponent {
   }
 
   ngOnInit(): void {
+    this.userRole = this.webstorgeService.getUserRole();
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+      this.isAdmin = true;
+    }
     this.areaId = this.route.snapshot.paramMap.get('id');
     this.getAreaDetails();
   }

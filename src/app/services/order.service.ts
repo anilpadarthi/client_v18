@@ -43,7 +43,7 @@ export class OrderService {
     return this.http.post<Response>(this.url + "/Update", orderDetails);
   }
 
-  updateStatus(orderDetails: any): Observable<Response> {
+  updateStatus(orderDetails: any): Observable<any> {
     return this.http.post<Response>(this.url + "/UpdateStatus", orderDetails);
   }
 

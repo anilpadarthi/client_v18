@@ -15,6 +15,8 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
     'CommissionDate',
     'ChequeNumber',
     'Amount',
+    'Status',
+    'PaidDate',
   ];
   commissionChequeList: any = [];
 

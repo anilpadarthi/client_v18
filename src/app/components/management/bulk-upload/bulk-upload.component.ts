@@ -35,14 +35,15 @@ export class BulkUploadComponent {
       formData.append('importFile', this.importFile);
       formData.append('importType', this.importFileType || '');
       this.bulkUploadService.uploadFile(formData).subscribe((res) => {
-        if (res.statusCode == 200) {
+        if (res.statusCode == 200 && res.data=='Success') {          
           this.toasterService.showMessage("Uploaded successfully, It is being processed soon.");
           this.importFileType = '';
           this.importFile = null;
         }
         else {
-          this.toasterService.showMessage(res.message);
+          this.toasterService.showMessage(res.data);
         }
+        this.resetControls();
       });
     }
     else {
@@ -62,5 +63,14 @@ export class BulkUploadComponent {
   refreshStatus() {
     this.svc.getStatus().subscribe(s => this.status = s);
   }
+
+  resetControls() {
+  this.importFileType = "";
+  this.importFile = null;
+  
+  // Clear input field manually
+  const fileInput = document.getElementById("fileUpload") as HTMLInputElement;
+  if (fileInput) fileInput.value = "";
+}
 
 }

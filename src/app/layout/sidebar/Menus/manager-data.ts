@@ -66,6 +66,16 @@ export const ManagerItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/kpi-target',
       },
+      {
+        displayName: 'Track',
+        iconName: 'arrow_right',
+        route: 'report/track',
+      },
+      {
+        displayName: 'Payslip',
+        iconName: 'arrow_right',
+        route: 'management/payslip',
+      },
     ],
   },
   {
@@ -86,7 +96,7 @@ export const ManagerItems: NavItem[] = [
     ],
   },
 
- 
+
 
   {
     displayName: 'Accessories',

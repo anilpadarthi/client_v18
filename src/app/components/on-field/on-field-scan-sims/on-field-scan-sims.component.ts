@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { SimService } from '../../../services/sim.service';
 import { ToasterService } from '../../../services/toaster.service';
-import { ShopService } from '../../../services/shop.service';
 import { PostcodeService } from '../../../services/postcode.service';
 
 
@@ -27,11 +26,13 @@ export class OnFieldScanSimsComponent {
     'STATUS'
   ];
   dataSource: any = null;
+  totalData: any =null;
+  invalidSims = '';
+  alredyGiven = '';
 
   constructor(
     private simService: SimService,
     private toasterService: ToasterService,
-    private shopService: ShopService,
     private postcodeService: PostcodeService,
   ) {
     this.selectedShopId = this.shopAddressDetails?.shopId;
@@ -72,7 +73,10 @@ export class OnFieldScanSimsComponent {
 
       this.simService.scanSims(request).subscribe((res) => {
         if (res.data.length > 0) {
-          this.dataSource = res.data;
+          this.dataSource = res.data.filter((f: any) => f.status == 'NotAssigned');
+          this.totalData = res.data;
+          this.invalidSims = res.data.filter((f: any) => f.status == 'Invalid').map((m: any) => m.imei).join('\n');
+          this.alredyGiven = res.data.filter((f: any) => f.status == 'Assigned').map((m: any) => m.imei).join('\n');
         }
         else {
           this.dataSource = [];
@@ -111,7 +115,7 @@ export class OnFieldScanSimsComponent {
         });
       }
       else {
-        this.toasterService.showMessage('Only un-assigned sims can be assigned, please have a look');
+        this.toasterService.showMessage('All the sims have already been assigned, please have a look');
       }
     }
     else {
@@ -120,9 +124,9 @@ export class OnFieldScanSimsComponent {
   }
 
   onDeAllocateSims(): void {
-    if (this.dataSource?.length > 0) {
+    if (this.totalData?.filter((f: any) => f.status == 'Assigned').length > 0) {
       const request = {
-        imeiNumbers: this.dataSource.filter((f: any) => f.status != 'Invalid').map((m: any) => m.imei),
+        imeiNumbers: this.totalData.filter((f: any) => f.status == 'Assigned').map((m: any) => m.imei),
         shopId: this.selectedShopId
       };
 
@@ -138,7 +142,7 @@ export class OnFieldScanSimsComponent {
       });
     }
     else {
-      this.toasterService.showMessage('Please scan the sims before proceed to furthur.');
+      this.toasterService.showMessage('Not eligible for de- alocate.');
     }
   }
 

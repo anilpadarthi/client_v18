@@ -22,6 +22,14 @@
                         £{{ getTotal('saleAmount') | number: '1.2-2'}}
                     </td>
                 </ng-container>
+                <ng-container matColumnDef="PaidAmount">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Paid Amount</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">£{{ element.paidAmount | number: '1.2-2'
+                        }}</td>
+                    <td mat-footer-cell *matFooterCellDef class="text-center">
+                        £{{ getTotal('paidAmount') | number: '1.2-2'}}
+                    </td>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

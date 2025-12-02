@@ -42,7 +42,7 @@ export class OnFieldSpamActivationsComponent implements OnInit {
     this.isLoading = true;
     const request = {
       shopId: this.selectedShopId,
-      isInstantActivation: true,
+      isInstantActivation: false,
       isSpam: true,
     };
     this.onFieldService.onFieldActivationList(request).subscribe((res) => {

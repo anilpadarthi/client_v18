@@ -158,9 +158,7 @@ const routes: Routes = [
 
 
       { path: 'accessories/sales', component: OrderListComponent },
-      { path: 'digitalId', component: DigitalIdComponent },
-
-      { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
+      { path: 'digitalId', component: DigitalIdComponent },      
 
       { path: 'chat', component: GroupChatComponent },
 
@@ -187,6 +185,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'retailer/login', component: RetailerLoginComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
   { path: '**', redirectTo: '/login' }
 ];

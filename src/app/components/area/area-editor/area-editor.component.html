@@ -15,7 +15,7 @@
                         Area Name must be at least 2 characters long.
                     </mat-error>
                 </mat-form-field>
-                <mat-checkbox appearance="outline" class="w-100" color="warn" formControlName="status">
+                <mat-checkbox *ngIf="isAdmin" appearance="outline" class="w-100" color="warn" formControlName="status">
                     Is Active
                 </mat-checkbox>
 

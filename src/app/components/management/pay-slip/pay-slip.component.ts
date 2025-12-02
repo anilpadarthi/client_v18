@@ -38,6 +38,7 @@ export class PaySlipComponent implements OnInit {
   salaryDetails: any = [];
   salaryTransactions: any = [];
   isAdmin = false;
+  isManager = false;
   userRole: any;
   loggedInUserId: any;
   kpi1Target = 0;
@@ -50,7 +51,7 @@ export class PaySlipComponent implements OnInit {
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
   displayedColumns2: string[] = ['saleType', 'totalSale', 'rate', 'total'];
-  displayedColumns3: string[] = ['comments', 'date', 'amount', 'action'];
+  displayedColumns3: string[] = ['type', 'comments', 'date', 'amount', 'action'];
 
   constructor(
     public datePipe: DatePipe,
@@ -72,7 +73,8 @@ export class PaySlipComponent implements OnInit {
       this.getManagerLookup();
     }
     else if (this.userRole == 'Manager') {
-      this.selectedManagerId = this.loggedInUserId;
+      this.isManager = true;
+      this.getAgentLookup();
     }
     else if (this.userRole == 'Agent') {
       this.selectedAgentId = this.loggedInUserId;
@@ -118,7 +120,7 @@ export class PaySlipComponent implements OnInit {
   loadData(): void {
     const requestBody = {
       fromDate: this.selectedMonth,
-      filterType: this.selectedManagerId != 0 ? 'Manager' : 'Agent',
+      filterType: this.selectedAgentId  ? 'Agent' : 'Manager',
       filterId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
     };
 
@@ -171,6 +173,7 @@ export class PaySlipComponent implements OnInit {
     if (this.selectedAgentId && this.selectedMonth) {
       var data = {
         userId: this.selectedAgentId,
+        transactionDate: this.selectedMonth
       }
       this.dialog.open(SalaryTransactionEditorComponent, {
         data
