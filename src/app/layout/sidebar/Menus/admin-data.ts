@@ -151,7 +151,7 @@ export const AdminItems: NavItem[] = [
         route: 'report/daily-report',
       },
       {
-        displayName: 'Track',
+        displayName: 'Track Reports',
         iconName: 'arrow_right',
         route: 'report/track',
       },

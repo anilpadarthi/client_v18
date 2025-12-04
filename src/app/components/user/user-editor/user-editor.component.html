@@ -94,9 +94,9 @@
             <mat-label>Designation</mat-label>
             <mat-select formControlName="designation" placeholder="Select Designation">
               <mat-option value="">-Select-</mat-option>
-              <mat-option value="Retailer Manager">Retailer Manager</mat-option>
-              <mat-option value="Senior Manager">Senior Manager</mat-option>
-              <mat-option value="Develoment Head">Develoment Head</mat-option>
+               <mat-option value="Business Development Officer">Business Development Officer</mat-option>
+              <mat-option value="Marketing Executive">Marketing Executive</mat-option>
+              <mat-option value="Retail Sales Executive">Retail Sales Executive</mat-option>             
             </mat-select>
           </mat-form-field>
 
@@ -134,7 +134,7 @@
                 <mat-form-field appearance="outline" class="col-lg-6">
                   <mat-label>Document Type</mat-label>
                   <mat-select formControlName='documentType' id="{{'documentType'+i}}" placeholder="Select Document">
-                    <mat-option [value]="0">All</mat-option>
+                    <mat-option [value]="0">-Select-</mat-option>
                     <mat-option *ngFor="let item of documentTypeLookUp" [value]="item.id">
                       <span>{{ item.name }}</span>
                     </mat-option>

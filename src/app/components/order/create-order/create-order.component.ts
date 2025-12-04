@@ -64,6 +64,13 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   userRole = '';
   isRedemed = false;
 
+  includedPaymentMethods = [
+    "Against Commission",
+    "Cash on delivery",
+    "Sell or Return",
+    "Return Goods"
+  ];
+
   constructor(
     private orderService: OrderService,
     private lookupService: LookupService,
@@ -76,7 +83,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   ) {
     this.checkScreenSize();
   }
-
 
   displayedColumns: string[] = [
     'productName',
@@ -176,8 +182,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         this.selectedPaymentMethodId = paymentTypes.find((f: any) => f.name == "Monthly Commission").id;
       }
       else {
-        this.paymentMethodLookup = paymentTypes.filter((f: any) => f.name != "Bonus" && f.name != "Monthly Commission"
-          && f.name != 'SimRequest' && f.name != 'Sim Request' && f.name != 'Against Commission')
+        this.paymentMethodLookup = paymentTypes.filter(
+          (f: any) => this.includedPaymentMethods.includes(f.name)
+        );
       }
 
     });

@@ -25,6 +25,7 @@ export class OrderDetailsComponent implements OnInit {
   trackingNumber = null;
   userRole = '';
   isAdmin = false;
+  isWareHouseKeeper = false;
   isVAT = false;
 
   vatAmount = 0.00;
@@ -59,6 +60,9 @@ export class OrderDetailsComponent implements OnInit {
       let loggedInUserId = this.webstorgeService.getUserInfo().userId;
       if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
         this.isAdmin = true;
+      }
+      else if (this.userRole == 'WareHouse') {
+        this.isWareHouseKeeper = true;
       }
 
       this.orderItems = data.orderDetails.items;
@@ -124,7 +128,7 @@ export class OrderDetailsComponent implements OnInit {
 
   }
 
-  markCCA(): void{
+  markCCA(): void {
     this.selectedStatusId = 13
     this.updateOrder();
   }

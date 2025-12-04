@@ -5,7 +5,7 @@
 </h2>
 <mat-dialog-content>
 
-    <div class="row m-t-15" *ngIf="isAdmin">
+    <div class="row m-t-15" *ngIf="isAdmin || isWareHouseKeeper">
         <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
             <mat-label>Status</mat-label>
             <mat-select [(ngModel)]="selectedStatusId">
@@ -39,17 +39,17 @@
         </mat-form-field>
     </div>
     <div class="row col-lg-12">
-        <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
+        <button *ngIf="isAdmin || isWareHouseKeeper" mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
             Update
         </button>
 
-        <button *ngIf="!isAdmin" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
+        <button *ngIf="!isAdmin && !isWareHouseKeeper" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
             Mark as Delivered
         </button>       
     </div>
 
 
-    <div *ngIf="orderItems.length > 0" class="table-responsive table-scroll example-container m-t-10">
+    <div *ngIf="orderItems.length > 0" class="table-responsive table-max-scroll example-container m-t-10">
         <table mat-table [dataSource]="orderItems" class="w-100 custom-table">
             <ng-container matColumnDef="productName">
                 <th mat-header-cell *matHeaderCellDef>Name</th>

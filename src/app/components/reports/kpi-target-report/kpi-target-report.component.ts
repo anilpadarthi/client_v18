@@ -23,6 +23,11 @@ export class KpiTargetReportComponent implements OnInit {
   isDisplay = false;
   managerFilterCtrl: FormControl = new FormControl();
   filteredManagers: any[] = [];
+  prevTotal: number = 0;
+  KPI1TargetTotal: number = 0;
+  KPI1AchievedTotal: number = 0;
+  achievedPercentageTotal: any;
+  differenceTotal: number = 0;
 
   displayedColumns: string[] = [
     'NAME',
@@ -80,10 +85,11 @@ export class KpiTargetReportComponent implements OnInit {
         this.kpiTargetList = res.data;
         if (this.kpiTargetList.length > 0) {
           this.bonusAmount = this.kpiTargetList[0].kpI1Bonus;
+          this.calculateSums();
         }
       }
       else {
-        this.kpiTargetList = null;
+        this.kpiTargetList = [];
       }
     });
 
@@ -108,6 +114,14 @@ export class KpiTargetReportComponent implements OnInit {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.selectedMonth = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
+  }
+
+  calculateSums() {
+    this.prevTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.lastMonthActivated, 0);
+    this.KPI1TargetTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.kpI1Activations, 0);
+    this.KPI1AchievedTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.achieved, 0);
+    this.achievedPercentageTotal = (this.KPI1AchievedTotal && this.KPI1TargetTotal ? (this.KPI1AchievedTotal / this.KPI1TargetTotal) * 100 : 0).toFixed(2);
+    this.differenceTotal = this.KPI1TargetTotal - this.KPI1AchievedTotal;
   }
 
 }

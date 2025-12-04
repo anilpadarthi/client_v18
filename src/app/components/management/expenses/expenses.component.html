@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div *ngIf="atttendanceList?.length > 0" class="table-responsive table-scroll example-container">
+        <div *ngIf="atttendanceList?.length > 0" class="table-responsive table-max-scroll example-container">
             <table mat-table [dataSource]="atttendanceList" class="w-100 custom-table">
                 <ng-container matColumnDef="NAME">
                     <th mat-header-cell *matHeaderCellDef>Name</th>

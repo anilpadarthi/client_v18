@@ -35,4 +35,12 @@ export class SupplierService {
     return this.http.get<ICommonResponse>(this.url + `/Delete?id=${id}`);
   }
 
+  createTransaction(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/CreateTransaction', requestBody);
+  }
+
+  supplierTransactions(id: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/SupplierTransactions?supplierId=${id}`);
+  }
+
 }

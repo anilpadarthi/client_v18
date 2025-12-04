@@ -24,6 +24,8 @@ body {
 }
 
 
+
+
 .table-responsive {
     border: 1px solid #E2E3E5 !important;
     border-radius: 6px;
@@ -32,6 +34,17 @@ body {
 .custom-table {
     width: 100%;
     border-collapse: separate;
+
+    /* ⭐ Enable wrapping in table cells */
+    .mat-mdc-cell,
+    .mat-mdc-header-cell,
+    .mdc-data-table__cell,
+    .mdc-data-table__header-cell {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.3;
+    }
 
     .mat-mdc-header-row,
     .mdc-data-table__row {
@@ -46,7 +59,7 @@ body {
         padding: 12px 12px !important;
         font-size: 14px !important;
         font-weight: 600 !important;
-        border-right: 2px solid #EDEDED !important; // Adjusted to match header
+        border-right: 2px solid #EDEDED !important;
         color: #262A2D;
 
         &:first-child {
@@ -59,7 +72,7 @@ body {
     }
 
     td {
-        border-right: 2px solid #EDEDED !important; // Adjusted to match theme
+        border-right: 2px solid #EDEDED !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
         color: #262A2D;
@@ -76,7 +89,7 @@ body {
         font-size: 16px !important;
         font-weight: bold !important;
         color: #EF0000;
-        box-shadow: 6px 1px 4px 1px #e6cfcf; // lighter shadow to match pink tone
+        box-shadow: 6px 1px 4px 1px #e6cfcf;
     }
 
     td a {
@@ -89,6 +102,16 @@ body {
     }
 }
 
+
+
+
+
+
+.table-max-scroll {
+    max-height: calc(100vh - 30vh) !important;
+    max-width: 100%;
+    overflow: auto;
+}
 
 .table-scroll {
     max-height: 400px !important;
@@ -439,7 +462,8 @@ video {
 .m-t-0 {
     margin-top: 0px !important;
 }
-.no-margin{
+
+.no-margin {
     margin-left: 0px;
     margin-right: 0px;
 }

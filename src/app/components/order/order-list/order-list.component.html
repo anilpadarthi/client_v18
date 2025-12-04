@@ -169,7 +169,7 @@
                 </div>
             </div>
 
-            <div *ngIf="orderList.length > 0" class="table-responsive table-scroll example-container">
+            <div *ngIf="orderList.length > 0" class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="orderList" class="w-100 custom-table">
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef>
@@ -180,7 +180,7 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button *ngIf="element.orderStatusId == 1 || element.orderStatusId == 10 || isAdmin"
+                                <button *ngIf="element.orderStatusId == 1 || element.orderStatusId == 10 || isAdmin || isWareHouseKeeper"
                                     mat-menu-item (click)="editOrder(element.orderId)">
                                     <mat-icon>edit</mat-icon>
                                     Edit Order
@@ -193,11 +193,11 @@
                                     <mat-icon>history</mat-icon>
                                     Order History
                                 </button>
-                                <button mat-menu-item (click)="paymentHistory(element.orderId)">
+                                <button mat-menu-item *ngIf="!isWareHouseKeeper" (click)="paymentHistory(element.orderId)">
                                     <mat-icon>payments</mat-icon>
                                     Payment History
                                 </button>
-                                <button mat-menu-item (click)="addPayment(element)">
+                                <button mat-menu-item *ngIf="!isWareHouseKeeper" (click)="addPayment(element)">
                                     <mat-icon>currency_pound</mat-icon>
                                     Add Payment
                                 </button>
@@ -219,7 +219,7 @@
                                     <mat-icon>mail</mat-icon>
                                     VAT Email
                                 </button>
-                                <button mat-menu-item (click)="sendEmail(element.orderId,false)">
+                                <button *ngIf="!isWareHouseKeeper" mat-menu-item (click)="sendEmail(element.orderId,false)">
                                     <mat-icon>mail</mat-icon>
                                     Non VAT Email
                                 </button>
@@ -235,7 +235,8 @@
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef>Date</th>
                         <td mat-cell *matCellDef="let element">
-                            {{ element.createdDate | date: 'dd/MM/yyyy' }}
+                            {{ element.createdDate | date: 'dd/MM/yyyy HH:mm:ss' }} /
+                            {{ element.modifiedDate | date: 'dd/MM/yyyy HH:mm:ss' }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="user">

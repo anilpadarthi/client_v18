@@ -19,7 +19,7 @@
                 </div>
             </div>
             <p *ngIf="networkUsageList?.length > 0" class="info-msg">** Accounts are calculated from 1st to 1st **</p>
-            <div *ngIf="networkUsageList?.length > 0" class="table-responsive table-scroll example-container ">
+            <div *ngIf="networkUsageList?.length > 0" class="table-responsive table-max-scroll example-container ">
                 <table mat-table [dataSource]="networkUsageList" class="w-100 custom-table">
                     <ng-container matColumnDef="NAME">
                         <th mat-header-cell *matHeaderCellDef>NAME</th>

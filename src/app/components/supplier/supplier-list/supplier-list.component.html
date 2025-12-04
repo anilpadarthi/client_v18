@@ -23,10 +23,14 @@
                         <mat-icon>add</mat-icon>
                         Add
                     </button>
+                     <button mat-flat-button color="primary" (click)="addTransaction()" class="card-container-right">
+                        <mat-icon>add</mat-icon>
+                        Add Transaction
+                    </button>
                 </div>
             </div>
 
-            <div class="table-responsive table-scroll example-container">
+            <div class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="supplierList" class="w-100 custom-table">
 
                     <ng-container matColumnDef="SupplierId">
@@ -42,10 +46,14 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="Status">
-                        <th mat-header-cell *matHeaderCellDef>STATUS</th>
-                        <td mat-cell *matCellDef="let element">{{ element.status == 1 ? 'Active': 'InActive' }}</td>
+                    <ng-container matColumnDef="OutStandingBalance">
+                        <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">OutStanding</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a (click)="loadSupplierTransactions(element)" >{{ element.outStanding }}</a>
+                        </td>
                     </ng-container>
+
+                    
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
                             ACTION

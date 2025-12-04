@@ -37,7 +37,7 @@
             </div>
 
             <div *ngIf="!isLoading && commissionList?.length > 0"
-                class="table-responsive table-scroll example-container">
+                class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="commissionList" class="w-100 custom-table">
 
                     <ng-container matColumnDef="UserName">

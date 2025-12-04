@@ -51,7 +51,7 @@
       <p class="info-msg">** Accounts are calculated from 26th to 25th **</p>
       <div *ngIf="salaryDetails.length > 0">
         <h3>Salary Details</h3>
-        <div class="table-responsive table-scroll example-container">
+        <div class="table-responsive table-max-scroll example-container">
           <table mat-table [dataSource]="salaryDetails" class="w-100 custom-table">
 
             <ng-container matColumnDef="type">
@@ -87,7 +87,7 @@
 
       <div *ngIf="simCommissionDetails.length > 0">
         <h3>Sim Commission Details</h3>
-        <div class="table-responsive table-scroll example-container m-t-12">
+        <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
 
@@ -124,7 +124,7 @@
 
       <div *ngIf="accessoriesCommisssionDetails.length > 0">
         <h3>Accessories Commission Details</h3>
-        <div class="table-responsive table-scroll example-container m-t-12">
+        <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="accessoriesCommisssionDetails" class="w-100 custom-table">
 
@@ -162,7 +162,7 @@
 
       <div *ngIf="salaryTransactions.length > 0">
         <h3>Payments</h3>
-        <div class="table-responsive table-scroll example-container m-t-12">
+        <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="salaryTransactions" class="w-100 custom-table">
 

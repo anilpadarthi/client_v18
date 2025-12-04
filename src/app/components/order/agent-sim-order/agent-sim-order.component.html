@@ -119,7 +119,7 @@
         <div *ngIf="isCartView">
             <h1>Cart Items</h1>
             <mat-card class="m-t-12" *ngIf="cartItems.length > 0">
-                <div class="table-responsive table-scroll example-container">
+                <div class="table-responsive table-max-scroll example-container">
                     <table mat-table [dataSource]="cartItems" class="w-100 custom-table">
                         <ng-container matColumnDef="productName">
                             <th mat-header-cell *matHeaderCellDef>Name</th>

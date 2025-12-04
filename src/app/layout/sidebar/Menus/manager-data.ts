@@ -67,7 +67,7 @@ export const ManagerItems: NavItem[] = [
         route: 'report/kpi-target',
       },
       {
-        displayName: 'Track',
+        displayName: 'Track Reports',
         iconName: 'arrow_right',
         route: 'report/track',
       },

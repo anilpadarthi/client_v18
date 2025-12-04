@@ -18,7 +18,7 @@
             </div>
 
             <div *ngIf="dataSource?.length > 0"
-                class="table-responsive table-scroll example-container flex-table m-t-15">
+                class="table-responsive table-max-scroll example-container flex-table m-t-15">
                 <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
                     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
                         <th mat-header-cell *matHeaderCellDef>

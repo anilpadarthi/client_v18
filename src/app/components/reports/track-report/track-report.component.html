@@ -30,8 +30,21 @@
           </button>
         </div>
       </div>
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-lg-3">
+          <mat-label>Choose a Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+        <div class="col-lg-6 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="downloadAttendace()">Download</button>
+        </div>
+      </div>
 
-      <div *ngIf="dataSource?.length > 0 && mode == 'All'" class="table-responsive table-scroll example-container">
+      <div *ngIf="dataSource?.length > 0 && mode == 'All'" class="table-responsive table-max-scroll example-container">
         <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
           <ng-container matColumnDef="UserId">
             <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -101,7 +114,7 @@
 
         </table>
       </div>
-     <div *ngIf="detailData?.length > 0 && mode == 'Details'" class="table-responsive table-scroll example-container">
+     <div *ngIf="detailData?.length > 0 && mode == 'Details'" class="table-responsive table-max-scroll example-container">
 
         <table mat-table [dataSource]="detailData" class="custom-table mat-elevation-z8">
 

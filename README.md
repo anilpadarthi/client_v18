@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Sidebar / menu links (open in new tab)
+
+In the sidebar we updated the `app-nav-item` implementation so menu items now render real anchor links (href/routerLink) and set `target` when configured. This makes the browser's native "Open in new tab" and context menu available for menu items. If a menu item needs to open a dynamic/constructed URL in a new tab (e.g. the "Open Accessories" item), the component still performs the window.open for that special-case logic.

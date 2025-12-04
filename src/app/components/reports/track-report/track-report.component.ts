@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackingService } from '../../../services/tracking.service';
 import { LookupService } from '../../../services/lookup.service';
+import { ToasterService } from '../../../services/toaster.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { cleanDate } from '../../../helpers/utils';
 import { FormControl } from '@angular/forms';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-track-report',
@@ -20,6 +23,7 @@ export class TrackReportComponent implements OnInit {
   filterType = 'All';
   mode = '';
   selectedUserId = null;
+  selectedMonth: string | null = null;
   totalCount = 0;
   isOpenModel = false;
   userLookup: any = [];
@@ -46,7 +50,8 @@ export class TrackReportComponent implements OnInit {
     public datePipe: DatePipe,
     private dialog: MatDialog,
     private trackingService: TrackingService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit(): void {
@@ -179,5 +184,28 @@ export class TrackReportComponent implements OnInit {
       this.openModel(popupData, 'Shops Sims Given');
     });
   }
+
+  downloadAttendace(): void {
+    if(this.selectedMonth){
+    this.trackingService.downloadAttendace(this.selectedMonth);
+    }
+    else{
+      this.toasterService.showMessage("Please select month.");
+    }
+  }
+
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
+  }
+
 
 }

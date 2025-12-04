@@ -6,13 +6,14 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 import { ToasterService } from '../../../services/toaster.service';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import { SupplierTransactionEditorComponent } from '../supplier-transaction-editor/supplier-transaction-editor.component';
 
 @Component({
   selector: 'app-supplier-list',
   templateUrl: './supplier-list.component.html',
   styleUrl: './supplier-list.component.scss'
 })
-
 
 export class SupplierListComponent implements OnInit {
 
@@ -25,7 +26,7 @@ export class SupplierListComponent implements OnInit {
   displayedColumns: string[] = [
     'SupplierId',
     'SupplierName',
-    'Status',
+    'OutStandingBalance',
     'Action'
   ];
 
@@ -40,8 +41,6 @@ export class SupplierListComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
   }
-
-
 
   addoreditclick(id: any) {
     if (id > 0) {
@@ -121,6 +120,22 @@ export class SupplierListComponent implements OnInit {
       this.pageNo = this.pageNo - 1;
       this.loadData();
     }
+  }
+
+  addTransaction(): void {
+    this.dialog.open(SupplierTransactionEditorComponent);
+  }
+
+  loadSupplierTransactions(supplier: any): void {
+    this.supplierService.supplierTransactions(supplier.supplierId).subscribe((res) => {
+      var data = {
+        result: res.data,
+        headerName: "Supplier Transactions - " + supplier.supplierName
+      }
+      this.dialog.open(PopupTableComponent, {
+        data
+      });
+    });
   }
 
 }
