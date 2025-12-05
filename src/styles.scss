@@ -760,4 +760,36 @@ ngx-mat-select-search {
     .mat-mdc-paginator-range-label {
         margin: 0px !important;
     }
+
+    /* prevent wrapping on mobile */
+  .custom-table .mat-mdc-cell,
+  .custom-table .mdc-data-table__cell,
+  .custom-table .mat-mdc-header-cell,
+  .custom-table .mdc-data-table__header-cell {
+    white-space: nowrap !important;
+  }
+
+  /* enable horizontal scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ⭐ Mobile behavior: prevent over-wrapping */
+@media (max-width: 768px) {
+
+  /* prevent wrapping on mobile */
+  .custom-table .mat-mdc-cell,
+  .custom-table .mdc-data-table__cell,
+  .custom-table .mat-mdc-header-cell,
+  .custom-table .mdc-data-table__header-cell {
+    white-space: nowrap !important;
+  }
+
+  /* enable horizontal scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
 }

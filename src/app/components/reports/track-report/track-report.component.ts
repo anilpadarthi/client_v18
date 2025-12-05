@@ -23,7 +23,6 @@ export class TrackReportComponent implements OnInit {
   filterType = 'All';
   mode = '';
   selectedUserId = null;
-  selectedMonth: string | null = null;
   totalCount = 0;
   isOpenModel = false;
   userLookup: any = [];
@@ -186,26 +185,21 @@ export class TrackReportComponent implements OnInit {
   }
 
   downloadAttendace(): void {
-    if(this.selectedMonth){
-    this.trackingService.downloadAttendace(this.selectedMonth);
+    const requestBody = {
+      fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+      filterType: 'User Track',
+      filterId: this.selectedUserId
+    };
+    if (this.fromDate && this.selectedUserId) {
+      this.trackingService.downloadTrack(requestBody);
     }
-    else{
-      this.toasterService.showMessage("Please select month.");
+    else {
+      this.toasterService.showMessage("Please select month & user to download");
     }
   }
 
 
-  // Handle Year Selection (no action needed)
-  chosenYearHandler(normalizedYear: any) {
-    // No action required, just wait for month selection
-  }
 
-  // Handle Month Selection
-  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-    this.selectedMonth = formattedMonth + "-01";
-    datepicker.close(); // Close picker after selection
-  }
 
 
 }

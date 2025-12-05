@@ -4,14 +4,14 @@
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
       <div class="row justify-content-between">
-          <mat-form-field appearance="outline" class="col-lg-3">
-            <mat-label>Select a Day</mat-label>
-            <input matInput [(ngModel)]="fromDate" [matDatepicker]="picker" placeholder="Choose a Date" />
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-         
-          <mat-form-field appearance="outline" class="col-lg-3">
+        <mat-form-field appearance="outline" class="col-lg-3">
+          <mat-label>Select a Day</mat-label>
+          <input matInput [(ngModel)]="fromDate" [matDatepicker]="picker" placeholder="Choose a Date" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-lg-3">
           <mat-label>User</mat-label>
           <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
             <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
@@ -28,21 +28,10 @@
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
           <button mat-flat-button color="primary" (click)="onFilter()">Log Attendance
           </button>
-        </div>
-      </div>
-      <div class="row">
-        <mat-form-field appearance="outline" class="col-lg-3">
-          <mat-label>Choose a Month</mat-label>
-          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
-          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
-          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-          </mat-datepicker>
-        </mat-form-field>
-        <div class="col-lg-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="downloadAttendace()">Download</button>
         </div>
       </div>
+
 
       <div *ngIf="dataSource?.length > 0 && mode == 'All'" class="table-responsive table-max-scroll example-container">
         <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
@@ -114,25 +103,26 @@
 
         </table>
       </div>
-     <div *ngIf="detailData?.length > 0 && mode == 'Details'" class="table-responsive table-max-scroll example-container">
+      <div *ngIf="detailData?.length > 0 && mode == 'Details'"
+        class="table-responsive table-max-scroll example-container">
 
         <table mat-table [dataSource]="detailData" class="custom-table mat-elevation-z8">
 
-          <ng-container *ngFor="let column of displayedColumns1" [matColumnDef]="column" >
+          <ng-container *ngFor="let column of displayedColumns1" [matColumnDef]="column">
 
-            <th mat-header-cell *matHeaderCellDef >
+            <th mat-header-cell *matHeaderCellDef>
               {{ column }}
             </th>
 
-            <td mat-cell *matCellDef="let row" >
+            <td mat-cell *matCellDef="let row">
               {{ row[column] }}
-            </td>           
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
         </table>
-      </div>     
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

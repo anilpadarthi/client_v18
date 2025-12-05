@@ -48,9 +48,9 @@ export class TrackingService {
     return this.http.post<any>(this.url + '/LogUserTrackAsync', requestBody);
   }
   
-  downloadAttendace(date: any): void {
-    let url = this.url + '/DownloadAttendace';
-    return this.exportService.downloadExcel(url +`?date=${date}`, 'AttendanceReport');
+  downloadTrack(requestBody: any): void {
+    let url = this.url + '/DownloadTrack';
+    return this.exportService.exportToExcel(url, requestBody, 'TrackData');
   }
   
 }

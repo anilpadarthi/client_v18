@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { DownloadService } from '../../../services/download.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
@@ -50,7 +51,8 @@ export class HistoricalActivationReportComponent implements OnInit {
     private router: Router,
     private reportService: ReportService,
     private lookupService: LookupService,
-    private webstorgeService: WebstorgeService
+    private webstorgeService: WebstorgeService,
+    private downloadService: DownloadService
   ) { }
 
   ngOnInit(): void {
@@ -84,7 +86,7 @@ export class HistoricalActivationReportComponent implements OnInit {
       this.filterManagers();
     });
   }
-  
+
 
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
@@ -175,7 +177,7 @@ export class HistoricalActivationReportComponent implements OnInit {
       });
     }
     else {
-       this.toasterService.showMessage('Please select both a month and an area before proceeding.')
+      this.toasterService.showMessage('Please select both a month and an area before proceeding.')
     }
   }
 
@@ -221,6 +223,20 @@ export class HistoricalActivationReportComponent implements OnInit {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.toMonth = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
+  }
+
+
+  downloadDailyActivationList(): void {
+    const requestBody = {
+      fromDate: this.fromMonth,
+      toDate: this.toMonth,
+      areaId: this.selectedAreaId,
+      shopId: this.selectedShopId,
+      userId: this.selectedUserId,
+      managerId: this.selectedManagerId,
+      isInstantActivation: this.isInstantActivation,
+    };
+    this.downloadService.downloadActivtionAnalysisReport(requestBody);
   }
 
 }

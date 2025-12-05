@@ -64,9 +64,12 @@
           <mat-checkbox color="primary" [(ngModel)]="isInstantActivation">Instant Act.</mat-checkbox>
         </div>
 
-        <div class="col-sm-12 col-lg-4 space-between-buttons">
+        <div class="col-sm-12 col-lg-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+          <button mat-flat-button color="primary" (click)="downloadDailyActivationList()" *ngIf="isDisplay">
+            <mat-icon>download</mat-icon> Download
+          </button>
         </div>
       </div>
       <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>

@@ -24,6 +24,11 @@ export class DownloadService {
     return this.exportService.exportToExcel(url, requestBody, 'DailyActivationList');
   }
 
+   downloadActivtionAnalysisReport(requestBody: any): void {
+    let url = this.url + '/DownloadActivtionAnalysisReport';
+    return this.exportService.exportToExcel(url, requestBody, 'ActivationAnalysisReport');
+  }
+
   downloadCommissionStatementList(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/DownloadCommissionStatementList', requestBody);
   }
