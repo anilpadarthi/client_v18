@@ -56,7 +56,7 @@ export class SubCategoryEditorComponent {
   private filterCategories() {
     const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredCategories = this.categoryLookup.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.name}`.toLowerCase().includes(search)
     );
   }
 

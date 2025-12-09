@@ -318,7 +318,7 @@
 
         <div *ngIf="isDisplayProductDetails">
             <app-product-detail [selectedProduct]="selectedProduct"
-                (notifyParent)="addToCart($event)"></app-product-detail>
+                (notifyParent)="addToCart($event)" (backToList)="onBackFromDetails()"></app-product-detail>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

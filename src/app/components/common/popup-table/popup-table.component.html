@@ -8,10 +8,10 @@
         <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
             <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
                 <th mat-header-cell *matHeaderCellDef [class.sticky-column]="stickyColumns.includes(column)">
-                    {{ column }}
+                    {{ column | formatHeader }}
                 </th>
                 <td mat-cell *matCellDef="let row" [class.sticky-column]="stickyColumns.includes(column)">
-                    {{ isDate(row[column]) ? (row[column] | date: 'yyyy-MM-dd') : row[column] }}
+                    {{ isDate(row[column]) ? (convertToDate(row[column]) | date:'dd/MM/yyyy HH:mm') : row[column] }}
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

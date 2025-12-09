@@ -51,7 +51,7 @@ export class SubCategoryListComponent implements OnInit {
   private filterCategories() {
     const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredCategories = this.categories.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.name}`.toLowerCase().includes(search)
     );
   }
 

@@ -47,7 +47,7 @@
             </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
-              <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
+              <span>{{ item.oldId }} - {{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -60,7 +60,7 @@
             </ngx-mat-select-search>
             <mat-option [value]=null>All</mat-option>
             <mat-option *ngFor="let item of filteredShops" [value]="item.id">
-              <span>{{ item.id }} - {{ item.name }}</span>
+              <span>{{ item.oldId }} - {{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -70,7 +70,7 @@
         <div class="col-xs-12 col-lg-4 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-          <button mat-flat-button color="primary" (click)="downloadDailyActivationList()" *ngIf="isDisplay">
+          <button mat-flat-button color="primary" (click)="downloadDailyActivationList()" *ngIf="isAdmin">
             <mat-icon>download</mat-icon> Download
           </button>
         </div>

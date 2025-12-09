@@ -348,4 +348,11 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.closeSidebar();
   }
 
+  onBackFromDetails() {
+    this.isDisplayProductDetails = false;
+    this.isDisplayProducts = true;
+    this.isMainView = true;
+    this.isCartView = false;
+  }
+
 }

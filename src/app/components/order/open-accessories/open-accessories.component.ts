@@ -126,4 +126,11 @@ export class OpenAccessoriesComponent implements OnInit, AfterViewInit {
     this.selectedProduct = item;
   }
 
+  onBackFromDetails() {
+    this.isDisplayProductDetails = false;
+    this.isDisplayProducts = true;
+    this.isMainView = true;
+    this.isCartView = false;
+  }
+
 }

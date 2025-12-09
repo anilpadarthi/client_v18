@@ -85,14 +85,14 @@ export class ProductEditorComponent {
   private filterCategories() {
     const search = this.categoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredCategories = this.categories.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.name}`.toLowerCase().includes(search)
     );
   }
 
   private filterSubCategories() {
     const search = this.subCategoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredSubCategories = this.subCategories.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.name}`.toLowerCase().includes(search)
     );
   }
 

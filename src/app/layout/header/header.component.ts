@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, filter, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class HeaderComponent {
     public dialog: MatDialog,
     public webstorgeService: WebstorgeService,
     public router: Router,
-    public shopService: ShopService
+    public shopService: ShopService,
+    public authService: AuthService
   ) {
     this.loggedInUser = this.webstorgeService.getUserInfo();
     this.userRole = this.webstorgeService.getUserRole();
@@ -57,17 +59,22 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    this.webstorgeService.logout();
+    this.authService.logout();
   }
 
   onOptionSelected(option: any) {
     if (option) {
-      this.searchControl.setValue(option.shopName);
+      //this.searchControl.setValue(option.shopName);
       // Navigate to detail page (example: /product/1)
       this.router.navigate(['/onfield', option.areaId, option.shopId]);
-     //this.searchControl.setValue('');
-     //this.filteredItems = [];
+      this.searchControl.setValue('');
+      //this.filteredItems = [];
     }
+  }
+
+  clearSearch() {
+    this.searchControl.setValue('');
+    this.filteredItems = [];   // optional: hide dropdown
   }
 
 }

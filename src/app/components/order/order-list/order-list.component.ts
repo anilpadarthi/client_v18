@@ -218,14 +218,14 @@ export class OrderListComponent implements OnInit {
   private filterAreas() {
     const search = this.areaFilterCtrl.value?.toLowerCase() || '';
     this.filteredAreas = this.areaLookup.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 
   private filterShops() {
     const search = this.shopFilterCtrl.value?.toLowerCase() || '';
     this.filteredShops = this.shopLookup.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 
@@ -425,6 +425,10 @@ export class OrderListComponent implements OnInit {
 
   onExport(): void {
 
+    if(this.selectedFromDate == null || this.selectedToDate == null){
+      this.toasterService.showMessage("Please select both From Date and To Date to export the orders.");
+      return;
+    }
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,

@@ -23,7 +23,10 @@ body {
     font-weight: bold !important;
 }
 
-
+.download-btn {
+  background-color: #28a745 !important;  /* green */
+  color: white !important;
+}
 
 
 .table-responsive {
@@ -40,7 +43,7 @@ body {
     .mat-mdc-header-cell,
     .mdc-data-table__cell,
     .mdc-data-table__header-cell {
-        white-space: normal !important;
+        white-space: nowrap;
         word-break: break-word !important;
         overflow-wrap: break-word !important;
         line-height: 1.3;
@@ -99,6 +102,12 @@ body {
 
     .center {
         text-align: center;
+    }
+
+    .no-wrap-column {
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
     }
 }
 
@@ -762,34 +771,34 @@ ngx-mat-select-search {
     }
 
     /* prevent wrapping on mobile */
-  .custom-table .mat-mdc-cell,
-  .custom-table .mdc-data-table__cell,
-  .custom-table .mat-mdc-header-cell,
-  .custom-table .mdc-data-table__header-cell {
-    white-space: nowrap !important;
-  }
+    .custom-table .mat-mdc-cell,
+    .custom-table .mdc-data-table__cell,
+    .custom-table .mat-mdc-header-cell,
+    .custom-table .mdc-data-table__header-cell {
+        white-space: nowrap !important;
+    }
 
-  /* enable horizontal scroll */
-  .table-responsive {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
+    /* enable horizontal scroll */
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /* ⭐ Mobile behavior: prevent over-wrapping */
 @media (max-width: 768px) {
 
-  /* prevent wrapping on mobile */
-  .custom-table .mat-mdc-cell,
-  .custom-table .mdc-data-table__cell,
-  .custom-table .mat-mdc-header-cell,
-  .custom-table .mdc-data-table__header-cell {
-    white-space: nowrap !important;
-  }
+    /* prevent wrapping on mobile */
+    .custom-table .mat-mdc-cell,
+    .custom-table .mdc-data-table__cell,
+    .custom-table .mat-mdc-header-cell,
+    .custom-table .mdc-data-table__header-cell {
+        white-space: nowrap !important;
+    }
 
-  /* enable horizontal scroll */
-  .table-responsive {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
+    /* enable horizontal scroll */
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
 }

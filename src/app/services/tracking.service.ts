@@ -47,6 +47,10 @@ export class TrackingService {
   logUserTrackAsync(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/LogUserTrackAsync', requestBody);
   }
+
+  saveAttendance(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/SaveAttendance', requestBody);
+  }
   
   downloadTrack(requestBody: any): void {
     let url = this.url + '/DownloadTrack';

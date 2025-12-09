@@ -115,7 +115,7 @@
         </div>
 
         <div *ngIf="isDisplayProductDetails">
-            <app-product-detail [selectedProduct]="selectedProduct"></app-product-detail>
+            <app-product-detail [selectedProduct]="selectedProduct" (backToList)="onBackFromDetails()"></app-product-detail>
         </div>
 
 

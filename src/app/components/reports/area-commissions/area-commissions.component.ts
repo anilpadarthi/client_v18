@@ -60,7 +60,7 @@ export class AreaCommissionsComponent implements OnInit {
   private filterAreas() {
     const search = this.areaFilterCtrl.value?.toLowerCase() || '';
     this.filteredAreas = this.areaLookup.filter((item: any) =>
-      `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
+      `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 

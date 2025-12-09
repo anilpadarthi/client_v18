@@ -7,8 +7,6 @@ import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { cleanDate } from '../../../helpers/utils';
 import { FormControl } from '@angular/forms';
-import moment from 'moment';
-import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-track-report',
@@ -42,6 +40,8 @@ export class TrackReportComponent implements OnInit {
     'Login',
     'FirstShop',
     'LogOut',
+    'AttendenceType',
+    'Comments',
     'RouteMap'
   ];
 
@@ -198,8 +198,21 @@ export class TrackReportComponent implements OnInit {
     }
   }
 
+  saveAttendance(): void {
+    const requestBody = this.dataSource.map((item: any) => ({
+      userId: item.userId,
+      dateOfAttendance: this.datePipe.transform(item.date, 'yyyy-MM-dd'),
+      attendanceType: item.attendenceType || null,
+      comments: item.comments || ''
+    }));
 
-
-
+    this.trackingService.saveAttendance(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage(res.data);
+      } else {
+        this.toasterService.showMessage(res.message);
+      }
+    });
+  }
 
 }

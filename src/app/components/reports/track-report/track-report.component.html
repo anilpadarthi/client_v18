@@ -25,10 +25,9 @@
         </mat-form-field>
         <div class="col-lg-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
-          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-          <button mat-flat-button color="primary" (click)="onFilter()">Log Attendance
-          </button>
-          <button mat-flat-button color="primary" (click)="downloadAttendace()">Download</button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>          
+          <button mat-flat-button color="primary" class="download-btn" (click)="downloadAttendace()"><mat-icon class="btn-icon">download</mat-icon>Download</button>
+          <button mat-flat-button color="primary" (click)="saveAttendance()">Log Attendance </button>
         </div>
       </div>
 
@@ -56,8 +55,8 @@
           </ng-container>
 
           <ng-container matColumnDef="AreasVisited">
-            <th mat-header-cell *matHeaderCellDef>Areas Visited</th>
-            <td mat-cell *matCellDef="let element">
+            <th mat-header-cell *matHeaderCellDef class="center">Areas Visited</th>
+            <td mat-cell *matCellDef="let element" class="center">
               <a (click)="onAreasVisited(element.userId)">
                 {{ element.areasVisited }}
               </a>
@@ -65,38 +64,58 @@
           </ng-container>
 
           <ng-container matColumnDef="ShopsVisited">
-            <th mat-header-cell *matHeaderCellDef>Shops Visited</th>
-            <td mat-cell *matCellDef="let element">
+            <th mat-header-cell *matHeaderCellDef class="center">Shops Visited</th>
+            <td mat-cell *matCellDef="let element" class="center">
               <a (click)="onShopsVisited(element.userId)">{{ element.shopsVisited }} </a>
             </td>
           </ng-container>
           <ng-container matColumnDef="ShopsSimsGiven">
-            <th mat-header-cell *matHeaderCellDef>Shops Sims Given</th>
-            <td mat-cell *matCellDef="let element">
+            <th mat-header-cell *matHeaderCellDef class="center">Shops Sims Given</th>
+            <td mat-cell *matCellDef="let element" class="center">
               <a (click)="onShopsSimsGiven(element.userId)">{{ element.shopsSimsGiven }} </a>
             </td>
           </ng-container>
           <ng-container matColumnDef="TotalTime">
-            <th mat-header-cell *matHeaderCellDef>Total Time</th>
-            <td mat-cell *matCellDef="let element">{{ element.totalTime }}</td>
+            <th mat-header-cell *matHeaderCellDef class="center">Total Time</th>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.totalTime }}</td>
           </ng-container>
           <ng-container matColumnDef="Login">
-            <th mat-header-cell *matHeaderCellDef>Login</th>
-            <td mat-cell *matCellDef="let element">{{ element.login }}</td>
+            <th mat-header-cell *matHeaderCellDef class="center">Login</th>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.login }}</td>
           </ng-container>
           <ng-container matColumnDef="FirstShop">
-            <th mat-header-cell *matHeaderCellDef>First Shop</th>
-            <td mat-cell *matCellDef="let element">{{ element.firstShop }}</td>
+            <th mat-header-cell *matHeaderCellDef class="center">First Shop</th>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.firstShop }}</td>
           </ng-container>
           <ng-container matColumnDef="LogOut">
-            <th mat-header-cell *matHeaderCellDef>LogOut</th>
-            <td mat-cell *matCellDef="let element">{{ element.logOut }}</td>
+            <th mat-header-cell *matHeaderCellDef class="center">LogOut</th>
+            <td mat-cell *matCellDef="let element" class="center">{{ element.logOut }}</td>
           </ng-container>
-          <ng-container matColumnDef="RouteMap">
+          <ng-container matColumnDef="AttendenceType" stickyend>
+            <th mat-header-cell *matHeaderCellDef>Attendance Type</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field appearance="outline" class="attendance-dd">
+                <mat-select [(ngModel)]="element.attendenceType">
+                  <mat-option value="">-Select-</mat-option>
+                  <mat-option value="Full Day">Full Day</mat-option>
+                  <mat-option value="Half Day">Half Day</mat-option>
+                  <mat-option value="Leave">Leave</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Comments" stickyend>
+            <th mat-header-cell *matHeaderCellDef>Comments</th>
+            <td mat-cell *matCellDef="let element">
+               <mat-form-field appearance="outline" class="attendance-dd">
+               <textarea matInput rows="2" [(ngModel)]="element.comments" placeholder="Enter comments"></textarea>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="RouteMap" stickyend>
             <th mat-header-cell *matHeaderCellDef>Route</th>
             <td mat-cell *matCellDef="let element"><a><mat-icon>map</mat-icon></a></td>
           </ng-container>
-
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

@@ -539,6 +539,13 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.closeSidebar();
   }
 
+  onBackFromDetails() {
+    this.isDisplayProductDetails = false;
+    this.isDisplayProducts = true;
+    this.isMainView = true;
+    this.isCartView = false;
+  }
+
   // applyPricing(cart: any[] ): any[] {
   //   // 1. Calculate total quantities per group
   //   const groupTotals: Record<number, number> = {};

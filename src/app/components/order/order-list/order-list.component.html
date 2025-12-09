@@ -105,7 +105,7 @@
 
             <!-- Buttons -->
             <div class="row col-lg-12 col-xs-12 space-between-buttons m-b-10">
-                <button mat-flat-button class="bg-error text-white" (mousedown)="onExport()">
+                <button mat-flat-button class="bg-error text-white" *ngIf="isAdmin" (mousedown)="onExport()">
                     <mat-icon>download</mat-icon> Download
                 </button>
                 <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
@@ -180,7 +180,8 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button *ngIf="element.orderStatusId == 1 || element.orderStatusId == 10 || isAdmin || isWareHouseKeeper"
+                                <button
+                                    *ngIf="element.orderStatusId == 1 || element.orderStatusId == 10 || isAdmin || isWareHouseKeeper"
                                     mat-menu-item (click)="editOrder(element.orderId)">
                                     <mat-icon>edit</mat-icon>
                                     Edit Order
@@ -193,7 +194,8 @@
                                     <mat-icon>history</mat-icon>
                                     Order History
                                 </button>
-                                <button mat-menu-item *ngIf="!isWareHouseKeeper" (click)="paymentHistory(element.orderId)">
+                                <button mat-menu-item *ngIf="!isWareHouseKeeper"
+                                    (click)="paymentHistory(element.orderId)">
                                     <mat-icon>payments</mat-icon>
                                     Payment History
                                 </button>
@@ -219,7 +221,8 @@
                                     <mat-icon>mail</mat-icon>
                                     VAT Email
                                 </button>
-                                <button *ngIf="!isWareHouseKeeper" mat-menu-item (click)="sendEmail(element.orderId,false)">
+                                <button *ngIf="!isWareHouseKeeper" mat-menu-item
+                                    (click)="sendEmail(element.orderId,false)">
                                     <mat-icon>mail</mat-icon>
                                     Non VAT Email
                                 </button>
@@ -234,9 +237,9 @@
                     </ng-container>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef>Date</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{ element.createdDate | date: 'dd/MM/yyyy HH:mm:ss' }} /
-                            {{ element.modifiedDate | date: 'dd/MM/yyyy HH:mm:ss' }}
+                        <td mat-cell *matCellDef="let element" class="no-wrap-column">
+                            <p>{{ element.createdDate | date: 'dd/MM/yyyy HH:mm' }} / </p>
+                            <p> {{ element.modifiedDate | date: 'dd/MM/yyyy HH:mm' }}</p>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="user">
@@ -253,8 +256,8 @@
                     </ng-container>
                     <ng-container matColumnDef="shop">
                         <th mat-header-cell *matHeaderCellDef>Shop</th>
-                        <td mat-cell *matCellDef="let element">                            
-                               {{element.oldShopId}} - {{ element.shopName }}                           
+                        <td mat-cell *matCellDef="let element" class="no-wrap-column">
+                            {{element.oldShopId}} - {{ element.shopName }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="expected">

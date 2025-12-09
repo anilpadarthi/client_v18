@@ -10,6 +10,7 @@ import { environment } from '../../../../environments/environment';
 export class ProductDetailComponent implements OnInit {
   @Input() selectedProduct!: any;
   @Output() notifyParent = new EventEmitter<any>();
+   @Output() backToList = new EventEmitter<void>();
   quantity = 1;
   hasPriceStructure = false;
   lowestPrice:any;
@@ -56,5 +57,9 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnChanges(): void {
     this.selectedProduct.qty = null;
+  }
+
+  goBack() {
+    this.backToList.emit();   // 👈 send event to parent
   }
 }

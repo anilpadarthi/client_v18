@@ -43,7 +43,7 @@
                         </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
                         <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
-                            <span>{{ item.oldId }} - {{ item.name }} - {{ item.id }}</span>
+                            <span>{{ item.oldId }} - {{ item.name }}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -55,7 +55,7 @@
                         </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
                         <mat-option *ngFor="let item of filteredShops" [value]="item.id">
-                            <span>{{ item.id }} - {{ item.name }}</span>
+                            <span>{{ item.oldId }} - {{ item.name }}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

@@ -21,12 +21,28 @@ export class PopupTableComponent {
     this.header = data.headerName;
     if (data.result.length > 0) {
       this.displayedColumns = Object.keys(data.result[0]);
-      this.dataSource = data.result;      
-    }    
+      this.dataSource = data.result;
+    }
   }
 
   isDate(value: any): boolean {
-    return value instanceof Date;
+    if (!value) return false;
+
+    // If value is number → NOT a date
+    if (typeof value === 'number') return false;
+
+    // Accept only strings that look like a date
+    if (typeof value === 'string' &&
+      /^\d{4}-\d{2}-\d{2}/.test(value)) {
+      const date = new Date(value);
+      return !isNaN(date.getTime());
+    }
+
+    return false;
+  }
+
+  convertToDate(value: any): Date {
+    return new Date(value);
   }
 
   // Apply date format to a column
