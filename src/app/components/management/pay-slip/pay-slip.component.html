@@ -15,7 +15,17 @@
           </mat-form-field>
         </div>
         <div class="col-sm-2" *ngIf="isAdmin">
-          <mat-form-field appearance="outline" class="w-100" *ngIf="isAdmin">
+          <mat-form-field appearance="outline" class="w-100" (selectionChange)="userRoleChanged()">
+            <mat-label>Role</mat-label>
+            <mat-select [(ngModel)]="selectedUserRole">
+              <mat-option value="">-Select-</mat-option>
+              <mat-option value="Agent">Agent</mat-option>
+              <mat-option value="Manager">Manager</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </div>
+       <div class="col-sm-2" *ngIf="selectedUserRole == 'Manager' && isAdmin">
+          <mat-form-field appearance="outline" class="w-100" >
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
               <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
@@ -28,7 +38,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-2" *ngIf="isAdmin || isManager">
+        <div class="col-sm-2" *ngIf="selectedUserRole == 'Agent' || isManager">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Agent</mat-label>
             <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">

@@ -47,6 +47,7 @@ export class PaySlipComponent implements OnInit {
   managerFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
   filteredManagers: any[] = [];
+  selectedUserRole = '';
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
@@ -118,28 +119,34 @@ export class PaySlipComponent implements OnInit {
   }
 
   loadData(): void {
-    const requestBody = {
-      fromDate: this.selectedMonth,
-      filterType: this.selectedAgentId  ? 'Agent' : 'Manager',
-      filterId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
-    };
+    if (this.selectedMonth && this.selectedUserRole != ''
+      && (this.selectedManagerId != 0 || this.selectedAgentId != 0)) {
+      const requestBody = {
+        fromDate: this.selectedMonth,
+        filterType: this.selectedAgentId != 0 ? 'Agent' : 'Manager',
+        filterId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
+      };
 
-    this.reportService.getSalaryReport(requestBody).subscribe((res) => {
-      if (res.data != null) {
-        this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
-        this.accessoriesCommisssionDetails = res.data.salaryAccessoriesCommissionDetailsModel;
-        this.salaryDetails = res.data.salaryDetailsModel;
-        this.salaryTransactions = res.data.salaryTransactions;
-        this.totalSalary = this.salaryDetails.reduce((sum: any, item: any) => sum + item.total, 0);
-        this.totalActivations = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.activationCount, 0);
-        this.totalSimCommission = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
-        this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.totalSale, 0);
-        this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
-        this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
-        this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
-        this.kpi1Percentage = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1AchivedPercentage : 0.00;
-      }
-    });
+      this.reportService.getSalaryReport(requestBody).subscribe((res) => {
+        if (res.data != null) {
+          this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
+          this.accessoriesCommisssionDetails = res.data.salaryAccessoriesCommissionDetailsModel;
+          this.salaryDetails = res.data.salaryDetailsModel;
+          this.salaryTransactions = res.data.salaryTransactions;
+          this.totalSalary = this.salaryDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+          this.totalActivations = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.activationCount, 0);
+          this.totalSimCommission = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+          this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.totalSale, 0);
+          this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+          this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
+          this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
+          this.kpi1Percentage = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1AchivedPercentage : 0.00;
+        }
+      });
+    }
+    else {
+      this.toasterService.showMessage('Please select Month and user to view the payslip.');
+    }
 
   }
 
@@ -170,9 +177,10 @@ export class PaySlipComponent implements OnInit {
   }
 
   addTransaction(): void {
-    if (this.selectedAgentId && this.selectedMonth) {
+    if ((this.selectedManagerId != 0 || this.selectedAgentId != 0) 
+      && this.selectedMonth) {
       var data = {
-        userId: this.selectedAgentId,
+        userId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
         transactionDate: this.selectedMonth
       }
       this.dialog.open(SalaryTransactionEditorComponent, {
@@ -180,7 +188,7 @@ export class PaySlipComponent implements OnInit {
       });
     }
     else {
-      this.toasterService.showMessage("Please select agent before to proceed.");
+      this.toasterService.showMessage("Please select user and month before to proceed.");
     }
   }
 
@@ -214,6 +222,11 @@ export class PaySlipComponent implements OnInit {
         });
       }
     });
+  }
+
+  userRoleChanged(): void {
+    this.selectedAgentId = 0;
+    this.selectedManagerId = 0;
   }
 
 }
