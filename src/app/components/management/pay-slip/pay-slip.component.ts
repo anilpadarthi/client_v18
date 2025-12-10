@@ -171,6 +171,7 @@ export class PaySlipComponent implements OnInit {
     this.selectedMonth = null;
     this.selectedAgentId = 0;
     this.selectedManagerId = 0;
+    this.selectedUserRole = '';
     this.accessoriesCommisssionDetails = [];
     this.simCommissionDetails = [];
     this.salaryDetails = [];

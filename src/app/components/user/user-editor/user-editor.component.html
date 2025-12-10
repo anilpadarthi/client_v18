@@ -118,38 +118,39 @@
     <mat-card class="cardWithShadow theme-card section-card m-t-16">
       <mat-card-title class="section-title">Salary Settings</mat-card-title>
       <mat-card-content>
-        <div class="col-lg-12">
+        <div class="col-lg-12" formGroupName="userSalarySettings">
           <mat-form-field appearance="outline" class="col-lg-6" color="warn">
             <mat-label>Salary Type</mat-label>
-            <mat-select formControlName="locality" placeholder="Salary Type">
+            <mat-select formControlName="salaryBasis" placeholder="Salary Type">
               <mat-option value="">-Select-</mat-option>
-              <mat-option value="London">London</mat-option>
-              <mat-option value="Outer London">Outer London</mat-option>
+              <mat-option value="Daily">Daily</mat-option>
+              <mat-option value="Monthly">Monthly</mat-option>
+              <mat-option value="Sim Basis">Sim Basis</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-lg-6">
             <mat-label>Salary Rate</mat-label>
-            <input matInput formControlName="lastName" />
+            <input matInput formControlName="salaryRate" type="number" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-lg-6" color="warn">
             <mat-label>Travel Type</mat-label>
-            <mat-select formControlName="locality" placeholder="Travel Type">
+            <mat-select formControlName="travelType" placeholder="Travel Type">
               <mat-option value="">-Select-</mat-option>
-              <mat-option value="London">London</mat-option>
-              <mat-option value="Outer London">Outer London</mat-option>
+              <mat-option value="Daily">Daily</mat-option>
+              <mat-option value="Monthly">Monthly</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-lg-6">
             <mat-label>Travel Rate</mat-label>
-            <input matInput formControlName="lastName" />
+            <input matInput formControlName="travelRate" type="number" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-lg-3">
             <mat-label>Effective From</mat-label>
-            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+            <input matInput formControlName="effectiveDate" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
             <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
             <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
               (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
@@ -187,7 +188,7 @@
 
                 <mat-form-field appearance="outline" class="col-lg-6">
                   <mat-label>Document Number</mat-label>
-                  <input matInput required placeholder="Document Number" formControlName='documentNumber'
+                  <input matInput  placeholder="Document Number" formControlName='documentNumber'
                     id="{{'documentNumber'+i}}" />
                 </mat-form-field>
 

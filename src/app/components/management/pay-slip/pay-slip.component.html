@@ -15,9 +15,9 @@
           </mat-form-field>
         </div>
         <div class="col-sm-2" *ngIf="isAdmin">
-          <mat-form-field appearance="outline" class="w-100" (selectionChange)="userRoleChanged()">
+          <mat-form-field appearance="outline" class="w-100" >
             <mat-label>Role</mat-label>
-            <mat-select [(ngModel)]="selectedUserRole">
+            <mat-select [(ngModel)]="selectedUserRole" (selectionChange)="userRoleChanged()">
               <mat-option value="">-Select-</mat-option>
               <mat-option value="Agent">Agent</mat-option>
               <mat-option value="Manager">Manager</mat-option>

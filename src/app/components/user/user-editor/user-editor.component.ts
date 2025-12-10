@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-user-editor',
@@ -55,7 +58,8 @@ export class UserEditorComponent {
       isLeapAccess: true,
       status: true,
       userImage: null as File | null,
-      userDocuments: this.fb.array([this.createChild()]),
+      userDocuments: this.fb.array([]),
+      userSalarySettings: this.createSalarySetting(),
     });
   }
 
@@ -80,6 +84,8 @@ export class UserEditorComponent {
           this.userImagePreview = environment.backend.host + '/' + res.data.user?.userImage;
         }
         this.populateUserDocuments(res.data.userDocuments || []);
+        console.log('Salary Settings:', res.data.userSalarySettings);
+        this.populateUserSalarySettings(res.data.userSalarySettings);
       });
     }
   }
@@ -97,6 +103,18 @@ export class UserEditorComponent {
       documentIndex++;
     });
     this.userForm.setControl('userDocuments', documentFormArray);
+  }
+
+  populateUserSalarySettings(userSalarySettings: any): void {
+    if (userSalarySettings) {
+      this.userForm.get('userSalarySettings')?.patchValue({
+        salaryBasis: userSalarySettings.salaryBasis,
+        salaryRate: userSalarySettings.salaryRate,          // 👈 Corrected
+        travelType: userSalarySettings.travelType,
+        travelRate: userSalarySettings.travelRate,
+        effectiveDate: userSalarySettings.fromDate
+      });
+    }
   }
 
 
@@ -122,6 +140,11 @@ export class UserEditorComponent {
       formBody.append('isLeapAccess', this.userForm.value.isLeapAccess);
       formBody.append('status', this.userForm.value.status ? '1' : '0');
       formBody.append('userImageFile', this.userForm.value.userImage);
+      formBody.append('userSalarySettings[salaryBasis]', this.userForm.value.userSalarySettings.salaryBasis);
+      formBody.append('userSalarySettings[salaryRate]', this.userForm.value.userSalarySettings.salaryRate);
+      formBody.append('userSalarySettings[travelType]', this.userForm.value.userSalarySettings.travelType);
+      formBody.append('userSalarySettings[travelRate]', this.userForm.value.userSalarySettings.travelRate);
+      formBody.append('userSalarySettings[fromDate]', this.userForm.value.userSalarySettings.effectiveDate);
 
       if (this.userForm.value.userDocuments && Array.isArray(this.userForm.value.userDocuments)) {
         this.userForm.value.userDocuments.forEach((doc: any, index: number) => {
@@ -225,6 +248,16 @@ export class UserEditorComponent {
     })
   }
 
+  createSalarySetting(): FormGroup {
+    return this.fb.group({
+      salaryBasis: [''],
+      salaryRate: [''],
+      travelType: [''],
+      travelRate: [''],
+      effectiveDate: ['']
+    });
+  }
+
   get userDocuments(): FormArray {
     return <FormArray>this.userForm.get('userDocuments');
   }
@@ -235,6 +268,18 @@ export class UserEditorComponent {
 
   removeDocument(index: number) {
     this.userDocuments.removeAt(index);
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.userForm.get('userSalarySettings.effectiveDate')?.setValue(formattedMonth + "-01");
+    datepicker.close(); // Close picker after selection
   }
 
 }
