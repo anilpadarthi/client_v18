@@ -151,6 +151,10 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
+    if(newQuantity < 1){
+      this.toasterService.showMessage("Quantity cannot be less than 1.");
+      return;
+    }
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;

@@ -70,7 +70,7 @@ export class ShopService {
   }
 
   updateAddress(requestBody: any): Observable<ICommonResponse> {
-    return this.http.post<any>(this.url + '/UpdateAddress' + `?shippingAddress=${requestBody.shippingAddress}`, {});
+    return this.http.post<any>(this.url + '/UpdateAddress', requestBody);
   }
 
   sendActivationEmail(shopId: number): Observable<ICommonResponse> {

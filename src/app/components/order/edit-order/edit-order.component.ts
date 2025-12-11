@@ -19,6 +19,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isMobile: boolean = false;
 
+  commissionAmount = 0.00;
+  minimumCartAmount = 25.00;
+  OrderPaymentTypeId = 0;
+  OriginalOrderAmount = 0.00;
   showFiller = false;
   isVAT = false;
   totalVatAmount = 0.00;
@@ -120,6 +124,8 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
         this.vatPercentage = res.data.vatPercentage;
         this.discountPercentage = res.data.discountPercentage;
         this.isVAT = res.data.isVAT;
+        this.OrderPaymentTypeId = res.data.orderPaymentTypeId;
+        this.OriginalOrderAmount = res.data.totalWithOutVATAmount;
         this.cartItems.forEach((e: any) => {
           e.netAmount = e.qty * e.salePrice;
           e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
@@ -143,9 +149,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data.filter((s: any) => s.isOutOfStock != true);
-      this.products?.forEach(e => {e.salePrice = e.productPrices[0].salePrice;
-        e.hasPriceStructure =  e.productPrices.length > 1;
-        e.lowestPrice = Math.min(...e.productPrices.map((p:any) => p.salePrice));
+      this.products?.forEach(e => {
+        e.salePrice = e.productPrices[0].salePrice;
+        e.hasPriceStructure = e.productPrices.length > 1;
+        e.lowestPrice = Math.min(...e.productPrices.map((p: any) => p.salePrice));
       });
     });
     this.closeSidebar();
@@ -173,7 +180,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-
+    if (newQuantity < 1) {
+      this.toasterService.showMessage("Quantity cannot be less than 1.");
+      return;
+    }
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;
@@ -269,32 +279,52 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateOrder(): void {
-    const requestBody = {
-      orderId: this.orderId,
-      shopId: this.shopId,
-      shippingAddress: this.shippingAddress,
-      items: this.cartItems,
-      itemTotal: this.netTotal,
-      vatAmount: this.totalVatAmount,
-      deliveryCharges: this.deliveryCharges,
-      discountAmount: this.discountAmount,
-      totalWithVATAmount: this.grandTotalWithVAT,
-      totalWithOutVATAmount: this.grandTotalWithOutVAT,
-      vatPercentage: this.vatPercentage,
-      discountPercentage: this.discountPercentage,
-    };
-    this.orderService.update(requestBody).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Updated Successfully.");
-        this.cartItems = [];
-        setTimeout(() => this.closeWindow(), 2000);
-        //window.close();
-      }
-      else {
-        this.toasterService.showMessage(res.message);
-      }
-    });
+    if (this.validateOrderAmount()) {
+      const requestBody = {
+        orderId: this.orderId,
+        shopId: this.shopId,
+        shippingAddress: this.shippingAddress,
+        items: this.cartItems,
+        itemTotal: this.netTotal,
+        vatAmount: this.totalVatAmount,
+        deliveryCharges: this.deliveryCharges,
+        discountAmount: this.discountAmount,
+        totalWithVATAmount: this.grandTotalWithVAT,
+        totalWithOutVATAmount: this.grandTotalWithOutVAT,
+        vatPercentage: this.vatPercentage,
+        discountPercentage: this.discountPercentage,
+      };
+      this.orderService.update(requestBody).subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.toasterService.showMessage("Updated Successfully.");
+          this.cartItems = [];
+          setTimeout(() => this.closeWindow(), 2000);
+          //window.close();
+        }
+        else {
+          this.toasterService.showMessage(res.message);
+        }
+      });
+    }
 
+  }
+
+  validateOrderAmount(): boolean {
+    let isValid = true;
+    if (this.OrderPaymentTypeId == 7) {
+      if (this.subTotal > this.OriginalOrderAmount) {
+        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+        isValid = false;
+      }     
+    }
+    else {
+      if (this.netTotal < this.minimumCartAmount) {
+        this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 50.00 pounds.");
+        isValid = false;
+      }
+    }
+
+    return isValid;
   }
 
 

@@ -8,22 +8,73 @@
   purple_theme: options.activeTheme == 'purple_theme',
   green_theme: options.activeTheme == 'green_theme',
   cyan_theme: options.activeTheme == 'cyan_theme'
-}" [dir]="options.dir!">
+}" [dir]="options.dir!" [style.display]="'flex'" [style.flex-direction]="'column'">
   <!-- ============================================================== -->
   <!-- Vertical Sidebar -->
   <!-- ============================================================== -->
   @if (!options.horizontal) {
   <mat-sidenav *ngIf="isDisplaySideMenu" #leftsidenav [mode]="isOver ? 'over' : 'side'"
     [opened]="options.navPos === 'side' && options.sidenavOpened && !isOver && !resView"
-    (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
-    <div class="flex-layout">
+    (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav"
+    [style.overflow]="'hidden'">
+    <div class="flex-layout" [style.display]="'flex'" [style.flex-direction]="'column'" [style.height]="'100%'">
       <app-sidebar class="app-sidebar" (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>
-      <ng-scrollbar class="position-relative" style="height: 100%">
-        <mat-nav-list class="sidebar-list">
-          @for(item of navItems; track item) {
-          <app-nav-item [item]="item" (notify)="sidenav.toggle()">
-          </app-nav-item>
-          }
+      <ng-scrollbar class="position-relative sidebar-scrollbar" style="height: 100%; flex: 1;">
+        <mat-nav-list class="sidebar-list" [style.padding]="'0'">
+          <ng-container *ngFor="let item of navItems">
+            <!-- Parent with children: use button so it's NOT navigable -->
+            <div *ngIf="item.children; else singleLink">
+              <a mat-list-item (click)="toggle(item)">
+                <mat-icon matListIcon *ngIf="item.iconName" [style.margin-right]="'12px'">{{ item.iconName }}</mat-icon>
+                <span>{{ item.displayName }}</span>
+                <mat-icon class="expand-icon" [style.margin-left]="'auto'">
+                  {{ expanded.has(item.displayName) ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+              </a>
+              <div class="child-menu" *ngIf="expanded.has(item.displayName)">
+                <ng-container *ngFor="let child of item.children">
+                  <!-- New-tab / external link branch -->
+                  <ng-container *ngIf="child.target === '_blank'; else sameTab">
+                    <a mat-list-item (click)="onItemSelected(child)" target="_blank" rel="noopener noreferrer"
+                      class="menu-list-item">
+                      <mat-icon class="bullet">arrow_right</mat-icon>
+                      <span>{{ child.displayName }}</span>
+                    </a>
+                  </ng-container>
+
+                  <!-- Same-tab (Angular router) branch -->
+                  <ng-template #sameTab>
+                    <a mat-list-item 
+                      [attr.href]="child.target === '_blank' ? child.route : null"
+                      [attr.target]="child.target === '_blank' ? '_blank' : null"
+                      [routerLink]="child.target !== '_blank' ? child.route : null" routerLinkActive="active">
+                      <mat-icon class="bullet">arrow_right</mat-icon>
+                      <span>{{ child.displayName }}</span>
+                    </a>
+                  </ng-template>
+
+                </ng-container>
+                <!-- <a mat-list-item *ngFor="let child of item.children"
+                  [attr.href]="child.target === '_blank' ? child.route : null"
+                  [attr.target]="child.target === '_blank' ? '_blank' : null"
+                  [routerLink]="child.target !== '_blank' ? child.route : null" 
+                  routerLinkActive="active">
+                  <mat-icon class="bullet">arrow_right</mat-icon>
+                  <span>{{ child.displayName }}</span>
+                </a> -->
+              </div>
+            </div>
+
+            <!-- Single route link -->
+            <ng-template #singleLink>
+              <a mat-list-item [routerLink]="item.route" routerLinkActive="active">
+
+                <mat-icon matListIcon *ngIf="item.iconName" [style.margin-right]="'12px'">{{ item.iconName }}</mat-icon>
+                <span>{{ item.displayName }}</span>
+              </a>
+            </ng-template>
+
+          </ng-container>
         </mat-nav-list>
       </ng-scrollbar>
       <!-- <div class="p-24 m-t-auto profile-bar">

@@ -16,6 +16,7 @@ import { AppSettings } from '../config';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { NavItem } from './sidebar/nav-item/nav-item';
 
 const MOBILE_VIEW = 'screen and (max-width: 1200px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -130,6 +131,39 @@ export class LayoutComponent implements OnInit {
   logout(): void {
     this.webstorgeService.logout();
   }
+
+  expanded = new Set<string | undefined>();
+
+  toggle(item: any) {
+    if (!item.children) return;
+    if (this.expanded.has(item.displayName)) {
+      this.expanded.delete(item.displayName);
+    } else {
+      this.expanded.add(item.displayName);
+    }
+  }
+
+  isExternal(route?: string): boolean {
+  if (!route) return false;
+  return /^https?:\/\//i.test(route);
+}
+
+  onItemSelected(item: NavItem) {
+        if (item.target || item.displayName == 'Open Accessories') {
+          // if(item.route == 'accessories/sim-request'){
+          //   let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+          //   item.route+=`/${loggedInUserId}`;
+          // }
+          const fullPath = this.router.serializeUrl(
+            this.router.createUrlTree([item.route])
+          );
+          window.open(fullPath, '_blank');
+        }
+        else {
+          this.router.navigate([item.route]);
+        }  
+    
+    }
 }
 
 // export class LayoutComponent implements OnInit {

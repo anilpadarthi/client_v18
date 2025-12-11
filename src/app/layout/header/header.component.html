@@ -1,32 +1,24 @@
-<mat-toolbar class="topbar">
-  <!-- --------------------------------------------------------------- -->
-
-  <!-- --------------------------------------------------------------- -->
-
-  <!-- --------------------------------------------------------------- -->
-  <!--  Search -->
-  <!-- --------------------------------------------------------------- -->
-  <div class="d-flex">
+<mat-toolbar class="topbar" [style.display]="'flex'" [style.align-items]="'center'" [style.padding]="'0 16px'">
+  <!-- Menu and Search Section -->
+  <div class="d-flex align-items-center" [style.gap]="'8px'">
     <!-- Desktop Menu -->
     @if(showToggle) {
-    <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center icon-btn">
+    <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center icon-btn" 
+      [style.margin-right]="'8px'">
       <mat-icon>menu_open</mat-icon>
     </button>
     }
 
     <!-- Mobile Menu -->
     @if(!showToggle) {
-    <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center">
+    <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center" 
+      [style.margin-right]="'8px'">
       <mat-icon>menu_open</mat-icon>
     </button>
     }
-    <!-- --------------------------------------------------------------- -->
-    <!--  Links -->
-    <!-- --------------------------------------------------------------- -->
-    <!-- <button mat-icon-button class="d-flex justify-content-center">
-      <mat-icon>search</mat-icon>
-    </button> -->
-    <mat-form-field class="custom-search m-l-10 d-none-xs">
+
+    <!-- Search Form -->
+    <mat-form-field class="custom-search d-none-xs" [style.margin-left]="'12px'" [style.flex-grow]="'1'" [style.max-width]="'300px'">
       <mat-icon matPrefix>search</mat-icon>
       <input matInput placeholder="Search" [matAutocomplete]="auto" [formControl]="searchControl">
       <button *ngIf="searchControl.value" mat-icon-button matSuffix (click)="clearSearch()">
@@ -38,94 +30,57 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-
-    <!-- <button mat-button aria-label="Notifications" [matMenuTriggerFor]="menu">
-
-      <div class="d-flex align-items-center">
-        Add <mat-icon>add</mat-icon>
-      </div>
-    </button> -->
-
-    <!-- <button mat-icon-button aria-label="Notifications" [matMenuTriggerFor]="menu"
-      class="d-flex justify-content-center icon-btn mx-2">
-      <mat-icon>add</mat-icon>
-    </button>
-
-    <mat-menu #menu="matMenu" class="cardWithShadow">
-      <button mat-menu-item>
-        <span>Area</span>
-      </button>
-      <button mat-menu-item>
-        <span>Shop</span>
-      </button>
-      <button mat-menu-item>
-        <span>User</span>
-      </button>
-      <button mat-menu-item>
-        <span>Expences</span>
-      </button>
-    </mat-menu> -->
   </div>
 
-
-
-  <!-- Mobile Menu -->
-  <button mat-icon-button (click)="toggleMobileFilterNav.emit()"
-    class="d-flex d-lg-none justify-content-center icon-btn d-none">
-    <mat-icon>add</mat-icon>
-  </button>
-
-
-
-  <div class="end-sction d-flex align-items-center">
-    <span class="flex-1-auto"></span>
-    <!-- --------------------------------------------------------------- -->
+  <!-- Right Section - Notifications & Profile -->
+  <div class="end-sction d-flex align-items-center" [style.margin-left]="'auto'" [style.gap]="'8px'">
     <!-- Notification Dropdown -->
-    <!-- --------------------------------------------------------------- -->
-    <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" class="mx-2 circle-btn">
+    <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" 
+      class="circle-btn" [style.padding]="'4px'">
       <span class="material-symbols-outlined">notifications</span>
     </button>
     <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">
-      <div class="d-flex align-items-center p-x-32 p-y-16">
+      <div class="d-flex align-items-center" [style.padding]="'16px 24px'" [style.border-bottom]="'1px solid #e0e0e0'">
         <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Notifications</h6>
-        <span class="m-l-auto">
-          <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12">5 new</span>
+        <span [style.margin-left]="'auto'">
+          <span class="bg-primary text-white" [style.padding]="'4px 8px'" [style.border-radius]="'4px'" class="f-w-500 f-s-12">5 new</span>
         </span>
       </div>
 
-      <div class="p-y-12 p-x-32">
+      <div [style.padding]="'12px 24px'">
         <button mat-stroked-button color="primary" class="w-100">
           See all notifications
         </button>
       </div>
     </mat-menu>
 
-    <!-- --------------------------------------------------------------- -->
-    <!-- profile Dropdown -->
-    <!-- --------------------------------------------------------------- -->
-    <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications" class="circle-btn">
-      <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" />
+    <!-- Profile Dropdown -->
+    <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="User Profile" class="circle-btn" [style.padding]="'4px'">
+      <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" [style.width]="'32px'" [style.height]="'32px'" />
     </button>
     <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
-      <ng-scrollbar class="position-relative" style="height: 300px">
-        <div class="p-x-32 p-y-16">
+      <ng-scrollbar class="position-relative" style="max-height: 300px">
+        <div [style.padding]="'16px 24px'">
           <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">User Profile</h6>
 
-          <div class="d-flex align-items-center p-b-24 b-b-1 m-t-16">
-            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="95" />
-            <div class="m-l-16">
+          <div class="d-flex align-items-center" [style.padding]="'16px 0'" [style.border-bottom]="'1px solid #e0e0e0'" [style.margin-top]="'12px'">
+            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" [style.width]="'48px'" [style.height]="'48px'" />
+            <div [style.margin-left]="'16px'">
               <h6 class="f-s-14 f-w-600 m-0 mat-subtitle-1">{{ loggedInUser.userName }}</h6>
-              <span class="f-s-14 d-block m-b-4">{{ loggedInUser.userRole.roleName }}</span>
-              <span class="d-flex align-items-center">
-                <mat-icon>mail</mat-icon> {{ loggedInUser.email }} </span>
+              <span class="f-s-14 d-block" [style.margin-bottom]="'4px'">{{ loggedInUser.userRole.roleName }}</span>
+              <span class="d-flex align-items-center" [style.font-size]="'12px'">
+                <mat-icon [style.font-size]="'16px'" [style.width]="'16px'" [style.height]="'16px'" [style.margin-right]="'4px'">mail</mat-icon> 
+                {{ loggedInUser.email }} 
+              </span>
             </div>
           </div>
         </div>
 
-        <div class="p-y-12 p-x-32">
-          <a (click)="logout()" mat-stroked-button color="primary" class="w-100">
+        <div [style.padding]="'12px 24px'">
+          <a (click)="logout()" mat-stroked-button color="primary" class="w-100" [style.display]="'flex'" [style.align-items]="'center'" [style.justify-content]="'center'" [style.gap]="'8px'">
             <mat-icon class="f-s-18">logout</mat-icon>
-            Logout</a>
+            Logout
+          </a>
         </div>
       </ng-scrollbar>
     </mat-menu>

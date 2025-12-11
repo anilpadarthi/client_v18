@@ -36,6 +36,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   grandTotalWithVAT = 0.00;
   grandTotalWithOutVAT = 0.00;
   isEditAddress = false;
+  isAddressUpdated = false;
   isHideTemporarly = false;
   availableCommissionChequeNumbers: any[] = [];
 
@@ -54,6 +55,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   shopId: any = null;
   shopCommissionId: any = null;
   shippingAddress: any = null;
+  shopEmail: any = null;
   walletAmount = 0;
   shopDetails: any = null;
   requestType: string | null = null;
@@ -199,6 +201,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.shopService.getShop(shopId).subscribe((res) => {
       this.shopDetails = res.data.shop;
       this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}, London, UK`;
+      this.shopEmail = this.shopDetails.shopEmail;
       this.isLoading = false;
     });
   }
@@ -270,7 +273,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-
+    if(newQuantity < 1){
+      this.toasterService.showMessage("Quantity cannot be less than 1.");
+      return;
+    }
     newQuantity = Number(newQuantity);
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
     existingItem.qty = newQuantity;
@@ -458,12 +464,19 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   updateAddress(): void {
     const requestBody = {
       shopId: this.shopId,
-      shippingAddress: this.shippingAddress,
+      address: this.shippingAddress,
+      shopEmail: this.shopEmail
     };
 
     this.shopService.updateAddress(requestBody).subscribe((res) => {
-      this.toasterService.showMessage("Address updated successfully.");
-      this.isEditAddress = false;
+      if(res.statusCode == 200) {
+        this.toasterService.showMessage("Address details updated successfully.");
+        this.isAddressUpdated = true;
+        this.isEditAddress = false;
+      }
+      else {
+        this.toasterService.showMessage(res.message);
+      }
     });
   }
 
@@ -474,7 +487,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   onChequeNumberChange(event: any): void {
     let item = this.availableCommissionChequeNumbers.find(f => f.id == event.value);
-    debugger;
     if (item != null) {
       var walletAmount = Number(item.name);
 

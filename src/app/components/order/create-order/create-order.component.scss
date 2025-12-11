@@ -90,16 +90,16 @@
   margin-top: 24px;
 }
 
-textarea[matInput] {
-  width: 70vw !important;
-  resize: vertical;
-  /* allows user to resize up/down */
-  min-height: 100px;
-  overflow: auto;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  /* ensures line breaks & long words wrap */
-  box-sizing: border-box;
+
+.float-right{
+  float: right;
+}
+
+mat-form-field textarea {
+  resize: vertical;          /* allows user to resize but stays inside */
+  overflow: auto !important; /* prevents text from overflow outside box */
+  box-sizing: border-box;    /* keeps content inside outline */
+  width: 100%;
 }
 
 

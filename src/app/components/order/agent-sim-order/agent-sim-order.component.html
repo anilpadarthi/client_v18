@@ -143,7 +143,7 @@
                             <th mat-header-cell *matHeaderCellDef>Quantity</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field appearance="outline" class="w-100">
-                                    <input type="number" matInput #quantityInput class="form-control"
+                                    <input type="number" matInput #quantityInput class="form-control" min ="1"
                                         value="{{ element.qty }}"
                                         (change)="updateCartItemQuantity(element,quantityInput.value)" />
                                 </mat-form-field>

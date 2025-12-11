@@ -59,6 +59,7 @@ export class ShopEditorComponent {
       vatNumber: [''],
       topupSystemId: [''],
       city: [''],
+      shopEmail : ['', [Validators.required, Validators.email]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
       paymentMode: [''],
@@ -195,6 +196,7 @@ export class ShopEditorComponent {
       formBody.append('shopName', this.shopForm.value.shopName);
       formBody.append('postCode', this.shopForm.value.postCode);
       formBody.append('areaId', this.shopForm.value.areaId);
+      formBody.append('shopEmail', this.shopForm.value.shopEmail);
       formBody.append('addressLine1', this.shopForm.value.addressLine1);
       formBody.append('addressLine2', this.shopForm.value.addressLine2 || '');
       formBody.append('city', this.shopForm.value.city || '');

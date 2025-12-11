@@ -97,7 +97,7 @@ export const AdminItems: NavItem[] = [
 
   {
     displayName: 'Reports',
-    iconName: 'finance_mode',
+    iconName: 'monitoring',
     route: '',
     children: [
       {
@@ -232,12 +232,13 @@ export const AdminItems: NavItem[] = [
         displayName: 'Open Accessories',
         iconName: 'arrow_right',
         route: 'accessories/list',
+        target: '_blank',
       },
     ],
   },
   {
     displayName: 'Sim Info',
-    iconName: 'barcode_scanner',
+    iconName: 'search',
     route: 'imei/search',
   },
   {

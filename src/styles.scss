@@ -802,3 +802,281 @@ ngx-mat-select-search {
         -webkit-overflow-scrolling: touch;
     }
 }
+
+/* ============================================================== */
+/* Layout Improvements - Dark Header & Sidebar with Light Content */
+/* ============================================================== */
+
+/* Main Wrapper - Better flex layout */
+.mainWrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    background-color: #ffffff !important;
+    color: #262A2D !important;
+}
+
+/* Sidenav styling improvements */
+.sidebarNav {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border-right: 1px solid #333333 !important;
+    
+    .flex-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+    }
+
+    .sidebar-scrollbar {
+        flex: 1 !important;
+    }
+
+    .sidebar-list {
+        padding: 8px 0 !important;
+        
+        mat-list-item {
+            border-radius: 6px !important;
+            margin: 4px 8px !important;
+            height: auto !important;
+            min-height: 44px !important;
+            color: #ffffff !important;
+            transition: all 0.3s ease !important;
+
+            span {
+                color: #ffffff !important;
+            }
+
+            mat-icon {
+                color: #ffffff !important;
+            }
+
+            &:hover {
+                background-color: #3f51b5 !important;
+                color: #ffffff !important;
+                transform: translateX(4px) !important;
+                box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3) !important;
+            }
+
+            &.active {
+                background-color: #3f51b5 !important;
+                color: #ffffff !important;
+                box-shadow: 0 2px 8px rgba(63, 81, 181, 0.5) !important;
+
+                span {
+                    color: #ffffff !important;
+                }
+
+                mat-icon {
+                    color: #ffffff !important;
+                }
+            }
+        }
+
+        a[mat-list-item] {
+            color: #ffffff !important;
+            
+            span {
+                color: #ffffff !important;
+            }
+
+            mat-icon {
+                color: #ffffff !important;
+            }
+
+            &:hover {
+                background-color: #3f51b5 !important;
+                color: #ffffff !important;
+                transform: translateX(4px) !important;
+                box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3) !important;
+            }
+
+            &.active {
+                background-color: #3f51b5 !important;
+                color: #ffffff !important;
+
+                span {
+                    color: #ffffff !important;
+                }
+
+                mat-icon {
+                    color: #ffffff !important;
+                }
+            }
+        }
+
+        button[mat-list-item] {
+            text-align: left !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            color: #ffffff !important;
+
+            span {
+                color: #ffffff !important;
+            }
+
+            mat-icon {
+                color: #ffffff !important;
+            }
+
+            &:hover {
+                background-color: #3f51b5 !important;
+                color: #ffffff !important;
+                transform: translateX(4px) !important;
+                box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3) !important;
+            }
+        }
+
+        .child-menu {
+            padding-left: 16px !important;
+            margin: 4px 0 !important;
+
+            mat-list-item {
+                font-size: 13px !important;
+                padding-left: 16px !important;
+                color: #ffffff !important;
+
+                span {
+                    color: #ffffff !important;
+                }
+
+                &:hover {
+                    background-color: #3f51b5 !important;
+                    color: #ffffff !important;
+                }
+
+                &.active {
+                    background-color: #3f51b5 !important;
+                    color: #ffffff !important;
+                }
+            }
+        }
+    }
+}
+
+/* Header/Topbar improvements */
+.topbar {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 16px !important;
+    height: 64px !important;
+    border-bottom: 1px solid #333333 !important;
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    z-index: 10 !important;
+    gap: 8px !important;
+
+    mat-form-field {
+        margin-left: 12px !important;
+        flex-grow: 1 !important;
+        max-width: 300px !important;
+    }
+
+    .custom-search {
+        max-width: 300px !important;
+    }
+
+    .circle-btn {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        img {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+        }
+    }
+
+    .end-sction {
+        margin-left: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+}
+
+
+
+/* Notification and menu dropdowns */
+.topbar-dd {
+    min-width: 320px !important;
+    border-radius: 8px !important;
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important;
+
+    ng-scrollbar {
+        max-height: 400px !important;
+    }
+}
+
+/* Button spacing improvements */
+button[mat-icon-button] {
+    margin: 0 4px !important;
+}
+
+/* Form field improvements */
+mat-form-field {
+    width: 100% !important;
+
+    .mat-mdc-form-field-focus-overlay {
+        background-color: rgba(63, 81, 181, 0.04) !important;
+    }
+}
+
+/* Scrollbar styling */
+ng-scrollbar ::ng-deep {
+    .ng-scrollbar-track {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .ng-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 4px !important;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.35) !important;
+        }
+    }
+}
+
+/* Ensure menu-text and menu-icon align for parent buttons */
+.sidebarNav .sidebar-list .menu-text {
+    flex: 1 1 auto !important;
+    display: inline-block !important;
+    line-height: 1.2 !important;
+}
+
+.sidebarNav .sidebar-list .menu-icon {
+    margin-right: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.sidebarNav .sidebar-list .expand-icon {
+    margin-left: 8px !important;
+    min-width: 28px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Keep child menu separate so it doesn't vertically center parent content */
+.sidebarNav .sidebar-list .child-menu {
+    margin-top: 6px !important;
+    padding-left: 8px !important;
+}

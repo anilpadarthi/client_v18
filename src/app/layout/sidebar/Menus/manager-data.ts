@@ -10,7 +10,7 @@ export const ManagerItems: NavItem[] = [
 
   {
     displayName: 'Sim Info',
-    iconName: 'manage_search',
+    iconName: 'search',
     route: 'imei/search',
   },
   {
