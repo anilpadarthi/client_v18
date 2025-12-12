@@ -67,7 +67,7 @@ import { ContactusComponent } from './components/retailer/contactus/contactus.co
 import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
 import { StockEntryListComponent } from './components/product/stock-entry-list/stock-entry-list.component';
 import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
-
+import {RetailerOrderListComponent} from './components/retailer/retailer-order-list/retailer-order-list.component';
 
 
 const routes: Routes = [
@@ -169,7 +169,8 @@ const routes: Routes = [
       { path: 'retailer/activations', component: ActivationsComponent },
       { path: 'retailer/commissions', component: CommissionStatementsComponent },
       { path: 'retailer/stockvsconnections', component: StockConversionComponent },
-      { path: 'retailer/sales', component: OrderListComponent },
+      { path: 'retailer/sales', component: RetailerOrderListComponent },
+      { path: 'retailer/accessories/create-order', component: CreateOrderComponent },
       { path: 'retailer/sales-manager', component: SalesManagerComponent },
       { path: 'retailer/profile', component: EditProfileComponent },
       { path: 'retailer/changepassword', component: ChangePasswordComponent },

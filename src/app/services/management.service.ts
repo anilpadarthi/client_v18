@@ -29,11 +29,11 @@ export class ManagementService {
     }
 
     updateUserSalaryTransaction(requestBody: any): Observable<ICommonResponse> {
-        return this.http.put<ICommonResponse>(this.url + '/UpdateUserSalaryTransaction', requestBody);
+        return this.http.post<ICommonResponse>(this.url + '/UpdateUserSalaryTransaction', requestBody);
     }
 
     deleteUserSalaryTransaction(id: any): Observable<ICommonResponse> {
-        return this.http.delete<ICommonResponse>(this.url + `/DeleteUserSalaryTransaction?userSalaryTransactionID=${id}`);
+        return this.http.get<ICommonResponse>(this.url + `/DeleteUserSalaryTransaction?userSalaryTransactionID=${id}`);
     }
 
 

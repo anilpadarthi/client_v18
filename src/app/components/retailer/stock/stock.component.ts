@@ -53,12 +53,12 @@ export class StockComponent implements OnInit {
         this.resultList = res.data;
         const groupedResult = Object.values(
           res.data.reduce((acc: any, item: any) => {
-            if (!acc[item.baseNetwork]) {
-              acc[item.baseNetwork] = { baseNetwork: item.baseNetwork, totalGiven: 0 };
+            if (!acc[item.network]) {
+              acc[item.network] = { network: item.network, totalGiven: 0 };
             }
-            acc[item.baseNetwork].totalGiven++;
+            acc[item.network].totalGiven++;
             return acc;
-          }, {} as Record<string, { baseNetwork: string; totalGiven: number }>)
+          }, {} as Record<string, { network: string; totalGiven: number }>)
         );
         this.groupedList = groupedResult;
       }
@@ -69,7 +69,7 @@ export class StockComponent implements OnInit {
   }
 
   loadDetails(network: any): void {
-    var detailList = this.resultList.filter((f: any) => f.baseNetwork == network);
+    var detailList = this.resultList.filter((f: any) => f.network == network);
     var data = {
       result: detailList,
       headerName: network
@@ -87,6 +87,7 @@ export class StockComponent implements OnInit {
 
   onClear(): void {
     this.selectedMonth = null;
+    this.groupedList = [];
   }
 
 

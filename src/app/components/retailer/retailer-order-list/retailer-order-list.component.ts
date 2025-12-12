@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -8,19 +9,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaginatorConstants } from '../../../helpers/paginator-constants';
 import { Router } from '@angular/router';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
-import { OrderDetailsComponent } from '../order-details/order-details.component';
-import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payment-editor.component';
-import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
+import { OrderDetailsComponent } from '../../order/order-details/order-details.component';
 import { FormControl } from '@angular/forms';
 import { cleanDate } from '../../../helpers/utils';
 
 @Component({
-  selector: 'app-order-list',
-  templateUrl: './order-list.component.html',
-  styleUrl: './order-list.component.scss'
+  selector: 'app-retailer-order-list',
+  templateUrl: './retailer-order-list.component.html',
+  styleUrl: './retailer-order-list.component.scss'
 })
 
-export class OrderListComponent implements OnInit {
+export class RetailerOrderListComponent implements OnInit {
 
   displayedColumns = [
     "actions",
@@ -347,14 +346,7 @@ export class OrderListComponent implements OnInit {
 
   paymentHistory(orderId: number): void {
 
-    this.orderService.getOrderPaymentHistory(orderId).subscribe((res) => {
-      var data = {
-        orderId: orderId
-      }
-      this.dialog.open(OrderPaymentHistoryComponent, {
-        data
-      });
-    });
+    
 
   }
 
@@ -380,16 +372,7 @@ export class OrderListComponent implements OnInit {
 
   addPayment(item: any): void {
 
-    this.orderService.getOrderPaymentHistory(item.orderId).subscribe((res) => {
-      var data = {
-        orderId: item.orderId,
-        shopId: item.shopId,
-        balanceAmount: (item.isVAT == 1 ? item.totalWithVATAmount : item.totalWithOutVATAmount) - (res.data != null && res.data.length > 0 ? res.data.reduce((sum: any, s: any) => sum + s.amount, 0) : 0)
-      }
-      this.dialog.open(OrderPaymentEditorComponent, {
-        data
-      });
-    });
+    
   }
 
   cancelOrder(orderDetails: any): void {

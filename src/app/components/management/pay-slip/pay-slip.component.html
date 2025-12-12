@@ -38,7 +38,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-2" *ngIf="selectedUserRole == 'Agent' || isManager">
+        <div class="col-sm-2" *ngIf="selectedUserRole == 'Agent' && ( isManager || isAdmin )">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Agent</mat-label>
             <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">
@@ -223,6 +223,10 @@
           <tr>
             <td class="text-right">Total Sim Commission :</td>
             <td class="text-right">£{{totalSimCommission | number : "1.2-2"}}</td>
+          </tr>
+           <tr>
+            <td class="text-right">Total Sim Bonus :</td>
+            <td class="text-right">£{{totalSimBonus | number : "1.2-2"}}</td>
           </tr>
           <tr>
             <td class="text-right">Total Accessories Commission :</td>

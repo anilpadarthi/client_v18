@@ -24,8 +24,15 @@ body {
 }
 
 .download-btn {
-  background-color: #28a745 !important;  /* green */
-  color: white !important;
+    background-color: #28a745 !important;
+    /* green */
+    color: white !important;
+}
+
+.green-btn {
+    background-color: #28a745 !important;
+    /* green */
+    color: white !important;
 }
 
 
@@ -821,7 +828,7 @@ ngx-mat-select-search {
     background-color: #1a1a1a !important;
     color: #ffffff !important;
     border-right: 1px solid #333333 !important;
-    
+
     .flex-layout {
         display: flex !important;
         flex-direction: column !important;
@@ -834,7 +841,7 @@ ngx-mat-select-search {
 
     .sidebar-list {
         padding: 8px 0 !important;
-        
+
         mat-list-item {
             border-radius: 6px !important;
             margin: 4px 8px !important;
@@ -875,7 +882,7 @@ ngx-mat-select-search {
 
         a[mat-list-item] {
             color: #ffffff !important;
-            
+
             span {
                 color: #ffffff !important;
             }

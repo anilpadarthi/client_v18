@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ToasterService } from '../../../services/toaster.service';
 import { BulkUploadService } from '../../../services/bulk-upload.service';
 import { ServiceControlService } from '../../../services/service-control.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-bulk-upload',
@@ -13,12 +14,14 @@ export class BulkUploadComponent {
   importFile: File | null = null;
   importFileType: string | null = '';
   status = '';
+  selectedDate = '';
 
   constructor
     (
       private bulkUploadService: BulkUploadService,
       private toasterService: ToasterService,
-      private svc: ServiceControlService
+      private svc: ServiceControlService,
+      private datePipe: DatePipe
     ) { }
 
   onFileChange(event: any): void {
@@ -34,14 +37,17 @@ export class BulkUploadComponent {
       const formData = new FormData();
       formData.append('importFile', this.importFile);
       formData.append('importType', this.importFileType || '');
+      formData.append('SelectedDate', this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd') || '');
+
       this.bulkUploadService.uploadFile(formData).subscribe((res) => {
-        if (res.statusCode == 200 && res.data=='Success') {          
-          this.toasterService.showMessage("Uploaded successfully, It is being processed soon.");
+        if (res.statusCode == 200) {
+          this.toasterService.showMessage(res.data);
           this.importFileType = '';
           this.importFile = null;
+          this.selectedDate = '';
         }
         else {
-          this.toasterService.showMessage(res.data);
+          this.toasterService.showMessage(res.message);
         }
         this.resetControls();
       });
@@ -49,7 +55,6 @@ export class BulkUploadComponent {
     else {
       this.toasterService.showMessage('Please select both import file type and file to process further.');
     }
-
   }
 
   startService() {
@@ -65,12 +70,12 @@ export class BulkUploadComponent {
   }
 
   resetControls() {
-  this.importFileType = "";
-  this.importFile = null;
-  
-  // Clear input field manually
-  const fileInput = document.getElementById("fileUpload") as HTMLInputElement;
-  if (fileInput) fileInput.value = "";
-}
+    this.importFileType = "";
+    this.importFile = null;
+
+    // Clear input field manually
+    const fileInput = document.getElementById("fileUpload") as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
+  }
 
 }

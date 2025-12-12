@@ -138,6 +138,7 @@ import { SalaryTransactionEditorComponent } from './components/management/salary
 import { StockEntryListComponent } from './components/product/stock-entry-list/stock-entry-list.component';
 import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
 import { SupplierTransactionEditorComponent } from './components/supplier/supplier-transaction-editor/supplier-transaction-editor.component';
+import { RetailerOrderListComponent  } from './components/retailer/retailer-order-list/retailer-order-list.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -253,7 +254,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SalaryTransactionEditorComponent,
     StockEntryListComponent,
     StockEntryEditorComponent,
-    SupplierTransactionEditorComponent
+    SupplierTransactionEditorComponent,
+    RetailerOrderListComponent
   ],
   imports: [
     BrowserModule,

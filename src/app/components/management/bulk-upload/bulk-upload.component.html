@@ -4,28 +4,31 @@
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
             <div class="row space-between-buttons">
-                <div class="col-lg-3 col-xs-12">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Import File Type</mat-label>
-                        <mat-select [(ngModel)]="importFileType">
-                            <mat-option value=''>--Select--</mat-option>
-                            <mat-option value="Stock">Stock</mat-option>
-                            <mat-option value="DailyActivation">Daily Activation</mat-option>
-                            <mat-option value="TrackNumber">Track Number</mat-option>
-                            <mat-option value="OrderStatus">Order Status</mat-option>
-                            <mat-option value="Target">Target</mat-option>
-                            <mat-option value="ShopCommissionCheque">Commission Cheques</mat-option>
-                            <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-9 space-between-buttons">
+                <mat-form-field appearance="outline" class=" col-lg-3 w-100">
+                    <mat-label>Import File Type</mat-label>
+                    <mat-select [(ngModel)]="importFileType">
+                        <mat-option value=''>--Select--</mat-option>
+                        <mat-option value="Stock">Stock</mat-option>
+                        <mat-option value="DailyActivation">Daily Activation</mat-option>
+                        <mat-option value="TrackNumber">Track Number</mat-option>
+                        <mat-option value="OrderStatus">Order Status</mat-option>
+                        <mat-option value="Target">Target</mat-option>
+                        <mat-option value="ShopCommissionCheque">Commission Cheques</mat-option>
+                        <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-3 w-100">
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="datePicker" [(ngModel)]="selectedDate" />
+                    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+                <div class="col-lg-6 space-between-buttons">
                     <div class="d-flex align-items-center m-b-16">
-                        <mat-icon>upload_file</mat-icon>
                         <button mat-flat-button color="primary" class="m-l-16 input-file-button">
                             <input id="fileUpload" type="file" accept=".xlsx" (change)="onFileChange($event)" />
                         </button>
-                        <button mat-flat-button color="primary" (click)="uploadFile()">
+                        <button mat-flat-button color="primary" class="green-btn" (click)="uploadFile()">
                             <mat-icon>upload</mat-icon> Upload
                         </button>
                     </div>
@@ -36,10 +39,10 @@
     </mat-card>
 
     <div class="card">
-      <h2>Windows Service Control</h2>
-      <p>Status: <b>{{ status }}</b></p>
-      <button (click)="startService()">Start</button>
-      <button (click)="stopService()">Stop</button>
-      <button (click)="refreshStatus()">Refresh</button>
+        <h2>Windows Service Control</h2>
+        <p>Status: <b>{{ status }}</b></p>
+        <button (click)="startService()">Start</button>
+        <button (click)="stopService()">Stop</button>
+        <button (click)="refreshStatus()">Refresh</button>
     </div>
 </div>

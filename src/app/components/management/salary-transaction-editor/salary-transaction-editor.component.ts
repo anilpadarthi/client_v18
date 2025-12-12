@@ -60,7 +60,7 @@ export class SalaryTransactionEditorComponent {
             this.dialogRef.close(true);
           }
           else {
-            this.toasterService.showMessage(res.data);
+            this.toasterService.showMessage(res.message);
           }
         });
       }
@@ -71,7 +71,7 @@ export class SalaryTransactionEditorComponent {
             this.dialogRef.close(true);
           }
           else {
-            this.toasterService.showMessage(res.data);
+            this.toasterService.showMessage(res.message);
           }
         });
       }

@@ -29,6 +29,7 @@ export class PaySlipComponent implements OnInit {
   totalSalary = 0.00;
   totalActivations = 0;
   totalSimCommission = 0.00;
+  totalSimBonus = 0.00;
   totalSaleAmount = 0.00;
   totalAccessoriesCommission = 0.00;
   userLookup: any = [];
@@ -76,8 +77,11 @@ export class PaySlipComponent implements OnInit {
     else if (this.userRole == 'Manager') {
       this.isManager = true;
       this.getAgentLookup();
+      this.selectedUserRole = 'Manager';
+      this.selectedManagerId = this.loggedInUserId;
     }
     else if (this.userRole == 'Agent') {
+      this.selectedUserRole = 'Agent';
       this.selectedAgentId = this.loggedInUserId;
     }
 
@@ -182,10 +186,16 @@ export class PaySlipComponent implements OnInit {
       && this.selectedMonth) {
       var data = {
         userId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
-        transactionDate: this.selectedMonth
+        transactionDate: this.selectedMonth,
+        amount:0
       }
-      this.dialog.open(SalaryTransactionEditorComponent, {
+       const dialogRef = this.dialog.open(SalaryTransactionEditorComponent, {
         data
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.loadData();
+        }
       });
     }
     else {
@@ -195,8 +205,14 @@ export class PaySlipComponent implements OnInit {
 
   editTransaction(userSalaryTransactionID: number): void {
     this.managementService.getUserSalaryTransaction(userSalaryTransactionID).subscribe((res) => {
-      this.dialog.open(SalaryTransactionEditorComponent, {
+      const dialogRef = this.dialog.open(SalaryTransactionEditorComponent, {
         data: res.data
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.loadData();
+        }
       });
     });
   }

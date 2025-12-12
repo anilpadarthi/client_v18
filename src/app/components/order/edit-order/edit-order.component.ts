@@ -317,7 +317,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
         isValid = false;
       }     
     }
-    else {
+    else if (this.OrderPaymentTypeId != 8 && !this.isAdmin) {
       if (this.netTotal < this.minimumCartAmount) {
         this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 50.00 pounds.");
         isValid = false;

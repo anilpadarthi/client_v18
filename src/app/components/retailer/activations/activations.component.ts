@@ -52,12 +52,12 @@ export class ActivationsComponent implements OnInit {
         this.resultList = res.data;
         const groupedResult = Object.values(
           res.data.reduce((acc: any, item: any) => {
-            if (!acc[item.baseNetwork]) {
-              acc[item.baseNetwork] = { baseNetwork: item.baseNetwork, activationCount: 0 };
+            if (!acc[item.network]) {
+              acc[item.network] = { network: item.network, activationCount: 0 };
             }
-            acc[item.baseNetwork].activationCount++;
+            acc[item.network].activationCount++;
             return acc;
-          }, {} as Record<string, { baseNetwork: string; activationCount: number }>)
+          }, {} as Record<string, { network: string; activationCount: number }>)
         );
         this.groupedList = groupedResult;
       }
@@ -68,7 +68,7 @@ export class ActivationsComponent implements OnInit {
   }
 
   loadDetails(network: any): void {
-    var detailList = this.resultList.filter((f: any) => f.baseNetwork == network);
+    var detailList = this.resultList.filter((f: any) => f.network == network);
     var data = {
       result: detailList,
       headerName: network
@@ -86,6 +86,7 @@ export class ActivationsComponent implements OnInit {
 
   onClear(): void {
     this.selectedMonth = null;
+    this.groupedList = [];
   }
 
 

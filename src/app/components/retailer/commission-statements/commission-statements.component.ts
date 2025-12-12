@@ -16,6 +16,8 @@ import { MatDatepicker } from '@angular/material/datepicker';
 export class CommissionStatementsComponent implements OnInit {
 
   selectedMonth: string | null = null;
+  yearList: number[] = [];
+  selectedYear = '';
   totalCount = 0;
   resultList: any[] = [];
   loggedInUserId = 0;
@@ -33,15 +35,19 @@ export class CommissionStatementsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this. loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    const currentYear = new Date().getFullYear();
+    const startYear = 2018;
+
+    for (let y = currentYear; y >= startYear; y--) {
+      this.yearList.push(y);
+    }
+    this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
   }
 
-
-
   loadData(): void {
-    
+    this.resultList = [];
     const requestBody = {
-      fromDate: this.selectedMonth,
+      fromDate: this.selectedYear + '-01-01',
       filterId: this.loggedInUserId
     };
 
@@ -55,31 +61,16 @@ export class CommissionStatementsComponent implements OnInit {
     });
   }
 
-  downloadCommissionStatement( fromDate: string): void {
+  downloadCommissionStatement(fromDate: string): void {
     this.commissionStatementService.downloadCommissionStatement(this.loggedInUserId, fromDate);
   }
-
-
 
   onFilter(): void {
     this.loadData();
   }
 
   onClear(): void {
-    this.selectedMonth = null;
-  }
-
-
-
-  // Handle Year Selection (no action needed)
-  chosenYearHandler(normalizedYear: any) {
-    // No action required, just wait for month selection
-  }
-
-  // Handle Month Selection
-  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-    this.selectedMonth = formattedMonth + "-01";
-    datepicker.close(); // Close picker after selection
+    this.selectedYear = '';
+    this.resultList = [];
   }
 }

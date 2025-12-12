@@ -1,17 +1,7 @@
 import { NavItem } from "../nav-item/nav-item";
 
 export const RetailerItems: NavItem[] = [
-  {
-    displayName: 'Dashboard',
-    iconName: 'home',
-    route: 'retailer/dashboard',
-  },
-
-  {
-    displayName: 'Sim Info',
-    iconName: 'manage_search',
-    route: 'retailer/siminfo',
-  },
+  
   {
     displayName: 'Stock',
     iconName: 'manage_search',
