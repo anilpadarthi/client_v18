@@ -11,6 +11,16 @@
         <button mat-icon-button (click)="toggleSidebar()" class="hamburg" *ngIf="!isMobile">
             <mat-icon>menu_open</mat-icon>
         </button>
+
+        <mat-form-field class="custom-search d-none-xs" [style.margin-left]="'12px'" [style.flex-grow]="'1'"
+            [style.max-width]="'300px'">
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput placeholder="Search" [(ngModel)]="seachProduct" 
+                (change)="onSearchChange()" (keyup.enter)="onSearchChange()" />
+            <button  mat-icon-button matSuffix (click)="clearSearch()">
+                <mat-icon>close</mat-icon>
+            </button>            
+        </mat-form-field>
     </div>
     <div class="end-sction d-flex align-items-center">
         <span class="flex-1-auto"></span>
@@ -308,7 +318,8 @@
                     </mat-form-field>
 
                     <div class="float-right col-lg-12 m-b-16">
-                        <button class="float-right " mat-flat-button color="warn" (click)="updateAddress()">Save</button>
+                        <button class="float-right " mat-flat-button color="warn"
+                            (click)="updateAddress()">Save</button>
                     </div>
                 </div>
 

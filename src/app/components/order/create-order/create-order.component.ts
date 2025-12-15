@@ -20,7 +20,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isMobile: boolean = false;
-
+  seachProduct = '';
   showFiller = false;
   isLoading = false;
   commissionAmount = 0.00;
@@ -273,7 +273,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-    if(newQuantity < 1){
+    if (newQuantity < 1) {
       this.toasterService.showMessage("Quantity cannot be less than 1.");
       return;
     }
@@ -412,6 +412,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   validateOrderAmount(): boolean {
     let isValid = true;
+    if (this.isAdmin) {
+      return isValid;
+    }
     if (this.requestType == 'B') {
       this.getBonusAmount();
       if (this.grandTotalWithVAT > this.commissionAmount) {
@@ -469,7 +472,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     };
 
     this.shopService.updateAddress(requestBody).subscribe((res) => {
-      if(res.statusCode == 200) {
+      if (res.statusCode == 200) {
         this.toasterService.showMessage("Address details updated successfully.");
         this.isAddressUpdated = true;
         this.isEditAddress = false;
@@ -556,6 +559,34 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayProducts = true;
     this.isMainView = true;
     this.isCartView = false;
+  }
+
+  onSearchChange() {
+
+    this.isDisplayProducts = true;
+    this.isDisplayCatgories = false;
+    this.isDisplaySubCatgories = false;
+    this.isCartView = false;
+    this.isMainView = true;
+    this.isDisplayProductDetails = false;
+    
+    this.orderService.getProductSearchList(this.seachProduct).subscribe((res) => {
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      this.products = res.data.filter((s: any) => s.isOutOfStock != true);
+      this.products?.forEach(e => {
+        e.salePrice = e.productPrices[0].salePrice;
+        e.qty = 0;
+        e.hasPriceStructure = e.productPrices.length > 1;
+        e.lowestPrice = Math.min(...e.productPrices.map((p: any) => p.salePrice));
+      });
+    });
+
+    this.closeSidebar();
+
+  }
+
+  clearSearch() {
+    this.seachProduct = '';
   }
 
   // applyPricing(cart: any[] ): any[] {

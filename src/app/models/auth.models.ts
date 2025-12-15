@@ -7,4 +7,5 @@ export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   userDetails: any;
+  statusCode?: number;
 }

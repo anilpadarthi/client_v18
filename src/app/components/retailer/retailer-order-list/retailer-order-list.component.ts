@@ -26,7 +26,6 @@ export class RetailerOrderListComponent implements OnInit {
     "orderId",
     "date",
     "user",
-    "area",
     "shop",
     "expected",
     "collected",
@@ -78,6 +77,7 @@ export class RetailerOrderListComponent implements OnInit {
   totalPPAAmount = 0.00;
   totalPPMAmount = 0.00;
   showAdvancedFilters: boolean = false;
+  loggedInUserId: number = 0;
 
   orderList = [];
 
@@ -93,60 +93,18 @@ export class RetailerOrderListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
-      this.isAdmin = true;
-      //this.loadOutstandingMetrics();
-    }
-    else if (this.userRole == 'Manager') {
-      this.selectedManagerId = loggedInUserId;
-    }
-    else if (this.userRole == 'WareHouse') {
-      this.isWareHouseKeeper = true;
-    }
-    else if (this.userRole == 'Retailer') {
-      this.selectedShopId = loggedInUserId;
-      this.shopNameSearch = loggedInUserId.toString();
-    }
-    else {
-      this.selectedAgentId = loggedInUserId;
-    }
+    this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    this.shopNameSearch = this.loggedInUserId.toString();
     this.loadData();
-    this.loadDropDowns();
-
-    this.areaFilterCtrl.valueChanges.subscribe(() => {
-      this.filterAreas();
-    });
-    this.shopFilterCtrl.valueChanges.subscribe(() => {
-      this.filterShops();
-    });
-
-    this.userFilterCtrl.valueChanges.subscribe(() => {
-      this.filterUsers();
-    });
-    this.managerFilterCtrl.valueChanges.subscribe(() => {
-      this.filterManagers();
-    });
   }
 
   loadData(): void {
-
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      areaId: this.selectedAreaId,
       shopName: this.shopNameSearch?.trim() || null,
-      orderStatusId: this.selectedStatusId,
-      paymentMethodId: this.selectedPaymentMethodId,
-      shippingModeId: this.selectedShippingMethodId,
-      agentId: this.selectedAgentId,
-      managerId: this.selectedManagerId,
-      fromDate: cleanDate(this.selectedFromDate),
-      toDate: cleanDate(this.selectedToDate),
       orderId: this.orderNumberSearch?.trim() || null,
       trackingNumber: this.trackNumberSearch?.trim() || null,
-      isVat: this.isVat ? 1 : 0,
     };
 
     this.orderService.getPagedOrderList(requestBody).subscribe((res) => {
@@ -154,111 +112,6 @@ export class RetailerOrderListComponent implements OnInit {
       this.totalCount = res.data.totalRecords;
       this.reloadData();
     });
-  }
-
-  loadDropDowns(): void {
-
-    this.lookupService.getOrderStatusTypes().subscribe((res) => {
-      this.statusLookup = res.data;
-    });
-
-    this.lookupService.getOrderPaymentTypes().subscribe((res) => {
-      this.paymentMethodLookup = res.data;
-    });
-
-    this.lookupService.getOrderDeliveryTypes().subscribe((res) => {
-      this.shippingMethodLookup = res.data;
-    });
-
-    this.lookupService.getAreas().subscribe((res) => {
-      this.areaLookup = res.data;
-      this.filteredAreas = res.data;
-    });
-
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager' || this.userRole == 'CallCenter') {
-      this.lookupService.getAgents().subscribe((res) => {
-        this.agentLookup = res.data;
-        this.filteredUsers = res.data;
-      });
-    }
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
-      this.lookupService.getManagers().subscribe((res) => {
-        this.managerLookup = res.data;
-        this.filteredManagers = res.data;
-      });
-    }
-  }
-
-  loadOutstandingMetrics(): void {
-    if (this.selectedAgentId != null && this.isAdmin) {
-      let requestBody = {
-        filterType: 'Agent',
-        filterId: this.selectedAgentId
-      };
-      this.orderService.loadOutstandingMetrics(requestBody).subscribe((res) => {
-        this.totalOutstanding = res.data?.totalOutstanding;
-        this.totalPPAAmount = res.data?.totalPPAAmount;
-        this.totalPPMAmount = res.data?.totalPPMAmount;
-        this.isShowOutstandingMetrics = true;
-      });
-    }
-  }
-
-  private filterUsers() {
-    const search = this.userFilterCtrl.value?.toLowerCase() || '';
-    this.filteredUsers = this.agentLookup.filter((item: any) =>
-      `${item.id} - ${item.name}`.toLowerCase().includes(search)
-    );
-  }
-
-  private filterManagers() {
-    const search = this.managerFilterCtrl.value?.toLowerCase() || '';
-    this.filteredManagers = this.managerLookup.filter((item: any) =>
-      `${item.id} - ${item.name}`.toLowerCase().includes(search)
-    );
-  }
-
-  private filterAreas() {
-    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
-    this.filteredAreas = this.areaLookup.filter((item: any) =>
-      `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
-    );
-  }
-
-  private filterShops() {
-    const search = this.shopFilterCtrl.value?.toLowerCase() || '';
-    this.filteredShops = this.shopLookup.filter((item: any) =>
-      `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
-    );
-  }
-
-
-  areaChange(): void {
-    if (this.selectedAreaId) {
-      this.lookupService.getShops(this.selectedAreaId).subscribe((res) => {
-        this.shopLookup = res.data;
-        this.filteredShops = res.data;
-      });
-    }
-    else {
-      this.shopLookup = [];
-      this.filteredShops = [];
-    }
-  }
-
-  managerChange(): void {
-    if (this.selectedManagerId) {
-      this.lookupService.getAgentsByManager(this.selectedManagerId).subscribe((res) => {
-        this.agentLookup = res.data;
-        this.filteredUsers = res.data;
-      });
-    }
-    else {
-      this.lookupService.getAgents().subscribe((res) => {
-        this.agentLookup = res.data;
-        this.filteredUsers = res.data;
-      });
-    }
   }
 
 
@@ -284,6 +137,7 @@ export class RetailerOrderListComponent implements OnInit {
     this.trackNumberSearch = null;
     this.isVat = false;
     this.isShowOutstandingMetrics = false;
+    this.shopNameSearch = this.loggedInUserId.toString();
     this.loadData();
   }
 
@@ -301,13 +155,6 @@ export class RetailerOrderListComponent implements OnInit {
     }
   }
 
-  editOrder(orderId: number): void {
-    const fullPath = this.router.serializeUrl(
-      this.router.createUrlTree([`accessories/edit-order/${orderId}`])
-    );
-    window.open(fullPath, '_blank');
-
-  }
 
   viewOrder(orderId: number): void {
     this.orderService.getById(orderId).subscribe((res) => {
@@ -331,7 +178,6 @@ export class RetailerOrderListComponent implements OnInit {
   }
 
   orderHistory(orderId: number): void {
-
     this.orderService.getOrderHistory(orderId).subscribe((res) => {
       var data = {
         result: res.data,
@@ -344,120 +190,15 @@ export class RetailerOrderListComponent implements OnInit {
 
   }
 
-  paymentHistory(orderId: number): void {
-
-    
-
-  }
-
-  downloadVAT(orderId: number): void {
-    this.orderService.downloadVATInvoice(orderId);
-  }
-
   downloadNonVAT(orderId: number): void {
     this.orderService.downloadNonVATInvoice(orderId);
   }
 
-  sendEmail(orderId: number, isVAT: boolean): void {
-    this.orderService.sendInvoice(orderId, isVAT).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage('Email sent successfully.');
-      }
-      else {
-        this.toasterService.showMessage(res.message);
-        //this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
-      }
-    });
-  }
-
-  addPayment(item: any): void {
-
-    
-  }
-
-  cancelOrder(orderDetails: any): void {
-    const requestBody = {
-      orderId: orderDetails.orderId,
-      orderStatusId: 3, // cancelled order
-      paymentMethodId: orderDetails.paymentMethodId,
-      shippingModeId: orderDetails.shippingModeId,
-      trackingNumber: orderDetails.trackingNumber
-    };
-
-    this.orderService.updateOrderDetails(requestBody).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Cancelled Successfully.");
-        this.loadData();
-      }
-      else {
-        this.toasterService.showMessage(res.data);
-      }
-    });
-  }
-
-  hideOrder(orderId: number, isHide: any): void {
-    this.orderService.hideOrder(orderId, !isHide).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Successfully hidden.");
-      }
-      else {
-        this.toasterService.showMessage(res.data);
-      }
-    });
-  }
-
-  toggleAdvancedFilters() {
-    this.showAdvancedFilters = !this.showAdvancedFilters;
-  }
-
-  onExport(): void {
-
-    if(this.selectedFromDate == null || this.selectedToDate == null){
-      this.toasterService.showMessage("Please select both From Date and To Date to export the orders.");
-      return;
-    }
-    const requestBody = {
-      pageNo: this.pageNo + 1,
-      pageSize: this.pageSize,
-      areaId: this.selectedAreaId,
-      shopId: this.selectedShopId?.trim() || null,
-      orderStatusId: this.selectedStatusId,
-      paymentMethodId: this.selectedPaymentMethodId,
-      shippingModeId: this.selectedShippingMethodId,
-      agentId: this.selectedAgentId,
-      managerId: this.selectedManagerId,
-      fromDate: cleanDate(this.selectedFromDate),
-      toDate: cleanDate(this.selectedToDate),
-      orderId: this.orderNumberSearch?.trim() || null,
-      trackingNumber: this.trackNumberSearch?.trim() || null,
-      isVat: this.isVat ? 1 : 0,
-    };
-
-    this.orderService.downloadOrders(requestBody);
-  }
-
-  markCCA(orderId: any): void {
-    this.updateOrder(orderId, 13);
-  }
-
-  markCCM(orderId: any): void {
-    this.updateOrder(orderId, 14);
-  }
-
-  updateOrder(orderId: any, orderStatusId: number): void {
-    const requestBody = {
-      OrderId: orderId,
-      OrderStatusId: orderStatusId,      
-    };
-
-    this.orderService.updateStatus(requestBody).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Updated Successfully.");
-      }
-      else {
-        this.toasterService.showMessage(res.data);
-      }
-    });
+  createNewOrder(): void {
+    const fullPath = this.router.serializeUrl(
+      this.router.createUrlTree([`accessories/create-order/${this.loggedInUserId}/COD`])
+    );
+    window.open(fullPath, '_blank');
   }
 
 }

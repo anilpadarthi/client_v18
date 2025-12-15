@@ -12,7 +12,7 @@ export class ProductService {
 
   url: string;
 
-  constructor(public http: HttpClient,public exportService: ExportService) {
+  constructor(public http: HttpClient, public exportService: ExportService) {
     this.url = `api/Product`
   }
 
@@ -37,8 +37,12 @@ export class ProductService {
   }
 
   exportToExcel(): void {
-    let url =  this.url +'/ExportToExcel';
-    return this.exportService.downloadExcel(url,'AreaList');
+    let url = this.url + '/ExportToExcel';
+    return this.exportService.downloadExcel(url, 'AreaList');
+  }
+
+  updateProductStatus(productId: number, status: boolean): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/UpdateProductStatus?productId=${productId}&status=${status}`);
   }
 
 }

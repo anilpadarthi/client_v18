@@ -49,6 +49,9 @@ export class WebstorgeService {
         const parsedData = JSON.parse(data);
         return parsedData;
     }
+    public clearAll() {
+        localStorage.clear();
+    }
 
     public logout() {
         localStorage.clear();

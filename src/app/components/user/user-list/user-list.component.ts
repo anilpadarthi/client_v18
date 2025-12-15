@@ -6,6 +6,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ToasterService } from '../../../services/toaster.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { LookupService } from '../../../services/lookup.service';
 
 
 @Component({
@@ -31,30 +32,41 @@ export class UserListComponent {
   totalCount = 0;
   userList: any[] = [];
   searchText!: string | null;
+  userRoleId: number = 0;
+  userRoleLookup: any[] = [];
 
 
   constructor(
     private router: Router,
     private userService: UserService,
     private dialog: MatDialog,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private lookupService: LookupService
   ) { }
 
   ngOnInit(): void {
     this.loadData();
+    this.getUserRoleLookup();
   }
 
   loadData(): void {
     const request = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null
+      searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null,
+      userRoleId: this.userRoleId != 0 ? this.userRoleId : null
     };
 
     this.userService.getByPaging(request).subscribe((res) => {
       this.userList = res.data.results;
       this.totalCount = res.data.totalRecords;
       this.reloadData();
+    });
+  }
+
+   getUserRoleLookup(): void {
+    this.lookupService.getUserRoles().subscribe((res) => {
+      this.userRoleLookup = res.data;
     });
   }
 
@@ -70,8 +82,6 @@ export class UserListComponent {
 
 
   deleteclick(id: any) {
-
-
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -105,8 +115,6 @@ export class UserListComponent {
   onFilter(): void {
     this.loadData();
   }
-
-
 
   onReset(): void {
     this.pageNo = 0;

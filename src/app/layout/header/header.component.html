@@ -18,7 +18,8 @@
     }
 
     <!-- Search Form -->
-    <mat-form-field class="custom-search d-none-xs" [style.margin-left]="'12px'" [style.flex-grow]="'1'" [style.max-width]="'300px'">
+    <mat-form-field class="custom-search d-none-xs" *ngIf="userRole != 'Retailer'"
+    [style.margin-left]="'12px'" [style.flex-grow]="'1'" [style.max-width]="'300px'">
       <mat-icon matPrefix>search</mat-icon>
       <input matInput placeholder="Search" [matAutocomplete]="auto" [formControl]="searchControl">
       <button *ngIf="searchControl.value" mat-icon-button matSuffix (click)="clearSearch()">
@@ -33,10 +34,10 @@
   </div>
 
   <!-- Right Section - Notifications & Profile -->
-  <div class="end-sction d-flex align-items-center" [style.margin-left]="'auto'" [style.gap]="'8px'">
+  <div class="end-sction d-flex align-items-center" [style.margin-left]="'auto'" [style.gap]="'8px'" >
     <!-- Notification Dropdown -->
     <button mat-icon-button [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" 
-      class="circle-btn" [style.padding]="'4px'">
+      class="circle-btn" [style.padding]="'4px'" *ngIf="userRole != 'Retailer'">
       <span class="material-symbols-outlined">notifications</span>
     </button>
     <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">

@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   /** 🔹 Store tokens */
-  private storeTokens(response: AuthResponse) {
+  public storeTokens(response: AuthResponse) {
     localStorage.setItem(this.accessTokenKey, response.accessToken);
     localStorage.setItem(this.refreshTokenKey, response.refreshToken);
     localStorage.setItem('userDetailsInfo', JSON.stringify(response.userDetails));
@@ -70,14 +70,9 @@ export class AuthService {
     return this.loggedIn$.asObservable();
   }
 
-
-  retailerLogin(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.url}/retailerLogin`, credentials)
-      .pipe(tap(tokens => this.storeTokens(tokens)));
+  retailerLogin(credentials: LoginRequest): Observable<any> {
+    return this.http.post<AuthResponse>(`${this.url}/retailerLogin`, credentials);
   }
-
-
-
 }
 
 

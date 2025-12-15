@@ -18,6 +18,10 @@ export class OrderService {
     return this.http.get<any>(`${this.url}/GetShoppingPageDetails`);
   }
 
+  getProductSearchList(searchText: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/GetProductSearchList?searchText=${searchText}`);
+  }
+
   getProductList(categoryId: number, subCategoryId: number): Observable<any> {
     return this.http.get<any>(`${this.url}/GetProductList?categoryId=` + categoryId + '&subCategoryId=' + subCategoryId);
   }

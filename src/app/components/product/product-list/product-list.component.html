@@ -4,34 +4,35 @@
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
             <div class="row">
-                <mat-form-field appearance="outline" class="col-lg-4">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Category</mat-label>
                     <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange($event)">
-                         <ngx-mat-select-search [formControl]="categoryFilterCtrl" placeholderLabel="Search here..."
-                                noEntriesFoundLabel="No matching found">
-                            </ngx-mat-select-search>
+                        <ngx-mat-select-search [formControl]="categoryFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
                         <mat-option *ngFor="let category of filteredCategories" [value]="category.id">
                             <span>{{category.name}}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-4">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Sub-Category</mat-label>
                     <mat-select [(ngModel)]="subCategoryId" (selectionChange)="onSubCategoryChange($event)">
-                         <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"
-                                placeholderLabel="Search here..." noEntriesFoundLabel="No matching found">
-                            </ngx-mat-select-search>
+                        <ngx-mat-select-search [formControl]="subCategoryFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
                         <mat-option [value]="null">All</mat-option>
                         <mat-option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">
                             <span>{{subCategory.name}}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-4">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Search By Name</mat-label>
                     <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
                 </mat-form-field>
+                <mat-checkbox color="primary" [(ngModel)]="isActive" class="col-lg-3 col-xs-12 m-3">IS Active</mat-checkbox>
             </div>
             <div class="row col-lg-12 space-between-buttons m-b-10">
                 <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
@@ -78,7 +79,19 @@
                         <th mat-header-cell *matHeaderCellDef> SUB-CATEOGRY </th>
                         <td mat-cell *matCellDef="let r"> {{r.subCategory?.subCategoryName}} </td>
                     </ng-container>
-                   
+
+                    <ng-container matColumnDef="Hide">
+                        <th mat-header-cell *matHeaderCellDef> Is Active </th>
+                        <td mat-cell *matCellDef="let r">
+                            <mat-checkbox appearance="outline" *ngIf="r.status == 1"
+                                [checked]="true" (change)="toggleHide(r)">
+                            </mat-checkbox>
+                            <mat-checkbox appearance="outline" *ngIf="r.status == 0"
+                                [checked]="false" (change)="toggleHide(r)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="Actions">
                         <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
                         <td mat-cell *matCellDef="let r">
@@ -95,8 +108,10 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
             </div>
-            <div class="zero-records p-b-8" *ngIf="areaList?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span></div>
+            <div class="zero-records p-b-8" *ngIf="areaList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No records found</span>
+            </div>
             <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageNo" [pageSize]="pageSize"
                 [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
             </mat-paginator>

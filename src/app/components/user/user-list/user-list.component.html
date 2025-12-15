@@ -4,7 +4,7 @@
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
             <div class="row space-between-buttons">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Search User</mat-label>
                         <input matInput #searchInput placeholder="Search User" [(ngModel)]="searchText"
@@ -12,7 +12,17 @@
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
                 </div>
-                <div class="col-lg-8 ">
+
+                <mat-form-field appearance="outline" class="col-lg-3 w-100">
+                    <mat-label>User Role</mat-label>
+                    <mat-select [(ngModel)]="userRoleId" placeholder="Select Role" (selectionChange)="onFilter()"  >
+                        <mat-option [value]="0">--Select--</mat-option>
+                        <mat-option *ngFor="let item of userRoleLookup" [value]="item.id">
+                            <span>{{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="col-lg-6 ">
                     <button mat-flat-button class="bg-primary text-white" (click)="loadData()" title="Refresh">
                         <mat-icon>filter_list</mat-icon> Filter
                     </button>
@@ -74,7 +84,7 @@
                             </a>
                             <a class="m-r-10 cursor-pointer" (click)="deleteclick(element.userId)">
                                 <mat-icon>delete</mat-icon>
-                            </a>                            
+                            </a>
                         </td>
                     </ng-container>
 

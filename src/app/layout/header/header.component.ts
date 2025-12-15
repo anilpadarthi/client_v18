@@ -59,7 +59,14 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    this.authService.logout();
+    console.log('Logging out');
+    this.webstorgeService.clearAll();
+    if (this.userRole === 'Retailer') {
+      this.router.navigate(['/retailer/login']);
+    }
+    else {
+      this.router.navigate(['/login']);
+    }
   }
 
   onOptionSelected(option: any) {

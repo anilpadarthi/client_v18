@@ -17,7 +17,7 @@ import { FormControl } from '@angular/forms';
 
 export class ProductListComponent implements OnInit {
 
-  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "Actions"];
+  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "Hide", "Actions"];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.STANDARD_PAGE_OPTIONS;
   pageNo = 0;
@@ -32,6 +32,7 @@ export class ProductListComponent implements OnInit {
   filteredCategories: any[] = [];
   subCategoryFilterCtrl: FormControl = new FormControl();
   filteredSubCategories: any[] = [];
+  isActive = true;
 
   constructor
     (
@@ -62,7 +63,7 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-   private filterSubCategories() {
+  private filterSubCategories() {
     const search = this.subCategoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredSubCategories = this.subCategories.filter((item: any) =>
       `${item.name}`.toLowerCase().includes(search)
@@ -129,7 +130,8 @@ export class ProductListComponent implements OnInit {
       pageSize: this.pageSize,
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
-      searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null
+      searchText: this.searchText != null ? this.searchText.trim().toLowerCase() : null,
+      isActive: this.isActive
     };
 
     this.productService.getByPaging(requestBody).subscribe((res) => {
@@ -183,6 +185,31 @@ export class ProductListComponent implements OnInit {
 
   exportToExcel(): void {
     this.productService.exportToExcel();
+  }
+
+  toggleHide(row: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: `Are you sure you want to ${row.status == 0 ? 'Un hide' : 'Hide'} this product ?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        // Call API to update hide/unhide in database 
+        this.productService.updateProductStatus(row.productId, row.status == 0 ? true : false).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage("Status updated successfully");
+            this.loadData();
+          }
+          else {
+            this.toasterService.showMessage(res.message);
+          }
+        });
+      }
+    });
   }
 
 }

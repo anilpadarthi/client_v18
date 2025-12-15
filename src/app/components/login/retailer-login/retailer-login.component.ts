@@ -12,7 +12,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 export class RetailerLoginComponent {
-  
+
   loginForm!: FormGroup;
   isValidLogin = true;
   hidePassword = true;
@@ -48,19 +48,23 @@ export class RetailerLoginComponent {
 
   async submit(): Promise<void> {
     //this.toasterService.showMessage(this.geoLocation.latitude + ', ' + this.geoLocation.longitude);
-      if (this.loginForm.valid) {
-        var requestBody = {
-          'username': this.loginForm.value.email,
-          'password': this.loginForm.value.password,
-        };
+    if (this.loginForm.valid) {
+      var requestBody = {
+        'username': this.loginForm.value.email,
+        'password': this.loginForm.value.password,
+      };
 
-        this.authService.retailerLogin(requestBody).subscribe({
-            next: () => this.router.navigate(['/home']),
-            error: err => this.toasterService.showMessage('Login Failed.')
-        });        
-      }
-    else {
-      this.toasterService.showMessage("Please turn on location services, to proceed further.");
+      this.authService.retailerLogin(requestBody).subscribe((res) => {
+        console.log(res);
+        if (res.statusCode === 200 && res.message === 'Success') {
+          this.authService.storeTokens(res);
+          this.router.navigate(['/home']);
+        } 
+        else {
+          this.isValidLogin = false;
+          this.toasterService.showMessage('Invalid login credentials. Please try again.');
+        }
+      });
     }
-  } 
+  }
 }

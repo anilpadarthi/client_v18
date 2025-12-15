@@ -53,6 +53,7 @@ export class LoginComponent {
 
   async submit(): Promise<void> {
     //this.toasterService.showMessage(this.geoLocation.latitude + ', ' + this.geoLocation.longitude);
+    console.log(this.geoLocation);
     if (this.geoLocation != null) {
       if (this.loginForm.valid) {
         var requestBody = {

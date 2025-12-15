@@ -67,10 +67,14 @@ import { ContactusComponent } from './components/retailer/contactus/contactus.co
 import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
 import { StockEntryListComponent } from './components/product/stock-entry-list/stock-entry-list.component';
 import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
-import {RetailerOrderListComponent} from './components/retailer/retailer-order-list/retailer-order-list.component';
+import { RetailerOrderListComponent } from './components/retailer/retailer-order-list/retailer-order-list.component';
+import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
 
 
 const routes: Routes = [
+
+  { path: 'login', component: LoginComponent },
+  { path: 'retailer/login', component: RetailerLoginComponent },
 
   {
     path: '',
@@ -158,7 +162,7 @@ const routes: Routes = [
 
 
       { path: 'accessories/sales', component: OrderListComponent },
-      { path: 'digitalId', component: DigitalIdComponent },      
+      { path: 'digitalId', component: DigitalIdComponent },
 
       { path: 'chat', component: GroupChatComponent },
 
@@ -168,7 +172,7 @@ const routes: Routes = [
       { path: 'retailer/stock', component: StockComponent },
       { path: 'retailer/activations', component: ActivationsComponent },
       { path: 'retailer/commissions', component: CommissionStatementsComponent },
-      { path: 'retailer/stockvsconnections', component: StockConversionComponent },
+      { path: 'retailer/stockvsconnections', component: GivenVsActivationsComponent },
       { path: 'retailer/sales', component: RetailerOrderListComponent },
       { path: 'retailer/accessories/create-order', component: CreateOrderComponent },
       { path: 'retailer/sales-manager', component: SalesManagerComponent },
@@ -184,8 +188,6 @@ const routes: Routes = [
   { path: 'accessories/list', component: OpenAccessoriesComponent },
 
 
-  { path: 'login', component: LoginComponent },
-  { path: 'retailer/login', component: RetailerLoginComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
   { path: '**', redirectTo: '/login' }
