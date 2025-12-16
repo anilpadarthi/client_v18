@@ -65,6 +65,7 @@ export class OrderListComponent implements OnInit {
   isShowOutstandingMetrics = false;
   userRole = '';
   isAdmin = false;
+  isManager = false;
   isWareHouseKeeper = false;
   areaFilterCtrl: FormControl = new FormControl();
   shopFilterCtrl: FormControl = new FormControl();
@@ -101,6 +102,7 @@ export class OrderListComponent implements OnInit {
       //this.loadOutstandingMetrics();
     }
     else if (this.userRole == 'Manager') {
+      this.isManager = true;
       this.selectedManagerId = loggedInUserId;
     }
     else if (this.userRole == 'WareHouse') {

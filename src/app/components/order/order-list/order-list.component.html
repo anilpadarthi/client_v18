@@ -102,17 +102,17 @@
                 <mat-checkbox color="primary" [(ngModel)]="isVat" class="col-lg-3 col-xs-12 m-3">IS VAT</mat-checkbox>
             </div>
 
-
             <!-- Buttons -->
             <div class="row col-lg-12 col-xs-12 space-between-buttons m-b-10">
-                <button mat-flat-button class="bg-error text-white" *ngIf="isAdmin" (mousedown)="onExport()">
-                    <mat-icon>download</mat-icon> Download
-                </button>
+
                 <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
                     <mat-icon>filter_list</mat-icon> Filter
                 </button>
                 <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
                     <mat-icon>clear_all</mat-icon> Clear
+                </button>
+                <button mat-flat-button class="green-btn" *ngIf="isAdmin || isManager" (mousedown)="onExport()">
+                    <mat-icon>download</mat-icon> Download
                 </button>
                 <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin"
                     (click)="loadOutstandingMetrics()">
