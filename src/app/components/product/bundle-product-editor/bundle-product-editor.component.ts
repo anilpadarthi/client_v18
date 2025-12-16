@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
@@ -8,12 +9,14 @@ import { environment } from '../../../../environments/environment';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-product-editor',
-  templateUrl: './product-editor.component.html',
-  styleUrl: './product-editor.component.scss'
+  selector: 'app-bundle-product-editor',
+  templateUrl: './bundle-product-editor.component.html',
+  styleUrl: './bundle-product-editor.component.scss'
 })
 
-export class ProductEditorComponent {
+
+
+export class BundleProductEditorComponent {
 
   productForm: FormGroup;
   productId: any;
@@ -135,17 +138,18 @@ export class ProductEditorComponent {
     if (this.productId) {
       this.productService.getProduct(this.productId).subscribe((res) => {
         this.productForm.patchValue(res.data.product);
-        // this.productForm.patchValue({
-        //   commissionToAgent: res.data.productCommission?.commissionToAgent != null
-        //     ? Number(res.data.productCommission.commissionToAgent)
-        //     : null,
+        this.productForm.patchValue({
+          commissionToAgent: res.data.productCommission?.commissionToAgent != null
+            ? Number(res.data.productCommission.commissionToAgent)
+            : null,
 
-        //   commissionToManager: res.data.productCommission?.commissionToManager != null
-        //     ? Number(res.data.productCommission.commissionToManager)
-        //     : null,
+          commissionToManager: res.data.productCommission?.commissionToManager != null
+            ? Number(res.data.productCommission.commissionToManager)
+            : null,
 
-        //   status: res.data.product?.status
-        // });
+          status: res.data.product?.status
+        });
+        console.log(this.productForm.value);
         if (res.data.product?.productImage) {
           this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
         }
@@ -192,7 +196,6 @@ export class ProductEditorComponent {
       formBody.append('isNewArrival', this.productForm.value.isNewArrival ?? false);
       formBody.append('isOutOfStock', this.productForm.value.isOutOfStock ?? false);
       formBody.append('isBundle', this.productForm.value.isBundle ?? false);
-      formBody.append('displayOrder', this.productForm.value.displayOrder);
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
       formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId ?? 0);

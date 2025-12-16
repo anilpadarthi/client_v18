@@ -259,7 +259,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   addToCart(item: any): void {
-    if (item.qty == 0) {
+    if (item.qty == 0 || item.qty == null || item.qty == undefined) {
       item.qty = 1;
     }
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);

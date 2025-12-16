@@ -141,6 +141,7 @@ import { SupplierTransactionEditorComponent } from './components/supplier/suppli
 import { RetailerOrderListComponent } from './components/retailer/retailer-order-list/retailer-order-list.component';
 import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
 import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
+import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -259,7 +260,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SupplierTransactionEditorComponent,
     RetailerOrderListComponent,
     EditProfileComponent,
-    GivenVsActivationsComponent
+    GivenVsActivationsComponent,
+    BundleProductEditorComponent
   ],
   imports: [
     BrowserModule,

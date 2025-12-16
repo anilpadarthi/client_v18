@@ -150,6 +150,15 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  addoreditBundleclick(id: any) {
+    if (id != null) {
+      this.router.navigate(['/product/bundle/edit/' + id]);
+    }
+    else {
+      this.router.navigate(['/product/bundle/create']);
+    }
+  }
+
   handlePageEvent(event: PageEvent): void {
     this.totalCount = event.length;
     this.pageNo = (this.pageSize === event.pageSize) ? event.pageIndex : 1;

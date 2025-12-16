@@ -69,6 +69,7 @@ import { StockEntryListComponent } from './components/product/stock-entry-list/s
 import { StockEntryEditorComponent } from './components/product/stock-entry-editor/stock-entry-editor.component';
 import { RetailerOrderListComponent } from './components/retailer/retailer-order-list/retailer-order-list.component';
 import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
+import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
 
 
 const routes: Routes = [
@@ -120,6 +121,8 @@ const routes: Routes = [
       { path: 'products', component: ProductListComponent },
       { path: 'product/create', component: ProductEditorComponent },
       { path: 'product/edit/:id', component: ProductEditorComponent },
+      { path: 'product/bundle/create', component: BundleProductEditorComponent },
+      { path: 'product/bundle/edit/:id', component: BundleProductEditorComponent },
       { path: 'invoice/list', component: StockEntryListComponent },
       { path: 'invoice/create', component: StockEntryEditorComponent },
       { path: 'invoice/:id', component: StockEntryEditorComponent },
