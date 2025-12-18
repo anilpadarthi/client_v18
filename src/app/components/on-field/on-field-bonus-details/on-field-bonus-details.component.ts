@@ -5,15 +5,13 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
 
-
 @Component({
-  selector: 'app-on-field-commissions',
-  templateUrl: './on-field-commissions.component.html',
-  styleUrl: './on-field-commissions.component.scss'
+  selector: 'app-on-field-bonus-details',
+  templateUrl: './on-field-bonus-details.component.html',
+  styleUrl: './on-field-bonus-details.component.scss'
 })
 
-
-export class OnFieldCommissionsComponent implements OnInit {
+export class OnFieldBonusDetailsComponent implements OnInit {
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
   private isFirstChange = true;
@@ -32,8 +30,7 @@ export class OnFieldCommissionsComponent implements OnInit {
     'VOXI',
     'SMARTY',
     'TOTAL',
-    'CommissionAmount',
-    //'BonusAmount',
+    'BonusAmount',
     'actions'
   ];
 

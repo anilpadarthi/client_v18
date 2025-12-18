@@ -57,11 +57,13 @@ export class ShopEditorComponent {
       postCode: ['', [Validators.required]],
       shopName: ['', [Validators.required]],
       vatNumber: [''],
+      password: [''],
       topupSystemId: [''],
       city: [''],
-      shopEmail : ['', [Validators.required, Validators.email]],
+      shopEmail: ['', [Validators.required, Validators.email]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
+      shopPhone: ['', [Validators.required]],
       paymentMode: [''],
       payableName: [''],
       competitor: [''],
@@ -197,6 +199,8 @@ export class ShopEditorComponent {
       formBody.append('postCode', this.shopForm.value.postCode);
       formBody.append('areaId', this.shopForm.value.areaId);
       formBody.append('shopEmail', this.shopForm.value.shopEmail);
+      formBody.append('shopPhone', this.shopForm.value.shopPhone);
+      formBody.append('password', this.shopForm.value.password);
       formBody.append('addressLine1', this.shopForm.value.addressLine1);
       formBody.append('addressLine2', this.shopForm.value.addressLine2 || '');
       formBody.append('city', this.shopForm.value.city || '');
@@ -366,7 +370,7 @@ export class ShopEditorComponent {
 
   sendActivationEmail(): void {
     this.shopService.sendActivationEmail(this.shopId).subscribe((res) => {
-      if(res.statusCode == 200 ){
+      if (res.statusCode == 200) {
         this.toasterService.showMessage("Action email has been sent.");
       }
       else {

@@ -142,6 +142,10 @@ import { RetailerOrderListComponent } from './components/retailer/retailer-order
 import { EditProfileComponent } from './components/retailer/edit-profile/edit-profile.component';
 import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
 import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
+import { SimAllocationDetailsComponent } from './components/dashboard/sim-allocation-details/sim-allocation-details.component';
+import { OnFieldBonusDetailsComponent } from './components/on-field/on-field-bonus-details/on-field-bonus-details.component';
+import { ViewHistoryComponent } from './components/on-field/view-history/view-history.component';
+import { OnFieldSimConversionsComponent } from "./components/on-field/on-field-sim-conversions/on-field-sim-conversions.component";
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -261,7 +265,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     RetailerOrderListComponent,
     EditProfileComponent,
     GivenVsActivationsComponent,
-    BundleProductEditorComponent
+    BundleProductEditorComponent,
+    SimAllocationDetailsComponent,
+    OnFieldBonusDetailsComponent,
+    ViewHistoryComponent,
+    OnFieldSimConversionsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,55 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Sim Allocation </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="activationList?.length > 0" class="table-responsive table-max-scroll example-container ">
+            <table mat-table [dataSource]="activationList" class="w-100 custom-table">
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.baseNetworkName }} </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <ng-container matColumnDef="LastMonthActivaitons">
+                    <th mat-header-cell *matHeaderCellDef class="center">Prev. Activaitons</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.lastMonthActivations }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ lastMonthTotalActivations }}</td>
+                </ng-container>
+                <ng-container matColumnDef="FreeAllocations">
+                    <th mat-header-cell *matHeaderCellDef class="center">Free Allocations</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.freeAllocations }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ totalFreeAllocations }}</td>
+                </ng-container>
+                <ng-container matColumnDef="CarryForward">
+                    <th mat-header-cell *matHeaderCellDef class="center">CarryForward</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.carryForward }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ totalCarryForward }}</td>
+                </ng-container>
+                <ng-container matColumnDef="GivenToAgent">
+                    <th mat-header-cell *matHeaderCellDef class="center">Given</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.givenToAgent }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ totalAssignedToAgent }}</td>
+                </ng-container>
+                <ng-container matColumnDef="AssignedToShop">
+                    <th mat-header-cell *matHeaderCellDef class="center">Assigned To Shop</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.allocatedToShop }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ totalAssignedToShop }}</td>
+                </ng-container>
+                <ng-container matColumnDef="TotalLeft">
+                    <th mat-header-cell *matHeaderCellDef class="center">Total Left</th>
+                    <td mat-cell *matCellDef="let element" class="center"> {{ element.totalLeft }} </td>
+                    <td mat-footer-cell *matFooterCellDef class="center">{{ totalDifference }}</td>
+                </ng-container>
+
+                <!-- Header and Row Declarations -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            </table>
+        </div>
+        <div class="zero-records p-b-8" *ngIf="activationList?.length == 0"><img
+                src="/assets/images/landingpage/background/no-records.svg" />
+            <span>No records found</span>
+        </div>
+    </mat-card-content>
+</mat-card>

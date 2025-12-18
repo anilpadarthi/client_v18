@@ -1,7 +1,8 @@
 .contentWrapper {
   padding: 20px !important;
 }
-.vat-amount{
+
+.vat-amount {
   color: green !important;
 }
 
@@ -21,6 +22,13 @@
 
 .hamburg {
   margin-left: 5em !important
+}
+
+.order-summary-table {
+  td {
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
 .order-summary-card {
@@ -63,8 +71,9 @@
   font-weight: 500;
   color: #333;
 }
+
 .strike-out {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .discount {
@@ -91,15 +100,23 @@
 }
 
 
-.float-right{
+.float-right {
   float: right;
 }
 
 mat-form-field textarea {
-  resize: vertical;          /* allows user to resize but stays inside */
-  overflow: auto !important; /* prevents text from overflow outside box */
-  box-sizing: border-box;    /* keeps content inside outline */
+  resize: vertical;
+  /* allows user to resize but stays inside */
+  overflow: auto !important;
+  /* prevents text from overflow outside box */
+  box-sizing: border-box;
+  /* keeps content inside outline */
   width: 100%;
+}
+
+.address-details {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 

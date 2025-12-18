@@ -47,7 +47,7 @@
                     <a mat-list-item 
                       [attr.href]="child.target === '_blank' ? child.route : null"
                       [attr.target]="child.target === '_blank' ? '_blank' : null"
-                      [routerLink]="child.target !== '_blank' ? child.route : null" routerLinkActive="active">
+                      [routerLink]="child.target !== '_blank' ? child.route : null" routerLinkActive="active" (click)="onNavItemClick()">
                       <mat-icon class="bullet">arrow_right</mat-icon>
                       <span>{{ child.displayName }}</span>
                     </a>
@@ -67,7 +67,7 @@
 
             <!-- Single route link -->
             <ng-template #singleLink>
-              <a mat-list-item [routerLink]="item.route" routerLinkActive="active">
+              <a mat-list-item [routerLink]="item.route" routerLinkActive="active" (click)="onNavItemClick()">
 
                 <mat-icon matListIcon *ngIf="item.iconName" [style.margin-right]="'12px'">{{ item.iconName }}</mat-icon>
                 <span>{{ item.displayName }}</span>

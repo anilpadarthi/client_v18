@@ -43,7 +43,7 @@ export class OpenAccessoriesComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   checkScreenSize() {
-    this.isMobile = window.innerWidth < 768;
+    this.isMobile = window.innerWidth < 1200;
     this.closeSidebar();
   }
 

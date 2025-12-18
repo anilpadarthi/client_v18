@@ -168,25 +168,36 @@
                     </table>
                 </div>
             </mat-card>
-            <div class="order-summary-card mat-elevation-z2">
+
+             <div class="order-summary-card mat-elevation-z2 p-3">
                 <h2 class="summary-title">Order Summary</h2>
 
-                <div class="summary-row">
-                    <div class="label">Net total:</div>
-                    <div class="value">£{{ subTotal | number : "1.2-2" }}</div>
-                </div>
-                <mat-divider></mat-divider>
+                <div class="table-responsive">
+                    <table class="order-summary-table w-100">
+                        <tbody>
+                            <tr>
+                                <td class="label small text-muted">Sub Total</td>
+                                <td class="value text-right">£{{ subTotal | number : "1.2-2" }}</td>
+                            </tr>                          
 
-                <div class="summary-row total-row">
-                    <div class="label">Grand Total:</div>
-                    <div class="value total">£{{ subTotal | number : "1.2-2" }}</div>
-                </div>
-
-                <div class="button-group">
-                    <button mat-stroked-button color="primary" (click)="continueShopping()">Continue Shopping</button>
-                    <button mat-flat-button color="warn" (click)="createOrder()">Update Order</button>
+                            <tr class="grand-row">
+                                <td class="label h6">Grand Total</td>
+                                <td class="value text-right h5 font-weight-bold">£{{ subTotal | number : "1.2-2" }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-3">
+                <div class="mb-2 mb-sm-0">
+                    <button mat-stroked-button color="primary" (click)="continueShopping()">Continue Shopping</button>
+                </div>
+                <div>
+                    <button mat-flat-button color="warn" (click)="createOrder()">Place Order</button>
+                </div>
+            </div>        
         </div>
 
         <div *ngIf="isDisplayProductDetails">

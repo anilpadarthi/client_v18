@@ -40,15 +40,15 @@ export class AreaActivationsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (this.isFirstChange) {
-        this.isFirstChange = false; // Mark first change as handled
-        return; // Skip logic on the first change detection pass
-      }
-  
-      if (changes['selectedDate'] || changes['refreshCounter']) {
-        this.loadData();
-      }
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
     }
+
+    if (changes['selectedDate'] || changes['refreshCounter']) {
+      this.loadData();
+    }
+  }
 
   loadData(): void {
     this.isLoading = true;

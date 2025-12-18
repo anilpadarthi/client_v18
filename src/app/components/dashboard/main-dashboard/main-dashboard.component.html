@@ -7,39 +7,39 @@
         <mat-spinner></mat-spinner>
       </div> -->
       <div class="row ng-custom-fileds m-r-2">
-          <mat-form-field appearance="outline" class="col-sm-3 w-100">
-            <mat-label>Choose a Month</mat-label>
-            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
-            <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
-            <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-              (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-            </mat-datepicker>
-          </mat-form-field>
-          <mat-form-field appearance="outline" *ngIf="isAdmin" class="col-sm-3 w-100">
-            <mat-label>Manager</mat-label>
-            <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
-              (selectionChange)="onManagerChanged()">
-              <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
-              <mat-option [value]=null>All</mat-option>
-              <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
-                <span>{{ item.id }} - {{ item.name }}</span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" class="col-sm-3 w-100">
-            <mat-label>User</mat-label>
-            <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
-              <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
-                noEntriesFoundLabel="No matching found">
-              </ngx-mat-select-search>
-              <mat-option [value]=null>All</mat-option>
-              <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
-                <span>{{ item.id }} - {{ item.name }}</span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-3 w-100">
+          <mat-label>Choose a Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="isAdmin" class="col-sm-3 w-100">
+          <mat-label>Manager</mat-label>
+          <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager"
+            (selectionChange)="onManagerChanged()">
+            <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
+            <mat-option [value]=null>All</mat-option>
+            <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
+              <span>{{ item.id }} - {{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" class="col-sm-3 w-100">
+          <mat-label>User</mat-label>
+          <mat-select [(ngModel)]="selectedUserId" placeholder="Select User">
+            <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
+            <mat-option [value]=null>All</mat-option>
+            <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
+              <span>{{ item.id }} - {{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <div class="col-auto d-flex align-items-center responsive-submit">
           <button class="primary-btn" mat-flat-button (click)="onSubmit()">Submit</button>
         </div>
@@ -126,7 +126,7 @@
 
 <div *ngIf="dashboardViewMode == 'Agent'">
   <app-kpi-target-details [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
-    [filterType]="filterType"></app-kpi-target-details>  
+    [filterType]="filterType"></app-kpi-target-details>
 </div>
 <app-network-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
   [filterType]="filterType"></app-network-activations>
@@ -136,9 +136,14 @@
     [filterType]="filterType"></app-agent-activations>
 </div>
 
-<div *ngIf="dashboardViewMode == 'Agent'">  
+<div *ngIf="dashboardViewMode == 'Agent'">
   <app-area-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
-    [filterType]="filterType"></app-area-activations>  
+    [filterType]="filterType"></app-area-activations>
+</div>
+
+<div *ngIf="dashboardViewMode == 'Agent'">
+  <app-sim-allocation-details [selectedDate]="selectedMonth" [filterId]="filterId"
+    [refreshCounter]="refreshCounter"></app-sim-allocation-details>
 </div>
 
 <app-accessories-sale [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"

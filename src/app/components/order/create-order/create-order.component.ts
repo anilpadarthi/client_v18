@@ -56,6 +56,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   shopCommissionId: any = null;
   shippingAddress: any = null;
   shopEmail: any = null;
+  shopPhone: any = null;
   walletAmount = 0;
   shopDetails: any = null;
   requestType: string | null = null;
@@ -98,7 +99,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   checkScreenSize() {
-    this.isMobile = window.innerWidth < 768;
+    this.isMobile = window.innerWidth < 1200;
     this.closeSidebar();
   }
 
@@ -202,6 +203,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.shopDetails = res.data.shop;
       this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}, London, UK`;
       this.shopEmail = this.shopDetails.shopEmail;
+      this.shopPhone = this.shopDetails.shopPhone;
       this.isLoading = false;
     });
   }
@@ -468,7 +470,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     const requestBody = {
       shopId: this.shopId,
       address: this.shippingAddress,
-      shopEmail: this.shopEmail
+      shopEmail: this.shopEmail,
+      shopPhone: this.shopPhone
     };
 
     this.shopService.updateAddress(requestBody).subscribe((res) => {

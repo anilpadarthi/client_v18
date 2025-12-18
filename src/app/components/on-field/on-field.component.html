@@ -111,12 +111,29 @@
               [refreshValue]="refreshCounter"></app-on-field-commissions>
           </div>
         </mat-tab>
-        <mat-tab label="Wallet">
+         <mat-tab label="Bonus" *ngIf="isAdmin">
+          <div class="mat-body-1 rounded m-t-12">
+            <app-on-field-bonus-details [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-bonus-details>
+          </div>
+        </mat-tab>
+         <mat-tab label="Wallet">
           <div class="mat-body-1 rounded m-t-12">
             <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
               [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
           </div>
         </mat-tab>
+         <mat-tab label="Conversions">
+          <div class="mat-body-1 rounded m-t-12">
+            <app-on-field-sim-conversions [selectedShopId]="selectedShopId"
+              [refreshValue]="refreshCounter"></app-on-field-sim-conversions>
+          </div>
+        </mat-tab>
+         <mat-tab label="ViewHistory"  *ngIf="isAdmin">
+          <div class="mat-body-1 rounded m-t-12">
+           
+          </div>
+        </mat-tab>       
       </mat-tab-group>
     </mat-card-content>
   </mat-card>

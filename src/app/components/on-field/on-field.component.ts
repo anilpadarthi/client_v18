@@ -12,6 +12,7 @@ import { OnFieldService } from '../../services/on-field.service';
 import { FormControl } from '@angular/forms';
 import { OnFieldShopCommissionChequesComponent } from '../on-field-shop-commission-cheques/on-field-shop-commission-cheques.component';
 import { ActivatedRoute } from '@angular/router';
+import { WebstorgeService } from '../../services/web-storage.service';
 
 @Component({
   selector: 'app-on-field',
@@ -37,6 +38,8 @@ export class OnFieldComponent implements OnInit {
   commissionAmount = null;
   bonusAmount = null;
   outstandingBalanceAmount = 0;
+  userRole = '';
+  isAdmin = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,21 +50,24 @@ export class OnFieldComponent implements OnInit {
     private onFieldService: OnFieldService,
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
-    private router: Router
+    private router: Router,
+    private webstorgeService: WebstorgeService
   ) { }
 
 
   ngOnInit(): void {
-    this.getAreaLookup();
+    this.userRole = this.webstorgeService.getUserRole();
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+      this.isAdmin = true;
+    }
 
+    this.getAreaLookup();
     this.areaFilterCtrl.valueChanges.subscribe(() => {
       this.filterAreas();
     });
     this.shopFilterCtrl.valueChanges.subscribe(() => {
       this.filterShops();
     });
-
-    
   }
 
   ngOnChanges() {

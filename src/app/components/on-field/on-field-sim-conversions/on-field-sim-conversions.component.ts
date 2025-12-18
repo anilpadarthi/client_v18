@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { OnFieldService } from '../../../services/on-field.service';
 import { DatePipe } from '@angular/common';
@@ -5,15 +6,14 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
 
-
 @Component({
-  selector: 'app-on-field-commissions',
-  templateUrl: './on-field-commissions.component.html',
-  styleUrl: './on-field-commissions.component.scss'
+  selector: 'app-on-field-sim-conversions',
+  templateUrl: './on-field-sim-conversions.component.html',
+  styleUrl: './on-field-sim-conversions.component.scss'
 })
 
 
-export class OnFieldCommissionsComponent implements OnInit {
+export class OnFieldSimConversionsComponent implements OnInit {
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
   private isFirstChange = true;
