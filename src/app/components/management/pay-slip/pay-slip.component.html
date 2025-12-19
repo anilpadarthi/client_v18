@@ -24,7 +24,7 @@
             </mat-select>
           </mat-form-field>          
         </div>
-       <div class="col-sm-2" *ngIf="selectedUserRole == 'Manager' && isAdmin">
+       <div class="col-sm-2" *ngIf="selectedUserRole == 'Manager' || isAdmin">
           <mat-form-field appearance="outline" class="w-100" >
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
