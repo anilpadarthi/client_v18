@@ -12,14 +12,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { SalaryTransactionEditorComponent } from '../salary-transaction-editor/salary-transaction-editor.component';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
-
-
 @Component({
   selector: 'app-pay-slip',
   templateUrl: './pay-slip.component.html',
   styleUrl: './pay-slip.component.scss'
 })
-
 
 export class PaySlipComponent implements OnInit {
   selectedMonth: string | null = null;
