@@ -84,6 +84,8 @@ import { AgreementFormEditorComponent } from './components/agreement/agreement-f
 import { ExpensesFormEditorComponent } from './components/expenses/expenses-form-editor/expenses-form-editor.component';
 import { AllocateAreaToAgentComponent } from './components/allocate/allocate-area-to-agent/allocate-area-to-agent.component';
 import { AllocateAgentToManagerComponent } from './components/allocate/allocate-agent-to-manager/allocate-agent-to-manager.component';
+import { AllocateConfirmDialogComponent } from './components/allocate/allocate-confirm-dialog/allocate-confirm-dialog.component';
+import { AllocateAgentConfirmDialogComponent } from './components/allocate/allocate-agent-confirm-dialog/allocate-agent-confirm-dialog.component';
 import { ImeiSearchComponent } from './components/sim/imei-search/imei-search.component';
 import { ConfirmDialogComponent } from './components/common/confirm-dialog/confirm-dialog.component';
 import { FormatHeaderNamePipe } from './custom/format-header-name-pipe';
@@ -208,6 +210,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ExpensesFormEditorComponent,
     AllocateAreaToAgentComponent,
     AllocateAgentToManagerComponent,
+    AllocateConfirmDialogComponent,
+    AllocateAgentConfirmDialogComponent,
     ImeiSearchComponent,
     ConfirmDialogComponent,
     FormatHeaderNamePipe,
@@ -269,7 +273,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SimAllocationDetailsComponent,
     OnFieldBonusDetailsComponent,
     ViewHistoryComponent,
-    OnFieldSimConversionsComponent
+    OnFieldSimConversionsComponent,
   ],
   imports: [
     BrowserModule,

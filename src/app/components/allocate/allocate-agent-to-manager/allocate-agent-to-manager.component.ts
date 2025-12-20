@@ -8,12 +8,14 @@ import { PopupTableComponent } from '../../common/popup-table/popup-table.compon
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
+import { AllocateAgentConfirmDialogComponent } from '../allocate-agent-confirm-dialog/allocate-agent-confirm-dialog.component';
 
 @Component({
   selector: 'app-allocate-agent-to-manager',
   templateUrl: './allocate-agent-to-manager.component.html',
-  styleUrl: './allocate-agent-to-manager.component.scss'
+  styleUrls: ['./allocate-agent-to-manager.component.scss']
 })
+
 
 export class AllocateAgentToManagerComponent implements OnInit {
 
@@ -169,8 +171,22 @@ export class AllocateAgentToManagerComponent implements OnInit {
   }
 
   proceedToAllocate(): void {
-    this.isBackToSelection = false;
-    this.selectedAgentsToTransfer = this.agentList.filter(f => f.selected == true);
+    const selectedAgents = this.agentList.filter(f => f.selected == true);
+    if (!selectedAgents || selectedAgents.length === 0) {
+      this.toasterService.showMessage('Please select at least one agent to allocate.');
+      return;
+    }
+
+    const dialogRef = this.dialog.open(AllocateAgentConfirmDialogComponent, {
+      width: '520px',
+      data: { items: selectedAgents, managerLookup: this.managerLookup, title: 'Confirm Agent Allocation' }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.loadData();
+      }
+    });
   }
 
   viewAllocationHistory(userId: number): void {

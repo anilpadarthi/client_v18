@@ -60,9 +60,8 @@
       <th mat-header-cell *matHeaderCellDef>
       </th>
       <td mat-cell *matCellDef="let element" class="action-link option-list-btn">
-         <button *ngIf="isAdmin" mat-menu-item
-            (click)="hideBonus(element.shopCommissionHistoryId,element.includeWalletBonus)">
-            <mat-icon>edit</mat-icon>
+         <button mat-flat-button color="primary" *ngIf="isAdmin"
+            (click)="hideBonus(element.shopCommissionHistoryId,element.includeWalletBonus)">           
             {{element.includeWalletBonus ? 'Hide Bonus' : 'UnHide Bonus'}}
           </button>
       </td>

@@ -5,14 +5,14 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
-import moment from 'moment';
-import { MatDatepicker } from '@angular/material/datepicker';
+import { AllocateConfirmDialogComponent } from '../allocate-confirm-dialog/allocate-confirm-dialog.component';
+
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-allocate-area-to-agent',
   templateUrl: './allocate-area-to-agent.component.html',
-  styleUrl: './allocate-area-to-agent.component.scss'
+  styleUrls: ['./allocate-area-to-agent.component.scss']
 })
 
 export class AllocateAreaToAgentComponent implements OnInit {
@@ -25,20 +25,14 @@ export class AllocateAreaToAgentComponent implements OnInit {
     'Action'
   ];
 
-  displayedColumns1: string[] = [
-    'areaId',
-    'name'
-  ];
+  
   areaList: any[] = [];
   tempAreaList: any[] = [];
   searchText!: string | null;
   selectedRows: any[] = [];
   selectedAgentId = null;
-  selectedAgentIdForTransfer = null;
   agentLookup: any = [];
-  selectedAreasToTransfer: any = [];
-  selectedMonth: string | null = null;
-  isBackToSelection = true;
+  selectedAreasToTransfer: any = []; 
   userFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
 
@@ -118,9 +112,7 @@ export class AllocateAreaToAgentComponent implements OnInit {
   onReset(): void {
     this.searchText = null;
     this.selectedAgentId = null;
-    this.selectedAgentIdForTransfer = null;
-    this.selectedMonth = null;
-    this.onFilter();
+    this.loadData();
   }
 
   onSearchEntered(value: string): void {
@@ -149,28 +141,25 @@ export class AllocateAreaToAgentComponent implements OnInit {
     }
   }
 
-  backToSelection(): void {
-    this.isBackToSelection = true;
-  }
+  proceedToAllocate(): void {
+    const selectedAreas = this.areaList.filter(f => f.selected == true);
+    if (!selectedAreas || selectedAreas.length === 0) {
+      this.toasterService.showMessage('Please select at least one area to allocate.');
+      return;
+    }
 
-  transferAreas(): void {
-    const requestBody = {
-      agentId: this.selectedAgentIdForTransfer,
-      fromDate: this.selectedMonth,
-      areaIds: this.selectedAreasToTransfer.map((m: any) => m.areaId)
-    };
-
-    this.areaService.allocateAreasToAgent(requestBody).subscribe((res) => {
-      this.isBackToSelection = true;
-      this.loadData();
-      this.toasterService.showMessage("Areas are transfered successfully.");
+    // Open confirmation dialog showing selected areas
+    const dialogRef = this.dialog.open(AllocateConfirmDialogComponent, {
+      data: { items: selectedAreas, agentLookup: this.agentLookup, title: 'Confirm Allocation' }
     });
 
-  }
 
-  proceedToAllocate(): void {
-    this.isBackToSelection = false;
-    this.selectedAreasToTransfer = this.areaList.filter(f => f.selected == true);
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.loadData();
+      }
+    });
+
   }
 
   viewAllocationHistory(areaId: number): void {
@@ -187,16 +176,6 @@ export class AllocateAreaToAgentComponent implements OnInit {
 
 
 
-  // Handle Year Selection (no action needed)
-  chosenYearHandler(normalizedYear: any) {
-    // No action required, just wait for month selection
-  }
-
-  // Handle Month Selection
-  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
-    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
-    this.selectedMonth = formattedMonth + "-01";
-    datepicker.close(); // Close picker after selection
-  }
+  
 
 }

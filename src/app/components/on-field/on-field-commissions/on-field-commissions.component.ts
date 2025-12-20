@@ -23,6 +23,8 @@ export class OnFieldCommissionsComponent implements OnInit {
   isAdmin = false;
   displayedColumns: string[] = [
     'DATE',
+    'ChequeNumber',
+    'OptInType',
     'EE',
     'THREE',
     'O2',

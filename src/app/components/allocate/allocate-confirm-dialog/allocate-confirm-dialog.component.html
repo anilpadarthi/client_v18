@@ -1,0 +1,57 @@
+<h2 mat-dialog-title class="modal-header-title">
+    Area Transfer
+    <button mat-dialog-close class="modal-header-close-btn">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content class="mat-typography" style="max-width: 600px">
+    <div class="m-t-10">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Choose a Month</mat-label>
+            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+            <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+                (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+            </mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Agent which you want to transfer/assign Areas</mat-label>
+            <mat-select [(ngModel)]="selectedAgentIdForTransfer">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let item of agentLookup" [value]="item.id">
+                    <span>{{item.name}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+
+    <div class="row col-lg-12">
+       <h2>Selected Areas</h2>
+    </div>
+    <div class="table-responsive table-max-scroll example-container">
+        <table mat-table [dataSource]="selectedAreas" class="w-100 custom-table">
+            <ng-container matColumnDef="areaId">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.areaId }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>AREA</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.areaName }}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+        </table>
+    </div>
+
+    <div class="row float-right space-between-buttons">
+        <button mat-flat-button color="primary" (click)="backToSelection()">Back</button>
+        <button mat-flat-button color="primary" class="m-l-10" (click)="transferAreas()">Submit</button>
+    </div>
+</mat-dialog-content>

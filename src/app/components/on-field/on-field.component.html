@@ -94,45 +94,57 @@
     <mat-card-content>
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <mat-tab label="Daily Activations">
-          <div class="mat-body-1 rounded m-t-12">
-            <app-on-field-given-vs-activations [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-given-vs-activations>
-            <app-on-field-activations [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-activations>
-            <app-on-field-instant-activations [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-instant-activations>
-            <app-on-field-spam-activations [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-spam-activations>
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-on-field-given-vs-activations [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-given-vs-activations>
+              <app-on-field-activations [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-activations>
+              <app-on-field-instant-activations [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-instant-activations>
+              <app-on-field-spam-activations [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-spam-activations>
+            </div>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Commissions">
-          <div class="mat-body-1 rounded m-t-12">
-            <app-on-field-commissions [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-commissions>
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-on-field-commissions [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-commissions>
+            </div>
+          </ng-template>
         </mat-tab>
          <mat-tab label="Bonus" *ngIf="isAdmin">
-          <div class="mat-body-1 rounded m-t-12">
-            <app-on-field-bonus-details [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-bonus-details>
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-on-field-bonus-details [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-bonus-details>
+            </div>
+          </ng-template>
         </mat-tab>
          <mat-tab label="Wallet">
-          <div class="mat-body-1 rounded m-t-12">
-            <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+            </div>
+          </ng-template>
         </mat-tab>
          <mat-tab label="Conversions">
-          <div class="mat-body-1 rounded m-t-12">
-            <app-on-field-sim-conversions [selectedShopId]="selectedShopId"
-              [refreshValue]="refreshCounter"></app-on-field-sim-conversions>
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-on-field-sim-conversions [selectedShopId]="selectedShopId"
+                [refreshValue]="refreshCounter"></app-on-field-sim-conversions>
+            </div>
+          </ng-template>
         </mat-tab>
          <mat-tab label="ViewHistory"  *ngIf="isAdmin">
-          <div class="mat-body-1 rounded m-t-12">
-           
-          </div>
+          <ng-template matTabContent>
+            <div class="mat-body-1 rounded m-t-12">
+              <app-view-history></app-view-history>
+            </div>
+          </ng-template>
         </mat-tab>       
       </mat-tab-group>
     </mat-card-content>

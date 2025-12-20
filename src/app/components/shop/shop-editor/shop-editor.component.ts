@@ -369,6 +369,11 @@ export class ShopEditorComponent {
   }
 
   sendActivationEmail(): void {
+    if(this.shopForm.value.shopEmail == null || this.shopForm.value.shopEmail == ''){
+      this.toasterService.showMessage("Shop email is required to send activation email.");
+      return;
+    }
+
     this.shopService.sendActivationEmail(this.shopId).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage("Action email has been sent.");

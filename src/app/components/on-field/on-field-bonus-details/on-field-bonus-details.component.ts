@@ -90,6 +90,7 @@ export class OnFieldBonusDetailsComponent implements OnInit {
     this.commissionStatementService.hideBonus(shopCommissionHistoryId, !includeWalletBonus).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage("Successfully hidden.");
+        this.loadData();
       }
       else {
         this.toasterService.showMessage(res.data);

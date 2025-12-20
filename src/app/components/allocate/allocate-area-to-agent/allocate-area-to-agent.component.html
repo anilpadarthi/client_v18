@@ -3,127 +3,81 @@
   <span class="page-title__info"></span>
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
-      <div *ngIf="isBackToSelection">
-        <div class="filter-controls">
-          <div class="row col-lg-12">
-            <mat-form-field appearance="outline">
-              <mat-label>Agent</mat-label>
-              <mat-select [(ngModel)]="selectedAgentId" (selectionChange)="onFilter()">
-                <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
-                  noEntriesFoundLabel="No matching found">
-                </ngx-mat-select-search>
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
-                  <span>{{item.name}}</span>
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Search Area</mat-label>
-              <input matInput #searchInput placeholder="Search Area" [(ngModel)]="searchText"
-                (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-            <button mat-flat-button color="primary" (click)="proceedToAllocate()">Proceed To
-              Allocate</button>
-            <button mat-flat-button color="primary" class="m-l-10" (click)="onReset()">Clear</button>
-          </div>
-        </div>
-
-
-        <div class="table-responsive table-max-scroll example-container">
-          <table mat-table [dataSource]="areaList" class="w-100 custom-table">
-
-            <ng-container matColumnDef="select">
-              <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="selectAll($event)" [checked]="isAllSelected()">
-                </mat-checkbox>
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <mat-checkbox [(ngModel)]="element.selected" (change)="onRowSelect(element)">
-                </mat-checkbox>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="areaId">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.areaId }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>AREA</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.areaName }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="AssingedTo">
-              <th mat-header-cell *matHeaderCellDef>ASIGNED USER</th>
-              <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.assignedTo }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="Action">
-              <th mat-header-cell *matHeaderCellDef>ACTION</th>
-              <td mat-cell *matCellDef="let element" class="f-s-14">
-                <a class="m-r-10 cursor-pointer" (click)="viewAllocationHistory(element.areaId)">
-                  View History
-                </a>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-          </table>
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-lg-3 w-100">
+          <mat-label>Agent</mat-label>
+          <mat-select [(ngModel)]="selectedAgentId" (selectionChange)="onFilter()">
+            <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
+            <mat-option [value]="null">All</mat-option>
+            <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
+              <span>{{item.name}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-lg-3 w-100">
+          <mat-label>Search Area</mat-label>
+          <input matInput #searchInput placeholder="Search Area" [(ngModel)]="searchText"
+            (keyup.enter)="onSearchEntered(searchInput.value)" (change)="onFilter()" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <div class="col-lg-6 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="onReset()">Clear</button>
+          <button mat-flat-button color="primary" (click)="proceedToAllocate()">
+            Proceed To Allocate
+          </button>
         </div>
       </div>
 
-      <div *ngIf="!isBackToSelection">
-        <div class="row col-lg-12">
-          <mat-form-field appearance="outline" class="col-lg-4">
-            <mat-label>Choose a Month</mat-label>
-            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
-            <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
-            <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
-              (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
-            </mat-datepicker>
-          </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4">
-            <mat-label>Select Agent which you want to transfer/assign Areas</mat-label>
-            <mat-select [(ngModel)]="selectedAgentIdForTransfer">
-              <mat-option [value]="null">All</mat-option>
-              <mat-option *ngFor="let item of agentLookup" [value]="item.id">
-                <span>{{item.name}}</span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-flat-button color="primary" (click)="backToSelection()">Back</button>
-          <button mat-flat-button color="primary" class="m-l-10" (click)="transferAreas()">Submit</button>
-        </div>
+      <div class="table-responsive table-max-scroll example-container">
+        <table mat-table [dataSource]="areaList" class="w-100 custom-table">
 
-        <div class="col-lg-12">
-          Selected Areas To Transfer
-        </div>
-        <div class="table-responsive table-max-scroll example-container">
-          <table mat-table [dataSource]="selectedAreasToTransfer" class="w-100 custom-table">
-            <ng-container matColumnDef="areaId">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.areaId }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>AREA</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.areaName }}
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
-          </table>
-        </div>
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="selectAll($event)" [checked]="isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox [(ngModel)]="element.selected" (change)="onRowSelect(element)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="areaId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.areaId }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>AREA</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.areaName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="AssingedTo">
+            <th mat-header-cell *matHeaderCellDef>ASIGNED USER</th>
+            <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.assignedTo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef>ACTION</th>
+            <td mat-cell *matCellDef="let element" class="f-s-14">
+              <a class="m-r-10 cursor-pointer" (click)="viewAllocationHistory(element.areaId)">
+                View History
+              </a>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
       </div>
+
+     
 
     </mat-card-content>
   </mat-card>

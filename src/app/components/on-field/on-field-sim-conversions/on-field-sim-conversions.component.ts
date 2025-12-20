@@ -1,10 +1,7 @@
-
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { OnFieldService } from '../../../services/on-field.service';
 import { DatePipe } from '@angular/common';
-import { WebstorgeService } from '../../../services/web-storage.service';
-import { ToasterService } from '../../../services/toaster.service';
-import { CommissionStatementService } from '../../../services/commissionStatement.service';
+
 
 @Component({
   selector: 'app-on-field-sim-conversions',
@@ -12,71 +9,71 @@ import { CommissionStatementService } from '../../../services/commissionStatemen
   styleUrl: './on-field-sim-conversions.component.scss'
 })
 
-
 export class OnFieldSimConversionsComponent implements OnInit {
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
   private isFirstChange = true;
+  searchText: any;
   isLoading = false;
+
+  givenList: any = [];
   activationList: any = [];
-  userRole = '';
-  isAdmin = false;
-  displayedColumns: string[] = [
-    'DATE',
-    'EE',
-    'THREE',
-    'O2',
-    'LEBARA',
-    'GIFGAFF',
-    'VODAFONE',
-    'VOXI',
-    'SMARTY',
-    'TOTAL',
-    'CommissionAmount',
-    //'BonusAmount',
-    'actions'
-  ];
+  mergedDataSource: any = [];
+  mergedRow:any;
+  dynamicColumns: string[] = [];
+
 
   constructor(
     public datePipe: DatePipe,
-    private onFieldService: OnFieldService,
-    private webstorgeService: WebstorgeService,
-    private toasterService: ToasterService,
-    private commissionStatementService: CommissionStatementService
+    private onFieldService: OnFieldService
   ) { }
 
-  ngOnInit(): void {
-    this.userRole = this.webstorgeService.getUserRole();
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
-      this.isAdmin = true;
-    }
-    if (this.selectedShopId > 0) {
-      this.loadData();
-    }
-  }
 
+  ngOnInit(): void {
+    this.loadData();
+  }
 
   loadData(): void {
     this.isLoading = true;
     const request = {
       shopId: this.selectedShopId,
-      isInstantActivation: false,
+      fromDate: new Date(new Date().setMonth(new Date().getMonth() - 6)),
+      toDate: new Date(),
+      activationType: 'D',
     };
-    this.onFieldService.onFieldCommissionList(request).subscribe((res) => {
+    
+    this.onFieldService.onFieldSimConversionList(request).subscribe((res) => {
       this.isLoading = false;
-      if (res.data) {
-        let result = res.data;
-        if (!this.isAdmin) {
-          result = result.filter((r: any) => r.commissionAmount > 12);
+      if (res.data?.length > 0) {
+        const result = res.data;
+        this.givenList = result[0];
+        this.activationList = result[1];
+        if (this.givenList.length > 0) {
+          this.mergedDataSource = this.givenList.map((givenRow: any, index: any) => {
+            const activatedRow = this.activationList[index];
+            this.mergedRow = { MonthName: givenRow.MonthName };
+            let rowTotalGiven = 0;
+            let rowTotalActivated = 0;
+
+            // Merge "Given" and "Activated" columns for each network
+            Object.keys(givenRow).forEach((key) => {
+              if (key !== 'MonthName' && key !== 'LYCA') {
+                this.mergedRow[`${key}_Given`] = givenRow[key] ?? 0;
+                this.mergedRow[`${key}_Activated`] = activatedRow[key] ?? 0;
+                rowTotalGiven += givenRow[key] ?? 0;
+                rowTotalActivated += activatedRow[key] ?? 0;
+              }
+            });
+            this.mergedRow['TotalGiven'] = rowTotalGiven;
+            this.mergedRow['TotalActivated'] = rowTotalActivated;
+            this.dynamicColumns = Object.keys(this.mergedRow);
+            return this.mergedRow;
+          });          
         }
-        result.forEach((e: any) => {
-          e.total = e.ee + e.three + e.o2 + e.giffgaff + e.lebara + e.vodafone + e.voxi + e.smarty;
-        });
-        this.activationList = result;
       }
     });
-  }
 
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isFirstChange) {
@@ -87,21 +84,6 @@ export class OnFieldSimConversionsComponent implements OnInit {
     if (changes['selectedShopId'] || changes['refreshValue']) {
       this.loadData();
     }
-  }
-
-  hideBonus(shopCommissionHistoryId: number, includeWalletBonus: any): void {
-    this.commissionStatementService.hideBonus(shopCommissionHistoryId, !includeWalletBonus).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Successfully hidden.");
-      }
-      else {
-        this.toasterService.showMessage(res.data);
-      }
-    });
-  }
-
-  downloadCommissionStatement(shopId: number, fromDate: string): void {
-    this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
   }
 
 
