@@ -51,7 +51,7 @@
 
           <ng-container matColumnDef="Date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd/MM/yyyy' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="AreasVisited">
@@ -99,7 +99,8 @@
                   <mat-option value="">-Select-</mat-option>
                   <mat-option value="Full Day">Full Day</mat-option>
                   <mat-option value="Half Day">Half Day</mat-option>
-                  <mat-option value="Leave">Leave</mat-option>
+                  <mat-option value="Paid Leave">Paid Leave</mat-option>
+                  <mat-option value="UnPaid Leave">UnPaid Leave</mat-option>
                 </mat-select>
               </mat-form-field>
             </td>

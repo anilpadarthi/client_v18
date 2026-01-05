@@ -111,6 +111,11 @@ export const AdminItems: NavItem[] = [
         route: 'report/historical/activations',
       },
       {
+        displayName: 'Instant Report',
+        iconName: 'arrow_right',
+        route: 'report/instant-report',
+      },
+      {
         displayName: 'Network Report',
         iconName: 'arrow_right',
         route: 'report/network-report',
@@ -124,12 +129,7 @@ export const AdminItems: NavItem[] = [
         displayName: 'KPI Targets',
         iconName: 'arrow_right',
         route: 'report/kpi-target',
-      },
-      {
-        displayName: 'Commission Statements',
-        iconName: 'arrow_right',
-        route: 'report/commission-statement',
-      },
+      },      
       {
         displayName: 'Area Commissions',
         iconName: 'arrow_right',
@@ -178,6 +178,11 @@ export const AdminItems: NavItem[] = [
         displayName: 'WhatsApp Reports',
         iconName: 'arrow_right',
         route: 'management/whatsapp',
+      },
+      {
+        displayName: 'Commission Statements',
+        iconName: 'arrow_right',
+        route: 'report/commission-statement',
       },
       // {
       //   displayName: 'Agreement Requests',

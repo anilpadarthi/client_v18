@@ -46,6 +46,11 @@ export const ManagerItems: NavItem[] = [
         route: 'report/historical/activations',
       },
       {
+        displayName: 'Instant Report',
+        iconName: 'arrow_right',
+        route: 'report/instant-report',
+      },
+      {
         displayName: 'Daily Reports',
         iconName: 'arrow_right',
         route: 'report/daily-report',

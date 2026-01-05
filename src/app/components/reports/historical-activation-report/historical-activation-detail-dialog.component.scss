@@ -1,0 +1,17 @@
+.detail-container {
+  max-height: 60vh;
+  overflow: auto;
+}
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.detail-table .key {
+  font-weight: 600;
+  padding: 8px 12px;
+  width: 40%;
+  vertical-align: top;
+}
+.detail-table .value {
+  padding: 8px 12px;
+}

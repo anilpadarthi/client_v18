@@ -80,6 +80,14 @@
                         <td mat-cell *matCellDef="let r"> {{r.subCategory?.subCategoryName}} </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="DisplayOrder">
+                        <th mat-header-cell *matHeaderCellDef> DISPLAY ORDER </th>
+                        <td mat-cell *matCellDef="let r">
+                            <input matInput type="number" style="width:50px" [(ngModel)]="r.displayOrder" 
+                            (keydown.enter)="updateDisplayOrder(r)" (blur)="updateDisplayOrder(r)" /> 
+                        </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="Hide">
                         <th mat-header-cell *matHeaderCellDef> Is Active </th>
                         <td mat-cell *matCellDef="let r">
@@ -95,7 +103,7 @@
                     <ng-container matColumnDef="Actions">
                         <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
                         <td mat-cell *matCellDef="let r">
-                            <a class="m-r-10 cursor-pointer" (click)="addoreditclick(r.productId)">
+                            <a class="m-r-10 cursor-pointer" (click)="addoreditclick(r)">
                                 <mat-icon>edit</mat-icon>
                             </a>
                             <a class="m-r-10 cursor-pointer" (click)="deleteclick(r.productId)">

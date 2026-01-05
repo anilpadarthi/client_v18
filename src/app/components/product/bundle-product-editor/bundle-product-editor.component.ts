@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -7,6 +7,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { FormControl } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-bundle-product-editor',
@@ -18,6 +19,8 @@ import { FormControl } from '@angular/forms';
 
 export class BundleProductEditorComponent {
 
+  @ViewChild(MatTable) table!: MatTable<any>;
+  displayedColumns: string[] = ['productId', 'qty', 'actions'];
   productForm: FormGroup;
   productId: any;
   subCategories: any[] = [];
@@ -25,11 +28,13 @@ export class BundleProductEditorComponent {
   mixAndMatchGroups: any[] = [];
   productImagePreview: any = null;
   categoryFilterCtrl: FormControl = new FormControl();
-  mixMatchGroupCtrl: FormControl = new FormControl();
   filteredCategories: any[] = [];
   subCategoryFilterCtrl: FormControl = new FormControl();
   filteredSubCategories: any[] = [];
   filteredMixAndMatchGroups: any[] = [];
+  products: any[] = [];
+  filteredProducts: any[][] = [];
+  productFilterCtrls: FormControl[] = [];
 
   constructor
     (
@@ -47,7 +52,7 @@ export class BundleProductEditorComponent {
       productCode: [null, Validators.required],
       displayOrder: 0,
       isNewArrival: false,
-      isBundle: false,
+      isBundle: true,
       isOutOfStock: false,
       isVatEnabled: false,
       categoryId: [null, Validators.required],
@@ -61,9 +66,10 @@ export class BundleProductEditorComponent {
       commissionToManager: [null, [Validators.required]],
       //colourList: [[]],
       //sizeList: [[]],
-      status: false,
+      status: true,
       productImage: null as File | null,
-      productPrices: this.fb.array([])
+      productPrices: this.fb.array([]),
+      bundleItems: this.fb.array([])
     });
   }
 
@@ -71,8 +77,7 @@ export class BundleProductEditorComponent {
     this.productId = this.route.snapshot.paramMap.get('id');
     this.productImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryLookup();
-    this.getProductDetails();
-    this.getMixAndMatchGroups();
+
     this.categoryFilterCtrl.valueChanges.subscribe(() => {
       this.filterCategories();
     });
@@ -81,8 +86,13 @@ export class BundleProductEditorComponent {
       this.filterSubCategories();
     });
 
-    this.mixMatchGroupCtrl.valueChanges.subscribe(() => {
-      this.filterMixAndMatchGroups();
+    this.lookupService.getProducts().subscribe(res => {
+      this.products = res.data;
+      if (this.productId) {
+        this.getProductDetails();
+      } else {
+        this.addItemRow(); // create mode
+      }
     });
   }
 
@@ -96,13 +106,6 @@ export class BundleProductEditorComponent {
   private filterSubCategories() {
     const search = this.subCategoryFilterCtrl.value?.toLowerCase() || '';
     this.filteredSubCategories = this.subCategories.filter((item: any) =>
-      `${item.name}`.toLowerCase().includes(search)
-    );
-  }
-
-  private filterMixAndMatchGroups() {
-    const search = this.mixMatchGroupCtrl.value?.toLowerCase() || '';
-    this.filteredMixAndMatchGroups = this.mixAndMatchGroups.filter((item: any) =>
       `${item.name}`.toLowerCase().includes(search)
     );
   }
@@ -121,13 +124,6 @@ export class BundleProductEditorComponent {
     });
   }
 
-  getMixAndMatchGroups() {
-    this.lookupService.getMixAndMatchGroups().subscribe((res) => {
-      this.mixAndMatchGroups = res.data;
-      this.filteredMixAndMatchGroups = res.data;
-    });
-  }
-
   onCategoryChange(event: any) {
     if (event.value) {
       this.getSubCategoryLookup(event.value);
@@ -138,18 +134,17 @@ export class BundleProductEditorComponent {
     if (this.productId) {
       this.productService.getProduct(this.productId).subscribe((res) => {
         this.productForm.patchValue(res.data.product);
-        this.productForm.patchValue({
-          commissionToAgent: res.data.productCommission?.commissionToAgent != null
-            ? Number(res.data.productCommission.commissionToAgent)
-            : null,
+        // this.productForm.patchValue({
+        //   commissionToAgent: res.data.productCommission?.commissionToAgent != null
+        //     ? Number(res.data.productCommission.commissionToAgent)
+        //     : null,
 
-          commissionToManager: res.data.productCommission?.commissionToManager != null
-            ? Number(res.data.productCommission.commissionToManager)
-            : null,
+        //   commissionToManager: res.data.productCommission?.commissionToManager != null
+        //     ? Number(res.data.productCommission.commissionToManager)
+        //     : null,
 
-          status: res.data.product?.status
-        });
-        console.log(this.productForm.value);
+        //   status: res.data.product?.status
+        // });
         if (res.data.product?.productImage) {
           this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
         }
@@ -157,6 +152,7 @@ export class BundleProductEditorComponent {
           this.getSubCategoryLookup(res.data.product?.categoryId);
         }
         this.populateProductPrices(res.data.productPrices || []);
+        res.data.bundleItems.forEach((item: any) => this.addItemRow(item));
       });
     }
   }
@@ -195,7 +191,7 @@ export class BundleProductEditorComponent {
       formBody.append('sellingPrice', this.productForm.value.sellingPrice || '');
       formBody.append('isNewArrival', this.productForm.value.isNewArrival ?? false);
       formBody.append('isOutOfStock', this.productForm.value.isOutOfStock ?? false);
-      formBody.append('isBundle', this.productForm.value.isBundle ?? false);
+      formBody.append('isBundle', this.productForm.value.isBundle ?? true);
       formBody.append('categoryId', this.productForm.value.categoryId);
       formBody.append('subCategoryId', this.productForm.value.subCategoryId);
       formBody.append('mixMatchGroupId', this.productForm.value.mixMatchGroupId ?? 0);
@@ -207,13 +203,11 @@ export class BundleProductEditorComponent {
         formBody.append('productImageFile', this.productForm.value.productImage);
       }
 
-      if (this.productForm.value.productPrices && Array.isArray(this.productForm.value.productPrices)) {
-        this.productForm.value.productPrices.forEach((price: any, index: number) => {
-          formBody.append(`productPrices[${index}].fromQty`, price.fromQty);
-          formBody.append(`productPrices[${index}].toQty`, price.toQty);
-          formBody.append(`productPrices[${index}].salePrice`, price.salePrice);
-          formBody.append(`productPrices[${index}].productPriceId`, price.productPriceId != null ? price.productPriceId : 0);
-          formBody.append(`productPrices[${index}].productId`, price.productId != null ? price.productId : 0);
+      if (this.productForm.value.bundleItems && Array.isArray(this.productForm.value.bundleItems)) {
+        this.productForm.value.bundleItems.forEach((item: any, index: number) => {
+          formBody.append(`bundleItems[${index}].productBundleId`, item.productBundleId);
+          formBody.append(`bundleItems[${index}].productId`, item.productId);
+          formBody.append(`bundleItems[${index}].quantity`, item.quantity);
         });
       }
 
@@ -283,6 +277,60 @@ export class BundleProductEditorComponent {
       fromQty: [null, Validators.required],
       toQty: [null, Validators.required],
       salePrice: [null, Validators.required]
+    });
+  }
+
+  get bundleItems(): FormArray {
+    return this.productForm.get('bundleItems') as FormArray;
+  }
+
+  createItemRow(item: any = {}): FormGroup {
+    return this.fb.group({
+      productBundleId: [item.productBundleId || 0],
+      productId: [item.productId || null, Validators.required],
+      quantity: [item.quantity || 0, Validators.required],
+    });
+  }
+
+  addItemRow(item: any = {}) {
+    this.bundleItems.push(this.createItemRow(item));
+
+    const ctrl = new FormControl('');
+    const index = this.bundleItems.length - 1;
+
+    this.productFilterCtrls.push(ctrl);
+    this.filteredProducts[index] = [...this.products];
+
+    ctrl.valueChanges.subscribe((search: any) => {
+      this.filteredProducts[index] = this.filterProducts(search);
+    });
+
+    this.table?.renderRows();
+  }
+
+  removeRow(index: number) {
+    this.bundleItems.removeAt(index);
+    this.productFilterCtrls.splice(index, 1);
+    this.filteredProducts.splice(index, 1);
+    this.table.renderRows();
+  }
+
+  filterProducts(search: string): any[] {
+    if (!search) return this.products;
+
+    search = search.toLowerCase();
+    return this.products.filter(p =>
+      p.name.toLowerCase().includes(search)
+    );
+  }
+
+  onProductSelected(productId: number, index: number) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return;
+
+    const row = this.bundleItems.at(index) as FormGroup;
+    row.patchValue({
+      purchasePrice: product.price
     });
   }
 

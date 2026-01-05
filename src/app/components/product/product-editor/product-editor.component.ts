@@ -58,7 +58,7 @@ export class ProductEditorComponent {
       commissionToManager: [null, [Validators.required]],
       //colourList: [[]],
       //sizeList: [[]],
-      status: false,
+      status: true,
       productImage: null as File | null,
       productPrices: this.fb.array([])
     });

@@ -4,7 +4,7 @@
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
       <div class="row justify-content-between">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <mat-form-field appearance="outline" class="w-100 hide-hint">
             <mat-label>Area</mat-label>
             <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area" (selectionChange)="areaChange()">
@@ -18,7 +18,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <mat-form-field appearance="outline" class="w-100 hide-hint">
             <mat-label>Shop</mat-label>
             <mat-select [(ngModel)]="selectedShopId" placeholder="Select Shop" (selectionChange)="shopChange()">
@@ -32,7 +32,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-lg-4 text-end d-flex align-items-center justify-content-end">
+        <div class="col-lg-6">
           <button mat-flat-button color="primary" (click)="onSubmit()">
             Submit
           </button>
@@ -81,9 +81,20 @@
       </div>
 
 
-      <div *ngIf="outstandingBalanceAmount != null" style="display: inline-flex;">
-        <p>Accessories outstanding balance : </p> &nbsp;
-        <p style="color: red;">  £{{ outstandingBalanceAmount | number : "1.2-2" }} </p>
+      <div class="row">
+        <div *ngIf="outstandingBalanceAmount != null" class="col-lg-9 col-xs-12 text-left">
+          <h4>Accessories outstanding balance : &nbsp; <label style="color: red;">£{{ outstandingBalanceAmount | number
+              : "1.2-2" }}</label></h4>
+        </div>
+        <mat-form-field appearance="outline" class="col-lg-3 col-xs-12 w-100" *ngIf="isAdmin">
+          <mat-label>View History</mat-label>
+          <mat-select [(ngModel)]="selectedYear" (selectionChange)="onSubmit()">
+            <mat-option [value]="0">Recent</mat-option>
+            <mat-option *ngFor="let year of yearList" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </mat-card-content>
   </mat-card>
@@ -96,34 +107,34 @@
         <mat-tab label="Daily Activations">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
-              <app-on-field-given-vs-activations [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-given-vs-activations>
-              <app-on-field-activations [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-activations>
-              <app-on-field-instant-activations [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-instant-activations>
-              <app-on-field-spam-activations [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-spam-activations>
+              <app-on-field-given-vs-activations [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-given-vs-activations>
+              <app-on-field-activations [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-activations>
+              <app-on-field-instant-activations [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-instant-activations>
+              <app-on-field-spam-activations [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-spam-activations>
             </div>
           </ng-template>
         </mat-tab>
         <mat-tab label="Commissions">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
-              <app-on-field-commissions [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-commissions>
+              <app-on-field-commissions [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-commissions>
             </div>
           </ng-template>
         </mat-tab>
-         <mat-tab label="Bonus" *ngIf="isAdmin">
+        <mat-tab label="Bonus" *ngIf="isAdmin">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
-              <app-on-field-bonus-details [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-bonus-details>
+              <app-on-field-bonus-details [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-bonus-details>
             </div>
           </ng-template>
         </mat-tab>
-         <mat-tab label="Wallet">
+        <mat-tab label="Wallet">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
               <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
@@ -131,21 +142,14 @@
             </div>
           </ng-template>
         </mat-tab>
-         <mat-tab label="Conversions">
+        <mat-tab label="Conversions">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
-              <app-on-field-sim-conversions [selectedShopId]="selectedShopId"
-                [refreshValue]="refreshCounter"></app-on-field-sim-conversions>
+              <app-on-field-sim-conversions [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
+                [selectedYear]="selectedYear"></app-on-field-sim-conversions>
             </div>
           </ng-template>
         </mat-tab>
-         <mat-tab label="ViewHistory"  *ngIf="isAdmin">
-          <ng-template matTabContent>
-            <div class="mat-body-1 rounded m-t-12">
-              <app-view-history></app-view-history>
-            </div>
-          </ng-template>
-        </mat-tab>       
       </mat-tab-group>
     </mat-card-content>
   </mat-card>

@@ -142,14 +142,14 @@ export class OrderPaymentEditorComponent {
       }
 
       this.orderService.createPayment(formBody).subscribe((res) => {
-        if (res.statusCode == 201) {
-          this.toasterService.showMessage("Saved successfully.");
-          this.dialogRef.close({ event: 'Cancel' });
+        if (res.statusCode == 200) {
+          this.toasterService.showMessage("Saved successfully.");          
         }
         else {
           this.toasterService.showMessage(res.data);
         }
         this.isLoading = false;
+        this.dialogRef.close({ event: 'Cancel' });
       });
 
     }

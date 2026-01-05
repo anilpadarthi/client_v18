@@ -27,6 +27,8 @@ export class OnFieldComponent implements OnInit {
   shopAddressDetails: any = null;
   areaLookup: any = [];
   shopLookup: any = [];
+  yearList: number[]=[];
+  selectedYear = 0;
   action = '';
   isMainSection = true;
   refreshCounter = 0;
@@ -68,9 +70,19 @@ export class OnFieldComponent implements OnInit {
     this.shopFilterCtrl.valueChanges.subscribe(() => {
       this.filterShops();
     });
+    this.getYears();
   }
 
   ngOnChanges() {
+  }
+
+  getYears(){
+     const currentYear = new Date().getFullYear();
+    const startYear = 2018;
+
+    for (let y = currentYear; y >= startYear; y--) {
+      this.yearList.push(y);
+    }
   }
 
   handleChildBackEvent(response: any): void {

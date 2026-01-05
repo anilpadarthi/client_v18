@@ -53,7 +53,6 @@ export class OrderPaymentHistoryComponent implements OnInit {
 
   collectedByAdmin(orderPaymentId: number): void {
     this.orderService.updatePayment(orderPaymentId).subscribe((res) => {
-      this.dataSource = res.data;
       if (res.statusCode == 200) {
         this.toasterService.showMessage("Updated successfully.");
         this.loadData();
@@ -78,7 +77,6 @@ export class OrderPaymentHistoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirm') {
         this.orderService.deletePayment(orderPaymentId).subscribe((res) => {
-          this.dataSource = res.data;
           if (res.statusCode == 200) {
             this.toasterService.showMessage("Deleted successfully.");
             this.loadData();

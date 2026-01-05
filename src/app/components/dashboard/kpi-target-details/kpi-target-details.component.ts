@@ -15,6 +15,7 @@ export class KpiTargetDetailsComponent implements OnInit {
   @Input() filterType: any;
   @Input() refreshCounter: any;
   activationList: any = [];
+  accessoriesList: any = [];
   private isFirstChange = true;
   isLoading = false;
   displayedColumns: string[] = [
@@ -41,6 +42,7 @@ export class KpiTargetDetailsComponent implements OnInit {
   ngOnInit(): void {
     if (this.selectedDate) {
       this.loadData();
+      //this.loadAccessoriesData();
     }
   }
 
@@ -52,6 +54,7 @@ export class KpiTargetDetailsComponent implements OnInit {
 
     if (changes['selectedDate'] || changes['refreshCounter']) {
       this.loadData();
+      //this.loadAccessoriesData();
     }
   }
 
@@ -69,13 +72,20 @@ export class KpiTargetDetailsComponent implements OnInit {
     });
   }
 
-  getTotal(column: string): any {
-    if (column == 'Id') {
-      return "";
-    }
-    else if (column == 'Name') {
-      return "Total";
-    }
-    return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  
+
+  loadAccessoriesData(): void {
+    this.isLoading = true;
+    const request = {
+      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      filterId: this.filterId,
+      filterType: this.filterType
+    };
+
+    this.dashboardService.getUserWiseAccessoriesKPIReport(request).subscribe((res) => {
+      this.accessoriesList = res.data;
+      this.isLoading = false;
+    });
   }
+
 }

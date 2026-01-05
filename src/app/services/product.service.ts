@@ -45,4 +45,8 @@ export class ProductService {
     return this.http.get<ICommonResponse>(this.url + `/UpdateProductStatus?productId=${productId}&status=${status}`);
   }
 
+  updateDisplayOrder(productId: number, displayOrder: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/UpdateDisplayOrder?productId=${productId}&displayOrder=${displayOrder}`);
+  }
+
 }

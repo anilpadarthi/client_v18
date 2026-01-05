@@ -3,8 +3,8 @@
     <span class="page-title__info"></span>
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
-            <div class="row space-between-buttons">
-                <mat-form-field appearance="outline" class=" col-lg-3 w-100">
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Import File Type</mat-label>
                     <mat-select [(ngModel)]="importFileType">
                         <mat-option value=''>--Select--</mat-option>
@@ -17,23 +17,24 @@
                         <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-3 w-100">
+                <mat-form-field appearance="outline" class="col-lg-3">
                     <mat-label>Date</mat-label>
                     <input matInput [matDatepicker]="datePicker" [(ngModel)]="selectedDate" />
                     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
                 </mat-form-field>
                 <div class="col-lg-6 space-between-buttons">
-                    <div class="d-flex align-items-center m-b-16">
-                        <button mat-flat-button color="primary" class="m-l-16 input-file-button">
-                            <input id="fileUpload" type="file" accept=".xlsx" (change)="onFileChange($event)" />
-                        </button>
-                        <button mat-flat-button color="primary" class="green-btn" (click)="uploadFile()">
-                            <mat-icon>upload</mat-icon> Upload
-                        </button>
-                    </div>
+                    <button mat-flat-button color="primary" class="input-file-button">
+                        <input id="fileUpload" type="file" accept=".xlsx" (change)="onFileChange($event)" />
+                    </button>
+                    <button mat-flat-button color="primary" class="green-btn" (click)="uploadFile()">
+                        <mat-icon>upload</mat-icon> Upload
+                    </button>
+                    <button mat-flat-button color="primary" class="download-btn" *ngIf="importFileType === 'Target'"
+                        (click)="downloadTargetFile()">
+                        <mat-icon>download</mat-icon> Download Targets
+                    </button>
                 </div>
-
             </div>
         </mat-card-content>
     </mat-card>

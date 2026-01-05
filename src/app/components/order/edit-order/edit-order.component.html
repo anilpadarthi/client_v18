@@ -20,8 +20,8 @@
             <span *ngIf="cartItems.length> 0" class="cart-items-count">{{ cartItems.length }}</span>
         </button>
 
-        <button mat-flat-button class="flex-row-button primary-btn" (click)="viewCart()">
-            Checkout
+        <button mat-flat-button color="primary" (click)="viewCart()">
+            Checkout <label style="color: red; font-weight: bold;"> (£{{ netTotal | number: '1.2-2'}}) </label>
         </button>
     </div>
 </mat-toolbar>

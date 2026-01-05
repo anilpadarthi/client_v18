@@ -20,6 +20,7 @@ export class KpiTargetReportComponent implements OnInit {
   bonusAmount = 0;
   managerLookup: any = [];
   kpiTargetList: any = [];
+  accessorieskpiTargetList: any = [];
   isDisplay = false;
   managerFilterCtrl: FormControl = new FormControl();
   filteredManagers: any[] = [];
@@ -74,7 +75,6 @@ export class KpiTargetReportComponent implements OnInit {
   }
 
   loadData(): void {
-
     const requestBody = {
       fromDate: this.selectedMonth,
       filterId: this.selectedManagerId
@@ -95,13 +95,37 @@ export class KpiTargetReportComponent implements OnInit {
 
   }
 
+  loadAccessoriesData(): void {
+    const requestBody = {
+      fromDate: this.selectedMonth,
+      filterId: this.selectedManagerId
+    };
+
+    this.reportService.getAccessoriesKPITargetReport(requestBody).subscribe((res) => {
+      if (res.data?.length > 0) {
+        this.accessorieskpiTargetList = res.data;
+        if (this.accessorieskpiTargetList.length > 0) {
+          this.bonusAmount = this.accessorieskpiTargetList[0].kpI1Bonus;
+          this.calculateAccessoriesSums();
+        }
+      }
+      else {
+        this.accessorieskpiTargetList = [];
+      }
+    });
+
+  }
+
   onFilter(): void {
     this.loadData();
+    //this.loadAccessoriesData();
   }
 
   onClear(): void {
     this.selectedMonth = null;
     this.selectedManagerId = null;
+    this.kpiTargetList = [];
+    this.accessorieskpiTargetList = [];
   }
 
   // Handle Year Selection (no action needed)
@@ -117,6 +141,14 @@ export class KpiTargetReportComponent implements OnInit {
   }
 
   calculateSums() {
+    this.prevTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.lastMonthActivated, 0);
+    this.KPI1TargetTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.kpI1Activations, 0);
+    this.KPI1AchievedTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.achieved, 0);
+    this.achievedPercentageTotal = (this.KPI1AchievedTotal && this.KPI1TargetTotal ? (this.KPI1AchievedTotal / this.KPI1TargetTotal) * 100 : 0).toFixed(2);
+    this.differenceTotal = this.KPI1TargetTotal - this.KPI1AchievedTotal;
+  }
+
+  calculateAccessoriesSums() {
     this.prevTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.lastMonthActivated, 0);
     this.KPI1TargetTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.kpI1Activations, 0);
     this.KPI1AchievedTotal = this.kpiTargetList.reduce((sum: any, item: any) => sum + item.achieved, 0);

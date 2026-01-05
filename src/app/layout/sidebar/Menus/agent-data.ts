@@ -47,6 +47,11 @@ export const AgentItems: NavItem[] = [
         route: 'report/historical/activations',
       },
       {
+        displayName: 'Instant Report',
+        iconName: 'arrow_right',
+        route: 'report/instant-report',
+      },
+      {
         displayName: 'Area Commissions',
         iconName: 'arrow_right',
         route: 'report/area-commissions',

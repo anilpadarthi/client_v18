@@ -16,6 +16,7 @@ export class ProductDetailComponent implements OnInit {
   lowestPrice:any;
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
+  bundleItemColumns:string[] = ['ProductId','Name', 'qty']
 
 
   constructor

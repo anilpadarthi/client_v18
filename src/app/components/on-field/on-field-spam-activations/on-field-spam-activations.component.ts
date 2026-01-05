@@ -11,6 +11,9 @@ import { DatePipe } from '@angular/common';
 export class OnFieldSpamActivationsComponent implements OnInit {
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
+  @Input() selectedYear!: number;
+  fromDate: any;
+  toDate: any;
   private isFirstChange = true;
   isLoading = false;
   activationList: any = [];
@@ -40,10 +43,13 @@ export class OnFieldSpamActivationsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
+    this.getReportFromAndToDates();
     const request = {
       shopId: this.selectedShopId,
       isInstantActivation: false,
       isSpamActivation: true,
+      fromDate: this.fromDate,
+      toDate: this.toDate
     };
     this.onFieldService.onFieldActivationList(request).subscribe((res) => {
       this.isLoading = false;
@@ -63,8 +69,41 @@ export class OnFieldSpamActivationsComponent implements OnInit {
       return; // Skip logic on the first change detection pass
     }
 
-    if (changes['selectedShopId'] || changes['refreshValue']  ) {
+    if (changes['selectedShopId'] || changes['refreshValue']) {
       //this.loadData();
+    }
+  }
+
+  private getReportFromAndToDates(months: number = 6): void {
+
+    if (this.selectedYear === 0) {
+      // Last 6 months logic
+      const currentDate = new Date();
+
+      const fDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - months,
+        1
+      );
+
+      const tDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+
+      this.fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      this.toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
+
+    } else {
+      // Selected year logic
+      const year = this.selectedYear;
+
+      const fromDate = new Date(year, 0, 1);   // Jan 1
+      const toDate = new Date(year, 11, 1);    // Dec 1 (month start)
+
+      this.fromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
+      this.toDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
     }
   }
 

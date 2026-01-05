@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { WebstorgeService } from '../../../services/web-storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HistoricalActivationDetailDialogComponent } from './historical-activation-detail-dialog.component'
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -52,8 +54,10 @@ export class HistoricalActivationReportComponent implements OnInit {
     private reportService: ReportService,
     private lookupService: LookupService,
     private webstorgeService: WebstorgeService,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private dialog: MatDialog
   ) { }
+
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
@@ -225,6 +229,10 @@ export class HistoricalActivationReportComponent implements OnInit {
     datepicker.close(); // Close picker after selection
   }
 
+  openDetails(row: any): void {
+   this.toasterService.showMessage('Comming soon...');
+  }
+
 
   downloadDailyActivationList(): void {
     const requestBody = {
@@ -238,5 +246,7 @@ export class HistoricalActivationReportComponent implements OnInit {
     };
     this.downloadService.downloadActivtionAnalysisReport(requestBody);
   }
+
+  
 
 }

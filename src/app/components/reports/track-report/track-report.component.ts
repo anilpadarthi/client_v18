@@ -82,6 +82,10 @@ export class TrackReportComponent implements OnInit {
     };
 
     this.trackingService.getTrackReport(requestBody).subscribe((res) => {
+      if (res.statusCode != 200) {
+        this.toasterService.showMessage("Something went wrong.");
+        return;
+      }
       if (res.data?.length > 0) {
         this.dataSource = res.data;
       }
@@ -198,10 +202,11 @@ export class TrackReportComponent implements OnInit {
     }
   }
 
-  saveAttendance(): void {
+  saveAttendance(): void {    
+
     const requestBody = this.dataSource.map((item: any) => ({
       userId: item.userId,
-      dateOfAttendance: this.datePipe.transform(item.date, 'yyyy-MM-dd'),
+      dateOfAttendance: cleanDate(this.datePipe.transform(item.date, 'yyyy-MM-dd')),
       attendanceType: item.attendenceType || null,
       comments: item.comments || ''
     }));
@@ -210,7 +215,7 @@ export class TrackReportComponent implements OnInit {
       if (res.statusCode == 200) {
         this.toasterService.showMessage(res.data);
       } else {
-        this.toasterService.showMessage(res.message);
+        this.toasterService.showMessage(res.data);
       }
     });
   }

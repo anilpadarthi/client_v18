@@ -78,4 +78,15 @@ export class BulkUploadComponent {
     if (fileInput) fileInput.value = "";
   }
 
+  downloadTargetFile(): void {
+    if( this.selectedDate == '') {
+      this.toasterService.showMessage('Please select month to download target file.');
+      return;
+    }
+    var requestBody = {
+      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd')
+    }
+    this.bulkUploadService.downloadTargetFile(requestBody);
+  }
+
 }

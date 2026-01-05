@@ -74,7 +74,7 @@ export class PaySlipComponent implements OnInit {
     else if (this.userRole == 'Manager') {
       this.isManager = true;
       this.getAgentLookup();
-      this.selectedUserRole = 'Manager';
+      this.selectedUserRole = 'Agent';
       this.selectedManagerId = this.loggedInUserId;
     }
     else if (this.userRole == 'Agent') {

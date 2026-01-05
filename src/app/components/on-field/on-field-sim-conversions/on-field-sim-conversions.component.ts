@@ -12,6 +12,9 @@ import { DatePipe } from '@angular/common';
 export class OnFieldSimConversionsComponent implements OnInit {
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
+  @Input() selectedYear!: number;
+  fromDate: any;
+  toDate: any;
   private isFirstChange = true;
   searchText: any;
   isLoading = false;
@@ -19,7 +22,7 @@ export class OnFieldSimConversionsComponent implements OnInit {
   givenList: any = [];
   activationList: any = [];
   mergedDataSource: any = [];
-  mergedRow:any;
+  mergedRow: any;
   dynamicColumns: string[] = [];
 
 
@@ -35,13 +38,14 @@ export class OnFieldSimConversionsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
+    this.getReportFromAndToDates();
     const request = {
-      shopId: this.selectedShopId,
-      fromDate: new Date(new Date().setMonth(new Date().getMonth() - 6)),
-      toDate: new Date(),
+      shopId: this.selectedShopId,      
       activationType: 'D',
+      fromDate: this.fromDate,
+      toDate: this.toDate
     };
-    
+
     this.onFieldService.onFieldSimConversionList(request).subscribe((res) => {
       this.isLoading = false;
       if (res.data?.length > 0) {
@@ -68,7 +72,7 @@ export class OnFieldSimConversionsComponent implements OnInit {
             this.mergedRow['TotalActivated'] = rowTotalActivated;
             this.dynamicColumns = Object.keys(this.mergedRow);
             return this.mergedRow;
-          });          
+          });
         }
       }
     });
@@ -83,6 +87,39 @@ export class OnFieldSimConversionsComponent implements OnInit {
 
     if (changes['selectedShopId'] || changes['refreshValue']) {
       this.loadData();
+    }
+  }
+
+  private getReportFromAndToDates(months: number = 6): void {
+
+    if (this.selectedYear === 0) {
+      // Last 6 months logic
+      const currentDate = new Date();
+
+      const fDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - months,
+        1
+      );
+
+      const tDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+
+      this.fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      this.toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
+
+    } else {
+      // Selected year logic
+      const year = this.selectedYear;
+
+      const fromDate = new Date(year, 0, 1);   // Jan 1
+      const toDate = new Date(year, 11, 1);    // Dec 1 (month start)
+
+      this.fromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
+      this.toDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
     }
   }
 

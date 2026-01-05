@@ -45,6 +45,7 @@ import { SupplierListComponent } from './components/supplier/supplier-list/suppl
 import { SupplierEditorComponent } from './components/supplier/supplier-editor/supplier-editor.component';
 import { MonthlyActivationReportComponent } from './components/reports/monthly-activation-report/monthly-activation-report.component';
 import { HistoricalActivationReportComponent } from './components/reports/historical-activation-report/historical-activation-report.component';
+import { HistoricalActivationDetailDialogComponent } from './components/reports/historical-activation-report/historical-activation-detail-dialog.component';
 import { SimAllocationReportComponent } from './components/reports/sim-allocation-report/sim-allocation-report.component';
 import { KpiTargetReportComponent } from './components/reports/kpi-target-report/kpi-target-report.component';
 import { CommissionStatementReportComponent } from './components/reports/commission-statement-report/commission-statement-report.component';
@@ -148,6 +149,8 @@ import { SimAllocationDetailsComponent } from './components/dashboard/sim-alloca
 import { OnFieldBonusDetailsComponent } from './components/on-field/on-field-bonus-details/on-field-bonus-details.component';
 import { ViewHistoryComponent } from './components/on-field/view-history/view-history.component';
 import { OnFieldSimConversionsComponent } from "./components/on-field/on-field-sim-conversions/on-field-sim-conversions.component";
+import { ShopAddressDetailsComponent } from './components/order/shop-address-details/shop-address-details.component';
+import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
@@ -178,6 +181,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SupplierEditorComponent,
     MonthlyActivationReportComponent,
     HistoricalActivationReportComponent,
+    HistoricalActivationDetailDialogComponent,
     SimAllocationReportComponent,
     KpiTargetReportComponent,
     CommissionStatementReportComponent,
@@ -274,6 +278,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     OnFieldBonusDetailsComponent,
     ViewHistoryComponent,
     OnFieldSimConversionsComponent,
+    ShopAddressDetailsComponent,
+    InstantActivationReportComponent
   ],
   imports: [
     BrowserModule,

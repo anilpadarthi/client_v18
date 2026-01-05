@@ -74,6 +74,10 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetKPITargetReport', requestBody);
   }
 
+  getAccessoriesKPITargetReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetAccessoriesKPITargetReport', requestBody);
+  }
+
   getUserReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetUserReport', requestBody);
   }

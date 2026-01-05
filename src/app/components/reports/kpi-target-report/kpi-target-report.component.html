@@ -32,7 +32,7 @@
                 </div>
             </div>
             <p *ngIf="kpiTargetList?.length > 0" class="info-msg">** Accounts are calculated from 26th to 25th **</p>
-            <div *ngIf="kpiTargetList?.length > 0" class="bonus-info">Bonus - {{ bonusAmount | currency:'GBP':true }}
+            <div *ngIf="kpiTargetList?.length > 0" class="bonus-info"> SIM Bonus - {{ bonusAmount | currency:'GBP':true }}
             </div>
             <div *ngIf="kpiTargetList?.length > 0" class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="kpiTargetList" class="w-100 custom-table">
@@ -79,7 +79,57 @@
             </div>
             <div class="zero-records p-b-8" *ngIf="kpiTargetList?.length == 0"><img
                     src="/assets/images/landingpage/background/no-records.svg" />
-                <span>No records found</span>
+                <span>No data found for sims</span>
+            </div>
+
+             <div *ngIf="accessorieskpiTargetList?.length > 0" class="bonus-info"> Accessories Bonus - {{ bonusAmount | currency:'GBP':true }}
+            </div>
+            <div *ngIf="accessorieskpiTargetList?.length > 0" class="table-responsive table-max-scroll example-container">
+                <table mat-table [dataSource]="accessorieskpiTargetList" class="w-100 custom-table">
+                    <ng-container matColumnDef="NAME">
+                        <th mat-header-cell *matHeaderCellDef class="center">Name</th>
+                        <td mat-cell *matCellDef="let element" class="center">
+                            {{ element.name }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef class="center">Total</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="PrevMonth">
+                        <th mat-header-cell *matHeaderCellDef class="center">Last Month Activations.</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.lastMonthActivated }}</td>
+                        <td mat-footer-cell *matFooterCellDef class="center">{{ prevTotal }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="KPI1">
+                        <th mat-header-cell *matHeaderCellDef class="center">KPI1 Target</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.kpI1Activations }}</td>
+                        <td mat-footer-cell *matFooterCellDef class="center">{{ KPI1TargetTotal }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="KPI1Achieved">
+                        <th mat-header-cell *matHeaderCellDef class="center">KPI1 Achieved</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.achieved }}</td>
+                        <td mat-footer-cell *matFooterCellDef class="center">{{ KPI1AchievedTotal }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="AchievedPercentage">
+                        <th mat-header-cell *matHeaderCellDef class="center"> Achieved (%) </th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.achievedPercent + '%'}}</td>
+                        <td mat-footer-cell *matFooterCellDef class="center">{{ achievedPercentageTotal +'%' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Difference">
+                        <th mat-header-cell *matHeaderCellDef class="center">Difference</th>
+                        <td mat-cell *matCellDef="let element" class="center">{{ element.diff1 }}</td>
+                        <td mat-footer-cell *matFooterCellDef class="center">{{ differenceTotal }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                </table>
+            </div>
+            <div class="zero-records p-b-8" *ngIf="kpiTargetList?.length == 0"><img
+                    src="/assets/images/landingpage/background/no-records.svg" />
+                <span>No data found for accessories</span>
             </div>
         </mat-card-content>
     </mat-card>

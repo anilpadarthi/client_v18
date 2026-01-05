@@ -68,7 +68,7 @@ export class OrderDetailsComponent implements OnInit {
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;
       this.orderId = data.orderDetails.orderId;
-      this.statusLookup = data.statusLookup.filter((f: any) => f.name != "PPA" && f.name != "PPM" && f.name != "PPS");
+      this.statusLookup = data.statusLookup;//.filter((f: any) => f.name != "PPA" && f.name != "PPM" && f.name != "PPS");
       this.paymentMethodLookup = data.paymentMethodLookup;//.filter((f:any) => f.name != "Bonus" && f.name != "Monthly Commission")
       this.shippingMethodLookup = data.shippingMethodLookup;
       this.selectedStatusId = data.orderDetails.orderStatusTypeId;

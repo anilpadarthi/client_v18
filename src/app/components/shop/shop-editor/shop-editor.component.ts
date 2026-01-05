@@ -60,6 +60,7 @@ export class ShopEditorComponent {
       password: [''],
       topupSystemId: [''],
       city: [''],
+      shopOwnerName: ['', [Validators.required]],
       shopEmail: ['', [Validators.required, Validators.email]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
@@ -198,6 +199,7 @@ export class ShopEditorComponent {
       formBody.append('shopName', this.shopForm.value.shopName);
       formBody.append('postCode', this.shopForm.value.postCode);
       formBody.append('areaId', this.shopForm.value.areaId);
+       formBody.append('shopOwnerName', this.shopForm.value.shopOwnerName);
       formBody.append('shopEmail', this.shopForm.value.shopEmail);
       formBody.append('shopPhone', this.shopForm.value.shopPhone);
       formBody.append('password', this.shopForm.value.password);

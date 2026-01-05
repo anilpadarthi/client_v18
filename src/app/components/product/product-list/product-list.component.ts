@@ -17,7 +17,7 @@ import { FormControl } from '@angular/forms';
 
 export class ProductListComponent implements OnInit {
 
-  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "Hide", "Actions"];
+  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Hide", "Actions"];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.STANDARD_PAGE_OPTIONS;
   pageNo = 0;
@@ -141,9 +141,14 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  addoreditclick(id: any) {
-    if (id != null) {
-      this.router.navigate(['/product/edit/' + id]);
+  addoreditclick(row: any) {
+    if (row != null) {
+      if (row.isBundle) {
+        this.addoreditBundleclick(row.productId);
+      }
+      else {
+        this.router.navigate(['/product/edit/' + row.productId]);
+      }
     }
     else {
       this.router.navigate(['/product/create']);
@@ -217,6 +222,19 @@ export class ProductListComponent implements OnInit {
             this.toasterService.showMessage(res.message);
           }
         });
+      }
+    });
+  }
+
+  updateDisplayOrder(row: any) {
+    // Call API to update display order in database 
+    this.productService.updateDisplayOrder(row.productId, row.displayOrder).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Display Order updated successfully");
+        this.loadData();
+      }
+      else {
+        this.toasterService.showMessage(res.message);
       }
     });
   }

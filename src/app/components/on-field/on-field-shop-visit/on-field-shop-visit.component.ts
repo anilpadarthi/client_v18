@@ -30,6 +30,7 @@ export class OnFieldShopVisitComponent {
   ) {
     this.capturedImage = '/assets/images/profile/user-1.jpg';
     this.selectedShopId = this.shopAddressDetails?.shopId;
+    this.startCamera();
   }
 
   captureImage() {

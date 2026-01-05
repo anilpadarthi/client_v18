@@ -234,8 +234,8 @@ mat-expansion-panel {
     color: green;
     font-weight: bold;
     font-size: 14px;
-    padding: 1em;
-    border: 0.1px solid #ccc;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 .sticky-table {
@@ -321,11 +321,11 @@ mat-mdc-form-field-required-marker {
 }
 
 .mat-mdc-card-header {
-    padding: 1em 1em 0em 1em !important;
+    padding: 0em !important;
 }
 
 .mat-mdc-card-content {
-    padding: 1em !important;
+    padding: 0em !important;
 }
 
 .rounded-image {

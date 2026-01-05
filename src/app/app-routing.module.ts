@@ -70,6 +70,7 @@ import { StockEntryEditorComponent } from './components/product/stock-entry-edit
 import { RetailerOrderListComponent } from './components/retailer/retailer-order-list/retailer-order-list.component';
 import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
 import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
+import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 
 
 const routes: Routes = [
@@ -133,6 +134,7 @@ const routes: Routes = [
       { path: 'report/track', component: TrackReportComponent },
       { path: 'report/monthly/activations', component: MonthlyActivationReportComponent },
       { path: 'report/historical/activations', component: HistoricalActivationReportComponent },
+      { path: 'report/instant-report', component: InstantActivationReportComponent },
       { path: 'report/network-report', component: NetworkReportComponent },
       { path: 'report/simallocation-report', component: SimAllocationReportComponent },
       { path: 'report/kpi-target', component: KpiTargetReportComponent },

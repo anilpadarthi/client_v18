@@ -1,6 +1,6 @@
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header class="d-flex">
-    <mat-card-title>KPI Targets </mat-card-title>
+    <mat-card-title>KPI Sim Targets </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
@@ -97,6 +97,111 @@
         </tbody>
       </table>
     </div>
+
+  
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow theme-card" *ngIf="!isLoading && accessoriesList?.length > 0">
+  <mat-card-header class="d-flex">
+    <mat-card-title>KPI Accessories Targets </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div> -->
+
+    <div  class="table-responsive table-scroll example-container">
+      <table class="table table-bordered nowrap w-100 custom-table kpi-table mat-table">
+        <tbody>
+          <tr style="background-color: #FF6347;">
+            <td>Name</td>
+            <td> Previous Act.</td>
+            <td> Current Act.</td>
+            <td> KPI Target</td>
+            <td>(%)</td>
+            <td>Act</td>
+            <td>Per Sim</td>
+            <td>Diff</td>
+            <td>TTL Comm</td>
+          </tr>
+          <tr>
+            <td rowspan="4">
+              {{accessoriesList[0].name }}
+            </td>
+            <td rowspan="4">
+              {{accessoriesList[0].prevMonth }}
+            </td>
+            <td rowspan="4">
+              {{accessoriesList[0].currentMonth }}
+            </td>
+            <td rowspan="4">
+              {{accessoriesList[0].target }}
+            </td>
+            <td style="background-color:yellow;"> {{accessoriesList[0].percentage }}
+            </td>
+            <td style="background-color:yellow;"> {{accessoriesList[0].act }}
+            </td>
+            <td style="background-color:yellow;"> £{{accessoriesList[0].rate | number : "1.2-2" }}
+            </td>
+            <td style="background-color:yellow;"> 
+              {{ (accessoriesList[0].act - accessoriesList[0].currentMonth) > 0 ? '' : '+' }}
+              {{ (accessoriesList[0].currentMonth - accessoriesList[0].act) }}
+            </td>
+            <td style="background-color:yellow;"> £{{accessoriesList[0].total | number : "1.2-2" }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:lightgreen;"> {{accessoriesList[1].percentage }}
+            </td>
+            <td style="background-color:lightgreen;"> {{accessoriesList[1].act }}
+            </td>
+            <td style="background-color:lightgreen;"> £{{accessoriesList[1].rate | number : "1.2-2" }}
+            </td>
+            <td style="background-color:lightgreen;">
+              {{ (accessoriesList[1].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (accessoriesList[0].currentMonth - accessoriesList[1].act) }}
+            </td>
+            <td style="background-color:lightgreen;">£{{accessoriesList[1].total | number : "1.2-2" }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:dodgerblue;"> {{accessoriesList[2].percentage }}
+            </td>
+            <td style="background-color:dodgerblue;"> {{accessoriesList[2].act }}
+            </td>
+            <td style="background-color:dodgerblue;"> £{{accessoriesList[2].rate | number : "1.2-2" }}
+            </td>
+            <td style="background-color:dodgerblue;">
+              {{ (accessoriesList[2].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (accessoriesList[0].currentMonth - accessoriesList[2].act) }}
+            </td>
+            <td style="background-color:dodgerblue;"> £{{accessoriesList[2].total | number : "1.2-2" }}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:salmon;"> {{accessoriesList[3].percentage }}
+            </td>
+            <td style="background-color:salmon;"> {{accessoriesList[3].act }}
+            </td>
+            <td style="background-color:salmon;"> £{{accessoriesList[3].rate | number : "1.2-2" }}
+            </td>
+            <td style="background-color:salmon;">
+              {{ (accessoriesList[3].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
+              {{ (accessoriesList[0].currentMonth - accessoriesList[3].act) }}
+            </td>
+            <td style="background-color:salmon;"> £{{accessoriesList[3].total | number : "1.2-2"}}
+            </td>
+            <td style="background-color:salmon;"> £{{accessoriesList[3].bonus | number : "1.2-2"}}
+            </td>
+            <td style="background-color:salmon;"> £{{accessoriesList[3].totalCommission | number : "1.2-2"}}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>  
 
   </mat-card-content>
 </mat-card>

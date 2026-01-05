@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatSidenav } from '@angular/material/sidenav';
+import { ShopAddressDetailsComponent } from '../shop-address-details/shop-address-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-order',
@@ -75,6 +77,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
+    private dialog: MatDialog,
     private orderService: OrderService,
     private lookupService: LookupService,
     private shopService: ShopService,
@@ -201,7 +204,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   private getShopDetails(shopId: number): void {
     this.shopService.getShop(shopId).subscribe((res) => {
       this.shopDetails = res.data.shop;
-      this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}, London, UK`;
+      this.shippingAddress = `${this.shopDetails.addressLine1}, ${res.data.shop.postCode}`;
       this.shopEmail = this.shopDetails.shopEmail;
       this.shopPhone = this.shopDetails.shopPhone;
       this.isLoading = false;
@@ -458,7 +461,20 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   editAddress(): void {
-    this.isEditAddress = true;
+
+    this.shopService.getShop(this.shopId).subscribe((res) => {
+      var data = res.data.shop;
+      var dialResults = this.dialog.open(ShopAddressDetailsComponent, {
+        data
+      });
+
+      dialResults.afterClosed().subscribe(result => {
+        if (result?.updated) {
+          this.isAddressUpdated = true;
+        }        
+      });
+    });
+
   }
 
   cancelAddress(): void {
@@ -466,25 +482,25 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.shippingAddress = this.shopDetails.addressLine1;
   }
 
-  updateAddress(): void {
-    const requestBody = {
-      shopId: this.shopId,
-      address: this.shippingAddress,
-      shopEmail: this.shopEmail,
-      shopPhone: this.shopPhone
-    };
+  // updateAddress(): void {
+  //   const requestBody = {
+  //     shopId: this.shopId,
+  //     address: this.shippingAddress,
+  //     shopEmail: this.shopEmail,
+  //     shopPhone: this.shopPhone
+  //   };
 
-    this.shopService.updateAddress(requestBody).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Address details updated successfully.");
-        this.isAddressUpdated = true;
-        this.isEditAddress = false;
-      }
-      else {
-        this.toasterService.showMessage(res.message);
-      }
-    });
-  }
+  //   this.shopService.updateAddress(requestBody).subscribe((res) => {
+  //     if (res.statusCode == 200) {
+  //       this.toasterService.showMessage("Address details updated successfully.");
+  //       this.isAddressUpdated = true;
+  //       this.isEditAddress = false;
+  //     }
+  //     else {
+  //       this.toasterService.showMessage(res.message);
+  //     }
+  //   });
+  // }
 
   closeWindow() {
     window.close();  // Attempt to close the window/tab
@@ -572,7 +588,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.isCartView = false;
     this.isMainView = true;
     this.isDisplayProductDetails = false;
-    
+
     this.orderService.getProductSearchList(this.seachProduct).subscribe((res) => {
       res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
       this.products = res.data.filter((s: any) => s.isOutOfStock != true);

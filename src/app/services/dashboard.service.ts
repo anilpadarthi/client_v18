@@ -31,6 +31,10 @@ export class DashboardService {
     return this.http.post<any>(this.url + '/GetUserWiseKPIReport', requestBody);
   }
 
+  getUserWiseAccessoriesKPIReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetUserWiseAccessoriesKPIReport', requestBody);
+  }
+
   getSimAllocationReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetSimAllocationReport', requestBody);
   }
@@ -46,6 +50,6 @@ export class DashboardService {
   getDahboardAccessoriesMetrics(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetDahboardAccessoriesMetrics', requestBody);
   }
-  
-  
+
+
 }

@@ -27,14 +27,11 @@
         <button mat-button class="flex-row-button icon-custom" (click)="viewCart()">
             <mat-icon>shopping_cart</mat-icon>
             <span *ngIf="cartItems.length> 0" class="cart-items-count">{{ cartItems.length }}</span>
+            
         </button>
 
         <button mat-flat-button color="primary" class="m-r-10" (click)="viewCart()">
-            Checkout
-        </button>
-
-        <button mat-flat-button color="primary" class="m-r-10" *ngIf="!isMobile" (click)="viewCart()">
-            Cart Amount (£{{ subTotal | number: '1.2-2' }})
+            Checkout <label style="color: red; font-weight: bold;"> (£{{ netTotal | number: '1.2-2'}}) </label>
         </button>
 
         <button mat-flat-button color="primary" class="m-r-10"
@@ -305,7 +302,7 @@
                                 </td>
                             </tr>
 
-                            <tr *ngIf="isEditAddress">
+                            <!-- <tr *ngIf="isEditAddress">
                                 <td colspan="2">
                                     <div class="row address-details">
                                         <mat-form-field appearance="outline" class="w-100">
@@ -321,34 +318,37 @@
                                             <textarea matInput [(ngModel)]="shippingAddress"
                                                 placeholder="Update your address here" rows="3"></textarea>
                                         </mat-form-field>
-                                        <div class="text-right mt-2">
-                                            <button mat-flat-button color="warn" (click)="updateAddress()">Save</button>
-                                        </div>
+
+                                    </div>
+                                    <div class="float-right mt-2">
+                                        <button mat-flat-button color="warn" (click)="updateAddress()">Save</button>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
-                                <td>
-                                    <button mat-flat-button color="warn" class="mr-2" (click)="editAddress()"
-                                        *ngIf="!isEditAddress">Verify Shop</button>
-                                </td>
-                                <td class="float-right">
-                                    <button mat-flat-button color="primary" *ngIf="isAddressUpdated"
-                                        (click)="createOrder()">
-                                        Place Order
-                                    </button>
+                                <td colspan="2">
+                                    <div class="float-right">
+                                        <button mat-flat-button color="warn" class="mr-2" (click)="editAddress()">Verify
+                                            Shop</button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+                <div class="col-lg-12 m-t-12">
+                    <div class=" space-between-buttons">
+                        <button mat-stroked-button color="primary" (click)="continueShopping()">Continue
+                            Shopping</button>
+                        <button mat-flat-button color="primary" *ngIf="isAddressUpdated" (click)="createOrder()">
+                            Place Order
+                        </button>
+                    </div>
 
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-3">
-                <div class="mb-2 mb-sm-0">
-                    <button mat-stroked-button color="primary" (click)="continueShopping()">Continue Shopping</button>
                 </div>
             </div>
+
+
         </div>
 
         <div *ngIf="isDisplayProductDetails">
