@@ -84,7 +84,6 @@ export class UserEditorComponent {
           this.userImagePreview = environment.backend.host + '/' + res.data.user?.userImage;
         }
         this.populateUserDocuments(res.data.userDocuments || []);
-        console.log('Salary Settings:', res.data.userSalarySettings);
         this.populateUserSalarySettings(res.data.userSalarySettings);
       });
     }

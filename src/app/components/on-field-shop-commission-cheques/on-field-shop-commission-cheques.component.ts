@@ -13,7 +13,8 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
 
   displayedColumns: string[] = [
     'CommissionDate',
-    'ChequeNumber',
+    'Type',
+    'ReferenceNumber',
     'Amount',
     'Status',
     'PaidDate',

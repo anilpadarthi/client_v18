@@ -4,7 +4,7 @@
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Select Month</mat-label>
             <input matInput [matDatepicker]="monthPicker" [(ngModel)]="selectedMonth" readonly>
@@ -15,17 +15,17 @@
           </mat-form-field>
         </div>
         <div class="col-sm-2" *ngIf="isAdmin">
-          <mat-form-field appearance="outline" class="w-100" >
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Role</mat-label>
             <mat-select [(ngModel)]="selectedUserRole" (selectionChange)="userRoleChanged()">
               <mat-option value="">-Select-</mat-option>
               <mat-option value="Agent">Agent</mat-option>
               <mat-option value="Manager">Manager</mat-option>
             </mat-select>
-          </mat-form-field>          
+          </mat-form-field>
         </div>
-       <div class="col-sm-2" *ngIf="selectedUserRole == 'Manager' && isAdmin">
-          <mat-form-field appearance="outline" class="w-100" >
+        <div class="col-sm-3" *ngIf="selectedUserRole == 'Manager' && isAdmin">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Manager</mat-label>
             <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
               <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
@@ -38,7 +38,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-2" *ngIf="selectedUserRole == 'Agent' && ( isManager || isAdmin )">
+        <div class="col-sm-3" *ngIf="selectedUserRole == 'Agent' && ( isManager || isAdmin )">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Agent</mat-label>
             <mat-select [(ngModel)]="selectedAgentId" placeholder="Select User">
@@ -52,7 +52,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-6 space-between-buttons">
+        <div class="col-sm-4 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
           <button mat-flat-button color="primary" *ngIf="isAdmin" (click)="addTransaction()">Add Salary</button>
@@ -63,7 +63,12 @@
         <h3>Salary Details</h3>
         <div class="table-responsive table-max-scroll example-container">
           <table mat-table [dataSource]="salaryDetails" class="w-100 custom-table">
-
+            <colgroup>
+              <col style="width: 35%">
+              <col style="width: 20%">
+              <col style="width: 25%">
+              <col style="width: 20%">
+            </colgroup>
             <ng-container matColumnDef="type">
               <th mat-header-cell *matHeaderCellDef>Description</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.description }}</td>
@@ -100,7 +105,10 @@
         <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
-
+            <col style="width: 35%">
+            <col style="width: 20%">
+            <col style="width: 25%">
+            <col style="width: 20%">
             <ng-container matColumnDef="NetworkName">
               <th mat-header-cell *matHeaderCellDef class="center">Network</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.networkName }}</td>
@@ -108,13 +116,13 @@
             </ng-container>
 
             <ng-container matColumnDef="ActivationCount">
-              <th mat-header-cell *matHeaderCellDef class="center">Activations ({{kpi1Target}})</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Activations  (Target - {{kpi1Target}})</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.activationCount }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">{{ totalActivations}}</td>
             </ng-container>
 
             <ng-container matColumnDef="Rate">
-              <th mat-header-cell *matHeaderCellDef class="center">Rate ({{kpi1Percentage | number : "1.2-2"}} %)</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Rate (Achieved - {{kpi1Percentage | number : "1.2-2"}} %)</th>
               <td mat-cell *matCellDef="let element" class="center">£{{ element.rate | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center"></td>
             </ng-container>
@@ -135,9 +143,15 @@
       <div *ngIf="accessoriesCommisssionDetails.length > 0">
         <h3>Accessories Commission Details</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
-
+          <col style="width: 35%">
+          <col style="width: 20%">
+          <col style="width: 25%">
+          <col style="width: 20%">
           <table mat-table [dataSource]="accessoriesCommisssionDetails" class="w-100 custom-table">
-
+            <col style="width: 35%">
+            <col style="width: 20%">
+            <col style="width: 25%">
+            <col style="width: 20%">
             <ng-container matColumnDef="saleType">
               <th mat-header-cell *matHeaderCellDef class="center">Sale Type</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.saleType }}</td>
@@ -145,7 +159,7 @@
             </ng-container>
 
             <ng-container matColumnDef="totalSale">
-              <th mat-header-cell *matHeaderCellDef class="center">Total Sale</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Total Sale ( Target - {{kp1AccesoriesTarget}})</th>
               <td mat-cell *matCellDef="let element" class="center">£{{ element.totalSale | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">£{{ totalSaleAmount | number : "1.2-2" }}</td>
             </ng-container>
@@ -173,7 +187,10 @@
       <div *ngIf="salaryTransactions.length > 0">
         <h3>Payments</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
-
+          <col style="width: 35%">
+          <col style="width: 20%">
+          <col style="width: 25%">
+          <col style="width: 20%">
           <table mat-table [dataSource]="salaryTransactions" class="w-100 custom-table">
 
             <ng-container matColumnDef="type">
@@ -197,11 +214,13 @@
 
             <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef class="center"></th>
-              <td mat-cell *matCellDef="let element" class="center" >
-                <a *ngIf="isAdmin" class="m-r-10 cursor-pointer" (click)="editTransaction(element.userSalaryTransactionID)">
+              <td mat-cell *matCellDef="let element" class="center">
+                <a *ngIf="isAdmin" class="m-r-10 cursor-pointer"
+                  (click)="editTransaction(element.userSalaryTransactionID)">
                   <mat-icon>edit</mat-icon>
                 </a>
-                <a *ngIf="isAdmin" class="m-r-10 cursor-pointer" (click)="deleteTransaction(element.userSalaryTransactionID)">
+                <a *ngIf="isAdmin" class="m-r-10 cursor-pointer"
+                  (click)="deleteTransaction(element.userSalaryTransactionID)">
                   <mat-icon>delete</mat-icon>
                 </a>
               </td>
@@ -214,39 +233,47 @@
         </div>
       </div>
 
-      <div class="col-lg-12 text-center" *ngIf="simCommissionDetails.length > 0">
-        <table class="w-100 m-t-12">
-          <tr>
-            <td class="text-right">Total Salary :</td>
-            <td class="text-right">£{{totalSalary | number : "1.2-2"}}</td>
-          </tr>
-          <tr>
-            <td class="text-right">Total Sim Commission :</td>
-            <td class="text-right">£{{totalSimCommission | number : "1.2-2"}}</td>
-          </tr>
-           <tr>
-            <td class="text-right">Total Sim Bonus :</td>
-            <td class="text-right">£{{totalSimBonus | number : "1.2-2"}}</td>
-          </tr>
-          <tr>
-            <td class="text-right">Total Accessories Commission :</td>
-            <td class="text-right">£{{totalAccessoriesCommission | number : "1.2-2"}}</td>
-          </tr>
-          <tr>
-            <td class="text-right">Grand Total :</td>
-            <td class="text-right">£{{ (totalSalary + totalSimCommission + totalAccessoriesCommission) | number :
-              "1.2-2"}}
-            </td>
-          <tr>
-            <td class="text-right">Salary In Advance :</td>
-            <td class="text-right">£{{totalSalaryInAdvance | number : "1.2-2" }}</td>
-          </tr>
-          <tr>
-            <td class="text-right">Balance Amount :</td>
-            <td class="text-right">£{{ ((totalSalary + totalSimCommission + totalAccessoriesCommission)
-              -totalSalaryInAdvance) | number : "1.2-2" }}</td>
-          </tr>
-        </table>
+      <div class="text-center" *ngIf="simCommissionDetails.length > 0">
+
+        <div class="salary-summary">
+          <div class="summary-row">
+            <span>Total Salary</span>
+            <span>£{{totalSalary | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Total Sim Commission</span>
+            <span>£{{totalSimCommission | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Total Sim Bonus</span>
+            <span>£{{totalSimBonus | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Total Accessories Commission</span>
+            <span>£{{totalAccessoriesCommission | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row highlight">
+            <span>Grand Total</span>
+            <span>£{{(totalSalary + totalSimCommission + totalAccessoriesCommission) | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Salary In Advance</span>
+            <span>£{{totalSalaryInAdvance | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row balance">
+            <span>Balance Amount</span>
+            <span>£{{((totalSalary + totalSimCommission + totalAccessoriesCommission)
+              -totalSalaryInAdvance) | number : "1.2-2"}}</span>
+          </div>
+        </div>
       </div>
 
       <div class="zero-records p-b-8" *ngIf="salaryDetails?.length == 0"><img

@@ -83,6 +83,7 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
 
       { path: 'areas', component: AreaListComponent },
@@ -178,8 +179,7 @@ const routes: Routes = [
       { path: 'retailer/activations', component: ActivationsComponent },
       { path: 'retailer/commissions', component: CommissionStatementsComponent },
       { path: 'retailer/stockvsconnections', component: GivenVsActivationsComponent },
-      { path: 'retailer/sales', component: RetailerOrderListComponent },
-      { path: 'retailer/accessories/create-order', component: CreateOrderComponent },
+      { path: 'retailer/sales', component: RetailerOrderListComponent },      
       { path: 'retailer/sales-manager', component: SalesManagerComponent },
       { path: 'retailer/profile', component: EditProfileComponent },
       { path: 'retailer/changepassword', component: ChangePasswordComponent },
@@ -191,9 +191,8 @@ const routes: Routes = [
   { path: 'accessories/edit-order/:id', component: EditOrderComponent },
   { path: 'accessories/sim-request', component: AgentSimOrderComponent },
   { path: 'accessories/list', component: OpenAccessoriesComponent },
+  { path: 'retailer/accessories/create-order/:id/:type', component: CreateOrderComponent },
 
-
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
   { path: '**', redirectTo: '/login' }
 ];

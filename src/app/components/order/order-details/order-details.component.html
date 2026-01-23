@@ -43,7 +43,7 @@
             Update
         </button>
 
-        <button *ngIf="!isAdmin && !isWareHouseKeeper" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
+        <button *ngIf="this.userRole == 'Agent'" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
             Mark as Delivered
         </button>       
     </div>

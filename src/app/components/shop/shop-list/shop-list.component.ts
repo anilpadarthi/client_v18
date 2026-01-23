@@ -134,7 +134,7 @@ export class ShopListComponent implements OnInit {
 
   handlePageEvent(event: PageEvent): void {
     this.totalCount = event.length;
-    this.pageNo = (this.pageSize === event.pageSize) ? event.pageIndex : 1;
+    this.pageNo = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }

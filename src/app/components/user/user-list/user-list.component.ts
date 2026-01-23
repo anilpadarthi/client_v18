@@ -64,7 +64,7 @@ export class UserListComponent {
     });
   }
 
-   getUserRoleLookup(): void {
+  getUserRoleLookup(): void {
     this.lookupService.getUserRoles().subscribe((res) => {
       this.userRoleLookup = res.data;
     });
@@ -107,7 +107,7 @@ export class UserListComponent {
 
   handlePageEvent(event: PageEvent): void {
     this.totalCount = event.length;
-    this.pageNo = (this.pageSize === event.pageSize) ? event.pageIndex : 1;
+    this.pageNo = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }
@@ -119,6 +119,7 @@ export class UserListComponent {
   onReset(): void {
     this.pageNo = 0;
     this.searchText = null;
+    this.userRoleId = 0;
     this.loadData();
   }
 

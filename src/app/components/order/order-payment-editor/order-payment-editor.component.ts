@@ -92,7 +92,6 @@ export class OrderPaymentEditorComponent {
       if (res.data != null) {
         this.commissionWalletAmount = res.data?.outstandingCommissionAmount;
         this.bonusWalletAmount = res.data?.outstandingBonusAmount;
-        console.log(this.bonusWalletAmount);
       }
       else {
         this.commissionWalletAmount = 0;

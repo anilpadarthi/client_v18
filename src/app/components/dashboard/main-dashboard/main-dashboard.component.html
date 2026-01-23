@@ -136,6 +136,11 @@
     [filterType]="filterType"></app-agent-activations>
 </div>
 
+<div *ngIf="dashboardViewMode == 'Admin' || dashboardViewMode == 'Manager' ">
+  <app-agent-accessories [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
+    [filterType]="filterType"></app-agent-accessories>
+</div>
+
 <div *ngIf="dashboardViewMode == 'Agent'">
   <app-area-activations [selectedDate]="selectedMonth" [filterId]="filterId" [refreshCounter]="refreshCounter"
     [filterType]="filterType"></app-area-activations>

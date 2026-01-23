@@ -32,9 +32,8 @@ export class AuthService {
 
   /** 🔹 Logout */
   logout() {
-    console.log('test');
     localStorage.clear();
-   this.zone.run(() => {
+    this.zone.run(() => {
       this.router.navigate(['/login']);
     });
     // localStorage.removeItem(this.accessTokenKey);
@@ -62,8 +61,19 @@ export class AuthService {
 
   /** 🔹 Token validation (optional simple check) */
   hasValidTokens(): boolean {
-    console.log('valid token');
-    return !!localStorage.getItem(this.accessTokenKey);
+    const token = this.getAccessToken();
+    return !!(token && !this.isTokenExpired(token));
+  }
+
+  /** 🔹 Check if token is expired */
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp;
+      return exp * 1000 < Date.now();
+    } catch (e) {
+      return true; // If can't decode, consider expired
+    }
   }
 
   isLoggedIn$(): Observable<boolean> {

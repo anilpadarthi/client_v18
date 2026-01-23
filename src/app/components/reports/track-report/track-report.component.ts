@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { cleanDate } from '../../../helpers/utils';
 import { FormControl } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-track-report',
@@ -61,11 +62,19 @@ export class TrackReportComponent implements OnInit {
   }
 
   getUserLookup() {
-    this.lookupService.getAgents().subscribe((res) => {
-      this.userLookup = res.data;
-      this.filteredUsers = res.data;
-    });
-  }
+  forkJoin({
+    agents: this.lookupService.getAgents(),
+    managers: this.lookupService.getManagers()
+  }).subscribe(({ agents, managers }) => {
+
+    this.userLookup = [...agents.data, ...managers.data]
+      .sort((a: any, b: any) =>
+        a.name.localeCompare(b.name)
+      );
+
+    this.filteredUsers = [...this.userLookup];
+  });
+}
 
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';

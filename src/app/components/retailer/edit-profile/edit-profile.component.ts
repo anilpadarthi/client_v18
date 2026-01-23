@@ -57,6 +57,7 @@ export class EditProfileComponent {
       topupSystemId: [''],
       city: [''],
       shopEmail: ['', [Validators.required, Validators.email]],
+      shopPhone: ['', [Validators.required]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
       paymentMode: [''],

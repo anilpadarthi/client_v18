@@ -50,7 +50,7 @@ export class AppNavItemComponent implements OnChanges {
 
   onItemSelected(item: NavItem) {
     if (!item.children || !item.children.length) {
-      if (item.target || item.displayName == 'Open Accessories') {
+      if (item.target || item.displayName == 'Open Accessories' || item.route == 'retailer/accessories/create-order') {
         // if(item.route == 'accessories/sim-request'){
         //   let loggedInUserId = this.webstorgeService.getUserInfo().userId;
         //   item.route+=`/${loggedInUserId}`;
@@ -58,6 +58,7 @@ export class AppNavItemComponent implements OnChanges {
         const fullPath = this.router.serializeUrl(
           this.router.createUrlTree([item.route])
         );
+        
         window.open(fullPath, '_blank');
       }
       else {

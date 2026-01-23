@@ -70,7 +70,6 @@ export class InstantActivationReportComponent implements OnInit {
       fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
     };
     this.reportService.getInstantActivationReport(requestBody).subscribe((res) => {
-      console.log(res.data);
       this.resultList = res.data;
       if(this.resultList?.length > 0){
         this.resultList.forEach((e: any) => {

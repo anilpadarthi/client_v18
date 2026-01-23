@@ -27,8 +27,14 @@ export const RetailerItems: NavItem[] = [
     iconName: 'view_list',
     route: 'retailer/sales',
   },
+  {
+    displayName: 'Accessories',
+    iconName: 'arrow_right',
+    route: 'retailer/accessories/create-order',
+    target: '_blank',
+  },
 
-  
+
   {
     displayName: 'Edit Profile',
     iconName: 'edit',

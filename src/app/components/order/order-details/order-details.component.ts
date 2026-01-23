@@ -63,7 +63,7 @@ export class OrderDetailsComponent implements OnInit {
       }
       else if (this.userRole == 'WareHouse') {
         this.isWareHouseKeeper = true;
-      }
+      }     
 
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;

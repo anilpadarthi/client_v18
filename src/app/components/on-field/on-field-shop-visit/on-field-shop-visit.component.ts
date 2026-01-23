@@ -54,7 +54,6 @@ export class OnFieldShopVisitComponent {
         stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { exact: 'environment' } }
         });
-        this.toasterService.showMessage('Rear camera opened.');
       } catch (errFacingMode) {
         // If environment not available, get permission with any camera
         this.toasterService.showMessage('Rear camera not available. Using default camera.');
@@ -126,7 +125,6 @@ export class OnFieldShopVisitComponent {
     if (this.selectedShopId) {
       this.postcodeService.getDistanceBetweenLatAndLong(this.geoLocation.latitude, this.geoLocation.longitude,
         this.shopAddressDetails.latitude, this.shopAddressDetails.longitude).subscribe((res) => {
-          console.log(res);
           if (res.metres < 300) {
             this.proceedToShopVisit();
           }
@@ -174,6 +172,5 @@ export class OnFieldShopVisitComponent {
   ngOnChanges(): void {
     this.selectedShopId = this.shopAddressDetails?.shopId;
   }
-
 
 }

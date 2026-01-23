@@ -1,3 +1,6 @@
+<div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
 <div class="page-title">
     <h1>{{ productId != null ? 'Edit Product Bundle' : 'Create Product Bundle' }}</h1>
     <span class="page-title__info"></span>
@@ -79,7 +82,7 @@
                             <mat-option [value]="1.50">1.5%</mat-option>
                             <mat-option [value]="2.50">2.5%</mat-option>
                         </mat-select>
-                    </mat-form-field>                    
+                    </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-lg-3">
                         <mat-label>Display Order</mat-label>
@@ -113,7 +116,8 @@
             <div class="table-responsive table-max-scroll example-container">
 
                 <!-- INLINE GRID -->
-                <table mat-table [dataSource]="bundleItems.controls" class="w-100 custom-table" formArrayName="bundleItems" #table>
+                <table mat-table [dataSource]="bundleItems.controls" class="w-100 custom-table"
+                    formArrayName="bundleItems" #table>
 
                     <!-- Product -->
                     <ng-container matColumnDef="productId">
@@ -168,7 +172,7 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
                 </table>
-                <div class="zero-records m-b-10">
+                <div class="zero-records m-b-10" *ngIf="bundleItems.controls.length == 0">
                     <span>No records found</span>
                 </div>
             </div>

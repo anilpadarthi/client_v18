@@ -35,6 +35,7 @@ export class BundleProductEditorComponent {
   products: any[] = [];
   filteredProducts: any[][] = [];
   productFilterCtrls: FormControl[] = [];
+  isLoading = false;
 
   constructor
     (
@@ -74,6 +75,7 @@ export class BundleProductEditorComponent {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.productId = this.route.snapshot.paramMap.get('id');
     this.productImagePreview = '/assets/images/profile/user-1.jpg';
     this.getCategoryLookup();
@@ -153,6 +155,7 @@ export class BundleProductEditorComponent {
         }
         this.populateProductPrices(res.data.productPrices || []);
         res.data.bundleItems.forEach((item: any) => this.addItemRow(item));
+        this.isLoading = false;
       });
     }
   }

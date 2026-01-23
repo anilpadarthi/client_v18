@@ -31,6 +31,7 @@ export class KpiTargetDetailsComponent implements OnInit {
     'Bonus',
     'TotalCommission',
   ];
+  bonus = 0.00;
   dataSource: any = null;
 
 
@@ -42,7 +43,7 @@ export class KpiTargetDetailsComponent implements OnInit {
   ngOnInit(): void {
     if (this.selectedDate) {
       this.loadData();
-      //this.loadAccessoriesData();
+      this.loadAccessoriesData();
     }
   }
 
@@ -54,7 +55,7 @@ export class KpiTargetDetailsComponent implements OnInit {
 
     if (changes['selectedDate'] || changes['refreshCounter']) {
       this.loadData();
-      //this.loadAccessoriesData();
+      this.loadAccessoriesData();
     }
   }
 
@@ -69,23 +70,27 @@ export class KpiTargetDetailsComponent implements OnInit {
     this.dashboardService.getUserWiseKPIReport(request).subscribe((res) => {
       this.activationList = res.data;
       this.isLoading = false;
+      this.bonus = this.activationList.length > 0 ? this.activationList[this.activationList.length - 1].bonus : 0;
     });
   }
 
-  
 
   loadAccessoriesData(): void {
-    this.isLoading = true;
-    const request = {
-      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
-      filterId: this.filterId,
-      filterType: this.filterType
-    };
+    const selected = new Date(this.selectedDate);
+    const minDate = new Date('2026-01-01');
+    if (selected >= minDate) {
+      this.isLoading = true;
+      const request = {
+        fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+        filterId: this.filterId,
+        filterType: this.filterType
+      };
 
-    this.dashboardService.getUserWiseAccessoriesKPIReport(request).subscribe((res) => {
-      this.accessoriesList = res.data;
-      this.isLoading = false;
-    });
+      this.dashboardService.getUserWiseAccessoriesKPIReport(request).subscribe((res) => {
+        this.accessoriesList = res.data;
+        this.isLoading = false;
+      });
+    }
   }
 
 }

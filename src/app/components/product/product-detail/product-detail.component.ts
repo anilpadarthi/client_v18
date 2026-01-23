@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { environment } from '../../../../environments/environment';
 
@@ -7,29 +7,24 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnChanges {
   @Input() selectedProduct!: any;
   @Output() notifyParent = new EventEmitter<any>();
-   @Output() backToList = new EventEmitter<void>();
+  @Output() backToList = new EventEmitter<void>();
   quantity = 1;
   hasPriceStructure = false;
-  lowestPrice:any;
+  lowestPrice: any;
+  totalQuantity: number = 0;
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
-  bundleItemColumns:string[] = ['ProductId','Name', 'qty']
+  bundleItemColumns: string[] = ['ProductId', 'Name', 'qty']
 
 
-  constructor
-    (
-      private productService: ProductService,
-    ) {
-  }
-
-
+  constructor(private productService: ProductService) { }
 
   selectImage(img: string) {
   }
- 
+
 
   increaseQuantity() {
     if (this.selectedProduct.qty == undefined || this.selectedProduct.qty == null) {
@@ -44,9 +39,9 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.selectedProduct?.productPrices.length > 1) {
+    if (this.selectedProduct?.productPrices?.length > 1) {
       this.hasPriceStructure = true;
-      this.lowestPrice = Math.min(...this.selectedProduct.productPrices.map((p:any) => p.salePrice));
+      this.lowestPrice = Math.min(...this.selectedProduct.productPrices.map((p: any) => p.salePrice));
     }
 
   }
@@ -56,8 +51,14 @@ export class ProductDetailComponent implements OnInit {
   }
 
 
-  ngOnChanges(): void {
-    this.selectedProduct.qty = null;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.selectedProduct) {
+      this.totalQuantity = this.selectedProduct.bundleItems?.reduce((acc: number, item: any) => acc + (item.quantity ?? 0), 0) || 0;
+    }
+
+    if (this.selectedProduct) {
+      this.selectedProduct.qty = null;
+    }
   }
 
   goBack() {

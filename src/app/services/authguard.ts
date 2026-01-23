@@ -10,7 +10,6 @@ export class AuthGuard {
 
   canActivate(): boolean {
     if (this.authService.hasValidTokens()) {
-      console.log(this.authService.hasValidTokens());
       return true;
     } else {
       this.router.navigate(['/login']);

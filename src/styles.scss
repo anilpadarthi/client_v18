@@ -35,6 +35,10 @@ body {
     color: white !important;
 }
 
+.mat-mdc-paginator-page-size-select{
+    width: 75px !important;
+}
+
 
 .table-responsive {
     border: 1px solid #E2E3E5 !important;
@@ -385,7 +389,7 @@ video {
     text-align: center !important;
     color: #262A2D;
     line-height: var(--mat-card-title-text-line-height, var(--mat-app-title-large-line-height));
-    font-weight: normal;
+    font-weight: bold;
     /* Adds '...' when text is truncated */
 }
 
@@ -670,16 +674,17 @@ html {
             align-items: center;
 
             .icon {
-                width: 57px;
-                height: 57px;
+                width: 45px;
+                height: 45px;
                 border-radius: 100%;
                 border: 1px solid #EF0000;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin: 1em;
 
                 span {
-                    font-size: 30px;
+                    font-size: 24px;
                     color: #EF0000;
                 }
             }
@@ -692,7 +697,7 @@ html {
                     font-size: 22px;
                     font-weight: 600;
                     color: #262A2D;
-                    margin: 10px 0 0;
+                    margin: 5px 0 0;
                 }
 
                 h4 {

@@ -81,7 +81,11 @@ export class AreaCommissionsComponent implements OnInit {
 
     this.commissionStatementService.getAreaCommissionList(requestBody).subscribe((res) => {
       if (res.data?.length > 0) {
-        this.commissionList = res.data;
+         res.data.forEach((e: any) => {
+          e.colourName = !e.optInType ? 'available-bg' : '';
+         });
+         this.commissionList = res.data;
+
       }
       else {
         this.commissionList = [];

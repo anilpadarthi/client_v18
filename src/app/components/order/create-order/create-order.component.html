@@ -27,7 +27,7 @@
         <button mat-button class="flex-row-button icon-custom" (click)="viewCart()">
             <mat-icon>shopping_cart</mat-icon>
             <span *ngIf="cartItems.length> 0" class="cart-items-count">{{ cartItems.length }}</span>
-            
+
         </button>
 
         <button mat-flat-button color="primary" class="m-r-10" (click)="viewCart()">
@@ -95,7 +95,7 @@
             <!-- Categories -->
             <div class="row" *ngIf="isDisplayCatgories">
                 <div class="col-sm-6 col-lg-3">
-                    <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadNewArrivals()">
+                    <mat-card class="productcard overflow-hidden" (click)="loadNewArrivals()">
                         <img src="/assets/images/logos/NewArrivals.jpg" alt="imgSrc" class="w-100 product-image"
                             mat-card-image />
                         <h3 class="product-title">
@@ -104,7 +104,7 @@
                     </mat-card>
                 </div>
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
-                    <mat-card class="cardWithShadow productcard overflow-hidden" (click)="loadSubCategories(item)">
+                    <mat-card class="productcard overflow-hidden" (click)="loadSubCategories(item)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
                         <h3 class="product-title">
                             {{ item.categoryName }}
@@ -115,7 +115,7 @@
             <!-- Sub-Categories -->
             <div class="row" *ngIf="isDisplaySubCatgories">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of subCategories">
-                    <mat-card class="cardWithShadow productcard overflow-hidden"
+                    <mat-card class="productcard overflow-hidden"
                         (click)="loadProducts(item.categoryId, item.subCategoryId)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
                         <h3 class="product-title">
@@ -127,7 +127,7 @@
             <!-- Products -->
             <div class="row" *ngIf="isDisplayProducts">
                 <div class="col-sm-6 col-lg-3" *ngFor="let item of products">
-                    <mat-card class="cardWithShadow productcard overflow-hidden">
+                    <mat-card class="productcard overflow-hidden">
                         <img src="{{ item.productImage }}" alt="imgSrc" class="w-100 product-image" mat-card-image
                             (click)="viewProductDetails(item)" />
                         <h3 class="product-title text-center" title="{{item.productName}}"> {{

@@ -238,10 +238,8 @@ export class HistoricalActivationReportComponent implements OnInit {
     const requestBody = {
       fromDate: this.fromMonth,
       toDate: this.toMonth,
-      areaId: this.selectedAreaId,
-      shopId: this.selectedShopId,
-      userId: this.selectedUserId,
-      managerId: this.selectedManagerId,
+      filterType: this.selectedAreaId ? 'Area' :  this.selectedUserId ? 'User' : this.selectedManagerId ? 'Manager' : 'All',
+      filterId: this.selectedAreaId || this.selectedUserId || this.selectedManagerId || 0,
       isInstantActivation: this.isInstantActivation,
     };
     this.downloadService.downloadActivtionAnalysisReport(requestBody);

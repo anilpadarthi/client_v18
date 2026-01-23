@@ -20,6 +20,7 @@ export class LoginComponent {
   hidePassword = true;
   isMobile = false;
   geoLocation: any;
+  geoLocationPromise: Promise<any> | null = null;
 
 
   constructor(private router: Router,
@@ -53,7 +54,21 @@ export class LoginComponent {
 
   async submit(): Promise<void> {
     //this.toasterService.showMessage(this.geoLocation.latitude + ', ' + this.geoLocation.longitude);
-    console.log(this.geoLocation);
+    // If location not yet available, try to wait for an in-flight request
+    if (this.geoLocation == null) {
+      if (!this.geoLocationPromise) {
+        this.fetchLocation();
+      }
+
+      const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+      try {
+        await Promise.race([this.geoLocationPromise || Promise.resolve(null), wait(5000)]);
+      }
+      catch (e) {
+        // ignore; we'll check geoLocation below
+      }
+    }
+
     if (this.geoLocation != null) {
       if (this.loginForm.valid) {
         var requestBody = {
@@ -66,23 +81,7 @@ export class LoginComponent {
         this.authService.login(requestBody).subscribe({
             next: () => this.router.navigate(['/home']),
             error: err => this.toasterService.showMessage('Login Failed.')
-        });
-
-        // this.loginService.authenticate(requestBody).subscribe((res) => {
-        //   if (res && res.data && res.data.token) {
-        //     this.isValidLogin = true;
-        //     this.webstorgeService.setSession(res.data.token);
-        //     this.webstorgeService.setUserInfo(res.data.userDetails);
-        //     if (res.data.userNotifications != null && res.data.userNotifications.length > 0) {
-        //       this.toasterService.showMessage(res.data.userNotifications[0]);
-        //     }
-        //     this.router.navigate(['/home']);
-        //   }
-        //   else {
-        //     this.isValidLogin = false;
-        //     this.toasterService.showMessage("Invalid username or password");
-        //   }
-        // });
+        });        
       }
     }
     else {
@@ -92,11 +91,12 @@ export class LoginComponent {
 
   fetchLocation(): void {
     if (environment.isGeoLocationTurnOn) {
-      this.geolocationService.getCurrentLocation().then(
-        (position) => {
+      this.geoLocationPromise = this.geolocationService.getCurrentLocation()
+        .then((position) => {
           this.geoLocation = position.coords;
-        },
-        (error) => {
+          return position;
+        })
+        .catch((error) => {
           console.error('Geolocation error:', error);
           switch (error.code) {
             case 1:
@@ -111,8 +111,8 @@ export class LoginComponent {
             default:
               console.error('Unknown error.');
           }
-        }
-      );
+          return null;
+        });
     }
     else {
       this.geoLocation = {
@@ -120,6 +120,10 @@ export class LoginComponent {
         longitude: '17.17'
       };
     }
+  }
+
+  retailerLogin(): void {
+    this.router.navigate(['/retailer/login']);
   }
 
 }

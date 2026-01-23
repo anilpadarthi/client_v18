@@ -44,10 +44,10 @@
 
                   <!-- Same-tab (Angular router) branch -->
                   <ng-template #sameTab>
-                    <a mat-list-item 
-                      [attr.href]="child.target === '_blank' ? child.route : null"
+                    <a mat-list-item [attr.href]="child.target === '_blank' ? child.route : null"
                       [attr.target]="child.target === '_blank' ? '_blank' : null"
-                      [routerLink]="child.target !== '_blank' ? child.route : null" routerLinkActive="active" (click)="onNavItemClick()">
+                      [routerLink]="child.target !== '_blank' ? child.route : null" routerLinkActive="active"
+                      (click)="onNavItemClick()">
                       <mat-icon class="bullet">arrow_right</mat-icon>
                       <span>{{ child.displayName }}</span>
                     </a>
@@ -66,9 +66,16 @@
             </div>
 
             <!-- Single route link -->
-            <ng-template #singleLink>
-              <a mat-list-item [routerLink]="item.route" routerLinkActive="active" (click)="onNavItemClick()">
 
+
+            <ng-template #singleLink>
+              <a *ngIf="item.target === '_blank'" mat-list-item (click)="onItemSelected(item)" target="_blank"
+                rel="noopener noreferrer" class="menu-list-item">
+                <mat-icon class="bullet">arrow_right</mat-icon>
+                <span>{{ item.displayName }}</span>
+              </a>
+              <a *ngIf="item.target != '_blank'" mat-list-item [routerLink]="item.route" routerLinkActive="active"
+                (click)="onNavItemClick()">
                 <mat-icon matListIcon *ngIf="item.iconName" [style.margin-right]="'12px'">{{ item.iconName }}</mat-icon>
                 <span>{{ item.displayName }}</span>
               </a>

@@ -1,3 +1,4 @@
+<div class="col-lg-12 info-msg m-t-10">A bonus of <h3 class="bonus">£ {{bonus}}</h3> will be awarded upon achieving 100% of the target in both sims & accessories.</div>
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header class="d-flex">
     <mat-card-title>KPI Sim Targets </mat-card-title>
@@ -19,7 +20,7 @@
             <td>Act</td>
             <td>Per Sim</td>
             <td>Diff</td>
-            <td>TTL Comm</td>
+            <td>Comm.</td>
           </tr>
           <tr>
             <td rowspan="4">
@@ -40,7 +41,7 @@
             </td>
             <td style="background-color:yellow;"> £{{activationList[0].rate | number : "1.2-2" }}
             </td>
-            <td style="background-color:yellow;"> 
+            <td style="background-color:yellow;">
               {{ (activationList[0].act - activationList[0].currentMonth) > 0 ? '' : '+' }}
               {{ (activationList[0].currentMonth - activationList[0].act) }}
             </td>
@@ -88,18 +89,11 @@
             </td>
             <td style="background-color:salmon;"> £{{activationList[3].total | number : "1.2-2"}}
             </td>
-            <td style="background-color:salmon;"> £{{activationList[3].bonus | number : "1.2-2"}}
-            </td>
-            <td style="background-color:salmon;"> £{{activationList[3].totalCommission | number : "1.2-2"}}
-            </td>
           </tr>
 
         </tbody>
       </table>
     </div>
-
-  
-
   </mat-card-content>
 </mat-card>
 
@@ -112,42 +106,41 @@
       <mat-spinner></mat-spinner>
     </div> -->
 
-    <div  class="table-responsive table-scroll example-container">
+    <div class="table-responsive table-scroll example-container">
       <table class="table table-bordered nowrap w-100 custom-table kpi-table mat-table">
         <tbody>
           <tr style="background-color: #FF6347;">
             <td>Name</td>
-            <td> Previous Act.</td>
-            <td> Current Act.</td>
-            <td> KPI Target</td>
+            <td>Previous Month</td>
+            <td>Current Month</td>
+            <td>KPI Target</td>
             <td>(%)</td>
-            <td>Act</td>
-            <td>Per Sim</td>
+            <td>Acc.</td>
+            <td>Rate</td>
             <td>Diff</td>
-            <td>TTL Comm</td>
+            <td>Comm.</td>
           </tr>
           <tr>
             <td rowspan="4">
               {{accessoriesList[0].name }}
             </td>
             <td rowspan="4">
-              {{accessoriesList[0].prevMonth }}
+              £{{accessoriesList[0].prevMonth | number : "1.2-2" }}
             </td>
             <td rowspan="4">
-              {{accessoriesList[0].currentMonth }}
+              £{{accessoriesList[0].currentMonth | number : "1.2-2" }}
             </td>
             <td rowspan="4">
-              {{accessoriesList[0].target }}
+              £{{accessoriesList[0].target | number : "1.2-2" }}
             </td>
             <td style="background-color:yellow;"> {{accessoriesList[0].percentage }}
             </td>
-            <td style="background-color:yellow;"> {{accessoriesList[0].act }}
+            <td style="background-color:yellow;"> £{{accessoriesList[0].acc | number : "1.2-2" }}
             </td>
-            <td style="background-color:yellow;"> £{{accessoriesList[0].rate | number : "1.2-2" }}
+            <td style="background-color:yellow;"> {{accessoriesList[0].rate }}%
             </td>
-            <td style="background-color:yellow;"> 
-              {{ (accessoriesList[0].act - accessoriesList[0].currentMonth) > 0 ? '' : '+' }}
-              {{ (accessoriesList[0].currentMonth - accessoriesList[0].act) }}
+            <td style="background-color:yellow;">
+              £{{ accessoriesList[0].diff | number : "1.2-2" }}
             </td>
             <td style="background-color:yellow;"> £{{accessoriesList[0].total | number : "1.2-2" }}
             </td>
@@ -155,13 +148,12 @@
           <tr>
             <td style="background-color:lightgreen;"> {{accessoriesList[1].percentage }}
             </td>
-            <td style="background-color:lightgreen;"> {{accessoriesList[1].act }}
+            <td style="background-color:lightgreen;"> £{{accessoriesList[1].acc | number : "1.2-2" }}
             </td>
-            <td style="background-color:lightgreen;"> £{{accessoriesList[1].rate | number : "1.2-2" }}
+            <td style="background-color:lightgreen;"> {{accessoriesList[1].rate }}%
             </td>
             <td style="background-color:lightgreen;">
-              {{ (accessoriesList[1].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
-              {{ (accessoriesList[0].currentMonth - accessoriesList[1].act) }}
+              £{{ accessoriesList[1].diff | number : "1.2-2" }}
             </td>
             <td style="background-color:lightgreen;">£{{accessoriesList[1].total | number : "1.2-2" }}
             </td>
@@ -169,13 +161,12 @@
           <tr>
             <td style="background-color:dodgerblue;"> {{accessoriesList[2].percentage }}
             </td>
-            <td style="background-color:dodgerblue;"> {{accessoriesList[2].act }}
+            <td style="background-color:dodgerblue;"> £{{accessoriesList[2].acc | number : "1.2-2" }}
             </td>
-            <td style="background-color:dodgerblue;"> £{{accessoriesList[2].rate | number : "1.2-2" }}
+            <td style="background-color:dodgerblue;"> {{accessoriesList[2].rate }}%
             </td>
             <td style="background-color:dodgerblue;">
-              {{ (accessoriesList[2].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
-              {{ (accessoriesList[0].currentMonth - accessoriesList[2].act) }}
+              £{{ accessoriesList[2].diff | number : "1.2-2" }}
             </td>
             <td style="background-color:dodgerblue;"> £{{accessoriesList[2].total | number : "1.2-2" }}
             </td>
@@ -183,25 +174,20 @@
           <tr>
             <td style="background-color:salmon;"> {{accessoriesList[3].percentage }}
             </td>
-            <td style="background-color:salmon;"> {{accessoriesList[3].act }}
+            <td style="background-color:salmon;"> £{{accessoriesList[3].acc | number : "1.2-2" }}
             </td>
-            <td style="background-color:salmon;"> £{{accessoriesList[3].rate | number : "1.2-2" }}
+            <td style="background-color:salmon;"> {{accessoriesList[3].rate }}%
             </td>
             <td style="background-color:salmon;">
-              {{ (accessoriesList[3].act - accessoriesList[0].currentMonth) > 0 ? '': '+' }}
-              {{ (accessoriesList[0].currentMonth - accessoriesList[3].act) }}
+              £{{ accessoriesList[3].diff | number : "1.2-2" }}
             </td>
             <td style="background-color:salmon;"> £{{accessoriesList[3].total | number : "1.2-2"}}
-            </td>
-            <td style="background-color:salmon;"> £{{accessoriesList[3].bonus | number : "1.2-2"}}
-            </td>
-            <td style="background-color:salmon;"> £{{accessoriesList[3].totalCommission | number : "1.2-2"}}
             </td>
           </tr>
 
         </tbody>
       </table>
-    </div>  
+    </div>
 
   </mat-card-content>
 </mat-card>

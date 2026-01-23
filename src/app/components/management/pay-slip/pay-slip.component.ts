@@ -40,7 +40,9 @@ export class PaySlipComponent implements OnInit {
   userRole: any;
   loggedInUserId: any;
   kpi1Target = 0;
+  kp1AccesoriesTarget = 0.00;
   kpi1Percentage = 0.00;
+  bonus = 0.00;
   userFilterCtrl: FormControl = new FormControl();
   managerFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
@@ -125,7 +127,7 @@ export class PaySlipComponent implements OnInit {
       const requestBody = {
         fromDate: this.selectedMonth,
         filterType: this.selectedAgentId != 0 ? 'Agent' : 'Manager',
-        filterId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
+        filterId: this.selectedAgentId != 0 ? this.selectedAgentId : this.selectedManagerId,
       };
 
       this.reportService.getSalaryReport(requestBody).subscribe((res) => {
@@ -141,7 +143,9 @@ export class PaySlipComponent implements OnInit {
           this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
           this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
+          //this.kp1AccesoriesTarget = this.accessoriesCommisssionDetails.length > 0 ? this.accessoriesCommisssionDetails[0].kpI1Target : 0.00;
           this.kpi1Percentage = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1AchivedPercentage : 0.00;
+          this.bonus = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].bonus : 0;
         }
       });
     }

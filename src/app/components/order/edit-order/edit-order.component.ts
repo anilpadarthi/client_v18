@@ -1,8 +1,7 @@
 import { Component, HostListener, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
-import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
-import { ShopService } from '../../../services/shop.service';
+import { OnFieldService } from '../../../services/on-field.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -57,8 +56,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private orderService: OrderService,
-    private lookupService: LookupService,
-    private shopService: ShopService,
+    private onFieldService: OnFieldService,
     private toasterService: ToasterService,
     private route: ActivatedRoute,
     private webstorgeService: WebstorgeService,
@@ -257,7 +255,6 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCalculations() {
-    console.log(this.cartItems);
     this.updateSalePrices();
     this.subTotal = 0;
     this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
@@ -326,7 +323,6 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
         isValid = false;
       }
     }
-
     return isValid;
   }
 
@@ -386,6 +382,14 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isDisplayProducts = true;
     this.isMainView = true;
     this.isCartView = false;
+  }
+
+  getBonusAmount(): void {
+    this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
+      if (res.data != null) {
+        this.commissionAmount = res.data?.outstandingBonusAmount;
+      }
+    });
   }
 
 }

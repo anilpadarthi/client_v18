@@ -287,12 +287,33 @@ export class OrderListComponent implements OnInit {
     this.trackNumberSearch = null;
     this.isVat = false;
     this.isShowOutstandingMetrics = false;
+    this.userRole = this.webstorgeService.getUserRole();
+    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+      this.isAdmin = true;
+      //this.loadOutstandingMetrics();
+    }
+    else if (this.userRole == 'Manager') {
+      this.isManager = true;
+      this.selectedManagerId = loggedInUserId;
+    }
+    else if (this.userRole == 'WareHouse') {
+      this.isWareHouseKeeper = true;
+    }
+    else if (this.userRole == 'Retailer') {
+      this.selectedShopId = loggedInUserId;
+      this.shopNameSearch = loggedInUserId.toString();
+    }
+    else {
+      this.selectedAgentId = loggedInUserId;
+    }
     this.loadData();
   }
 
   handlePageEvent(event: PageEvent): void {
     this.totalCount = event.length;
-    this.pageNo = (this.pageSize === event.pageSize) ? event.pageIndex : 1;
+    this.pageNo = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }

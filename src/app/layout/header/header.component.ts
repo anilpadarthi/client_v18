@@ -59,7 +59,6 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    console.log('Logging out');
     this.webstorgeService.clearAll();
     if (this.userRole === 'Retailer') {
       this.router.navigate(['/retailer/login']);

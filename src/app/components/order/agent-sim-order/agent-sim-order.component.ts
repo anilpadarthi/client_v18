@@ -139,7 +139,6 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
   increaseQuantity(item: any) {
-    console.log(item);
     if (item.qty == undefined) {
       item.qty = 1;
     }

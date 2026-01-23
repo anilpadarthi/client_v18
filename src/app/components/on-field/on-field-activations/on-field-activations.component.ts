@@ -80,7 +80,7 @@ export class OnFieldActivationsComponent implements OnInit {
 
   private getReportFromAndToDates(months: number = 6): void {
 
-    if (this.selectedYear === 0) {
+    if (this.selectedYear == null || this.selectedYear === 0) {
       // Last 6 months logic
       const currentDate = new Date();
 

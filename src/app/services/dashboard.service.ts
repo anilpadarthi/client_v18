@@ -27,6 +27,10 @@ export class DashboardService {
     return this.http.post<any>(this.url + '/GetUserWiseActivations', requestBody);
   }
 
+  getUserWiseAccessoriesSales(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetUserWiseAccessoriesSales', requestBody);
+  }
+
   getUserWiseKPIReport(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetUserWiseKPIReport', requestBody);
   }

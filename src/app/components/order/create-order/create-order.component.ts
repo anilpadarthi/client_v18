@@ -139,9 +139,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
         if (res.data != null) {
           this.commissionAmount = res.data?.outstandingCommissionAmount;
-          // if (this.commissionAmount > 0) {
-          //   this.loadAvailableCheques();
-          // }
         }
       });
     }
@@ -175,8 +172,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         });
       });
       this.categories = res.data.categories;
-      //res.data?.products?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
-      //this.totalProducts = res.data.products;
     });
 
     this.lookupService.getOrderPaymentTypes().subscribe((res) => {
@@ -416,6 +411,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   validateOrderAmount(): boolean {
+    debugger;
     let isValid = true;
     if (this.isAdmin) {
       return isValid;

@@ -55,7 +55,6 @@ export class RetailerLoginComponent {
       };
 
       this.authService.retailerLogin(requestBody).subscribe((res) => {
-        console.log(res);
         if (res.statusCode === 200 && res.message === 'Success') {
           this.authService.storeTokens(res);
           this.router.navigate(['/home']);
@@ -66,5 +65,9 @@ export class RetailerLoginComponent {
         }
       });
     }
+  }
+
+   AgentLogin(): void {
+    this.router.navigate(['/login']);
   }
 }
