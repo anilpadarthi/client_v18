@@ -71,6 +71,7 @@ import { RetailerOrderListComponent } from './components/retailer/retailer-order
 import { GivenVsActivationsComponent } from './components/retailer/given-vs-activations/given-vs-activations.component';
 import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
+import { GlobalSearchComponent } from './components/global-search/global-search.component';
 
 
 const routes: Routes = [
@@ -85,6 +86,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
+      { path: 'global-search', component: GlobalSearchComponent },
 
       { path: 'areas', component: AreaListComponent },
       { path: 'area/create', component: AreaEditorComponent },

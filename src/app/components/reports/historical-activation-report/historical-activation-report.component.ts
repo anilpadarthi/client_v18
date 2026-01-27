@@ -46,6 +46,7 @@ export class HistoricalActivationReportComponent implements OnInit {
   managerFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
   filteredManagers: any[] = [];
+  filterView = '';
 
   constructor(
     private datePipe: DatePipe,
@@ -73,6 +74,9 @@ export class HistoricalActivationReportComponent implements OnInit {
       this.isDisplay = true;
       this.getAgentLookup();
       this.selectedManagerId = loggedInUserId;
+    }
+     else if (userRole == 'Agent') {
+      this.selectedUserId = loggedInUserId;
     }
     this.getAreaLookup();
 
@@ -169,6 +173,17 @@ export class HistoricalActivationReportComponent implements OnInit {
         managerId: this.selectedManagerId,
         isInstantActivation: this.isInstantActivation,
       };
+
+      if(this.selectedShopId){
+        this.filterView = 'Shop';
+      }
+      else if(this.selectedAreaId){
+        this.filterView = 'Area';
+      }        
+      else {
+        this.filterView = 'User';
+      }
+
       this.reportService.getMonthlyHistoryActivations(requestBody).subscribe((res) => {
 
         if (res.data?.length > 0) {

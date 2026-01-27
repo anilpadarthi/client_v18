@@ -8,7 +8,6 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { WebstorgeService } from '../../services/web-storage.service';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap, filter, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
 import { AuthService } from '../../services/auth.service';
@@ -32,8 +31,7 @@ export class HeaderComponent {
   loggedInUser: any;
   userRole = '';
   searchControl = new FormControl('');
-  shopLookup = [];
-  filteredItems!: any[];
+  showSearchInput = false;
 
   constructor(
     public dialog: MatDialog,
@@ -47,15 +45,6 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300), // wait for user to stop typing
-      distinctUntilChanged(),
-      filter((value: any) => value && value.trim().length > 3),
-      switchMap(value => this.shopService.globalShopSearch(value))
-    )
-      .subscribe((response: any) => {
-        this.filteredItems = response.data;
-      });
   }
 
   logout(): void {
@@ -68,19 +57,22 @@ export class HeaderComponent {
     }
   }
 
-  onOptionSelected(option: any) {
-    if (option) {
-      //this.searchControl.setValue(option.shopName);
-      // Navigate to detail page (example: /product/1)
-      this.router.navigate(['/onfield', option.areaId, option.shopId]);
-      this.searchControl.setValue('');
-      //this.filteredItems = [];
+  onSearchEnter(event: any) {
+    const searchValue = this.searchControl.value?.trim();
+    if (searchValue) {
+      this.router.navigate(['/global-search'], { queryParams: { q: searchValue } });
+      
+      if (!this.showToggle) {
+        this.showSearchInput = false;
+      }
     }
   }
 
   clearSearch() {
     this.searchControl.setValue('');
-    this.filteredItems = [];   // optional: hide dropdown
+    if (!this.showToggle) {
+      this.showSearchInput = false;
+    }
   }
 
 }

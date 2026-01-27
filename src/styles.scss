@@ -114,6 +114,14 @@ body {
     .center {
         text-align: center;
     }
+    .left {
+        text-align: left;
+    }
+
+    .action-link{
+        cursor: pointer;
+        color: #ff6161 !important;
+    }
 
     .no-wrap-column {
         white-space: normal !important;

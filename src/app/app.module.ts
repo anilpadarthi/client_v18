@@ -151,8 +151,7 @@ import { ViewHistoryComponent } from './components/on-field/view-history/view-hi
 import { OnFieldSimConversionsComponent } from "./components/on-field/on-field-sim-conversions/on-field-sim-conversions.component";
 import { ShopAddressDetailsComponent } from './components/order/shop-address-details/shop-address-details.component';
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
-import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';
-
+import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';import { GlobalSearchComponent } from './components/global-search/global-search.component';
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -281,7 +280,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     OnFieldSimConversionsComponent,
     ShopAddressDetailsComponent,
     InstantActivationReportComponent,
-    AgentAccessoriesComponent
+    AgentAccessoriesComponent,
+    GlobalSearchComponent
   ],
   imports: [
     BrowserModule,

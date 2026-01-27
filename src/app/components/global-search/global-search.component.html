@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <h4>Search Results for: "{{ searchQuery }}"</h4>
+
+    <div class="table-responsive table-max-scroll example-container">
+        <table class="w-100 custom-table" *ngIf="searchResults.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th class="left">Shop Name</th>
+                    <th class="left">Post Code</th>
+                    <th class="left">Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let element of searchResults" class="action-link" (click)="onRowClick(element)">
+                    <td>{{element.oldShopId}}</td>
+                    <td>{{element.shopName}}</td>
+                    <td>{{element.postCode}}</td>
+                    <td>{{element.addressLine1}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p *ngIf="searchResults.length === 0 && searchQuery">No results found for "{{ searchQuery }}"</p>
+    </div>
+</div>

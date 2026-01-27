@@ -1,3 +1,4 @@
+<div>
 <mat-toolbar class="topbar" [style.display]="'flex'" [style.align-items]="'center'" [style.padding]="'0 16px'">
   <!-- Menu and Search Section -->
   <div class="d-flex align-items-center" [style.gap]="'8px'">
@@ -17,19 +18,22 @@
     </button>
     }
 
-    <!-- Search Form -->
-    <mat-form-field class="custom-search d-none-xs" *ngIf="userRole != 'Retailer'"
+    <!-- Mobile Search Icon -->
+    @if(!showToggle && !showSearchInput) {
+    <button mat-icon-button (click)="showSearchInput = true" class="d-flex justify-content-center" 
+      [style.margin-right]="'8px'">
+      <mat-icon>search</mat-icon>
+    </button>
+    }
+
+    <!-- Search Form - Desktop -->
+    <mat-form-field class="custom-search" *ngIf="userRole != 'Retailer' && showToggle"
     [style.margin-left]="'12px'" [style.flex-grow]="'1'" [style.max-width]="'300px'">
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Search" [matAutocomplete]="auto" [formControl]="searchControl">
+      <input matInput placeholder="Search here" [formControl]="searchControl" (keydown.enter)="onSearchEnter($event)">
       <button *ngIf="searchControl.value" mat-icon-button matSuffix (click)="clearSearch()">
         <mat-icon>close</mat-icon>
       </button>
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let item of filteredItems" [value]="item" (click)="onOptionSelected(item)">
-          <span>{{ item.oldShopId }} - {{ item.shopName }}</span>
-        </mat-option>
-      </mat-autocomplete>
     </mat-form-field>
   </div>
 
@@ -87,3 +91,15 @@
     </mat-menu>
   </div>
 </mat-toolbar>
+
+<!-- Mobile Search Div -->
+<div *ngIf="!showToggle && showSearchInput" class="mobile-search-div" [style.padding]="'8px 16px'" [style.background-color]="'#fff'" [style.border-bottom]="'1px solid #e0e0e0'">
+  <mat-form-field class="custom-search w-100" *ngIf="userRole != 'Retailer'">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Search here" [formControl]="searchControl" (keydown.enter)="onSearchEnter($event)">
+    <button mat-icon-button matSuffix (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+</div>
