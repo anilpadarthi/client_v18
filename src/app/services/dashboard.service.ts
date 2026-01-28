@@ -47,6 +47,10 @@ export class DashboardService {
     return this.http.post<any>(this.url + '/GetNetworkWiseActivations', requestBody);
   }
 
+    getNetworkWiseInstantActivations(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetNetworkWiseInstantActivations', requestBody);
+  }
+
   getAreaWiseActivations(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetAreaWiseActivations', requestBody);
   }

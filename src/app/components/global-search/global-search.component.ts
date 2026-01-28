@@ -10,6 +10,7 @@ import { ShopService } from '../../services/shop.service';
 export class GlobalSearchComponent implements OnInit {
   searchQuery: string = '';
   searchResults: any[] = [];
+  displayedColumns: string[] = ['id', 'shopName', 'postCode', 'address'];
 
   constructor(private route: ActivatedRoute, private router: Router, private shopService: ShopService) {}
 

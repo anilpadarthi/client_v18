@@ -1,6 +1,6 @@
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header>
-    <mat-card-title>Network Activations </mat-card-title>
+    <mat-card-title>Daily Network Activations </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
@@ -38,11 +38,47 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="LastActivated">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Last Activated</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.lastActivatedDate | date: 'dd/MM/yyyy' }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+       
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+      </table>
+    </div>
+    <div *ngIf="!isLoading && activationList?.length == 0" class="zero-records p-b-8">
+      <img src="/assets/images/landingpage/background/no-records.svg" />
+      <span>No records found</span>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title>Instant Network Activations </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div> -->
+    <div *ngIf="!isLoading && instantActivationList?.length > 0" class="table-responsive table-max-scroll example-container">
+      <table mat-table [dataSource]="instantActivationList" class="w-100 custom-table">
+        <ng-container matColumnDef="Network">
+          <th mat-header-cell *matHeaderCellDef>Network</th>
+          <td mat-cell *matCellDef="let element"> {{ element.networkCode }} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+
         <ng-container matColumnDef="InstantActivations">
           <th mat-header-cell *matHeaderCellDef class="text-center">Instant Act.</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.instantActivations }}</td>
           <td mat-footer-cell *matFooterCellDef class="text-center">
-            {{ getTotal('instantActivations') }}
+            {{ getInstantTotal('instantActivations') }}
           </td>
         </ng-container>
 
@@ -52,20 +88,14 @@
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
-        <ng-container matColumnDef="Total">
-          <th mat-header-cell *matHeaderCellDef class="text-center">Total</th>
-          <td mat-cell *matCellDef="let element" class="text-center">{{ element.total }}</td>
-          <td mat-footer-cell *matFooterCellDef class="text-center">
-            {{ getTotal('total') }}
-          </td>
-        </ng-container>
+       
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedInstantColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedInstantColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedInstantColumns; sticky: true"></tr>
       </table>
     </div>
-    <div *ngIf="!isLoading && activationList?.length == 0" class="zero-records p-b-8">
+    <div *ngIf="!isLoading && instantActivationList?.length == 0" class="zero-records p-b-8">
       <img src="/assets/images/landingpage/background/no-records.svg" />
       <span>No records found</span>
     </div>

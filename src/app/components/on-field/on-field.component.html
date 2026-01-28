@@ -64,6 +64,10 @@
               <mat-icon>arrow_right</mat-icon>
               Order History
             </button>
+             <button mat-menu-item (click)="onVATOrderHistory('OrderList')">
+              <mat-icon>arrow_right</mat-icon>
+              VAT Orders
+            </button>
             <button mat-menu-item (click)="openShopCommissionChequeListModel()">
               <mat-icon>arrow_right</mat-icon>
               Cheque History
@@ -176,6 +180,6 @@
   </div>
   <div *ngIf="action == 'OrderList'">
     <app-on-field-shop-order-list [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
-      (notifyParent)="handleChildBackEvent($event)"></app-on-field-shop-order-list>
+      (notifyParent)="handleChildBackEvent($event)" [canSendVAT]="canSendVAT"></app-on-field-shop-order-list>
   </div>
 </div>

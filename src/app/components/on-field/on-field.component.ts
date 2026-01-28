@@ -42,6 +42,7 @@ export class OnFieldComponent implements OnInit {
   outstandingBalanceAmount = 0;
   userRole = '';
   isAdmin = false;
+  canSendVAT = 'no';
 
   constructor(
     private route: ActivatedRoute,
@@ -214,6 +215,11 @@ export class OnFieldComponent implements OnInit {
         });
       });
     }
+  }
+
+  onVATOrderHistory(type: any) {
+    this.canSendVAT = 'yes';
+    this.onActionClicked(type);
   }
 
 

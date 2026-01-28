@@ -14,6 +14,7 @@ export class NetworkActivationsComponent implements OnInit {
   @Input() filterType: any;
   @Input() refreshCounter: any;
   activationList: any = [];
+  instantActivationList: any = [];
   private isFirstChange = true;
   isLoading = false;
   displayedColumns: string[] = [
@@ -21,9 +22,13 @@ export class NetworkActivationsComponent implements OnInit {
     'PreviousActivations',
     'DailyActivations',
     'IncreaseDailyActivations',
+    'LastActivated'
+  ];
+
+  displayedInstantColumns: string[] = [
+    'Network',
     'InstantActivations',
-    'LastActivated',
-    'Total'
+    'LastActivated'
   ];
 
   constructor(
@@ -34,6 +39,7 @@ export class NetworkActivationsComponent implements OnInit {
   ngOnInit(): void {
     if (this.selectedDate != null) {
       this.loadData();
+      this.loadInstantData();
     }
   }
 
@@ -45,6 +51,7 @@ export class NetworkActivationsComponent implements OnInit {
   
       if (changes['selectedDate'] || changes['refreshCounter']) {
         this.loadData();
+        this.loadInstantData();
       }
     }
 
@@ -70,6 +77,30 @@ export class NetworkActivationsComponent implements OnInit {
       return "Total";
     }
     return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
+
+  getInstantTotal(column: string): any {
+    if (column == 'Id') {
+      return "";
+    }
+    else if (column == 'Name') {
+      return "Total";
+    }
+    return this.instantActivationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
+
+  loadInstantData(): void {
+    this.isLoading = true;
+    const requestBody = {
+      fromDate: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      filterId: this.filterId,
+      filterType: this.filterType
+    };
+
+    this.dashboardService.getNetworkWiseInstantActivations(requestBody).subscribe((res) => {
+      this.instantActivationList = res.data;
+      this.isLoading = false;
+    });
   }
 
 }

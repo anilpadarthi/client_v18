@@ -53,7 +53,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   products: any[] = [];
   totalProducts: any[] = [];
   paymentMethodLookup: any[] = [];
-  selectedPaymentMethodId = null;
+  selectedPaymentMethodId: any;
   shopId: any = null;
   shopCommissionId: any = null;
   shippingAddress: any = null;
@@ -128,8 +128,12 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.requestType = this.route.snapshot.paramMap.get('type');
     this.userRole = this.webstorgeService.getUserRole();
+    
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.isAdmin = true;
+    }
+    else if(this.userRole == 'Retailer') {
+      this.selectedPaymentMethodId = 1;
     }
     this.isLoading = true;
     if (this.requestType == 'COD') {

@@ -1,26 +1,36 @@
 <div class="container-fluid">
     <h4>Search Results for: "{{ searchQuery }}"</h4>
 
-    <div class="table-responsive table-max-scroll example-container">
-        <table class="w-100 custom-table" *ngIf="searchResults.length > 0">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th class="left">Shop Name</th>
-                    <th class="left">Post Code</th>
-                    <th class="left">Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let element of searchResults" class="action-link" (click)="onRowClick(element)">
-                    <td>{{element.oldShopId}}</td>
-                    <td>{{element.shopName}}</td>
-                    <td>{{element.postCode}}</td>
-                    <td>{{element.addressLine1}}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="table-container" *ngIf="searchResults.length > 0">
+        <table mat-table [dataSource]="searchResults" class="custom-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">{{element.oldShopId}}</td>
+            </ng-container>
 
-        <p *ngIf="searchResults.length === 0 && searchQuery">No results found for "{{ searchQuery }}"</p>
+            <!-- Shop Name Column -->
+            <ng-container matColumnDef="shopName">
+                <th mat-header-cell *matHeaderCellDef>Shop Name</th>
+                <td mat-cell *matCellDef="let element">{{element.shopName}}</td>
+            </ng-container>
+
+            <!-- Post Code Column -->
+            <ng-container matColumnDef="postCode">
+                <th mat-header-cell *matHeaderCellDef>Post Code</th>
+                <td mat-cell *matCellDef="let element">{{element.postCode}}</td>
+            </ng-container>
+
+            <!-- Address Column -->
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let element">{{element.addressLine1}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="action-link" (click)="onRowClick(row)"></tr>
+        </table>
     </div>
+
+    <p *ngIf="searchResults.length === 0 && searchQuery" class="no-results">No results found for "{{ searchQuery }}"</p>
 </div>

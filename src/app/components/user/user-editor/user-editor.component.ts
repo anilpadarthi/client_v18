@@ -53,6 +53,7 @@ export class UserEditorComponent {
       address: ['', [Validators.required]],
       userRoleId: [null, [Validators.required]],
       designation: ['', [Validators.required]],
+      nickName: ['', [Validators.required]],
       locality: [''],
       isMcomAccess: false,
       isLeapAccess: true,
@@ -134,6 +135,7 @@ export class UserEditorComponent {
       formBody.append('address', this.userForm.value.address);
       formBody.append('locality', this.userForm.value.locality);
       formBody.append('designation', this.userForm.value.designation);
+      formBody.append('nickName', this.userForm.value.nickName);
       formBody.append('userRoleId', this.userForm.value.userRoleId?.toString());
       formBody.append('isMcomAccess', this.userForm.value.isMcomAccess);
       formBody.append('isLeapAccess', this.userForm.value.isLeapAccess);

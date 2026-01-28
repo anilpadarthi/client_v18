@@ -293,7 +293,7 @@
                                 <td colspan="2">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Payment Method</mat-label>
-                                        <mat-select [(ngModel)]="selectedPaymentMethodId">
+                                        <mat-select [(ngModel)]="selectedPaymentMethodId" disabled="userRole == 'Retailer'">
                                             <mat-option [value]="null">All</mat-option>
                                             <mat-option *ngFor="let subCategory of paymentMethodLookup"
                                                 [value]="subCategory.id">{{subCategory.name}}</mat-option>

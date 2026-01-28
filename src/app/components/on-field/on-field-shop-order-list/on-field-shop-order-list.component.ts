@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, Input,Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -49,7 +49,9 @@ export class OnFieldShopOrderListComponent implements OnInit {
   selectedPaymentMethodId = null;
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
+  @Input() canSendVAT!: any;
   @Output() notifyParent = new EventEmitter<any>();
+
   selectedShippingMethodId = null;
   orderNumberSearch = null;
   trackNumberSearch = null;
@@ -67,12 +69,13 @@ export class OnFieldShopOrderListComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
 
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.hasVATInvoiceAccess = true;
     }
+    
     this.loadData();
     this.loadDropDowns();
   }
@@ -212,7 +215,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
   }
 
   sendEmail(orderId: number): void {
-    this.orderService.sendInvoice(orderId,true).subscribe((res) => {
+    this.orderService.sendInvoice(orderId, true).subscribe((res) => {
       if (res.statusCode == 200) {
         this.toasterService.showMessage('Email sent successfully.');
       }
@@ -266,7 +269,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
       }
     });
   }
-markCCA(orderId: any): void {
+  markCCA(orderId: any): void {
     this.updateOrder(orderId, 13);
   }
 
@@ -277,7 +280,7 @@ markCCA(orderId: any): void {
   updateOrder(orderId: any, orderStatusId: number): void {
     const requestBody = {
       OrderId: orderId,
-      OrderStatusId: orderStatusId,      
+      OrderStatusId: orderStatusId,
     };
 
     this.orderService.updateStatus(requestBody).subscribe((res) => {

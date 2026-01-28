@@ -58,8 +58,13 @@
                     <th mat-header-cell *matHeaderCellDef>
                     </th>
                     <td mat-cell *matCellDef="let element" class="action-link option-list-btn">
-                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                            *ngIf="canSendVAT !== 'yes'">
                             <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <button *ngIf="canSendVAT == 'yes'" mat-menu-item (click)="sendEmail(element.orderId)">
+                            <mat-icon>mail</mat-icon>
+                            Send Email
                         </button>
                         <mat-menu #menu="matMenu">
                             <button *ngIf="element.orderStatusId == 1" mat-menu-item
@@ -71,14 +76,14 @@
                                 <mat-icon>visibility</mat-icon>
                                 Order Details
                             </button>
-                             <button *ngIf="userRole == 'Agent'" mat-menu-item (click)="markCCA(element.orderId)">
-                                    <mat-icon>currency_pound</mat-icon>
-                                    CCA
-                                </button>
-                                <button *ngIf="userRole == 'Manager'" mat-menu-item (click)="markCCM(element.orderId)">
-                                    <mat-icon>currency_pound</mat-icon>
-                                    CCM
-                                </button>
+                            <button *ngIf="userRole == 'Agent'" mat-menu-item (click)="markCCA(element.orderId)">
+                                <mat-icon>currency_pound</mat-icon>
+                                CCA
+                            </button>
+                            <button *ngIf="userRole == 'Manager'" mat-menu-item (click)="markCCM(element.orderId)">
+                                <mat-icon>currency_pound</mat-icon>
+                                CCM
+                            </button>
                             <button mat-menu-item (click)="orderHistory(element.orderId)">
                                 <mat-icon>history</mat-icon>
                                 Order History
@@ -94,10 +99,7 @@
                             <button mat-menu-item (click)="downloadNonVAT(element.orderId)">
                                 <mat-icon>description</mat-icon>Delivery Note
                             </button>
-                            <button *ngIf="hasVATInvoiceAccess"  mat-menu-item (click)="downloadVAT(element.orderId)">
-                                <mat-icon>download</mat-icon>VAT Invoice
-                            </button>
-                            <button *ngIf="hasVATInvoiceAccess"  mat-menu-item (click)="sendEmail(element.orderId)">
+                            <button *ngIf="hasVATInvoiceAccess" mat-menu-item (click)="sendEmail(element.orderId)">
                                 <mat-icon>mail</mat-icon>
                                 Send Email
                             </button>
@@ -125,7 +127,7 @@
                 <ng-container matColumnDef="shop">
                     <th mat-header-cell *matHeaderCellDef>Shop</th>
                     <td mat-cell *matCellDef="let element">
-                         {{element.oldShopId}} - {{ element.shopName }} 
+                        {{element.oldShopId}} - {{ element.shopName }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="expected">
@@ -160,8 +162,7 @@
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                    [ngClass]="row.colourName"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="row.colourName"></tr>
             </table>
         </div>
         <div *ngIf="orderList.length > 0">
