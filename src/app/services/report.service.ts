@@ -86,6 +86,9 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetSupplierReport', requestBody);
   }
 
+  getMonthlyInstantActivationDetails(date: string, userId: any): Observable<any> {
+    return this.http.get<any>(this.url + `/GetMonthlyInstantActivationDetails?date='${date}'&userId=${userId}`);
+  }
 
 
   getSimAllocationReport(requestBody: any): Observable<any> {

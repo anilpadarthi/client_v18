@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -23,7 +25,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   selectedShopId = null;
   selectedUserId = null;
   selectedManagerId = null;
-  selectedMonth: string | null = null;
+  selectedMonth: any = null;
   isInstantActivation = false;
   totalCount = 0;
   areaLookup: any = [];
@@ -32,6 +34,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   managerLookup: any = [];
   activationList: any = [];
   allItem: any = [{ 'id:': null, 'name': 'All' }];
+  instantView = false;
 
   eeSum: number = 0;
   threeSum: number = 0;
@@ -74,7 +77,8 @@ export class MonthlyActivationReportComponent implements OnInit {
     private lookupService: LookupService,
     private webstorgeService: WebstorgeService,
     private toasterService: ToasterService,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -185,6 +189,7 @@ export class MonthlyActivationReportComponent implements OnInit {
         managerId: this.selectedManagerId,
         isInstantActivation: this.isInstantActivation,
       };
+      this.instantView = this.isInstantActivation;
       this.reportService.getMonthlyActivations(requestBody).subscribe((res) => {
         if (res.data?.length > 0) {
           let result = res.data;
@@ -249,14 +254,29 @@ export class MonthlyActivationReportComponent implements OnInit {
 
   downloadDailyActivationList(): void {
     const requestBody = {
-        fromDate: this.selectedMonth,
-        areaId: this.selectedAreaId,
-        shopId: this.selectedShopId,
-        userId: this.selectedUserId,
-        managerId: this.selectedManagerId,
-        isInstantActivation: this.isInstantActivation,
-      };
+      fromDate: this.selectedMonth,
+      areaId: this.selectedAreaId,
+      shopId: this.selectedShopId,
+      userId: this.selectedUserId,
+      managerId: this.selectedManagerId,
+      isInstantActivation: this.isInstantActivation,
+    };
     this.downloadService.downloadDailyActivationList(requestBody);
+  }
+
+  openDetails(element: any): void {
+
+    
+    
+    this.reportService.getMonthlyInstantActivationDetails(this.selectedMonth, element.id).subscribe((res) => {
+      var data = {
+        result: res.data,
+        headerName: 'Instant Activation Details'
+      }
+      this.dialog.open(PopupTableComponent, {
+        data
+      });
+    });
   }
 
 }

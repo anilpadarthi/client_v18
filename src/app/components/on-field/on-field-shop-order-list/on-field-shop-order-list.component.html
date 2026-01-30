@@ -4,7 +4,7 @@
     </mat-card-header>
 
     <mat-card-content>
-        <div class="row">
+        <!-- <div class="row">
             <mat-form-field appearance="outline" class="col-lg-2 col-xs-12">
                 <mat-label>Status</mat-label>
                 <mat-select [(ngModel)]="selectedStatusId">
@@ -14,33 +14,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <!-- <mat-form-field appearance="outline" class="col-lg-2 col-xs-12">
-                <mat-label>Payment Method</mat-label>
-                <mat-select [(ngModel)]="selectedPaymentMethodId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let item of paymentMethodLookup" [value]="item.id">
-                        <span>{{item.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="col-lg-2 col-xs-12">
-                <mat-label>Shipping Type</mat-label>
-                <mat-select [(ngModel)]="selectedShippingMethodId">
-                    <mat-option [value]="null">All</mat-option>
-                    <mat-option *ngFor="let item of shippingMethodLookup" [value]="item.id">
-                        <span>{{item.name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Order Number</mat-label>
-                <input matInput placeholder="OrderId" [(ngModel)]="orderNumberSearch" autocomplete="off">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
-                <mat-label>Track Number</mat-label>
-                <input matInput placeholder="Track Number" [(ngModel)]="trackNumberSearch" autocomplete="off">
-            </mat-form-field>            -->
+           
         </div>
         <div class="row col-lg-12 space-between-buttons m-b-10">
             <button mat-flat-button class="bg-primary text-white" (click)="onFilter()">
@@ -50,7 +24,7 @@
             <button mat-flat-button class="bg-error text-white" (mousedown)="onClear()">
                 <mat-icon>clear_all</mat-icon> Clear
             </button>
-        </div>
+        </div> -->
 
         <div *ngIf="orderList.length > 0" class="table-responsive table-scroll example-container">
             <table mat-table [dataSource]="orderList" class="w-100 custom-table">
@@ -64,7 +38,7 @@
                         </button>
                         <button *ngIf="canSendVAT == 'yes'" mat-menu-item (click)="sendEmail(element.orderId)">
                             <mat-icon>mail</mat-icon>
-                            Send Email
+                            VAT Invoice
                         </button>
                         <mat-menu #menu="matMenu">
                             <button *ngIf="element.orderStatusId == 1" mat-menu-item
@@ -101,7 +75,7 @@
                             </button>
                             <button *ngIf="hasVATInvoiceAccess" mat-menu-item (click)="sendEmail(element.orderId)">
                                 <mat-icon>mail</mat-icon>
-                                Send Email
+                                Send VAT Invoice
                             </button>
                         </mat-menu>
                     </td>

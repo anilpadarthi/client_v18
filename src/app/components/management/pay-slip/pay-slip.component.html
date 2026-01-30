@@ -101,7 +101,7 @@
       </div>
 
       <div *ngIf="simCommissionDetails.length > 0">
-        <h3>Sim Commission Details</h3>
+        <h3>Sim Target Commission Details</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
@@ -116,13 +116,14 @@
             </ng-container>
 
             <ng-container matColumnDef="ActivationCount">
-              <th mat-header-cell *matHeaderCellDef class="center">Activations  (Target - {{kpi1Target}})</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Activations (Target - {{kpi1Target}})</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.activationCount }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">{{ totalActivations}}</td>
             </ng-container>
 
             <ng-container matColumnDef="Rate">
-              <th mat-header-cell *matHeaderCellDef class="center">Rate (Achieved - {{kpi1Percentage | number : "1.2-2"}} %)</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Rate (Achieved - {{kpi1Percentage | number :
+                "1.2-2"}} %)</th>
               <td mat-cell *matCellDef="let element" class="center">£{{ element.rate | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center"></td>
             </ng-container>
@@ -131,6 +132,46 @@
               <th mat-header-cell *matHeaderCellDef class="center">Total</th>
               <td mat-cell *matCellDef="let element" class="center">£ {{ element.total | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">£{{ totalSimCommission | number : "1.2-2" }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns1; sticky: true"></tr>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="instantAndVodafoneVoxiList.length > 0">
+        <h3>Instant & Vodafone Voxi Commission</h3>
+        <div class="table-responsive table-max-scroll example-container m-t-12">
+          <table mat-table [dataSource]="instantAndVodafoneVoxiList" class="w-100 custom-table m-t-12">
+            <col style="width: 35%">
+            <col style="width: 20%">
+            <col style="width: 25%">
+            <col style="width: 20%">
+            <ng-container matColumnDef="NetworkName">
+              <th mat-header-cell *matHeaderCellDef class="center">Network</th>
+              <td mat-cell *matCellDef="let element" class="center">{{ element.networkName }}</td>
+              <td mat-footer-cell *matFooterCellDef class="center">Total</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ActivationCount">
+              <th mat-header-cell *matHeaderCellDef class="center">Activations</th>
+              <td mat-cell *matCellDef="let element" class="center">{{ element.activationCount }}</td>
+              <td mat-footer-cell *matFooterCellDef class="center"></td>
+            </ng-container>
+
+            <ng-container matColumnDef="Rate">
+              <th mat-header-cell *matHeaderCellDef class="center">Rate</th>
+              <td mat-cell *matCellDef="let element" class="center">£{{ element.rate | number : "1.2-2" }}</td>
+              <td mat-footer-cell *matFooterCellDef class="center"></td>
+            </ng-container>
+
+            <ng-container matColumnDef="Total">
+              <th mat-header-cell *matHeaderCellDef class="center">Total</th>
+              <td mat-cell *matCellDef="let element" class="center">£ {{ element.total | number : "1.2-2" }}</td>
+              <td mat-footer-cell *matFooterCellDef class="center">£{{ instantAndVodafoneVoxiCommision | number :
+                "1.2-2"
+                }}</td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
@@ -242,8 +283,13 @@
           </div>
 
           <div class="summary-row">
-            <span>Total Sim Commission</span>
+            <span>Total Sim Target Commission</span>
             <span>£{{totalSimCommission | number : "1.2-2"}}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Total Instant & Vodafone Voxi Commission</span>
+            <span>£{{instantAndVodafoneVoxiCommision | number : "1.2-2"}}</span>
           </div>
 
           <div class="summary-row">
@@ -260,7 +306,8 @@
 
           <div class="summary-row highlight">
             <span>Grand Total</span>
-            <span>£{{(totalSalary + totalSimCommission + totalAccessoriesCommission) | number : "1.2-2"}}</span>
+            <span>£{{(totalSalary + totalSimCommission + instantAndVodafoneVoxiCommision +
+              totalAccessoriesCommission) | number : "1.2-2"}}</span>
           </div>
 
           <div class="summary-row">
@@ -270,7 +317,7 @@
 
           <div class="summary-row balance">
             <span>Balance Amount</span>
-            <span>£{{((totalSalary + totalSimCommission + totalAccessoriesCommission)
+            <span>£{{((totalSalary + totalSimCommission + instantAndVodafoneVoxiCommision + totalAccessoriesCommission)
               -totalSalaryInAdvance) | number : "1.2-2"}}</span>
           </div>
         </div>

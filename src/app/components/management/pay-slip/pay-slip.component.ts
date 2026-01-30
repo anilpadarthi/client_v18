@@ -26,6 +26,7 @@ export class PaySlipComponent implements OnInit {
   totalSalary = 0.00;
   totalActivations = 0;
   totalSimCommission = 0.00;
+  instantAndVodafoneVoxiCommision = 0.00;
   totalSimBonus = 0.00;
   totalSaleAmount = 0.00;
   totalAccessoriesCommission = 0.00;
@@ -33,6 +34,7 @@ export class PaySlipComponent implements OnInit {
   managerLookup: any = [];
   accessoriesCommisssionDetails: any = [];
   simCommissionDetails: any = [];
+  instantAndVodafoneVoxiList: any = [];
   salaryDetails: any = [];
   salaryTransactions: any = [];
   isAdmin = false;
@@ -133,12 +135,14 @@ export class PaySlipComponent implements OnInit {
       this.reportService.getSalaryReport(requestBody).subscribe((res) => {
         if (res.data != null) {
           this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
+          this.instantAndVodafoneVoxiList = res.data.instantAndVodafoneVoxiList;
           this.accessoriesCommisssionDetails = res.data.salaryAccessoriesCommissionDetailsModel;
           this.salaryDetails = res.data.salaryDetailsModel;
           this.salaryTransactions = res.data.salaryTransactions;
           this.totalSalary = this.salaryDetails.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalActivations = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.activationCount, 0);
           this.totalSimCommission = this.simCommissionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
+          this.instantAndVodafoneVoxiCommision = this.instantAndVodafoneVoxiList.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.totalSale, 0);
           this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);

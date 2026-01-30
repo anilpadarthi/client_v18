@@ -73,13 +73,12 @@
         </div>
       </div>
       <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
+
       <div *ngIf="activationList?.length > 0" class="table-responsive table-max-scroll example-container">
 
         <table mat-table [dataSource]="activationList" class="custom-table mat-elevation-z8">
-
           <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
             [sticky]="stickyColumns.includes(column)">
-
             <th mat-header-cell *matHeaderCellDef
               [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
               {{ column }}
