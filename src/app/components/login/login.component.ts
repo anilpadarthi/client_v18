@@ -79,9 +79,23 @@ export class LoginComponent {
         };
 
         this.authService.login(requestBody).subscribe({
-            next: () => this.router.navigate(['/home']),
-            error: err => this.toasterService.showMessage('Login Failed.')
-        });        
+          next: (response: any) => {
+            // Consider API's status fields
+            this.authService.storeTokens(response);
+            this.router.navigate(['/home']);
+          },
+          error: (err) => {
+            // Network / CORS errors typically have status === 0
+            if (err && err.status === 0) {
+              this.toasterService.showMessage('Service is down');
+              return;
+            }
+
+            // Prefer structured API error message when available
+            const apiMessage = err?.error;
+            this.toasterService.showMessage(apiMessage);
+          }
+        });
       }
     }
     else {

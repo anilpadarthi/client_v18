@@ -217,8 +217,8 @@ export class OnFieldComponent implements OnInit {
     }
   }
 
-  onVATOrderHistory(type: any) {
-    this.canSendVAT = 'yes';
+  onOrderHistory(type: any, canSendVAT: any) {
+    this.canSendVAT = canSendVAT;
     this.onActionClicked(type);
   }
 

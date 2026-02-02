@@ -189,24 +189,20 @@ const routes: Routes = [
 
     ],
   },
-  { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent },
-  { path: 'accessories/edit-order/:id', component: EditOrderComponent },
-  { path: 'accessories/sim-request', component: AgentSimOrderComponent },
-  { path: 'accessories/list', component: OpenAccessoriesComponent },
-  { path: 'retailer/accessories/create-order/:id/:type', component: CreateOrderComponent },
+
+  { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent, canActivate: [AuthGuard], },
+  { path: 'accessories/edit-order/:id', component: EditOrderComponent, canActivate: [AuthGuard], },
+  { path: 'accessories/sim-request', component: AgentSimOrderComponent, canActivate: [AuthGuard], },
+  { path: 'accessories/list', component: OpenAccessoriesComponent, canActivate: [AuthGuard], },
+  { path: 'retailer/accessories/create-order/:id/:type', component: CreateOrderComponent, canActivate: [AuthGuard], },
 
 
   { path: '**', redirectTo: '/login' }
 ];
 
-
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-
-
-
 
 export class AppRoutingModule { }

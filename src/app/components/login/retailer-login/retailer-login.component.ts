@@ -54,20 +54,29 @@ export class RetailerLoginComponent {
         'password': this.loginForm.value.password,
       };
 
-      this.authService.retailerLogin(requestBody).subscribe((res) => {
-        if (res.statusCode === 200 && res.message === 'Success') {
-          this.authService.storeTokens(res);
+      this.authService.retailerLogin(requestBody).subscribe({
+        next: (response: any) => {
+          // Consider API's status fields
+          this.authService.storeTokens(response);
           this.router.navigate(['/home']);
-        } 
-        else {
-          this.isValidLogin = false;
-          this.toasterService.showMessage('Invalid login credentials. Please try again.');
+        },
+        error: (err) => {
+          // Network / CORS errors typically have status === 0
+          if (err && err.status === 0) {
+            this.toasterService.showMessage('Service is down');
+            return;
+          }
+
+          // Prefer structured API error message when available
+          const apiMessage = err?.error;
+          this.toasterService.showMessage(apiMessage);
+          this.router.navigate(['/retailer/login']);
         }
       });
     }
   }
 
-   AgentLogin(): void {
+  AgentLogin(): void {
     this.router.navigate(['/login']);
   }
 }

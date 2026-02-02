@@ -55,9 +55,7 @@ export class OrderService {
     return this.http.post<Response>(this.url + "/UpdateOrderDetails", orderDetails);
   }
 
-  delete(category: any): Observable<any> {
-    return this.http.post<Response>(this.url + "/UpdateStatus", category);
-  }
+  
 
   getOrderHistory(orderId: number): Observable<any> {
     return this.http.get<any>(this.url + "/GetOrderHistory/" + orderId);

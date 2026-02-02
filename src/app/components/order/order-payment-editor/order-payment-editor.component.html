@@ -19,7 +19,8 @@
                 <mat-option value=''>--Select--</mat-option>
                 <mat-option value="BankTransfer">Bank Transfer</mat-option>
                 <mat-option value="Cash">Cash</mat-option>
-                <mat-option value="CommissionCheque">Commission Cheque</mat-option>                
+                <mat-option value="CommissionCheque">Commission CHQ (System)</mat-option>
+                <mat-option value="PhysicalCC">Commission CHQ (Physical)</mat-option>
                 <mat-option value="Commission" *ngIf="isAdmin">Commission Wallet</mat-option>
                 <mat-option value="Bonus" *ngIf="isAdmin">Bonus Wallet</mat-option>
                 <mat-option value="InstantBonus" *ngIf="isAdmin">Instant Bonus Wallet</mat-option>
@@ -28,11 +29,21 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="paymentType == 'CommissionCheque' ">
-            <mat-label>Select Commission Cheque</mat-label>
+            <mat-label>Commission Cheque (System)</mat-label>
             <mat-select formControlName="chequeNumber" (selectionChange)="onChequeNumberChange($event)" required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
                     <span>{{item.id}} - {{ item.name }}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+         <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="paymentType == 'PhysicalCC' ">
+            <mat-label>Commission Cheque (Physical)</mat-label>
+            <mat-select formControlName="chequeNumber" (selectionChange)="onPhysicalChequeNumberChange($event)" required>
+                <mat-option [value]="null">-Select-</mat-option>
+                <mat-option *ngFor="let item of availablePhysicalCommissionChequeNumbers" [value]="item.id">
+                    <span>{{item.referenceNumber}} - {{ item.name }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>

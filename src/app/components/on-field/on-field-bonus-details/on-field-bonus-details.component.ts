@@ -58,12 +58,12 @@ export class OnFieldBonusDetailsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
-    this.getReportFromAndToDates();
+    const dates = this.getReportDates();
     const request = {
       shopId: this.selectedShopId,
       isInstantActivation: false,
-      fromDate: this.fromDate,
-      toDate: this.toDate
+      fromDate: dates.fromDate,
+      toDate: dates.toDate
     };
     this.onFieldService.onFieldCommissionList(request).subscribe((res) => {
       this.isLoading = false;
@@ -108,10 +108,10 @@ export class OnFieldBonusDetailsComponent implements OnInit {
     this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
   }
 
-
-  private getReportFromAndToDates(months: number = 8): void {
-
-    if (this.selectedYear === 0) {
+  private getReportDates(months: number = 8) {
+    let fromDate: string | null = null;
+    let toDate: string | null = null;
+    if (this.selectedYear == null || this.selectedYear === 0) {
       // Last 6 months logic
       const currentDate = new Date();
 
@@ -127,19 +127,21 @@ export class OnFieldBonusDetailsComponent implements OnInit {
         1
       );
 
-      this.fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
-      this.toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
+
+      fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
 
     } else {
       // Selected year logic
       const year = this.selectedYear;
 
-      const fromDate = new Date(year, 0, 1);   // Jan 1
-      const toDate = new Date(year, 11, 1);    // Dec 1 (month start)
+      const fDate = new Date(year, 0, 1);
+      const tDate = new Date(year, 11, 1);
 
-      this.fromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
-      this.toDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
+      fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
     }
+    return { fromDate, toDate };
   }
 
 }

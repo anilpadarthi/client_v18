@@ -94,4 +94,8 @@ export class LookupService {
     return this.http.get<any>(this.url + "/GetAvailableShopCommissionCheques/?shopId=" + shopId);
   }
 
+   getAvailableShopPhysicalCommissionCheques(shopId: any): Observable<any> {
+    return this.http.get<any>(this.url + "/GetAvailableShopPhysicalCommissionCheques/?shopId=" + shopId);
+  }
+
 }

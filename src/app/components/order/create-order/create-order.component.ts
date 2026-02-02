@@ -423,7 +423,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     if (this.requestType == 'B') {
       this.getBonusAmount();
       if (this.grandTotalWithVAT > this.commissionAmount) {
-        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount (£" + this.commissionAmount + ").");
         isValid = false;
       }
       else if (this.grandTotalWithVAT < this.minimumCartAmount) {
@@ -435,7 +435,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.getCommissionHistoryDetails();
       if (!this.isRedemed) {
         if (this.subTotal > this.commissionAmount) {
-          this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
+          this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount (£" + this.commissionAmount + ").");
           isValid = false;
         }
       }

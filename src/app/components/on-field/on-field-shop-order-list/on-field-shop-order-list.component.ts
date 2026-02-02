@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -35,7 +35,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
     "paymentMethod",
     "courier"
   ];
-
+  isFirstChange = true;
   pageEvent: PageEvent | undefined;
   tableDataSource: any;
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
@@ -75,7 +75,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.hasVATInvoiceAccess = true;
     }
-    
+    console.log(this.canSendVAT);
     this.loadData();
     this.loadDropDowns();
   }
@@ -132,8 +132,15 @@ export class OnFieldShopOrderListComponent implements OnInit {
     this.loadData();
   }
 
-  ngOnChanges(): void {
-    this.ngOnInit();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.ngOnInit();
+    }
   }
 
   handlePageEvent(event: PageEvent): void {

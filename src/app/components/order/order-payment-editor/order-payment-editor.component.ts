@@ -25,6 +25,7 @@ export class OrderPaymentEditorComponent {
   paymentType = '';
   IsDisabled = false;
   availableCommissionChequeNumbers: any[] = [];
+  availablePhysicalCommissionChequeNumbers: any[] = [];
   balanceAmount = 0.00;
   commissionWalletAmount = 0.00;
   bonusWalletAmount = 0.00;
@@ -67,6 +68,7 @@ export class OrderPaymentEditorComponent {
     }
     this.referenceImagePreview = '/assets/images/profile/user-1.jpg';
     this.loadAvailableCheques();
+    this.loadAvailablePhysicalCheques();
     this.loadShopWallets();
     this.getOrderPaymentDetails();
   }
@@ -84,6 +86,12 @@ export class OrderPaymentEditorComponent {
   loadAvailableCheques() {
     this.lookupService.getAvailableShopCommissionCheques(this.shopId).subscribe((res) => {
       this.availableCommissionChequeNumbers = res.data;
+    });
+  }
+
+  loadAvailablePhysicalCheques() {
+    this.lookupService.getAvailableShopPhysicalCommissionCheques(this.shopId).subscribe((res) => {
+      this.availablePhysicalCommissionChequeNumbers = res.data;
     });
   }
 
@@ -182,6 +190,21 @@ export class OrderPaymentEditorComponent {
     }
   }
 
+  
+  onPhysicalChequeNumberChange(event: any): void {
+    let item = this.availablePhysicalCommissionChequeNumbers.find(f => f.id == event.value);
+    if (item != null) {
+      this.paymentForm.patchValue({ referenceNumber: item.id });
+      this.paymentForm.patchValue({ amount: item.name });
+      this.IsDisabled = true;
+    }
+    else {
+      this.paymentForm.patchValue({ referenceNumber: null });
+      this.paymentForm.patchValue({ amount: null });
+      this.IsDisabled = false;
+    }
+  }
+
   onPaymentModeChange(event: any): void {
     this.paymentForm.patchValue({ referenceNumber: null });
     this.paymentForm.patchValue({ amount: null });
@@ -193,7 +216,7 @@ export class OrderPaymentEditorComponent {
     const cheque = this.paymentForm.get('chequeNumber');
     const amountType = this.paymentForm.get('amountType');
 
-    if (event.value === 'CommissionCheque') {
+    if (event.value === 'CommissionCheque' || event.value === 'PhysicalCC' ) {
 
       ref?.disable();
       amt?.disable();

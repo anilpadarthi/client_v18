@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DatePipe } from '@angular/common';
 
@@ -54,8 +54,10 @@ export class AccessoriesSaleComponent implements OnInit {
     };
 
     this.dashboardService.getDahboardAccessoriesMetrics(requestBody).subscribe((res) => {
-      this.dataSource = res.data;
-      this.isLoading = false;
+      if (res.statusCode == 200) {
+        this.dataSource = res.data;
+        this.isLoading = false;
+      }
     });
   }
 
@@ -67,5 +69,5 @@ export class AccessoriesSaleComponent implements OnInit {
       return "Total";
     }
     return this.dataSource.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
-  } 
+  }
 }

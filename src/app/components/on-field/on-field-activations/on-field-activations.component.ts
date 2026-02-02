@@ -47,12 +47,12 @@ export class OnFieldActivationsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
-    this.getReportFromAndToDates();
+    const dates = this.getReportDates();
     const request = {
       shopId: this.selectedShopId,
       isInstantActivation: false,
-      fromDate: this.fromDate,
-      toDate: this.toDate
+      fromDate: dates.fromDate,
+      toDate: dates.toDate
     };
 
     this.onFieldService.onFieldActivationList(request).subscribe((res) => {
@@ -78,8 +78,9 @@ export class OnFieldActivationsComponent implements OnInit {
     }
   }
 
-  private getReportFromAndToDates(months: number = 6): void {
-
+  private getReportDates(months: number = 6) {
+    let fromDate: string | null = null;
+    let toDate: string | null = null;
     if (this.selectedYear == null || this.selectedYear === 0) {
       // Last 6 months logic
       const currentDate = new Date();
@@ -96,19 +97,21 @@ export class OnFieldActivationsComponent implements OnInit {
         1
       );
 
-      this.fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
-      this.toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
+
+      fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
 
     } else {
       // Selected year logic
       const year = this.selectedYear;
 
-      const fromDate = new Date(year, 0, 1);   // Jan 1
-      const toDate = new Date(year, 11, 1);    // Dec 1 (month start)
+      const fDate = new Date(year, 0, 1);
+      const tDate = new Date(year, 11, 1);
 
-      this.fromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
-      this.toDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
+      fromDate = this.datePipe.transform(fDate, 'yyyy-MM-dd');
+      toDate = this.datePipe.transform(tDate, 'yyyy-MM-dd');
     }
+    return { fromDate, toDate };
   }
 
 }

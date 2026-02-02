@@ -2,7 +2,7 @@ import { Component, LOCALE_ID  } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpinnerService } from '../app/services/spinner/spinner.service';
 import { AuthService } from './services/auth.service';
-import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
+import { IdleService } from './services/idle.service';
 
 @Component({
   selector: 'app-root',
@@ -19,21 +19,21 @@ export class AppComponent {
   isLoading$!: Observable<boolean>;
 
 
-  constructor(private idle: Idle, private auth: AuthService, private loaderService: SpinnerService) {
-    // 3600 seconds = 1 hour idle timeout
-    idle.setIdle(3600);
-    idle.setTimeout(0);
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-
-    idle.onTimeout.subscribe(() => {
-      this.auth.logout();
-      window.location.href = '/login';
-    });
-
-    idle.watch();
+  constructor(private authService: AuthService, private loaderService: SpinnerService, private idleService: IdleService) {
+   
   }
 
   ngOnInit(): void {
     this.isLoading$ = this.loaderService._loading;
+    // ✅ Start watching if already logged in
+    if (this.authService.isAuthenticated()) {
+      this.idleService.startWatching();
+    }
+
+     // ✅ Subscribe to timeout event
+    this.idleService.onTimeout.subscribe(() => {
+      alert("Session expired due to inactivity!");
+      this.authService.logout();
+    });
   }
 }

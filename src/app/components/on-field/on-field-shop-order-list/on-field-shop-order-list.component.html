@@ -36,7 +36,7 @@
                             *ngIf="canSendVAT !== 'yes'">
                             <mat-icon>more_vert</mat-icon>
                         </button>
-                        <button *ngIf="canSendVAT == 'yes'" mat-menu-item (click)="sendEmail(element.orderId)">
+                        <button *ngIf="canSendVAT === 'yes'" mat-menu-item (click)="sendEmail(element.orderId)">
                             <mat-icon>mail</mat-icon>
                             VAT Invoice
                         </button>

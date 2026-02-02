@@ -11,44 +11,24 @@ export class WebstorgeService {
 
     constructor(private router: Router, private authService: AuthService) { }
 
-    public setSession(key: string) {
-        localStorage.setItem('token', key);
-    }
-
-    public getSession() {
-        return localStorage.getItem('token');
-    }
-
-    public setUserInfo(user: any) {
-        localStorage.setItem('userDetailsInfo', JSON.stringify(user));
-    }
-
     public getUserInfo() {
-        const userInfo: string | null = localStorage.getItem('userDetailsInfo');
-        if (userInfo)
-            return JSON.parse(userInfo);
-        else
-            this.router.navigate(['']);
+        const tokenData = this.authService.getUserFromToken();
+        if (!tokenData || !tokenData.userDetails) {
+            return null;
+        }
+        const userInfo = tokenData.userDetails;
+        return JSON.parse(userInfo);
     }
 
     public getUserRole() {
-        const userInfo: string | null = localStorage.getItem('userDetailsInfo');
-        if (userInfo) {
-            var userDetails = JSON.parse(userInfo);
-            return userDetails.userRole.roleName;
-        }
-        return '';
+        const tokenData = this.authService.getUserFromToken();
+        if (!tokenData || !tokenData.userDetails) return '';
+        const userInfo = tokenData.userDetails;
+        const userDetails = JSON.parse(userInfo);
+        return userDetails?.userRole?.RoleName || '';
     }
 
-    public setItem(item: any, data: any) {
-        localStorage.setItem(item, JSON.stringify(data));
-    }
-
-    public getItem(item: any) {
-        const data: any = localStorage.getItem(item);
-        const parsedData = JSON.parse(data);
-        return parsedData;
-    }
+    
     public clearAll() {
         localStorage.clear();
     }
