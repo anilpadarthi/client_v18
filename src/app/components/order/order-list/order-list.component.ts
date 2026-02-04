@@ -262,6 +262,7 @@ export class OrderListComponent implements OnInit {
         this.filteredUsers = res.data;
       });
     }
+    this.selectedAgentId = null;
   }
 
 
@@ -305,9 +306,7 @@ export class OrderListComponent implements OnInit {
       this.selectedShopId = loggedInUserId;
       this.shopNameSearch = loggedInUserId.toString();
     }
-    else {
-      this.selectedAgentId = loggedInUserId;
-    }
+    this.managerChange();    
     this.loadData();
   }
 

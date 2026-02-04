@@ -105,10 +105,12 @@
         <div class="table-responsive table-max-scroll example-container m-t-12">
 
           <table mat-table [dataSource]="simCommissionDetails" class="w-100 custom-table">
-            <col style="width: 35%">
-            <col style="width: 20%">
-            <col style="width: 25%">
-            <col style="width: 20%">
+            <colgroup>
+              <col style="width: 35%">
+              <col style="width: 20%">
+              <col style="width: 25%">
+              <col style="width: 20%">
+            </colgroup>
             <ng-container matColumnDef="NetworkName">
               <th mat-header-cell *matHeaderCellDef class="center">Network</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.networkName }}</td>
@@ -144,10 +146,12 @@
         <h3>Instant & Vodafone Voxi Commission</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
           <table mat-table [dataSource]="instantAndVodafoneVoxiList" class="w-100 custom-table m-t-12">
-            <col style="width: 35%">
-            <col style="width: 20%">
-            <col style="width: 25%">
-            <col style="width: 20%">
+            <colgroup>
+              <col style="width: 35%">
+              <col style="width: 20%">
+              <col style="width: 25%">
+              <col style="width: 20%">
+            </colgroup>
             <ng-container matColumnDef="NetworkName">
               <th mat-header-cell *matHeaderCellDef class="center">Network</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.networkName }}</td>
@@ -184,25 +188,32 @@
       <div *ngIf="accessoriesCommisssionDetails.length > 0">
         <h3>Accessories Commission Details</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
-          <col style="width: 35%">
-          <col style="width: 20%">
-          <col style="width: 25%">
-          <col style="width: 20%">
+
           <table mat-table [dataSource]="accessoriesCommisssionDetails" class="w-100 custom-table">
-            <col style="width: 35%">
-            <col style="width: 20%">
-            <col style="width: 25%">
-            <col style="width: 20%">
+            <colgroup>
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+            </colgroup>
             <ng-container matColumnDef="saleType">
               <th mat-header-cell *matHeaderCellDef class="center">Sale Type</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.saleType }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">Total</td>
             </ng-container>
 
-            <ng-container matColumnDef="totalSale">
-              <th mat-header-cell *matHeaderCellDef class="center">Total Sale ( Target - {{kp1AccesoriesTarget}})</th>
-              <td mat-cell *matCellDef="let element" class="center">£{{ element.totalSale | number : "1.2-2" }}</td>
+            <ng-container matColumnDef="saleAmount">
+              <th mat-header-cell *matHeaderCellDef class="center">Sale Amount ( Target - {{kp1AccesoriesTarget}})</th>
+              <td mat-cell *matCellDef="let element" class="center">£{{ element.saleAmount | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">£{{ totalSaleAmount | number : "1.2-2" }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="collectedAmount">
+              <th mat-header-cell *matHeaderCellDef class="center">Collected Amount</th>
+              <td mat-cell *matCellDef="let element" class="center">£{{ element.collectedAmount | number : "1.2-2" }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef class="center">£{{ totalCollectedAmount | number : "1.2-2" }}</td>
             </ng-container>
 
             <ng-container matColumnDef="rate">
@@ -228,12 +239,15 @@
       <div *ngIf="salaryTransactions.length > 0">
         <h3>Payments</h3>
         <div class="table-responsive table-max-scroll example-container m-t-12">
-          <col style="width: 35%">
-          <col style="width: 20%">
-          <col style="width: 25%">
-          <col style="width: 20%">
-          <table mat-table [dataSource]="salaryTransactions" class="w-100 custom-table">
 
+          <table mat-table [dataSource]="salaryTransactions" class="w-100 custom-table">
+            <colgroup>
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+            </colgroup>
             <ng-container matColumnDef="type">
               <th mat-header-cell *matHeaderCellDef class="center">Type</th>
               <td mat-cell *matCellDef="let element" class="center">{{ element.type }}</td>

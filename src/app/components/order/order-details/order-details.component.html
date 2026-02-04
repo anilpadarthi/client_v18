@@ -38,7 +38,7 @@
             <input matInput placeholder="Search By Track Number" [(ngModel)]="trackingNumber" autocomplete="off">
         </mat-form-field>
     </div>
-    <div class="row col-lg-12">
+    <div class="row col-lg-12 m-t-10">
         <button *ngIf="isAdmin || isWareHouseKeeper" mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
             Update
         </button>
