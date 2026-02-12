@@ -415,7 +415,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   validateOrderAmount(): boolean {
-    debugger;
+    
     let isValid = true;
     if (this.isAdmin) {
       return isValid;
@@ -423,7 +423,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     if (this.requestType == 'B') {
       this.getBonusAmount();
       if (this.grandTotalWithVAT > this.commissionAmount) {
-        this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount (£" + this.commissionAmount + ").");
+        this.toasterService.showMessage("You cannot place order, cart amount exceeds the bonus wallet amount (£" + this.commissionAmount + ").");
         isValid = false;
       }
       else if (this.grandTotalWithVAT < this.minimumCartAmount) {

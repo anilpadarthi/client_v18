@@ -54,7 +54,7 @@ export class PaySlipComponent implements OnInit {
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
-  displayedColumns2: string[] = ['saleType', 'saleAmount','collectedAmount', 'rate', 'total'];
+  displayedColumns2: string[] = ['saleType', 'saleAmount', 'collectedAmount', 'rate', 'total'];
   displayedColumns3: string[] = ['type', 'comments', 'date', 'amount', 'action'];
 
   constructor(
@@ -133,6 +133,12 @@ export class PaySlipComponent implements OnInit {
         filterId: this.selectedAgentId != 0 ? this.selectedAgentId : this.selectedManagerId,
       };
 
+      this.accessoriesCommisssionDetails = [];
+      this.simCommissionDetails = [];
+      this.instantAndVodafoneVoxiList = [];
+      this.salaryTransactions = [];
+      this.salaryDetails = [];
+      
       this.reportService.getSalaryReport(requestBody).subscribe((res) => {
         if (res.data != null && res.statusCode == 200) {
           this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
@@ -185,18 +191,20 @@ export class PaySlipComponent implements OnInit {
     this.selectedUserRole = '';
     this.accessoriesCommisssionDetails = [];
     this.simCommissionDetails = [];
+    this.instantAndVodafoneVoxiList = [];
+    this.salaryTransactions = [];
     this.salaryDetails = [];
   }
 
   addTransaction(): void {
-    if ((this.selectedManagerId != 0 || this.selectedAgentId != 0) 
+    if ((this.selectedManagerId != 0 || this.selectedAgentId != 0)
       && this.selectedMonth) {
       var data = {
         userId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
         transactionDate: this.selectedMonth,
-        amount:0
+        amount: 0
       }
-       const dialogRef = this.dialog.open(SalaryTransactionEditorComponent, {
+      const dialogRef = this.dialog.open(SalaryTransactionEditorComponent, {
         data
       });
       dialogRef.afterClosed().subscribe((result) => {

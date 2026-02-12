@@ -76,7 +76,7 @@ export class NetworkActivationsComponent implements OnInit {
     else if (column == 'Name') {
       return "Total";
     }
-    return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+    return this.activationList?.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
   }
 
   getInstantTotal(column: string): any {
@@ -86,7 +86,7 @@ export class NetworkActivationsComponent implements OnInit {
     else if (column == 'Name') {
       return "Total";
     }
-    return this.instantActivationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+    return this.instantActivationList?.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
   }
 
   loadInstantData(): void {
@@ -98,6 +98,11 @@ export class NetworkActivationsComponent implements OnInit {
     };
 
     this.dashboardService.getNetworkWiseInstantActivations(requestBody).subscribe((res) => {
+      if(res.statusCode != 200){
+        this.instantActivationList = [];
+        this.isLoading = false;
+        return;
+      }
       this.instantActivationList = res.data;
       this.isLoading = false;
     });

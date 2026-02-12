@@ -1,7 +1,6 @@
-
 <div class="col-lg-12 loading-indicator" *ngIf="isLoading">
-      <mat-spinner></mat-spinner>
-    </div>
+    <mat-spinner></mat-spinner>
+</div>
 
 <h2 mat-dialog-title class="modal-header-title">Add Payment <span class="balance">
         Outstanding Balance: £ {{balanceAmount | number: '1.2-2'}}</span>
@@ -23,27 +22,28 @@
                 <mat-option value="PhysicalCC">Commission CHQ (Physical)</mat-option>
                 <mat-option value="Commission" *ngIf="isAdmin">Commission Wallet</mat-option>
                 <mat-option value="Bonus" *ngIf="isAdmin">Bonus Wallet</mat-option>
-                <mat-option value="InstantBonus" *ngIf="isAdmin">Instant Bonus Wallet</mat-option>
+                <mat-option value="Instant Bonus" *ngIf="isAdmin">Instant Bonus Wallet</mat-option>
                 <mat-option value="Other">Other</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="paymentType == 'CommissionCheque' ">
             <mat-label>Commission Cheque (System)</mat-label>
-            <mat-select formControlName="chequeNumber" (selectionChange)="onChequeNumberChange($event)" required>
+            <mat-select formControlName="commissionId" (selectionChange)="onChequeNumberChange($event)" required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
-                    <span>{{item.id}} - {{ item.name }}</span>
+                    <span>{{item.id}} -  £ {{ item.name | number: '1.2-2' }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
 
-         <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="paymentType == 'PhysicalCC' ">
+        <mat-form-field appearance="outline" class="w-100 hide-hint" *ngIf="paymentType == 'PhysicalCC' ">
             <mat-label>Commission Cheque (Physical)</mat-label>
-            <mat-select formControlName="chequeNumber" (selectionChange)="onPhysicalChequeNumberChange($event)" required>
+            <mat-select formControlName="commissionId" (selectionChange)="onPhysicalChequeNumberChange($event)"
+                required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availablePhysicalCommissionChequeNumbers" [value]="item.id">
-                    <span>{{item.referenceNumber}} - {{ item.name }}</span>
+                    <span>{{item.referenceNumber}} -  £ {{ item.name | number: '1.2-2' }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -58,7 +58,7 @@
             <input matInput [value]="bonusWalletAmount" type="number" disabled />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100 m-t-10" *ngIf="paymentType == 'InstantBonus' ">
+        <mat-form-field appearance="outline" class="w-100 m-t-10" *ngIf="paymentType == 'Instant Bonus' ">
             <mat-label>Instant Bonus Wallet Amount</mat-label>
             <input matInput [value]="instantBonusWalletAmount" type="number" disabled />
         </mat-form-field>
@@ -67,16 +67,17 @@
             <mat-radio-button value="FA">Full Amount</mat-radio-button>
             <mat-radio-button value="OA">Other Amount</mat-radio-button>
         </mat-radio-group> -->
-       
+
 
         <mat-form-field appearance="outline" class="w-100 m-t-10">
             <mat-label>Amount</mat-label>
             <input matInput formControlName="amount" type="number" />
         </mat-form-field>
 
-         <mat-form-field appearance="outline" class="w-100 ">
+        <mat-form-field appearance="outline" class="w-100 ">
             <mat-label>Reference Number</mat-label>
-            <input matInput formControlName="referenceNumber" />
+            <input matInput formControlName="referenceNumber" inputmode="numeric" maxlength="20"
+                (input)="onInputChange($event)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">

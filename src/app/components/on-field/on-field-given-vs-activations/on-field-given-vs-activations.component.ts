@@ -39,15 +39,18 @@ export class OnFieldGivenVsActivationsComponent implements OnInit {
     this.isLoading = true;
     const dates = this.getReportDates();
     const request = {
-      shopId: this.selectedShopId,      
+      shopId: this.selectedShopId,
       fromDate: dates.fromDate,
       toDate: dates.toDate,
       activationType: 'D',
     };
+    this.givenList = [];
+    this.activationList = [];
+    this.mergedDataSource = [];
 
     this.onFieldService.onFieldGivenVSActivationList(request).subscribe((res) => {
       this.isLoading = false;
-      if (res.data?.length > 0) {
+      if (res.data?.length > 0 && res.statusCode === 200) {
         const result = res.data;
         this.givenList = result[0];
         this.activationList = result[1];

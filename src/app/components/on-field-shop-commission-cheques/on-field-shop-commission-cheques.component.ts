@@ -12,12 +12,11 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-    'CommissionDate',
-    'Type',
-    'ReferenceNumber',
-    'Amount',
-    'Status',
-    'PaidDate',
+    'CommissionMonth',   
+    'ChequeNumber',
+    'OrderId',
+    'Amount',   
+    'PaidOutDate',
   ];
   commissionChequeList: any = [];
 

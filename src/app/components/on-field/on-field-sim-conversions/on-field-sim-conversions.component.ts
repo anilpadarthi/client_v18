@@ -38,13 +38,17 @@ export class OnFieldSimConversionsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
-     const dates = this.getReportDates();
+    const dates = this.getReportDates();
     const request = {
-      shopId: this.selectedShopId,      
+      shopId: this.selectedShopId,
       activationType: 'D',
       fromDate: dates.fromDate,
       toDate: dates.toDate
     };
+
+    this.givenList = [];
+    this.activationList = [];
+    this.mergedDataSource = [];
 
     this.onFieldService.onFieldSimConversionList(request).subscribe((res) => {
       this.isLoading = false;
@@ -91,7 +95,7 @@ export class OnFieldSimConversionsComponent implements OnInit {
   }
 
 
-private getReportDates(months: number = 6) {
+  private getReportDates(months: number = 6) {
     let fromDate: string | null = null;
     let toDate: string | null = null;
     if (this.selectedYear == null || this.selectedYear === 0) {

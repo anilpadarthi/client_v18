@@ -27,6 +27,7 @@ export class TrackReportComponent implements OnInit {
   userLookup: any = [];
   dataSource: any = [];
   detailData: any = [];
+  dayOfAttendance = '';
   userFilterCtrl: FormControl = new FormControl();
   filteredUsers: any[] = [];
   displayedColumns1: string[] = [];
@@ -106,6 +107,7 @@ export class TrackReportComponent implements OnInit {
 
   onFilter(): void {
     this.filterType = 'All';
+    this.dayOfAttendance = this.datePipe.transform(this.fromDate, 'yyyy-MM-dd') || '';
     if (this.selectedUserId) {
       this.filterType = 'User Track';
       this.mode = 'Details';
@@ -116,9 +118,12 @@ export class TrackReportComponent implements OnInit {
       };
 
       this.trackingService.getUserTrackDataReport(requestBody).subscribe((res) => {
-        if (res.data?.length > 0) {
+        if (res.data?.length > 0 && res.statusCode == 200) {
           this.detailData = res.data;
-          this.displayedColumns1 = Object.keys(res.data[0]);
+          this.displayedColumns1 = Object.keys(res.data[0]);  
+        }
+        else{
+          this.detailData = [];
         }
       });
     }
@@ -131,6 +136,7 @@ export class TrackReportComponent implements OnInit {
   onClear(): void {
     this.selectedUserId = null;
     this.fromDate = null;
+    this.dayOfAttendance = '';
     this.filterType = 'All';
   }
 
@@ -215,7 +221,7 @@ export class TrackReportComponent implements OnInit {
 
     const requestBody = this.dataSource.map((item: any) => ({
       userId: item.userId,
-      dateOfAttendance: cleanDate(this.datePipe.transform(item.date, 'yyyy-MM-dd')),
+      dateOfAttendance: cleanDate(this.dayOfAttendance),
       attendanceType: item.attendenceType || null,
       comments: item.comments || ''
     }));

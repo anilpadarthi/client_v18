@@ -50,10 +50,11 @@ export class OrderPaymentEditorComponent {
     this.balanceAmount = data.balanceAmount;
     this.paymentForm = this.fb.group(
       {
-        referenceNumber: [null],
+        referenceNumber: [null, [Validators.pattern('^[0-9]*$')]],
         amount: [null, [Validators.required]],
         paymentMode: [null, [Validators.required]],
         chequeNumber: [null],
+        commissionId: [null],
         comments: [''],
         amountType: [''],
         image: null as File | null,
@@ -100,6 +101,7 @@ export class OrderPaymentEditorComponent {
       if (res.data != null) {
         this.commissionWalletAmount = res.data?.outstandingCommissionAmount;
         this.bonusWalletAmount = res.data?.outstandingBonusAmount;
+        this.instantBonusWalletAmount = res.data?.outstandingInstantBonusAmount;
       }
       else {
         this.commissionWalletAmount = 0;
@@ -130,7 +132,7 @@ export class OrderPaymentEditorComponent {
         this.toasterService.showMessage("You cann not redem using bonus wallet, It exceeds the amount");
         return;
       }
-      else if (this.paymentType == "InstantBonus" && this.paymentForm.getRawValue().amount > this.instantBonusWalletAmount) {
+      else if (this.paymentType == "Instant Bonus" && this.paymentForm.getRawValue().amount > this.instantBonusWalletAmount) {
         this.toasterService.showMessage("You cann not redem using instant bonus wallet, It exceeds the amount");
         return;
       }
@@ -141,6 +143,7 @@ export class OrderPaymentEditorComponent {
       formBody.append('paymentId', this.paymentId != null ? this.paymentId : 0);
       formBody.append('paymentMode', this.paymentForm.value.paymentMode);
       formBody.append('referenceNumber', this.paymentForm.getRawValue().referenceNumber);
+      formBody.append('chequeNumber', this.paymentForm.getRawValue().chequeNumber);
       formBody.append('amount', this.paymentForm.getRawValue().amount);
       formBody.append('comments', this.paymentForm.value.comments);
 
@@ -150,7 +153,7 @@ export class OrderPaymentEditorComponent {
 
       this.orderService.createPayment(formBody).subscribe((res) => {
         if (res.statusCode == 200) {
-          this.toasterService.showMessage("Saved successfully.");          
+          this.toasterService.showMessage("Saved successfully.");
         }
         else {
           this.toasterService.showMessage(res.data);
@@ -190,11 +193,12 @@ export class OrderPaymentEditorComponent {
     }
   }
 
-  
+
   onPhysicalChequeNumberChange(event: any): void {
     let item = this.availablePhysicalCommissionChequeNumbers.find(f => f.id == event.value);
     if (item != null) {
       this.paymentForm.patchValue({ referenceNumber: item.id });
+      this.paymentForm.patchValue({ chequeNumber: item.referenceNumber });
       this.paymentForm.patchValue({ amount: item.name });
       this.IsDisabled = true;
     }
@@ -207,8 +211,9 @@ export class OrderPaymentEditorComponent {
 
   onPaymentModeChange(event: any): void {
     this.paymentForm.patchValue({ referenceNumber: null });
-    this.paymentForm.patchValue({ amount: null });
     this.paymentForm.patchValue({ chequeNumber: null });
+    this.paymentForm.patchValue({ amount: null });
+    this.paymentForm.patchValue({ commissionId: null });
     this.paymentType = event.value;
 
     const ref = this.paymentForm.get('referenceNumber');
@@ -216,7 +221,7 @@ export class OrderPaymentEditorComponent {
     const cheque = this.paymentForm.get('chequeNumber');
     const amountType = this.paymentForm.get('amountType');
 
-    if (event.value === 'CommissionCheque' || event.value === 'PhysicalCC' ) {
+    if (event.value === 'CommissionCheque' || event.value === 'PhysicalCC') {
 
       ref?.disable();
       amt?.disable();
@@ -247,6 +252,10 @@ export class OrderPaymentEditorComponent {
     amt?.updateValueAndValidity();
     cheque?.updateValueAndValidity();
 
+  }
+
+  onInputChange(event: any) {
+    event.target.value = event.target.value.replace(/[^0-9]/g, '');
   }
 
 }

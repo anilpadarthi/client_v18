@@ -204,7 +204,7 @@
             </ng-container>
 
             <ng-container matColumnDef="saleAmount">
-              <th mat-header-cell *matHeaderCellDef class="center">Sale Amount ( Target - {{kp1AccesoriesTarget}})</th>
+              <th mat-header-cell *matHeaderCellDef class="center">Sale Amount ( Target - {{kp1AccesoriesTarget | number : "1.2-2"}})</th>
               <td mat-cell *matCellDef="let element" class="center">£{{ element.saleAmount | number : "1.2-2" }}</td>
               <td mat-footer-cell *matFooterCellDef class="center">£{{ totalSaleAmount | number : "1.2-2" }}</td>
             </ng-container>
