@@ -204,6 +204,7 @@ export class OrderPaymentEditorComponent {
     }
     else {
       this.paymentForm.patchValue({ referenceNumber: null });
+      this.paymentForm.patchValue({ chequeNumber: null });
       this.paymentForm.patchValue({ amount: null });
       this.IsDisabled = false;
     }
@@ -218,7 +219,7 @@ export class OrderPaymentEditorComponent {
 
     const ref = this.paymentForm.get('referenceNumber');
     const amt = this.paymentForm.get('amount');
-    const cheque = this.paymentForm.get('chequeNumber');
+    const commissionId = this.paymentForm.get('commissionId');
     const amountType = this.paymentForm.get('amountType');
 
     if (event.value === 'CommissionCheque' || event.value === 'PhysicalCC') {
@@ -231,7 +232,7 @@ export class OrderPaymentEditorComponent {
       amt?.clearValidators();
 
       // Add validator for chequeNumber
-      cheque?.setValidators([Validators.required]);
+      commissionId?.setValidators([Validators.required]);
 
     } else {
 
@@ -244,13 +245,13 @@ export class OrderPaymentEditorComponent {
       // Restore validators
       amt?.setValidators([Validators.required]);
 
-      cheque?.clearValidators();
+      commissionId?.clearValidators();
     }
 
     // 🔥 VERY IMPORTANT (refresh validation)
     ref?.updateValueAndValidity();
     amt?.updateValueAndValidity();
-    cheque?.updateValueAndValidity();
+    commissionId?.updateValueAndValidity();
 
   }
 
