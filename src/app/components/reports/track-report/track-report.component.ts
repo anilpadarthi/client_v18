@@ -32,7 +32,7 @@ export class TrackReportComponent implements OnInit {
   filteredUsers: any[] = [];
   displayedColumns1: string[] = [];
   displayedColumns: string[] = [
-    'UserId',
+    
     'UserName',
     'Date',
     'AreasVisited',

@@ -1,14 +1,37 @@
-<h2 mat-dialog-title>Details</h2>
+<h2 mat-dialog-title class="modal-header-title">{{header}}
+    <button mat-dialog-close class="modal-header-close-btn">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
 <mat-dialog-content>
-  <div class="detail-container">
-    <table class="detail-table">
-      <tr *ngFor="let key of keys()">
-        <td class="key">{{ key }}</td>
-        <td class="value">{{ data[key] }}</td>
-      </tr>
-    </table>
-  </div>
+    <div *ngIf="dataSource?.length > 0" class="table-responsive table-max-scroll example-container m-t-10">
+         <table mat-table [dataSource]="dataSource" class="custom-table mat-elevation-z8">
+          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
+            [sticky]="stickyColumns.includes(column)">
+            <th mat-header-cell *matHeaderCellDef
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
+              {{ column }}
+            </th>
+
+            <td mat-cell *matCellDef="let row"
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
+              <ng-container *ngIf="column === 'Id'; else normalCell">
+                {{ row[column] }}
+              </ng-container>
+              <ng-template #normalCell>{{ row[column] }}</ng-template>
+            </td>
+
+            <td mat-footer-cell *matFooterCellDef
+              [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
+              {{ getTotal(column) }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+        </table>
+    </div>
+    <div class="zero-records p-b-8" *ngIf="dataSource?.length == 0"><img src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span></div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button color="primary" (click)="close()">Close</button>
-</mat-dialog-actions>

@@ -5,9 +5,7 @@
 </h2>
 <mat-dialog-content>
     <div *ngIf="dataSource?.length > 0" class="table-responsive table-max-scroll example-container m-t-10">
-        <table mat-table [dataSource]="dataSource" class="w-100 custom-table">
-
-            
+        <table mat-table [dataSource]="dataSource" class="w-100 custom-table">            
 
             <ng-container matColumnDef="paymentDate">
                 <th mat-header-cell *matHeaderCellDef>Payment Date</th>
@@ -49,7 +47,7 @@
                 </th>
                 <td mat-cell *matCellDef="let element" class="action-link">
                     <a class="m-r-10 cursor-pointer" *ngIf="canDeletePayment && element.collectedStatus !='PPS'" (click)="collectedByAdmin(element.orderPaymentId)">
-                        Collect by Admin
+                       Approve
                     </a>
                     <a class="m-r-10 cursor-pointer" *ngIf="canDeletePayment || element.collectedStatus =='PPA' " (click)="deleteclick(element.orderPaymentId)">
                         <mat-icon>delete</mat-icon>

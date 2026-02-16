@@ -14,7 +14,7 @@ export class InstantActivationReportComponent implements OnInit {
   fromDate = null;
   resultList: any = [];
   displayedColumns: string[] = [
-    'ID',
+    
     'NAME',
     'EE',
     'THREE',

@@ -81,10 +81,30 @@ export class AuthService {
       // ✅ Token still valid
       return true;
 
-    } catch (error) {
-
-      console.log("Invalid token");
+    } catch (error) {     
       return false;
+    }
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getAccessToken();
+
+    if (!token) return true;
+
+    try {
+      const decoded: any = jwtDecode(token);
+
+      const expiry = decoded.exp * 1000; // exp is in seconds → convert to ms
+      // ✅ Token expired
+      if (Date.now() > expiry) {
+        return true;
+      }
+
+      // ✅ Token still valid
+      return false;
+
+    } catch (error) {     
+      return true;
     }
   }
 

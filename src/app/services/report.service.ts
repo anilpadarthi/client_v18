@@ -86,8 +86,8 @@ export class ReportService {
     return this.http.post<any>(this.url + '/GetSupplierReport', requestBody);
   }
 
-  getMonthlyInstantActivationDetails(date: string, userId: any): Observable<any> {
-    return this.http.get<any>(this.url + `/GetMonthlyInstantActivationDetails?date='${date}'&userId=${userId}`);
+  getMonthlyInstantActivationDetails(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetMonthlyInstantActivationDetails', requestBody);
   }
 
 

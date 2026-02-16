@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-historical-activation-detail-dialog',
@@ -7,16 +8,57 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./historical-activation-detail-dialog.component.scss']
 })
 export class HistoricalActivationDetailDialogComponent {
+  dataSource: any = [];
+  displayedColumns: string[] = [];
+  stickyColumns: string[] = ['Id', 'Name'];
+  header = '';
+
   constructor(
-    public dialogRef: MatDialogRef<HistoricalActivationDetailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
-
-  keys(): string[] {
-    return this.data ? Object.keys(this.data) : [];
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private datePipe: DatePipe
+  ) {
+    this.header = data.headerName;
+    if (data.result.length > 0) {
+      this.displayedColumns = Object.keys(data.result[0]);
+      this.dataSource = data.result;
+    }
   }
 
-  close(): void {
-    this.dialogRef.close();
+  isDate(value: any): boolean {
+    if (!value) return false;
+
+    // If value is number → NOT a date
+    if (typeof value === 'number') return false;
+
+    // Accept only strings that look like a date
+    if (typeof value === 'string' &&
+      /^\d{4}-\d{2}-\d{2}/.test(value)) {
+      const date = new Date(value);
+      return !isNaN(date.getTime());
+    }
+
+    return false;
   }
+
+  convertToDate(value: any): Date {
+    return new Date(value);
+  }
+
+  // Apply date format to a column
+  // formatDate(value: any): string {
+  //   return this.isDate(value) ? this.datePipe.transform(value, 'yyyy-MM-dd') : value;
+  // }
+
+  getTotal(column: string): any {
+    if (column == 'Id') {
+      return "";
+    }
+    else if (column == 'Name') {
+      return "Total";
+    }
+    return this.dataSource.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
+
+
 }
+

@@ -79,13 +79,7 @@
       <p *ngIf="activationList?.length > 0" class="info-msg">** Agent accounts are calculated from 26th to 25th **</p>
       <div *ngIf="activationList?.length > 0" class="table-responsive table-max-scroll example-container">
         <table mat-table [dataSource]="activationList" class="w-100 custom-table">
-          <ng-container matColumnDef="ID" sticky>
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.id }}
-            </td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
+          
           <ng-container matColumnDef="NAME" sticky>
             <th mat-header-cell *matHeaderCellDef>NAME</th>
             <td mat-cell *matCellDef="let element">

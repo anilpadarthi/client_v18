@@ -11,6 +11,7 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HistoricalActivationDetailDialogComponent } from './historical-activation-detail-dialog.component'
 import { FormControl } from '@angular/forms';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 
 @Component({
   selector: 'app-historical-activation-report',
@@ -75,7 +76,7 @@ export class HistoricalActivationReportComponent implements OnInit {
       this.getAgentLookup();
       this.selectedManagerId = loggedInUserId;
     }
-     else if (userRole == 'Agent') {
+    else if (userRole == 'Agent') {
       this.selectedUserId = loggedInUserId;
     }
     this.getAreaLookup();
@@ -174,14 +175,14 @@ export class HistoricalActivationReportComponent implements OnInit {
         isInstantActivation: this.isInstantActivation,
       };
 
-      if(this.selectedShopId){
+      if (this.selectedAreaId) {
         this.filterView = 'Shop';
       }
-      else if(this.selectedAreaId){
+      else if (this.selectedUserId || this.selectedManagerId) {
         this.filterView = 'Area';
-      }        
+      }
       else {
-        this.filterView = 'User';
+        this.filterView = 'Agent';
       }
 
       this.reportService.getMonthlyHistoryActivations(requestBody).subscribe((res) => {
@@ -213,6 +214,7 @@ export class HistoricalActivationReportComponent implements OnInit {
     this.fromMonth = null
     this.toMonth = null
     this.isInstantActivation = false;
+    this.activationList = [];
   }
 
   getTotal(column: string): any {
@@ -244,22 +246,44 @@ export class HistoricalActivationReportComponent implements OnInit {
     datepicker.close(); // Close picker after selection
   }
 
-  openDetails(row: any): void {
-   this.toasterService.showMessage('Comming soon...');
-  }
-
 
   downloadDailyActivationList(): void {
     const requestBody = {
       fromDate: this.fromMonth,
       toDate: this.toMonth,
-      filterType: this.selectedAreaId ? 'Area' :  this.selectedUserId ? 'User' : this.selectedManagerId ? 'Manager' : 'All',
+      filterType: this.selectedAreaId ? 'Area' : this.selectedUserId ? 'Agent' : this.selectedManagerId ? 'Manager' : 'All',
       filterId: this.selectedAreaId || this.selectedUserId || this.selectedManagerId || 0,
       isInstantActivation: this.isInstantActivation,
     };
     this.downloadService.downloadActivtionAnalysisReport(requestBody);
   }
 
-  
+  openDetails(row: any): void {
+    const requestBody = {
+      fromDate: this.fromMonth,
+      toDate: this.toMonth,
+      areaId: this.filterView === 'Area' ? row.Id : null,
+      shopId: this.filterView === 'Shop' ? row.Id : null,
+      userId: this.filterView === 'Agent' ? row.Id : null,
+      managerId: this.selectedManagerId,
+      isInstantActivation: this.isInstantActivation,
+    };
+
+    this.reportService.getMonthlyHistoryActivations(requestBody).subscribe((res) => {
+
+      var data = {
+        result: res.data,
+        headerName: this.filterView + ' Analysis Details'
+      }
+
+      this.dialog.open(HistoricalActivationDetailDialogComponent, {
+        data
+      });
+
+    });
+
+
+  }
+
 
 }

@@ -35,6 +35,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   activationList: any = [];
   allItem: any = [{ 'id:': null, 'name': 'All' }];
   instantView = false;
+  filterInstantView = '';
 
   eeSum: number = 0;
   threeSum: number = 0;
@@ -58,7 +59,7 @@ export class MonthlyActivationReportComponent implements OnInit {
   filteredManagers: any[] = [];
 
   displayedColumns: string[] = [
-    'ID',
+
     'NAME',
     'EE',
     'THREE',
@@ -181,6 +182,7 @@ export class MonthlyActivationReportComponent implements OnInit {
 
   loadData(): void {
     if (this.selectedMonth) {
+
       const requestBody = {
         fromDate: this.selectedMonth,
         areaId: this.selectedAreaId,
@@ -189,7 +191,19 @@ export class MonthlyActivationReportComponent implements OnInit {
         managerId: this.selectedManagerId,
         isInstantActivation: this.isInstantActivation,
       };
+
       this.instantView = this.isInstantActivation;
+
+      if (this.selectedAreaId) {
+        this.filterInstantView = 'Shop';
+      }
+      else if (this.selectedUserId || this.selectedManagerId) {
+        this.filterInstantView = 'Area';
+      }
+      else {
+        this.filterInstantView = 'Agent';
+      }
+
       this.reportService.getMonthlyActivations(requestBody).subscribe((res) => {
         if (res.data?.length > 0) {
           let result = res.data;
@@ -264,19 +278,25 @@ export class MonthlyActivationReportComponent implements OnInit {
     this.downloadService.downloadDailyActivationList(requestBody);
   }
 
-  openDetails(element: any): void {
+  openDetails(row: any): void {
+    const requestBody = {
+      fromDate: this.selectedMonth,
+      filterType: this.filterInstantView,
+      filterId: row.id
+    };
 
-    
-    
-    this.reportService.getMonthlyInstantActivationDetails(this.selectedMonth, element.id).subscribe((res) => {
+    this.reportService.getMonthlyInstantActivationDetails(requestBody).subscribe((res) => {
       var data = {
         result: res.data,
         headerName: 'Instant Activation Details'
       }
+
       this.dialog.open(PopupTableComponent, {
         data
       });
+
     });
+
   }
 
 }

@@ -11,7 +11,9 @@ export class HomeComponent {
 
   constructor(private authService: AuthService) { 
 
-     
+     if(this.authService.isTokenExpired()) {
+      this.authService.logout();
+     }
   }
 
 
