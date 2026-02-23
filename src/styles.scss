@@ -143,6 +143,15 @@ body {
     background-color: salmon !important;
 }
 
+.subcategory {
+  display: flex;
+  align-items: flex-start;
+  white-space: normal;
+  line-height: 1.4;
+  text-align: left;
+  padding:5px 0px;
+}
+
 
 
 .table-max-scroll {

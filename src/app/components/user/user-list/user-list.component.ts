@@ -23,6 +23,7 @@ export class UserListComponent {
     'email',
     'role',
     'status',
+    'isSystemAccess',
     'action',
   ];
 
@@ -143,6 +144,31 @@ export class UserListComponent {
 
   sendActivationEmail(userId: number): void {
     this.userService.sendActivationEmail(userId);
+  }
+
+  toggleAccess(row: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: `Are you sure you want to ${row.isSystemAccess == 0 ? 'Enable' : 'Disable'} system access for this user ?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        // Call API to update system access in database 
+        this.userService.updateUserSystemAccess(row.userId, row.isSystemAccess == 0 ? true : false).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage("Status updated successfully");
+            this.loadData();
+          }
+          else {
+            this.toasterService.showMessage(res.message);
+          }
+        });
+      }
+    });
   }
 
 }

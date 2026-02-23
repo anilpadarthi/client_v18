@@ -23,7 +23,7 @@
                 <mat-option value="PhysicalCC">Commission CHQ (Physical)</mat-option>
                 <mat-option value="Commission" *ngIf="isAdmin">Commission Wallet</mat-option>
                 <mat-option value="Bonus" *ngIf="isAdmin">Bonus Wallet</mat-option>
-                <mat-option value="Instant Bonus" *ngIf="isAdmin">Instant Bonus Wallet</mat-option>
+                <mat-option value="InstantBonus" *ngIf="isAdmin">Instant Bonus Wallet</mat-option>
                 <mat-option value="Other">Other</mat-option>
             </mat-select>
         </mat-form-field>
@@ -59,7 +59,7 @@
             <input matInput [value]="bonusWalletAmount" type="number" disabled />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100 m-t-10" *ngIf="paymentType == 'Instant Bonus' ">
+        <mat-form-field appearance="outline" class="w-100 m-t-10" *ngIf="paymentType == 'InstantBonus' ">
             <mat-label>Instant Bonus Wallet Amount</mat-label>
             <input matInput [value]="instantBonusWalletAmount" type="number" disabled />
         </mat-form-field>

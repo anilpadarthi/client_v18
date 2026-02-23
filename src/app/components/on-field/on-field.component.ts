@@ -27,7 +27,7 @@ export class OnFieldComponent implements OnInit {
   shopAddressDetails: any = null;
   areaLookup: any = [];
   shopLookup: any = [];
-  yearList: number[]=[];
+  yearList: number[] = [];
   selectedYear = 0;
   action = '';
   isMainSection = true;
@@ -77,8 +77,8 @@ export class OnFieldComponent implements OnInit {
   ngOnChanges() {
   }
 
-  getYears(){
-     const currentYear = new Date().getFullYear();
+  getYears() {
+    const currentYear = new Date().getFullYear();
     const startYear = 2018;
 
     for (let y = currentYear; y >= startYear; y--) {
@@ -224,16 +224,18 @@ export class OnFieldComponent implements OnInit {
 
 
   onActionClicked(type: any) {
+    console.log(this.shopAddressDetails);
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
     else {
-      if ((this.shopAddressDetails
-        && this.shopAddressDetails?.latitude != null
-        && this.shopAddressDetails.longitude != null
-        && this.shopAddressDetails?.latitude != ''
-        && this.shopAddressDetails.longitude != '') || !environment.isAddressSearch
-      ) {
+      if (this.shopAddressDetails
+        && this.shopAddressDetails?.addressLine1 != null
+        && this.shopAddressDetails.postCode != null      
+        && this.shopAddressDetails?.addressLine1 != ''
+        && this.shopAddressDetails?.postCode != ''
+      ) 
+      {
         this.action = type;
         this.isMainSection = false;
       }
@@ -243,6 +245,26 @@ export class OnFieldComponent implements OnInit {
         this.isMainSection = false;
       }
     }
+
+
+    // if ((this.shopAddressDetails
+    //   && this.shopAddressDetails?.latitude != null
+    //   && this.shopAddressDetails.longitude != null
+    //   && this.shopAddressDetails?.latitude != ''
+    //   && this.shopAddressDetails.longitude != ''
+    //   && this.shopAddressDetails?.addressLine1 != ''
+    //   && this.shopAddressDetails?.postCode != ''
+    // ) || !environment.isAddressSearch
+    // ) {
+    //   this.action = type;
+    //   this.isMainSection = false;
+    // }
+    // else {
+    //   this.toasterService.showMessage('Shop details are missing, please fill to proceed furthur');
+    //   this.action = 'EditShop';//open edit shop to update the details
+    //   this.isMainSection = false;
+    // }
+    //}
   }
 
   displayMainSection(): void {

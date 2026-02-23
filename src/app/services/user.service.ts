@@ -36,6 +36,12 @@ export class UserService {
     return this.http.get<ICommonResponse>(this.url + `/Delete?id=${id}`);
   }
 
+  
+
+  updateUserSystemAccess(userId: number, systemAccess: boolean): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/UpdateUserSystemAccess?userId=${userId}&isSystemAccess=${systemAccess}`);
+  }
+
   getAllAgentsToAllocate(): Observable<any> {
     return this.http.post<any>(this.url + '/GetAllAgentsToAllocate', null);
   }

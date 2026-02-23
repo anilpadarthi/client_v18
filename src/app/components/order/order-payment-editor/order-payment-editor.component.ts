@@ -132,7 +132,7 @@ export class OrderPaymentEditorComponent {
         this.toasterService.showMessage("You cann not redem using bonus wallet, It exceeds the amount");
         return;
       }
-      else if (this.paymentType == "Instant Bonus" && this.paymentForm.getRawValue().amount > this.instantBonusWalletAmount) {
+      else if (this.paymentType == "InstantBonus" && this.paymentForm.getRawValue().amount > this.instantBonusWalletAmount) {
         this.toasterService.showMessage("You cann not redem using instant bonus wallet, It exceeds the amount");
         return;
       }

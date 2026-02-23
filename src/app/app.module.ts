@@ -152,6 +152,7 @@ import { OnFieldSimConversionsComponent } from "./components/on-field/on-field-s
 import { ShopAddressDetailsComponent } from './components/order/shop-address-details/shop-address-details.component';
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';import { GlobalSearchComponent } from './components/global-search/global-search.component';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -312,7 +313,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -53,7 +53,8 @@ export class CommissionStatementsComponent implements OnInit {
 
     this.retailerService.getRetailerCommissionList(requestBody).subscribe((res) => {
       if (res.data?.length > 0) {
-        this.resultList = res.data;
+
+        this.resultList = res.data.filter((item: any) => item.commissionAmount >= 12);
       }
       else {
         this.resultList = [];

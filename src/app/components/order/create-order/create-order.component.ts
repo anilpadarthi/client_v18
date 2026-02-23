@@ -139,12 +139,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     if (this.requestType == 'COD') {
       this.isVAT = true;
       this.minimumCartAmount = environment.codMinimumCartValue;
-      this.shopId = id;
-      this.onFieldService.onFieildCommissionWalletAmounts(this.shopId).subscribe((res) => {
-        if (res.data != null) {
-          this.commissionAmount = res.data?.outstandingCommissionAmount;
-        }
-      });
+      this.shopId = id;      
     }
     else if (this.requestType == 'MC') {
       this.shopCommissionId = id;
@@ -393,7 +388,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         walletAmount: this.walletAmount,
         referenceNumber: this.shopCommissionId,
         requestType: this.requestType,
-        isVat: this.requestType == 'B' ? 1 : 0
+        isVat: this.isVAT ? 1 : 0
       };
       if (this.selectedPaymentMethodId) {
         this.orderService.create(requestBody).subscribe((res) => {
@@ -417,10 +412,16 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   validateOrderAmount(): boolean {
     
     let isValid = true;
-    if (this.isAdmin) {
+    if(this.cartItems == null || this.cartItems.length == 0) {
+      this.toasterService.showMessage("Your cart is empty, please add some products to place an order.");
+      return false;
+    }
+
+    if (this.isAdmin && this.requestType == 'COD') {
       return isValid;
     }
-    if (this.requestType == 'B') {
+    
+    if (this.requestType == 'B') {      
       this.getBonusAmount();
       if (this.grandTotalWithVAT > this.commissionAmount) {
         this.toasterService.showMessage("You cannot place order, cart amount exceeds the bonus wallet amount (£" + this.commissionAmount + ").");
@@ -606,6 +607,16 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   clearSearch() {
     this.seachProduct = '';
+  }
+
+  onPaymentMethodChange(event: any): void {
+    console.log("Selected Payment Method ID:", event.value);
+    if (event.value == 2) {
+      this.isVAT = true;
+    }
+    else {
+      this.isVAT = false;
+    }
   }
 
   // applyPricing(cart: any[] ): any[] {
