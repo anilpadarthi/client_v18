@@ -40,7 +40,7 @@ export class OnFieldShopWalletComponent implements OnInit {
     let userRole = this.webstorgeService.getUserRole();
     if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
       this.isDisplayInstantBonus = true;
-      this.hasViewWalletHistory = true;
+     
     }
   }
 
@@ -74,7 +74,7 @@ export class OnFieldShopWalletComponent implements OnInit {
 
 
   openShopWalletHistoryDialog(walletType: string): void {
-    if (this.hasViewWalletHistory) {
+  
       const data = {
         shopId: this.selectedShopId,
         walletType: walletType,
@@ -82,7 +82,7 @@ export class OnFieldShopWalletComponent implements OnInit {
       const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
         data
       });
-    }
+    
   }
 
   openShoppingPage(type: any): void {

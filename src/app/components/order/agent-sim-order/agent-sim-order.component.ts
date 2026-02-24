@@ -153,7 +153,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateCartItemQuantity(item: any, newQuantity: any): void {
-    if(newQuantity < 1){
+    if (newQuantity < 1) {
       this.toasterService.showMessage("Quantity cannot be less than 1.");
       return;
     }
@@ -226,18 +226,23 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
       shippingAddress: this.shippingAddress,
     };
 
-    this.orderService.create(requestBody).subscribe((res) => {
-      if (res.statusCode == 201) {
-        this.toasterService.showMessage("Sim Request created successfully.");
-        this.cartItems = [];
-        setTimeout(() => this.closeWindow(), 2000);
-        //window.close();
-      }
-      else {
-        this.toasterService.showMessage(res.message);
-      }
+    if (this.cartItems == null || this.cartItems.length == 0) {
+      this.toasterService.showMessage("Your cart is empty, please add some products to place an order.");
+    }
+    else {
+      this.orderService.create(requestBody).subscribe((res) => {
+        if (res.statusCode == 201) {
+          this.toasterService.showMessage("Sim Request created successfully.");
+          this.cartItems = [];
+          setTimeout(() => this.closeWindow(), 2000);
+          //window.close();
+        }
+        else {
+          this.toasterService.showMessage(res.message);
+        }
 
-    });
+      });
+    }
   }
 
   closeWindow() {

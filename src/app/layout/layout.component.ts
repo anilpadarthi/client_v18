@@ -160,6 +160,14 @@ export class LayoutComponent implements OnInit {
       window.open(fullPath, '_blank');
       if (this.isOver) this.sidenav?.close();
     }
+    else if (item.target && item.displayName == 'Request Sims') {
+     
+      const fullPath = this.router.serializeUrl(
+        this.router.createUrlTree([item.route])
+      );
+      window.open(fullPath, '_blank');
+      if (this.isOver) this.sidenav?.close();
+    }
     else if (item.route == 'retailer/accessories/create-order') {
       const fullPath = this.router.serializeUrl(
         this.router.createUrlTree([item.route+"/" + this.loggedInUser.userId +"/COD"])
