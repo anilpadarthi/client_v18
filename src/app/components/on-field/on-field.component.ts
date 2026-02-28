@@ -224,7 +224,6 @@ export class OnFieldComponent implements OnInit {
 
 
   onActionClicked(type: any) {
-    console.log(this.shopAddressDetails);
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
@@ -287,6 +286,18 @@ export class OnFieldComponent implements OnInit {
     }
     else {
       this.toasterService.showMessage('Shop details are missing, please fill to proceed furthur');
+    }
+  }
+
+  onShopPortal() {
+    if (this.selectedShopId == null) {
+      this.toasterService.showMessage('Please select any shop before to proceed.');
+    }
+    else {
+     const fullPath = this.router.serializeUrl(
+        this.router.createUrlTree([`retailer/shopportal/${this.selectedShopId}`])
+      );
+      window.open(fullPath, '_blank');
     }
   }
 

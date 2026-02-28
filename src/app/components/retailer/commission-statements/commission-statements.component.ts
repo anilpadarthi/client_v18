@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RetailerService } from '../../../services/retailer.service';
 import { DatePipe } from '@angular/common';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -15,6 +15,8 @@ import { MatDatepicker } from '@angular/material/datepicker';
 
 export class CommissionStatementsComponent implements OnInit {
 
+  @Input() selectedShopId!: number;
+  private isFirstChange = true;
   selectedMonth: string | null = null;
   yearList: number[] = [];
   selectedYear = '';
@@ -41,7 +43,18 @@ export class CommissionStatementsComponent implements OnInit {
     for (let y = currentYear; y >= startYear; y--) {
       this.yearList.push(y);
     }
-    this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    this.loggedInUserId = this.selectedShopId || this.webstorgeService.getUserInfo().userId;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.loadData();
+    }
   }
 
   loadData(): void {

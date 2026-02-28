@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RetailerService } from '../../../services/retailer.service';
 import { DatePipe } from '@angular/common';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class ActivationsComponent implements OnInit {
 
+  @Input() selectedShopId!: number;
+  private isFirstChange = true;
   selectedMonth: string | null = null;
   totalCount = 0;
   resultList: any[] = [];
@@ -41,7 +43,7 @@ export class ActivationsComponent implements OnInit {
   }
 
   loadData(): void {
-    let loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    let loggedInUserId = this.selectedShopId || this.webstorgeService.getUserInfo().userId;
     const requestBody = {
       fromDate: this.selectedMonth,
       filterId: loggedInUserId
@@ -88,6 +90,18 @@ export class ActivationsComponent implements OnInit {
     this.selectedMonth = null;
     this.groupedList = [];
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.loadData();
+    }
+  }
+
 
 
 

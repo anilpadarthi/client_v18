@@ -56,7 +56,6 @@ export class IdleService {
     if (diff > this.idleLimit) {
 
       this.ngZone.run(() => {
-        console.log("Idle exceeded 30 minutes → logout");
 
         this.onTimeout.next();
       });

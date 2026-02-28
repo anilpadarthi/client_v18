@@ -34,10 +34,7 @@ export class ExpensesFormEditorComponent {
 
   onSubmit() {
     if (this.expenseForm.valid) {
-      console.log('Form Submitted:', this.expenseForm.value);
-      console.log('Receipts:', this.selectedFiles);
     } else {
-      console.log('Form is invalid');
     }
   }
 }

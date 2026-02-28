@@ -59,6 +59,12 @@ export class HistoricalActivationDetailDialogComponent {
     return this.dataSource.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
   }
 
+  getCellClass(value: number): string {
+    if (value > 10) return 'green-cell';
+    if (value >= 5) return 'yellow-cell';
+    if (value < 5) return 'red-cell';
+    return '';
+  }
 
 }
 

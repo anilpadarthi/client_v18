@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input, SimpleChanges } from '@angular/core';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { WebstorgeService } from '../../../services/web-storage.service';
@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 import { OrderDetailsComponent } from '../../order/order-details/order-details.component';
 import { FormControl } from '@angular/forms';
-import { cleanDate } from '../../../helpers/utils';
 
 @Component({
   selector: 'app-retailer-order-list',
@@ -20,6 +19,9 @@ import { cleanDate } from '../../../helpers/utils';
 })
 
 export class RetailerOrderListComponent implements OnInit {
+
+   @Input() selectedShopId!: number;
+    private isFirstChange = true;
 
   displayedColumns = [
     "actions",
@@ -52,7 +54,6 @@ export class RetailerOrderListComponent implements OnInit {
   selectedAgentId = null;
   selectedManagerId = null;
   selectedAreaId = null;
-  selectedShopId: any = null;
   selectedShippingMethodId = null;
   orderNumberSearch: any = null;
   trackNumberSearch: any = null;
@@ -92,17 +93,28 @@ export class RetailerOrderListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userRole = this.webstorgeService.getUserRole();
-    this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
+    this.userRole = 'Retailer';;
+    this.loggedInUserId = this.selectedShopId || this.webstorgeService.getUserInfo().userId;
     this.shopNameSearch = this.loggedInUserId.toString();
     this.loadData();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      if (this.isFirstChange) {
+        this.isFirstChange = false; // Mark first change as handled
+        return; // Skip logic on the first change detection pass
+      }
+  
+      if (changes['selectedShopId'] || changes['refreshValue']) {
+        this.loadData();
+      }
+    }
 
   loadData(): void {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      shopName: this.shopNameSearch?.trim() || null,
+      shopName: this.selectedShopId ? this.selectedShopId.toString() : null,
       orderId: this.orderNumberSearch?.trim() || null,
       trackingNumber: this.trackNumberSearch?.trim() || null,
     };
@@ -126,7 +138,6 @@ export class RetailerOrderListComponent implements OnInit {
     this.selectedAgentId = null;
     this.selectedAreaId = null;
     this.selectedManagerId = null;
-    this.selectedShopId = null;
     this.shopNameSearch = null;
     this.selectedStatusId = null;
     this.selectedPaymentMethodId = null;

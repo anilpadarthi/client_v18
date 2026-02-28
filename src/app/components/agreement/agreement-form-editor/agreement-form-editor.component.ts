@@ -24,10 +24,7 @@ export class AgreementFormEditorComponent {
   onSubmit() {
     if (this.agreementForm.valid) {
       // Handle form submission logic
-      console.log('Form Submitted:', this.agreementForm.value);
-      console.log('Selected Image:', this.selectedImage);
     } else {
-      console.log('Form is invalid');
     }
   }
 

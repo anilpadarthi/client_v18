@@ -610,7 +610,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   onPaymentMethodChange(event: any): void {
-    console.log("Selected Payment Method ID:", event.value);
     if (event.value == 2) {
       this.isVAT = true;
     }

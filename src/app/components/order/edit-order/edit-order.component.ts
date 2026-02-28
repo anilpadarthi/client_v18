@@ -117,17 +117,17 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     if (this.orderId) {
       this.orderService.getById(this.orderId).subscribe((res) => {
         this.shopId = res.data.shopId;
-        this.cartItems = res.data.items;
+        this.cartItems = res.data.items.filter((f: any) => f.isBundleProduct == 0);
         this.deliveryCharges = res.data.deliveryCharges;
         this.vatPercentage = res.data.vatPercentage;
         this.discountPercentage = res.data.discountPercentage;
         this.isVAT = res.data.isVAT;
         this.OrderPaymentTypeId = res.data.orderPaymentTypeId;
         this.OriginalOrderAmount = res.data.totalWithOutVATAmount;
-        this.cartItems.forEach((e: any) => {
-          e.netAmount = e.qty * e.salePrice;
-          e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
-          e.productImage = environment.backend.host + '/' + e.productImage;
+        this.cartItems.forEach((e: any) => {          
+            e.netAmount = e.qty * e.salePrice;
+            e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
+            e.productImage = environment.backend.host + '/' + e.productImage;          
         });
 
         this.updateCalculations();
@@ -315,7 +315,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
       if (this.subTotal > this.OriginalOrderAmount) {
         this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");
         isValid = false;
-      }     
+      }
     }
     else if (this.OrderPaymentTypeId != 8 && !this.isAdmin) {
       if (this.netTotal < this.minimumCartAmount) {

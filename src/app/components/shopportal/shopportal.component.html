@@ -1,0 +1,85 @@
+<mat-toolbar class="topbar">
+    <div class="d-flex align-items-center">
+        <div class="branding" *ngIf="!isMobile">
+            <a href="/home">
+                <img src="./assets/images/logos/logo.png" class="align-middle m-2 leap-logo" alt="logo" />
+            </a>
+        </div>
+        <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+            <mat-icon>menu_open</mat-icon>
+        </button>
+        <button mat-icon-button (click)="toggleSidebar()" class="hamburg" *ngIf="!isMobile">
+            <mat-icon>menu_open</mat-icon>
+        </button>
+        
+        <h2 class=" pageTitle">Shop Portal - {{ shopAddressDetails?.shopName }}</h2>
+    </div>   
+
+</mat-toolbar>
+
+
+<mat-sidenav-container class="mainWrapper">
+
+    <!-- Sidebar -->
+    <mat-sidenav mode="side" opened class="sidebarNav">
+
+        <mat-nav-list>
+            <a mat-list-item
+               [class.active]="selectedTabIndex === 0"
+               (click)="selectedTabIndex = 0">
+               <mat-icon class="mr-2">bolt</mat-icon>
+               Activations
+            </a>
+
+            <a mat-list-item
+               [class.active]="selectedTabIndex === 1"
+               (click)="selectedTabIndex = 1">
+               <mat-icon class="mr-2">bolt</mat-icon>
+               Stock
+            </a>
+
+            <a mat-list-item
+               [class.active]="selectedTabIndex === 2"
+               (click)="selectedTabIndex = 2">
+               <mat-icon class="mr-2">bolt</mat-icon>
+               Commissions
+            </a>
+
+            <a mat-list-item
+               [class.active]="selectedTabIndex === 3"
+               (click)="selectedTabIndex = 3">
+               <mat-icon class="mr-2">bolt</mat-icon>
+               Given vs Activations
+            </a>
+
+            <a mat-list-item
+               [class.active]="selectedTabIndex === 4"
+               (click)="selectedTabIndex = 4">
+               <mat-icon class="mr-2">bolt</mat-icon>
+               Orders
+            </a>
+        </mat-nav-list>
+
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="contentWrapper">
+
+        <ng-container [ngSwitch]="selectedTabIndex">
+
+            <app-activations [selectedShopId]="shopId" *ngSwitchCase="0"></app-activations>
+
+            <app-stock [selectedShopId]="shopId" *ngSwitchCase="1"></app-stock>
+
+            <app-commission-statements [selectedShopId]="shopId" *ngSwitchCase="2"></app-commission-statements>
+
+            <app-given-vs-activations [selectedShopId]="shopId" *ngSwitchCase="3"></app-given-vs-activations>
+
+            <app-retailer-order-list [selectedShopId]="shopId" *ngSwitchCase="4"></app-retailer-order-list>
+
+
+        </ng-container>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

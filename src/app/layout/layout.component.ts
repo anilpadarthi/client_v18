@@ -172,7 +172,7 @@ export class LayoutComponent implements OnInit {
       const fullPath = this.router.serializeUrl(
         this.router.createUrlTree([item.route+"/" + this.loggedInUser.userId +"/COD"])
       );
-      console.log(fullPath);
+     
       window.open(fullPath, '_blank');
       if (this.isOver) this.sidenav?.close();
     }

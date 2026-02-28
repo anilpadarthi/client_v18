@@ -12,6 +12,7 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 
 export class GivenVsActivationsComponent implements OnInit {
 
+  
   @Input() selectedShopId!: number;
   @Input() refreshValue!: number;
   private isFirstChange = true;
@@ -33,14 +34,24 @@ export class GivenVsActivationsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.selectedShopId = this.webstorgeService.getUserInfo().userId;
     this.loadData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isFirstChange) {
+      this.isFirstChange = false; // Mark first change as handled
+      return; // Skip logic on the first change detection pass
+    }
+
+    if (changes['selectedShopId'] || changes['refreshValue']) {
+      this.loadData();
+    }
   }
 
   loadData(): void {
     this.isLoading = true;
     const request = {
-      shopId: this.selectedShopId,
+      shopId: this.selectedShopId || this.webstorgeService.getUserInfo().userId,
       fromDate: new Date(new Date().setMonth(new Date().getMonth() - 12)),
       toDate: new Date(),
       activationType: 'D',
@@ -79,16 +90,7 @@ export class GivenVsActivationsComponent implements OnInit {
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.isFirstChange) {
-      this.isFirstChange = false; // Mark first change as handled
-      return; // Skip logic on the first change detection pass
-    }
 
-    if (changes['selectedShopId'] || changes['refreshValue']) {
-      this.loadData();
-    }
-  }
 
 
 }

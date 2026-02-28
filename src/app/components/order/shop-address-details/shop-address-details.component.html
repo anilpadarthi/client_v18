@@ -27,7 +27,7 @@
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Shop Phone</mat-label>
-            <input matInput formControlName="shopPhone" />
+            <input matInput formControlName="shopPhone" inputmode="numeric" maxlength="20" (input)="onInputChange($event)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">

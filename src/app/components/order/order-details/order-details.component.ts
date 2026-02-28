@@ -63,7 +63,7 @@ export class OrderDetailsComponent implements OnInit {
       }
       else if (this.userRole == 'WareHouse') {
         this.isWareHouseKeeper = true;
-      }     
+      }
 
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;
@@ -114,7 +114,9 @@ export class OrderDetailsComponent implements OnInit {
   updateCalculations() {
     this.subTotal = 0;
     this.orderItems?.forEach((product: any) => {
-      this.subTotal += product.qty * product.salePrice;
+      if (product.isBundleProduct == 0) {
+        this.subTotal += product.qty * product.salePrice;
+      }
     });
   }
 

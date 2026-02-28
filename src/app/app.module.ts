@@ -153,6 +153,7 @@ import { ShopAddressDetailsComponent } from './components/order/shop-address-det
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';import { GlobalSearchComponent } from './components/global-search/global-search.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { ShopportalComponent } from './components/shopportal/shopportal.component';
 registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -282,7 +283,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ShopAddressDetailsComponent,
     InstantActivationReportComponent,
     AgentAccessoriesComponent,
-    GlobalSearchComponent
+    GlobalSearchComponent,
+    ShopportalComponent
   ],
   imports: [
     BrowserModule,

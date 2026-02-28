@@ -75,7 +75,6 @@ export class OnFieldShopOrderListComponent implements OnInit {
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.hasVATInvoiceAccess = true;
     }
-    console.log(this.canSendVAT);
     this.loadData();
     this.loadDropDowns();
   }

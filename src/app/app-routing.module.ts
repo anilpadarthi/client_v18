@@ -72,6 +72,7 @@ import { GivenVsActivationsComponent } from './components/retailer/given-vs-acti
 import { BundleProductEditorComponent } from './components/product/bundle-product-editor/bundle-product-editor.component';
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import { GlobalSearchComponent } from './components/global-search/global-search.component';
+import { ShopportalComponent } from './components/shopportal/shopportal.component';
 
 
 const routes: Routes = [
@@ -175,13 +176,15 @@ const routes: Routes = [
       { path: 'chat', component: GroupChatComponent },
 
 
+
+
       { path: 'retailer/dashboard', component: RetailerComponent },
       { path: 'retailer/siminfo', component: ImeiSearchComponent },
       { path: 'retailer/stock', component: StockComponent },
       { path: 'retailer/activations', component: ActivationsComponent },
       { path: 'retailer/commissions', component: CommissionStatementsComponent },
       { path: 'retailer/stockvsconnections', component: GivenVsActivationsComponent },
-      { path: 'retailer/sales', component: RetailerOrderListComponent },      
+      { path: 'retailer/sales', component: RetailerOrderListComponent },
       { path: 'retailer/sales-manager', component: SalesManagerComponent },
       { path: 'retailer/profile', component: EditProfileComponent },
       { path: 'retailer/changepassword', component: ChangePasswordComponent },
@@ -189,7 +192,7 @@ const routes: Routes = [
 
     ],
   },
-
+  { path: 'retailer/shopportal/:id', component: ShopportalComponent, canActivate: [AuthGuard], },
   { path: 'accessories/create-order/:id/:type', component: CreateOrderComponent, canActivate: [AuthGuard], },
   { path: 'accessories/edit-order/:id', component: EditOrderComponent, canActivate: [AuthGuard], },
   { path: 'accessories/sim-request', component: AgentSimOrderComponent, canActivate: [AuthGuard], },

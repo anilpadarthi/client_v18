@@ -1,0 +1,150 @@
+.contentWrapper {
+  padding: 20px !important;
+}
+
+.vat-amount {
+  color: green !important;
+}
+
+.branding {
+  padding: 0em !important;
+}
+
+.continue-shopping {
+  display: block !important;
+
+  button,
+  mat-form-field {
+    margin-left: 1em !important;
+    margin-bottom: 1em !important;
+  }
+}
+
+.hamburg {
+  margin-left: 5em !important
+}
+
+.order-summary-table {
+  td {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.order-summary-card {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 15px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0px !important;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.label {
+  flex: 4;
+  text-align: right;
+  color: #666;
+  margin-right: 10px;
+}
+
+.value {
+  flex: 1;
+  text-align: right;
+  font-weight: 500;
+  color: #333;
+}
+
+.nopadding {
+  padding-left: 0px;
+  padding-right: 0px;
+  ;
+
+}
+
+.strike-out {
+  text-decoration: line-through;
+}
+
+.discount {
+  color: #f57c00 !important;
+}
+
+.input-row .discount-input {
+  width: 120px;
+}
+
+.total-row {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.total {
+  color: #1a237e;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+
+.float-right {
+  float: right;
+}
+
+mat-form-field textarea {
+  resize: vertical;
+  /* allows user to resize but stays inside */
+  overflow: auto !important;
+  /* prevents text from overflow outside box */
+  box-sizing: border-box;
+  /* keeps content inside outline */
+  width: 100%;
+}
+
+.address-details {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+/* Responsive layout tweaks for tablets and up */
+@media (max-width: 360px) {
+
+  .label {
+    flex: 2;
+  }
+
+  .button-group {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+
+}
+:host ::ng-deep .mdc-list-item__primary-text  {
+    color: white !important;
+}
+
+.pageTitle{
+    margin-left:5%;
+}
