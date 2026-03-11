@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </div> -->
 <div class="row">
-  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="!isLoading">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="!isLoading && walletType === 'CommissionWallet'">
     <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
@@ -17,7 +17,7 @@
   </div>
 
 
-  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="!isLoading && walletType === 'BonusWallet'">
     <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />
@@ -35,7 +35,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="isDisplayInstantBonus">
+  <div class="col-lg-4 col-sm-4 col-xs-12 m-b-20" *ngIf="isDisplayInstantBonus && walletType === 'BonusWallet'">
     <mat-card class="shadow-none text-center bg-light-primary  shadow-none link">
       <mat-card-content class="p-16">
         <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" />

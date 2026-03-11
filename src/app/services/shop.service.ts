@@ -86,7 +86,7 @@ export class ShopService {
   }
 
   updateShopCommissionCheque(sno: number, chequeNumber: string): Observable<ICommonResponse> {
-    return this.http.get<ICommonResponse>(this.url + `/UpdateShopCommissionCheque?sno=${sno}&chequeNumber='${chequeNumber}'`);
+    return this.http.get<ICommonResponse>(this.url + `/UpdateShopCommissionCheque?sno=${sno}&chequeNumber=${chequeNumber}`);
   }
 
   deleteShopCommissionCheque(sno: number): Observable<ICommonResponse> {

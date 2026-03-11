@@ -1,0 +1,23 @@
+.inline-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compact-field {
+  width: 120px;
+}
+
+.compact-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.compact-field .mat-mdc-form-field-outline {
+  color: #ccc;
+}
+
+.compact-field .mdc-notched-outline__leading,
+.compact-field .mdc-notched-outline__notch,
+.compact-field .mdc-notched-outline__trailing {
+  border-width: 1px;
+}

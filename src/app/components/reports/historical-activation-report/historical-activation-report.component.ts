@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -11,7 +11,6 @@ import { WebstorgeService } from '../../../services/web-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HistoricalActivationDetailDialogComponent } from './historical-activation-detail-dialog.component'
 import { FormControl } from '@angular/forms';
-import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 
 @Component({
   selector: 'app-historical-activation-report',
@@ -33,12 +32,13 @@ export class HistoricalActivationReportComponent implements OnInit {
   shopLookup: any = [];
   userLookup: any = [];
   managerLookup: any = [];
-  stickyColumns: string[] = ['Id', 'Name'];
+  stickyColumns: string[] = [];
   activationList: any = [];
   displayedColumns: string[] = [];
   isInstantActivation = false;
   isDisplay = false;
   isAdmin = false;
+  isMobile = false;
   areaFilterCtrl: FormControl = new FormControl();
   shopFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
@@ -50,9 +50,7 @@ export class HistoricalActivationReportComponent implements OnInit {
   filterView = '';
 
   constructor(
-    private datePipe: DatePipe,
     private toasterService: ToasterService,
-    private router: Router,
     private reportService: ReportService,
     private lookupService: LookupService,
     private webstorgeService: WebstorgeService,
@@ -62,6 +60,7 @@ export class HistoricalActivationReportComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.checkIfMobile();
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
@@ -94,6 +93,16 @@ export class HistoricalActivationReportComponent implements OnInit {
     this.managerFilterCtrl.valueChanges.subscribe(() => {
       this.filterManagers();
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkIfMobile();
+  }
+
+  private checkIfMobile(): void {
+    this.isMobile = window.innerWidth <= 768;
+    this.stickyColumns = this.isMobile ? [] : ['Name'];
   }
 
 
@@ -177,8 +186,8 @@ export class HistoricalActivationReportComponent implements OnInit {
 
       if (this.selectedAreaId) {
         this.filterView = 'Shop';
-      }
-      else if (this.selectedUserId || this.selectedManagerId) {
+      }     
+      else if (this.selectedUserId) {
         this.filterView = 'Area';
       }
       else {
@@ -188,7 +197,7 @@ export class HistoricalActivationReportComponent implements OnInit {
       this.reportService.getMonthlyHistoryActivations(requestBody).subscribe((res) => {
 
         if (res.data?.length > 0) {
-          this.displayedColumns = Object.keys(res.data[0]);
+          this.displayedColumns = Object.keys(res.data[0]).filter(col => col !== 'Id');
           this.activationList = res.data;
         }
         else {
@@ -283,6 +292,13 @@ export class HistoricalActivationReportComponent implements OnInit {
     });
 
 
+  }
+
+  getCellClass(value: number): string {
+    if (value > 10) return 'green-cell';
+    if (value >= 5) return 'yellow-cell';
+    if (value < 5) return 'red-cell';
+    return '';
   }
 
 

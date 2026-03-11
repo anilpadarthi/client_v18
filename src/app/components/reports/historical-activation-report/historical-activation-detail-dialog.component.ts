@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 
@@ -7,11 +7,12 @@ import { DatePipe } from '@angular/common';
   templateUrl: './historical-activation-detail-dialog.component.html',
   styleUrls: ['./historical-activation-detail-dialog.component.scss']
 })
-export class HistoricalActivationDetailDialogComponent {
+export class HistoricalActivationDetailDialogComponent implements OnInit {
   dataSource: any = [];
   displayedColumns: string[] = [];
-  stickyColumns: string[] = ['Id', 'Name'];
+  stickyColumns: string[] = [];
   header = '';
+  isMobile = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,9 +20,23 @@ export class HistoricalActivationDetailDialogComponent {
   ) {
     this.header = data.headerName;
     if (data.result.length > 0) {
-      this.displayedColumns = Object.keys(data.result[0]);
+      this.displayedColumns = Object.keys(data.result[0]).filter(col => col !== 'Id');
       this.dataSource = data.result;
     }
+  }
+
+  ngOnInit(): void {
+    this.checkIfMobile();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkIfMobile();
+  }
+
+  private checkIfMobile(): void {
+    this.isMobile = window.innerWidth <= 768;
+    this.stickyColumns = this.isMobile ? [] : ['Name'];
   }
 
   isDate(value: any): boolean {

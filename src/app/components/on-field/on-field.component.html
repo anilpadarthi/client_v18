@@ -64,7 +64,7 @@
               <mat-icon>arrow_right</mat-icon>
               Order History
             </button>
-             <button mat-menu-item (click)="onOrderHistory('OrderList', 'yes')">
+            <button mat-menu-item (click)="onOrderHistory('OrderList', 'yes')">
               <mat-icon>arrow_right</mat-icon>
               VAT Invoices
             </button>
@@ -75,6 +75,14 @@
             <button mat-menu-item (click)="onShopPortal()">
               <mat-icon>arrow_right</mat-icon>
               Shop Portal
+            </button>
+            <button mat-menu-item (click)="onActionClicked('CommissionWallet')">
+              <mat-icon>arrow_right</mat-icon>
+              Commission Wallet
+            </button>
+            <button mat-menu-item (click)="onActionClicked('BonusWallet')">
+              <mat-icon>arrow_right</mat-icon>
+              Bonus Wallet
             </button>
             <button mat-menu-item (click)="openShoppingPage('COD')">
               <mat-icon>open_in_new</mat-icon>
@@ -138,14 +146,14 @@
             </div>
           </ng-template>
         </mat-tab>
-        <mat-tab label="Wallet">
+        <!-- <mat-tab label="Wallet">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
               <app-on-field-shop-wallet [selectedShopId]="selectedShopId"
                 [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
             </div>
           </ng-template>
-        </mat-tab>
+        </mat-tab> -->
         <mat-tab label="Conversions">
           <ng-template matTabContent>
             <div class="mat-body-1 rounded m-t-12">
@@ -182,4 +190,13 @@
     <app-on-field-shop-order-list [selectedShopId]="selectedShopId" [refreshValue]="refreshCounter"
       (notifyParent)="handleChildBackEvent($event)" [canSendVAT]="canSendVAT"></app-on-field-shop-order-list>
   </div>
+  <div *ngIf="action == 'CommissionWallet'">
+    <app-on-field-shop-wallet [selectedShopId]="selectedShopId" [walletType]="action"
+      [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+  </div>
+  <div *ngIf="action == 'BonusWallet'">
+    <app-on-field-shop-wallet [selectedShopId]="selectedShopId" [walletType]="action"
+      [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+  </div>
+
 </div>

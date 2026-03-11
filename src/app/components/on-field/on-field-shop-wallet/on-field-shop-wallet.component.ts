@@ -16,6 +16,7 @@ import { OnFieldShopWalletHistoryComponent } from '../on-field-shop-wallet-histo
 export class OnFieldShopWalletComponent implements OnInit {
 
   @Input() selectedShopId!: number;
+  @Input() walletType!: string;
   @Input() refreshValue!: number;
   commissionAmount = 0.00;
   bonusAmount = 0.00;

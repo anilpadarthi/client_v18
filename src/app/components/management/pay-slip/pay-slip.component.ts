@@ -30,6 +30,7 @@ export class PaySlipComponent implements OnInit {
   totalSimBonus = 0.00;
   totalSaleAmount = 0.00;
   totalCollectedAmount = 0.00;
+  totalBeforeCutOffDateCollectedAmount = 0.00;
   totalAccessoriesCommission = 0.00;
   userLookup: any = [];
   managerLookup: any = [];
@@ -54,7 +55,7 @@ export class PaySlipComponent implements OnInit {
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
-  displayedColumns2: string[] = ['saleType', 'saleAmount', 'collectedAmount', 'rate', 'total'];
+  displayedColumns2: string[] = ['saleType', 'saleAmount', 'collectedAmount','beforeCutOffDateCollectedAmount', 'rate', 'total'];
   displayedColumns3: string[] = ['type', 'comments', 'date', 'amount', 'action'];
 
   constructor(
@@ -152,6 +153,7 @@ export class PaySlipComponent implements OnInit {
           this.instantAndVodafoneVoxiCommision = this.instantAndVodafoneVoxiList.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSaleAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.saleAmount, 0);
           this.totalCollectedAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.collectedAmount, 0);
+          this.totalBeforeCutOffDateCollectedAmount = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.beforeCutOffDateCollectedAmount, 0);
           this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
           this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
