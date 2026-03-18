@@ -155,6 +155,11 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/track',
       },
+      {
+        displayName: 'Message Center',
+        iconName: 'arrow_right',
+        route: 'report/message-center',
+      },
     ],
   },
 

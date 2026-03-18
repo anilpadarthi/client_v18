@@ -38,6 +38,7 @@ export class SubCategoryEditorComponent {
         categoryId: ['', [Validators.required]],
         image: null as File | null,
         status: [true],
+        displayOrder: [0]
       },
     );
   }
@@ -86,6 +87,7 @@ export class SubCategoryEditorComponent {
       formBody.append('subCategoryName', this.subCategoryForm.value.subCategoryName.trim());
       formBody.append('status', this.subCategoryForm.value.status ? '1' : '0');
       formBody.append('imageFile', this.subCategoryForm.value.image);
+      formBody.append('displayOrder', this.subCategoryForm.value.displayOrder);
 
       if (this.subCategoryId != null) {
         this.subCategoryService.updateSubCategory(formBody).subscribe((res) => {

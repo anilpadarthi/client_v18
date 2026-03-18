@@ -97,4 +97,17 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url + `/GlobalShopSearch?searchText=${searchText}`);
   }
 
+  createShopCommisioTypeChangeRequest(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/CreateShopCommisioTypeChangeRequest', requestBody);
+  }
+
+  updateShopCommisioTypeChangeRequest(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/UpdateShopCommisioTypeChangeRequest', requestBody);
+  }
+
+  getPendingCommissionTypeChangeRequests(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/GetPendingCommissionTypeChangeRequests?shopId=${shopId}`);
+  }
+
+
 }

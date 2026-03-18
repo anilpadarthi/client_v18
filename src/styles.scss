@@ -35,7 +35,7 @@ body {
     color: white !important;
 }
 
-.mat-mdc-paginator-page-size-select{
+.mat-mdc-paginator-page-size-select {
     width: 75px !important;
 }
 
@@ -114,11 +114,12 @@ body {
     .center {
         text-align: center;
     }
+
     .left {
         text-align: left;
     }
 
-    .action-link{
+    .action-link {
         cursor: pointer;
         color: #ff6161 !important;
     }
@@ -130,10 +131,11 @@ body {
     }
 }
 
-.Retailer-order{
+.Retailer-order {
     font-style: italic !important;
     font-weight: bold !important;
 }
+
 .vat-bg {
     background-color: lightgreen !important;
 }
@@ -144,12 +146,12 @@ body {
 }
 
 .subcategory {
-  display: flex;
-  align-items: flex-start;
-  white-space: normal;
-  line-height: 1.4;
-  text-align: left;
-  padding:5px 0px;
+    display: flex;
+    align-items: flex-start;
+    white-space: normal;
+    line-height: 1.4;
+    text-align: left;
+    padding: 5px 0px;
 }
 
 
@@ -192,9 +194,6 @@ body {
     }
 }
 
-mat-card-title {
-    color: #FF6347 !important;
-}
 
 mat-card-header {
     border-bottom: 1px solid #e5eaef !important;
@@ -726,7 +725,6 @@ html {
                     color: #262A2D;
                     margin: 5px 0 0;
                 }
-
                 h4 {
                     font-size: 14px;
                     color: #797979;
@@ -743,6 +741,7 @@ html {
         mat-card-header {
             border-bottom: 0 !important;
             font-size: 18px;
+            margin-bottom: 1% !important;
 
             .mat-mdc-card-title {
                 color: #262A2D !important;
@@ -753,6 +752,10 @@ html {
 
 .mx-2 {
     margin: 0 10px;
+}
+
+.no-padding{
+    padding: 0px !important;
 }
 
 .page-title {

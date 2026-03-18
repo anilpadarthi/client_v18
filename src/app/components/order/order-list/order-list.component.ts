@@ -288,6 +288,7 @@ export class OrderListComponent implements OnInit {
     this.trackNumberSearch = null;
     this.isVat = false;
     this.isShowOutstandingMetrics = false;
+    
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
@@ -306,7 +307,9 @@ export class OrderListComponent implements OnInit {
       this.selectedShopId = loggedInUserId;
       this.shopNameSearch = loggedInUserId.toString();
     }
-    this.managerChange();    
+    else {
+      this.selectedAgentId = loggedInUserId;
+    }
     this.loadData();
   }
 

@@ -111,4 +111,8 @@ export class ReportService {
     return this.http.get<any>(this.url + '/GetBankChequeStatus?chequeNumber=' + chequeNumber);
   }
 
+  getMessageCenterData(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetMessageCenterData', requestBody);
+  }
+
 }

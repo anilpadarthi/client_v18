@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { CommissionTypeChangeDialogComponent } from '../../common/commission-type-change-dialog/commission-type-change-dialog.component';
 
 @Component({
   selector: 'app-shop-editor',
@@ -33,9 +35,10 @@ export class ShopEditorComponent {
   //searchAddress = '';
   addressSuggestions: any = [];
   apiAddressSuggestions: any = [];
-  isDisplay = false;
+  isAdmin = false;
   areaFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
+  hasPendingCommissionRequest = false;
 
   constructor
     (
@@ -47,12 +50,19 @@ export class ShopEditorComponent {
       private fb: FormBuilder,
       private postcodeService: PostcodeService,
       private webstorgeService: WebstorgeService,
-      private datePipe: DatePipe
+      private datePipe: DatePipe,
+      public dialog: MatDialog
     ) {
+
+    let userRole = this.webstorgeService.getUserRole();
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+      this.isAdmin = true;
+    }
+    this.shopId = this.route.snapshot.paramMap.get('id');
 
     this.shopForm = this.fb.group({
       shopId: 0,
-      areaId: ['', [Validators.required]],
+      areaId: [{ value: '', disabled: !this.isAdmin && this.shopId }, [Validators.required]],
       searchAddress: [''],
       postCode: ['', [Validators.required]],
       shopName: ['', [Validators.required]],
@@ -73,7 +83,7 @@ export class ShopEditorComponent {
       latitude: [{ value: '', disabled: true }],
       longitude: [{ value: '', disabled: true }],
       comments: [''],
-      isMobileShop: false,
+      isMobileShop: [{ value: false, disabled: true }],
       agreementFrom: [null],
       agreementTo: [null],
       agreementNotes: [null],
@@ -85,11 +95,7 @@ export class ShopEditorComponent {
   }
 
   ngOnInit(): void {
-    let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
-      this.isDisplay = true;
-    }
-    this.shopId = this.route.snapshot.paramMap.get('id');
+
     if (this.selectedShopId) {
       this.shopId = this.selectedShopId;
     }
@@ -179,6 +185,7 @@ export class ShopEditorComponent {
           this.shopImagePreview = environment.backend.host + '/' + res.data?.shop?.image;
         }
         this.populateShopContacts(res.data.shopContacts || []);
+        this.checkPendingCommissionRequest();
       });
     }
   }
@@ -199,7 +206,7 @@ export class ShopEditorComponent {
       formBody.append('shopName', this.shopForm.value.shopName);
       formBody.append('postCode', this.shopForm.value.postCode);
       formBody.append('areaId', this.shopForm.value.areaId);
-       formBody.append('shopOwnerName', this.shopForm.value.shopOwnerName);
+      formBody.append('shopOwnerName', this.shopForm.value.shopOwnerName);
       formBody.append('shopEmail', this.shopForm.value.shopEmail);
       formBody.append('shopPhone', this.shopForm.value.shopPhone);
       formBody.append('password', this.shopForm.value.password);
@@ -216,7 +223,7 @@ export class ShopEditorComponent {
       formBody.append('comments', this.shopForm.value.comments || '');
       formBody.append('latitude', this.shopForm.getRawValue().latitude || '');
       formBody.append('longitude', this.shopForm.getRawValue().longitude || '');
-      formBody.append('isMobileShop', this.shopForm.value.isMobileShop);
+      formBody.append('isMobileShop', this.shopForm.getRawValue().isMobileShop);
       formBody.append('isTermsAndCondtions', this.shopForm.value.isTermsAndCondtions);
       formBody.append('status', this.shopForm.value.status ? '1' : '0');
 
@@ -371,7 +378,7 @@ export class ShopEditorComponent {
   }
 
   sendActivationEmail(): void {
-    if(this.shopForm.value.shopEmail == null || this.shopForm.value.shopEmail == ''){
+    if (this.shopForm.value.shopEmail == null || this.shopForm.value.shopEmail == '') {
       this.toasterService.showMessage("Shop email is required to send activation email.");
       return;
     }
@@ -388,6 +395,36 @@ export class ShopEditorComponent {
 
   onInputChange(event: any) {
     event.target.value = event.target.value.replace(/[^0-9]/g, '');
+  }
+
+  checkPendingCommissionRequest() {
+    if (this.shopId) {
+      this.shopService.getPendingCommissionTypeChangeRequests(this.shopId).subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.hasPendingCommissionRequest = res.data != null && res.data.length > 0;
+        }
+      });
+    }
+  }
+
+  openCommissionTypeChangeDialog() {
+    const dialogRef = this.dialog.open(CommissionTypeChangeDialogComponent, {
+      width: '400px',
+      data: { shopId: this.shopId }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.shopService.createShopCommisioTypeChangeRequest(result).subscribe((res) => {
+          if (res.statusCode == 201) {
+            this.toasterService.showMessage("Commission type change request submitted successfully");
+            this.checkPendingCommissionRequest();
+          } else {
+            this.toasterService.showMessage(res.message || "Failed to submit request");
+          }
+        });
+      }
+    });
   }
 
 }

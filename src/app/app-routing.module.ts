@@ -73,6 +73,7 @@ import { BundleProductEditorComponent } from './components/product/bundle-produc
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import { GlobalSearchComponent } from './components/global-search/global-search.component';
 import { ShopportalComponent } from './components/shopportal/shopportal.component';
+import { MessageCenterComponent } from './components/reports/message-center/message-center.component';
 
 
 const routes: Routes = [
@@ -139,6 +140,7 @@ const routes: Routes = [
       { path: 'report/monthly/activations', component: MonthlyActivationReportComponent },
       { path: 'report/historical/activations', component: HistoricalActivationReportComponent },
       { path: 'report/instant-report', component: InstantActivationReportComponent },
+      { path: 'report/message-center', component: MessageCenterComponent },
       { path: 'report/network-report', component: NetworkReportComponent },
       { path: 'report/simallocation-report', component: SimAllocationReportComponent },
       { path: 'report/kpi-target', component: KpiTargetReportComponent },

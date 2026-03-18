@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { AddQuantityDialogComponent } from '../../common/add-quantity-dialog/add-quantity-dialog.component';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -17,7 +18,7 @@ import { FormControl } from '@angular/forms';
 
 export class ProductListComponent implements OnInit {
 
-  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Hide", "Actions"];
+  displayedColumns = [ "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Hide", "Actions"];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.STANDARD_PAGE_OPTIONS;
   pageNo = 0;
@@ -239,4 +240,24 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  addQuantity(productId: number) {
+    const dialogRef = this.dialog.open(AddQuantityDialogComponent, {
+      width: '400px',
+      data: { productId }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Call API to add quantity
+        this.productService.addQuantity(productId, result.quantity).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage("Quantity added successfully");
+            this.loadData();
+          } else {
+            this.toasterService.showMessage(res.message || "Failed to add quantity");
+          }
+        });
+      }
+    });
+  }
 }

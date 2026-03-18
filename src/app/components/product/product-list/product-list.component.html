@@ -57,12 +57,7 @@
 
             <div class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="areaList" class="w-100 custom-table">
-                    <ng-container matColumnDef="ID">
-                        <th mat-header-cell *matHeaderCellDef> ID </th>
-                        <td mat-cell *matCellDef="let r">
-                            {{ r.productId }}
-                        </td>
-                    </ng-container>
+                   
                     <ng-container matColumnDef="Name">
                         <th mat-header-cell *matHeaderCellDef> NAME </th>
                         <td mat-cell *matCellDef="let r"> {{ r.productName }} </td>
@@ -100,7 +95,7 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="Actions">
+                    <ng-container matColumnDef="Actions" sticky>
                         <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
                         <td mat-cell *matCellDef="let r">
                             <a class="m-r-10 cursor-pointer" (click)="addoreditclick(r)">
@@ -108,6 +103,10 @@
                             </a>
                             <a class="m-r-10 cursor-pointer" (click)="deleteclick(r.productId)">
                                 <mat-icon>delete</mat-icon>
+                            </a>
+
+                             <a class="m-r-10 cursor-pointer" (click)="addQuantity(r.productId)">
+                                <mat-icon>add</mat-icon>
                             </a>
                         </td>
                     </ng-container>

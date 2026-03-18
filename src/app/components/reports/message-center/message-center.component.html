@@ -1,0 +1,83 @@
+<div class="page-title">
+  <h1>Message Center</h1>
+  <span class="page-title__info"></span>
+  <mat-card class="cardWithShadow theme-card">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-lg-3">
+          <mat-form-field appearance="outline">
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" placeholder="Choose From Date" />
+            <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="outline">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" placeholder="Choose To Date" />
+            <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <mat-datepicker #toPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isAdminOrManager">
+          <mat-label>Agent</mat-label>
+          <mat-select [(ngModel)]="selectedUserId" placeholder="Select Agent">
+            <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel="Search here..."
+              noEntriesFoundLabel="No matching found">
+            </ngx-mat-select-search>
+            <mat-option [value]=null>All</mat-option>
+            <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="col-lg-3 col-xl-12 space-between-buttons">
+          <button mat-flat-button color="primary" (click)="onFilter()">Filter</button>
+          <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
+        </div>
+      </div>
+
+      <div *ngIf="resultList?.length > 0" class="table-responsive table-max-scroll example-container">
+        <table mat-table [dataSource]="resultList" class="w-100 custom-table">
+
+          <ng-container matColumnDef="orderId">
+            <th mat-header-cell *matHeaderCellDef>Order ID</th>
+            <td mat-cell *matCellDef="let element" class="order-id-cell">
+              {{ element.orderId }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="orderStatus">
+            <th mat-header-cell *matHeaderCellDef>Order Status</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.orderStatus }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="paymentMethod">
+            <th mat-header-cell *matHeaderCellDef>Payment Method</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.paymentMethod }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="paidDate">
+            <th mat-header-cell *matHeaderCellDef>Paid Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.paidDate | date:'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <div class="zero-records p-b-8" *ngIf="resultList?.length == 0">
+        <img src="/assets/images/landingpage/background/no-records.svg" />
+        <span>No records found</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -38,7 +38,7 @@ export class ProductService {
 
   exportToExcel(): void {
     let url = this.url + '/ExportToExcel';
-    return this.exportService.downloadExcel(url, 'AreaList');
+    return this.exportService.downloadExcel(url, 'ProductList');
   }
 
   updateProductStatus(productId: number, status: boolean): Observable<ICommonResponse> {
@@ -49,4 +49,7 @@ export class ProductService {
     return this.http.get<ICommonResponse>(this.url + `/UpdateDisplayOrder?productId=${productId}&displayOrder=${displayOrder}`);
   }
 
+  addQuantity(productId: number, quantity: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/AddQuantity?productId=${productId}&quantity=${quantity}`);
+  }
 }

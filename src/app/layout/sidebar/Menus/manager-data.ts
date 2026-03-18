@@ -77,6 +77,11 @@ export const ManagerItems: NavItem[] = [
         route: 'report/track',
       },
       {
+        displayName: 'Message Center',
+        iconName: 'arrow_right',
+        route: 'report/message-center',
+      },
+      {
         displayName: 'Payslip',
         iconName: 'arrow_right',
         route: 'management/payslip',

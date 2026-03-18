@@ -38,7 +38,7 @@ export class CategoryService {
 
   exportToExcel(): void {
     let url = this.url + '/ExportToExcel';
-    return this.exportService.downloadExcel(url, 'AreaList');
+    return this.exportService.downloadExcel(url, 'CategoryList');
   }
 
 }

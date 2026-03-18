@@ -57,6 +57,11 @@ export const AgentItems: NavItem[] = [
         route: 'report/area-commissions',
       },
       {
+        displayName: 'Message Center',
+        iconName: 'arrow_right',
+        route: 'report/message-center',
+      },
+      {
         displayName: 'Payslip',
         iconName: 'arrow_right',
         route: 'management/payslip',

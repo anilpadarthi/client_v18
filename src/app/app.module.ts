@@ -89,6 +89,8 @@ import { AllocateConfirmDialogComponent } from './components/allocate/allocate-c
 import { AllocateAgentConfirmDialogComponent } from './components/allocate/allocate-agent-confirm-dialog/allocate-agent-confirm-dialog.component';
 import { ImeiSearchComponent } from './components/sim/imei-search/imei-search.component';
 import { ConfirmDialogComponent } from './components/common/confirm-dialog/confirm-dialog.component';
+import { AddQuantityDialogComponent } from './components/common/add-quantity-dialog/add-quantity-dialog.component';
+import { CommissionTypeChangeDialogComponent } from './components/common/commission-type-change-dialog/commission-type-change-dialog.component';
 import { FormatHeaderNamePipe } from './custom/format-header-name-pipe';
 import { OnFieldSpamActivationsComponent } from './components/on-field/on-field-spam-activations/on-field-spam-activations.component';
 import { PaySlipComponent } from './components/management/pay-slip/pay-slip.component';
@@ -153,8 +155,7 @@ import { ShopAddressDetailsComponent } from './components/order/shop-address-det
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';import { GlobalSearchComponent } from './components/global-search/global-search.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { ShopportalComponent } from './components/shopportal/shopportal.component';
-registerLocaleData(localeGb, 'en-GB');
+import { ShopportalComponent } from './components/shopportal/shopportal.component';import { MessageCenterComponent } from './components/reports/message-center/message-center.component';registerLocaleData(localeGb, 'en-GB');
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -220,6 +221,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AllocateAgentConfirmDialogComponent,
     ImeiSearchComponent,
     ConfirmDialogComponent,
+    AddQuantityDialogComponent,
+    CommissionTypeChangeDialogComponent,
     FormatHeaderNamePipe,
     OnFieldSpamActivationsComponent,
     PaySlipComponent,
@@ -284,7 +287,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     InstantActivationReportComponent,
     AgentAccessoriesComponent,
     GlobalSearchComponent,
-    ShopportalComponent
+    ShopportalComponent,
+    MessageCenterComponent
   ],
   imports: [
     BrowserModule,
