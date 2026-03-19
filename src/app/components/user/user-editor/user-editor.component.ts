@@ -149,6 +149,7 @@ export class UserEditorComponent {
 
       if (this.userForm.value.userDocuments && Array.isArray(this.userForm.value.userDocuments)) {
         this.userForm.value.userDocuments.forEach((doc: any, index: number) => {
+          formBody.append(`userDocuments[${index}].userDocumentId`, doc.userDocumentId || '');
           formBody.append(`userDocuments[${index}].validFrom`, this.datePipe.transform(doc.validFrom, 'yyyy-MM-dd') || '');
           formBody.append(`userDocuments[${index}].validTo`, this.datePipe.transform(doc.validTo, 'yyyy-MM-dd') || '');
           if (doc.documentImage instanceof File) {
