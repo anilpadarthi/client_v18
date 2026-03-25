@@ -267,7 +267,7 @@ export class OrderListComponent implements OnInit {
 
 
   onFilter(): void {
-    this.pageNo = 0;
+    //this.pageNo = 0;
     this.loadData();
     //this.loadOutstandingMetrics();
   }

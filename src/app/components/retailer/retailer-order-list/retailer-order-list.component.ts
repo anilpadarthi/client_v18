@@ -114,7 +114,7 @@ export class RetailerOrderListComponent implements OnInit {
     const requestBody = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      shopName: this.selectedShopId ? this.selectedShopId.toString() : null,
+      shopName: this.loggedInUserId.toString(),
       orderId: this.orderNumberSearch?.trim() || null,
       trackingNumber: this.trackNumberSearch?.trim() || null,
     };
@@ -134,21 +134,9 @@ export class RetailerOrderListComponent implements OnInit {
   }
 
   onClear(): void {
-    this.pageNo = 0;
-    this.selectedAgentId = null;
-    this.selectedAreaId = null;
-    this.selectedManagerId = null;
-    this.shopNameSearch = null;
-    this.selectedStatusId = null;
-    this.selectedPaymentMethodId = null;
-    this.selectedShippingMethodId = null;
-    this.selectedFromDate = null;
-    this.selectedToDate = null;
+    this.pageNo = 0;   
     this.orderNumberSearch = null;
-    this.trackNumberSearch = null;
-    this.isVat = false;
-    this.isShowOutstandingMetrics = false;
-    this.shopNameSearch = this.loggedInUserId.toString();
+    this.trackNumberSearch = null;   
     this.loadData();
   }
 
