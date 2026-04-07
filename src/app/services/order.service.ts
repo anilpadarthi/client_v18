@@ -115,4 +115,12 @@ export class OrderService {
     return this.exportService.exportToExcel(url, requestBody, 'SalesList');
   }
 
+  getUnPaidOrders(): Observable<any> {
+    return this.http.get<any>(this.url + '/GetUnPaidOrders');
+  }
+
+  updateBulkStatus(requestBody: any): Observable<any> {
+    return this.http.post<Response>(this.url + "/UpdateBulkStatus", requestBody);
+  }
+
 }

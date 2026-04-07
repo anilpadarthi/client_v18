@@ -17,6 +17,10 @@
             <input matInput formControlName="shopName" required />
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Post Code <span class="required"></span></mat-label>
+            <input matInput formControlName="postCode" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
             <mat-label>Shop Owner Name <span class="required"></span></mat-label>
             <input matInput formControlName="shopOwnerName" required />
         </mat-form-field>
@@ -27,13 +31,14 @@
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Shop Phone</mat-label>
-            <input matInput formControlName="shopPhone" inputmode="numeric" maxlength="20" (input)="onInputChange($event)" />
+            <input matInput formControlName="shopPhone" inputmode="numeric" maxlength="20"
+                (input)="onInputChange($event)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Address Line 1 </mat-label>
             <textarea matInput formControlName="addressLine1" cols="5"></textarea>
-        </mat-form-field>        
+        </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Delivery Instructions</mat-label>

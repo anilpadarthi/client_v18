@@ -128,18 +128,18 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.requestType = this.route.snapshot.paramMap.get('type');
     this.userRole = this.webstorgeService.getUserRole();
-    
+
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
       this.isAdmin = true;
     }
-    else if(this.userRole == 'Retailer') {
+    else if (this.userRole == 'Retailer') {
       this.selectedPaymentMethodId = 1;
     }
     this.isLoading = true;
     if (this.requestType == 'COD') {
       this.isVAT = true;
       this.minimumCartAmount = environment.codMinimumCartValue;
-      this.shopId = id;      
+      this.shopId = id;
     }
     else if (this.requestType == 'MC') {
       this.shopCommissionId = id;
@@ -164,13 +164,17 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
 
     this.orderService.getShoppingPageDetails().subscribe((res) => {
-      res.data?.categories?.forEach((category: any) => {
+      let categories = res.data?.categories;
+      if (!this.isAdmin) {
+        categories = categories.filter((c: any) => c.categoryId != 43 && c.categoryId != 65);
+      }
+      categories?.forEach((category: any) => {
         category.image = environment.backend.host + '/' + category.image;
         category.subCategories?.forEach((subCategory: any) => {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-      this.categories = res.data.categories;
+      this.categories = categories;
     });
 
     this.lookupService.getOrderPaymentTypes().subscribe((res) => {
@@ -410,9 +414,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   validateOrderAmount(): boolean {
-    
+
     let isValid = true;
-    if(this.cartItems == null || this.cartItems.length == 0) {
+    if (this.cartItems == null || this.cartItems.length == 0) {
       this.toasterService.showMessage("Your cart is empty, please add some products to place an order.");
       return false;
     }
@@ -420,8 +424,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     if (this.isAdmin && this.requestType == 'COD') {
       return isValid;
     }
-    
-    if (this.requestType == 'B') {      
+
+    if (this.requestType == 'B') {
       this.getBonusAmount();
       if (this.grandTotalWithVAT > this.commissionAmount) {
         this.toasterService.showMessage("You cannot place order, cart amount exceeds the bonus wallet amount (£" + this.commissionAmount + ").");
@@ -472,7 +476,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       dialResults.afterClosed().subscribe(result => {
         if (result?.updated) {
           this.isAddressUpdated = true;
-        }        
+        }
       });
     });
 

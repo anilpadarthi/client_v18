@@ -74,6 +74,9 @@ import { InstantActivationReportComponent } from './components/reports/instant-a
 import { GlobalSearchComponent } from './components/global-search/global-search.component';
 import { ShopportalComponent } from './components/shopportal/shopportal.component';
 import { MessageCenterComponent } from './components/reports/message-center/message-center.component';
+import { SupplierReportComponent } from './components/management/supplier-report/supplier-report.component';
+import { LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
+
 
 
 const routes: Routes = [
@@ -151,6 +154,8 @@ const routes: Routes = [
       { path: 'report/daily-report', component: DailyReportComponent },
       { path: 'management/payslip', component: PaySlipComponent },
       { path: 'management/attendance-report', component: AttendanceReportComponent },
+      { path: 'management/supplier-report', component: SupplierReportComponent },
+      { path: 'management/low-stock-report', component: LowStockReportComponent },
       { path: 'management/bulk-upload', component: BulkUploadComponent },
       { path: 'management/whatsapp', component: WhatsappNotificationsComponent },
       { path: 'management/agreement-requests', component: AgreementNotificationsComponent },

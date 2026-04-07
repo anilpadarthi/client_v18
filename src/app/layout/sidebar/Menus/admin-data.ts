@@ -189,6 +189,16 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'report/commission-statement',
       },
+      {
+        displayName: 'Supplier Report',
+        iconName: 'arrow_right',
+        route: 'management/supplier-report',
+      },
+      {
+        displayName: 'Low Stock Report',
+        iconName: 'arrow_right',
+        route: 'management/low-stock-report',
+      },
       // {
       //   displayName: 'Agreement Requests',
       //   iconName: 'arrow_right',

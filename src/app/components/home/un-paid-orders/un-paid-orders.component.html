@@ -1,0 +1,33 @@
+<div *ngIf="outstandingBalance > 0" class="outstanding-balance-banner mat-elevation-z1">
+    <div class="outstanding-balance-message">
+        <mat-icon>info</mat-icon>
+        <div>
+            <div class="outstanding-balance-title">Outstanding Balance</div>
+            <div class="outstanding-balance-value">£{{ outstandingBalance | number: '1.2-2' }}</div>
+        </div>
+    </div>
+    <button mat-raised-button color="primary" type="button" (click)="openOutstandingBalanceDialog()">View
+        details</button>
+</div>
+
+<div class="table-responsive table-max-scroll example-container" *ngIf="userRole === 'Admin' 
+|| userRole == 'SuperAdmin' || userRole==='Manager'">
+    <table mat-table [dataSource]=" unPaidOrderList" class="w-100 custom-table">
+        <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef>Agent</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.userName }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="balanceAmount">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Outstanding Balance</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                £ {{ element.balanceAmount | number: '1.2-2' }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>

@@ -1,0 +1,37 @@
+.balance-dialog-content {
+  padding: 0 0 8px;
+}
+
+.alert-block {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #fff4e5;
+  border: 1px solid #ffd699;
+}
+
+.alert-icon {
+  font-size: 38px;
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #c62828;
+}
+
+.alert-text p {
+  margin: 0;
+  color: #333;
+}
+
+.balance-value {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #b33a00;
+}
+

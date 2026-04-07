@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { WebstorgeService } from '../../services/web-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,16 @@ import { AuthService } from '../../services/auth.service';
 
 export class HomeComponent {
 
-  constructor(private authService: AuthService) { 
+  userRole: string | null = null;
+  constructor(private authService: AuthService, private webstorgeService: WebstorgeService) { 
 
      if(this.authService.isTokenExpired()) {
       this.authService.logout();
+      return;
      }
+
+      this.userRole = this.webstorgeService.getUserRole();
+
   }
 
 

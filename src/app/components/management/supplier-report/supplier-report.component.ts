@@ -87,9 +87,7 @@ export class SupplierReportComponent implements OnInit {
         filterId: this.selectedSupplierId,
       };
 
-
-
-      this.reportService.getMonthlyActivations(requestBody).subscribe((res) => {
+      this.reportService.getSupplierActivationReport(requestBody).subscribe((res) => {
         if (res.data?.length > 0) {
           let result = res.data;
           result.forEach((e: any) => {
@@ -108,7 +106,9 @@ export class SupplierReportComponent implements OnInit {
     }
   }
 
-
+  onFilter(): void {
+    this.loadData();
+  }
 
 
 

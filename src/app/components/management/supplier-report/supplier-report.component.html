@@ -1,5 +1,5 @@
 <div class="page-title">
-    <h1>KPI Targets</h1>
+    <h1>Supplier Report</h1>
     <span class="page-title__info"></span>
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
@@ -14,14 +14,14 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="isDisplay">
-                    <mat-label>Manager</mat-label>
-                    <mat-select [(ngModel)]="selectedManagerId" placeholder="Select Manager">
-                        <ngx-mat-select-search [formControl]="managerFilterCtrl" placeholderLabel="Search here..."
+                <mat-form-field appearance="outline" class="col-lg-3">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select [(ngModel)]="selectedSupplierId" placeholder="Select Supplier">
+                        <ngx-mat-select-search [formControl]="supplierFilterCtrl" placeholderLabel="Search here..."
                             noEntriesFoundLabel="No matching found">
                         </ngx-mat-select-search>
                         <mat-option [value]=null>All</mat-option>
-                        <mat-option *ngFor="let item of filteredManagers" [value]="item.id">
+                        <mat-option *ngFor="let item of filteredSuppliers" [value]="item.id">
                             <span>{{ item.name }}</span>
                         </mat-option>
                     </mat-select>
@@ -58,7 +58,7 @@
                         <td mat-cell *matCellDef="let element">                           
                             {{ element.supplierId }}
                         </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
+                        <td mat-footer-cell *matFooterCellDef>Total</td>
                     </ng-container>
                     
 

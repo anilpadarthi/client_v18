@@ -105,13 +105,17 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
       this.isAdmin = true;
     }
     this.orderService.getShoppingPageDetails().subscribe((res) => {
-      res.data?.categories?.forEach((category: any) => {
+      let categories = res.data?.categories;
+      if (!this.isAdmin) {
+        categories = categories.filter((c: any) => c.categoryId != 43 && c.categoryId != 65);
+      }
+      categories?.forEach((category: any) => {
         category.image = environment.backend.host + '/' + category.image;
         category.subCategories?.forEach((subCategory: any) => {
           subCategory.image = environment.backend.host + '/' + subCategory.image;
         });
       });
-      this.categories = res.data.categories;
+      this.categories = categories;
     });
 
     if (this.orderId) {
@@ -124,10 +128,10 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
         this.isVAT = res.data.isVAT;
         this.OrderPaymentTypeId = res.data.orderPaymentTypeId;
         this.OriginalOrderAmount = res.data.totalWithOutVATAmount;
-        this.cartItems.forEach((e: any) => {          
-            e.netAmount = e.qty * e.salePrice;
-            e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
-            e.productImage = environment.backend.host + '/' + e.productImage;          
+        this.cartItems.forEach((e: any) => {
+          e.netAmount = e.qty * e.salePrice;
+          e.vatAmount = (e.netAmount * this.vatPercentage) / 100;
+          e.productImage = environment.backend.host + '/' + e.productImage;
         });
 
         this.updateCalculations();
@@ -311,6 +315,11 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
 
   validateOrderAmount(): boolean {
     let isValid = true;
+
+     if (this.cartItems == null || this.cartItems.length == 0) {
+      this.toasterService.showMessage("Your cart is empty, please add some products to place an order.");
+      return false;
+    }
     if (this.OrderPaymentTypeId == 7) {
       if (this.subTotal > this.OriginalOrderAmount) {
         this.toasterService.showMessage("You cannot place order, cart amount exceeds the commission amount.");

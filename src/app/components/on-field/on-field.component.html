@@ -112,6 +112,9 @@
   </mat-card>
 </div>
 
+<div *ngIf="selectedShop" class="selected-shop-header">
+  <h3 class="selected-shop-title">Retailer - {{ selectedShop.oldId }} - {{ selectedShop.name }}</h3>
+</div>
 <div *ngIf="selectedShopId > 0" [hidden]="!isMainSection">
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content>

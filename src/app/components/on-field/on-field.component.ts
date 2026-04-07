@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { OnFieldShopCommissionChequesComponent } from '../on-field-shop-commission-cheques/on-field-shop-commission-cheques.component';
 import { ActivatedRoute } from '@angular/router';
 import { WebstorgeService } from '../../services/web-storage.service';
+import { OutstandingBalanceDialogComponent } from '../home/outstanding-balance-dialog/outstanding-balance-dialog.component';
 
 @Component({
   selector: 'app-on-field',
@@ -24,6 +25,7 @@ export class OnFieldComponent implements OnInit {
 
   selectedAreaId: any = null;
   selectedShopId: any = null;
+  selectedShop: any = null;
   shopAddressDetails: any = null;
   areaLookup: any = [];
   shopLookup: any = [];
@@ -149,6 +151,7 @@ export class OnFieldComponent implements OnInit {
     this.getShopAddressDetails();
     this.displayMainSection();
     this.getOutstandingBalanceAmount();
+    this.selectedShop = this.shopLookup.find((shop: any) => shop.id === this.selectedShopId);
   }
 
   fetchLocation(): void {
@@ -314,6 +317,24 @@ export class OnFieldComponent implements OnInit {
   getOutstandingBalanceAmount(): void {
     this.onFieldService.outstandingBalance(this.selectedShopId).subscribe((res: any) => {
       this.outstandingBalanceAmount = res;
+      if (this.outstandingBalanceAmount > 0) {
+        this.canSendVAT = 'no';
+        this.action = 'OrderList';
+        this.isMainSection = false;
+        this.openOutstandingBalanceDialog();
+      }
+    });
+  }
+
+  openOutstandingBalanceDialog(): void {
+    this.dialog.open(OutstandingBalanceDialogComponent, {
+      width: '420px',
+      disableClose: true,
+      data: {
+        title: 'Outstanding Balance Alert',
+        message: 'This shop currently has an outstanding balance. Please review and settle it.',
+        amount: this.outstandingBalanceAmount,
+      },
     });
   }
 

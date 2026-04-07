@@ -114,10 +114,10 @@
                 <button mat-flat-button class="green-btn" *ngIf="isAdmin || isManager" (mousedown)="onExport()">
                     <mat-icon>download</mat-icon> Download
                 </button>
-                <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin"
+                <!-- <button mat-flat-button class="bg-primary text-white" *ngIf="isAdmin"
                     (click)="loadOutstandingMetrics()">
                     <mat-icon>filter_list</mat-icon> OutStanding
-                </button>
+                </button> -->
                 <a (click)="toggleAdvancedFilters()" class="advance-filter-link">
                     {{ showAdvancedFilters ? 'Hide Filters' : 'Show Filters' }}
                 </a>
@@ -169,8 +169,22 @@
                 </div>
             </div>
 
+            <div *ngIf="isBulkApproveMode" class="bulk-approve-section">
+                <button mat-flat-button color="primary" (click)="approveSelected()" [disabled]="selectedOrders.length === 0">
+                    Approve All Selected ({{ selectedOrders.length }}) - Total: £ {{ totalSelectedExpected | number: '1.2-2' }}
+                </button>
+            </div>
+
             <div *ngIf="orderList.length > 0" class="table-responsive table-max-scroll example-container">
                 <table mat-table [dataSource]="orderList" class="w-100 custom-table">
+                    <ng-container matColumnDef="select" *ngIf="isBulkApproveMode">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="toggleAllSelection($event.checked)"></mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-checkbox [checked]="isSelected(element)" (change)="toggleSelection(element)"></mat-checkbox>
+                        </td>
+                    </ng-container>
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef>
                         </th>

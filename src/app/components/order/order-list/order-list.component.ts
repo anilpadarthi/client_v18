@@ -22,19 +22,35 @@ import { cleanDate } from '../../../helpers/utils';
 
 export class OrderListComponent implements OnInit {
 
-  displayedColumns = [
-    "actions",
-    "orderId",
-    "date",
-    "user",
-    "area",
-    "shop",
-    "expected",
-    "collected",
-    "status",
-    "paymentMethod",
-    "courier",
-  ];
+  get displayedColumns(): string[] {
+    let cols = [
+      "actions",
+      "orderId",
+      "date",
+      "user",
+      "area",
+      "shop",
+      "expected",
+      "collected",
+      "status",
+      "paymentMethod",
+      "courier",
+    ];
+    if (this.isBulkApproveMode) {
+      cols.unshift("select");
+    }
+    return cols;
+  }
+
+  selectedOrders: any[] = [];
+
+  get isBulkApproveMode(): boolean {
+    return this.showBulkApprove;
+  }
+
+  get totalSelectedExpected(): number {
+    return this.selectedOrders.reduce((sum: number, order: any) => sum + (order.isVAT == 1 ? order.totalWithVATAmount : order.totalWithOutVATAmount), 0);
+  }
 
   pageEvent: PageEvent | undefined;
   tableDataSource: any;
@@ -80,6 +96,7 @@ export class OrderListComponent implements OnInit {
   totalPPAAmount = 0.00;
   totalPPMAmount = 0.00;
   showAdvancedFilters: boolean = false;
+  showBulkApprove: boolean = false;
 
   orderList = [];
 
@@ -267,12 +284,16 @@ export class OrderListComponent implements OnInit {
 
 
   onFilter(): void {
+    this.selectedOrders = [];
+    this.showBulkApprove = this.isAdmin && this.statusLookup.find((s: any) => s.id === this.selectedStatusId && (s.name === 'CCA' || s.name === 'PPA')) ? true : false;
     //this.pageNo = 0;
     this.loadData();
     //this.loadOutstandingMetrics();
   }
 
   onClear(): void {
+    this.selectedOrders = [];
+    this.showBulkApprove = false;
     this.pageNo = 0;
     this.selectedAgentId = null;
     this.selectedAreaId = null;
@@ -498,6 +519,52 @@ export class OrderListComponent implements OnInit {
       }
       else {
         this.toasterService.showMessage(res.data);
+      }
+    });
+  }
+
+  toggleSelection(order: any): void {
+    const index = this.selectedOrders.indexOf(order);
+    if (index > -1) {
+      this.selectedOrders.splice(index, 1);
+    } else {
+      this.selectedOrders.push(order);
+    }
+  }
+
+  isSelected(order: any): boolean {
+    return this.selectedOrders.includes(order);
+  }
+
+  toggleAllSelection(checked: boolean): void {
+    if (checked) {
+      this.selectedOrders = [...this.orderList];
+    } else {
+      this.selectedOrders = [];
+    }
+  }
+
+  approveSelected(): void {
+    if (this.selectedOrders.length === 0) {
+      this.toasterService.showMessage('No orders selected.');
+      return;
+    }
+    const status = this.statusLookup.find((s: any) => s.id === this.selectedStatusId);
+    const paidStatusId = status?.name === 'PPA' ? 8 : 4;
+    const ids = this.selectedOrders.map((order: any) => order.orderId);
+
+    const requestBody = {
+      orderIds: ids,
+      orderStatusId: paidStatusId,
+    };
+
+    this.orderService.updateBulkStatus(requestBody).subscribe((res: any) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage(`${ids.length} orders approved successfully.`);
+        this.loadData();
+        this.selectedOrders = [];
+      } else {
+        this.toasterService.showMessage(res.data || 'Error approving orders.');
       }
     });
   }

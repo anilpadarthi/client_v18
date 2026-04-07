@@ -89,6 +89,7 @@ import { AllocateConfirmDialogComponent } from './components/allocate/allocate-c
 import { AllocateAgentConfirmDialogComponent } from './components/allocate/allocate-agent-confirm-dialog/allocate-agent-confirm-dialog.component';
 import { ImeiSearchComponent } from './components/sim/imei-search/imei-search.component';
 import { ConfirmDialogComponent } from './components/common/confirm-dialog/confirm-dialog.component';
+import { OutstandingBalanceDialogComponent } from './components/home/outstanding-balance-dialog/outstanding-balance-dialog.component';
 import { AddQuantityDialogComponent } from './components/common/add-quantity-dialog/add-quantity-dialog.component';
 import { CommissionTypeChangeDialogComponent } from './components/common/commission-type-change-dialog/commission-type-change-dialog.component';
 import { FormatHeaderNamePipe } from './custom/format-header-name-pipe';
@@ -155,7 +156,13 @@ import { ShopAddressDetailsComponent } from './components/order/shop-address-det
 import { InstantActivationReportComponent } from './components/reports/instant-activation-report/instant-activation-report.component';
 import {AgentAccessoriesComponent } from './components/dashboard/agent-accessories/agent-accessories.component';import { GlobalSearchComponent } from './components/global-search/global-search.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { ShopportalComponent } from './components/shopportal/shopportal.component';import { MessageCenterComponent } from './components/reports/message-center/message-center.component';registerLocaleData(localeGb, 'en-GB');
+import { ShopportalComponent } from './components/shopportal/shopportal.component';import { MessageCenterComponent } from './components/reports/message-center/message-center.component';
+import { UnPaidOrdersComponent } from './components/home/un-paid-orders/un-paid-orders.component';
+registerLocaleData(localeGb, 'en-GB');
+import { SupplierReportComponent } from './components/management/supplier-report/supplier-report.component';
+import { UnPaidOrderListComponent } from './components/order/un-paid-order-list/un-paid-order-list.component';
+import  {LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
+
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -221,6 +228,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AllocateAgentConfirmDialogComponent,
     ImeiSearchComponent,
     ConfirmDialogComponent,
+    OutstandingBalanceDialogComponent,
     AddQuantityDialogComponent,
     CommissionTypeChangeDialogComponent,
     FormatHeaderNamePipe,
@@ -288,7 +296,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AgentAccessoriesComponent,
     GlobalSearchComponent,
     ShopportalComponent,
-    MessageCenterComponent
+    MessageCenterComponent,
+    SupplierReportComponent,
+    UnPaidOrdersComponent,
+    UnPaidOrderListComponent,
+    LowStockReportComponent
   ],
   imports: [
     BrowserModule,

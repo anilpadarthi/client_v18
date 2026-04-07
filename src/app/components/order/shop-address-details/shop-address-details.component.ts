@@ -47,6 +47,7 @@ export class ShopAddressDetailsComponent {
       {
         shopId: [this.data.shopId, [Validators.required]],
         shopName: [this.data.shopName, [Validators.required]],
+        postCode: [this.data.postCode, [Validators.required]],
         shopOwnerName: [this.data.shopOwnerName, [Validators.required]],
         shopEmail: [this.data.shopEmail, [Validators.required]],
         shopPhone: [this.data.shopPhone, [Validators.required]],
@@ -81,7 +82,7 @@ export class ShopAddressDetailsComponent {
     }
   }
 
-  onCancel(): void {    
+  onCancel(): void {
     this.dialogRef.close({
       updated: false,
     });

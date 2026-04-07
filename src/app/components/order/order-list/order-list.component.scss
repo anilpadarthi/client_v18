@@ -1,5 +1,13 @@
-.option-list-btn {
-    width: 20px;
+.bulk-approve-section {
+    margin: 16px 0;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.bulk-approve-section button {
+    min-width: 300px;
 }
 
 .table-responsive td,
