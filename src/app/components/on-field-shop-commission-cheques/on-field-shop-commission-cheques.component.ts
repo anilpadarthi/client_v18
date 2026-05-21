@@ -3,6 +3,8 @@ import { ShopService } from '../../services/shop.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { WebstorgeService } from '../../services/web-storage.service';
+import moment from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-on-field-shop-commission-cheques',
@@ -13,10 +15,10 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-    'CommissionMonth',   
+    'CommissionMonth',
     'ChequeNumber',
     'OrderId',
-    'Amount',   
+    'Amount',
     'PaidOutDate',
     'Actions'
   ];
@@ -24,6 +26,13 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
   editingRow: any = null;
   originalChequeNumber: string = '';
   canEditChequeNumber: boolean = false;
+  isAddingNewCheque: boolean = false;
+
+ 
+  chequeNumber: string = '';
+  selectedMonth: string = '';
+  amount:string = '';
+  errorMessage: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public _data: any,
@@ -36,9 +45,9 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-     if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
       this.canEditChequeNumber = true;
-     }
+    }
     if (this._data.shopId > 0) {
       this.loadData();
     }
@@ -80,6 +89,63 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
     }
     this.editingRow = null;
     this.originalChequeNumber = '';
+  }
+
+  addNewCheque(): void {
+    this.isAddingNewCheque = true;
+    this.chequeNumber = '';
+    this.selectedMonth = '';
+  }
+
+  saveNewCheque(): void {
+    
+    if (!this.chequeNumber || !this.selectedMonth || !this.amount) {
+      this.errorMessage = 'Please enter all cheque details before saving.';
+      return;
+    }
+
+    const payload = {
+      shopId: this._data.shopId,
+      chequeNumber: this.chequeNumber,
+      commissionDate: this.selectedMonth,
+      totalAmount: this.amount
+    };
+
+    this._onShopService.createShopCommissionCheque(payload).subscribe((res) => {
+      if (res.statusCode === 200) {
+        this.isAddingNewCheque = false;
+        this.chequeNumber = '';
+        this.selectedMonth = '';
+        this.amount = '';
+        this.loadData();
+        // Optionally show success message
+      }
+      else {
+        this.errorMessage = res.data;
+      }
+    }, (error) => {
+      console.error('Error adding new cheque:', error);
+      this.errorMessage = 'An error occurred while adding the cheque. Please try again.';
+    });
+  }
+
+  cancelAddCheque(): void {
+    this.isAddingNewCheque = false;
+    this.chequeNumber = '';
+    this.selectedMonth = '';
+    this.amount = '';
+  }
+
+  // Handle Year Selection (no action needed)
+  chosenYearHandler(normalizedYear: any) {
+    // No action required, just wait for month selection
+  }
+
+  // Handle Month Selection
+  chosenMonthHandler(normalizedMonth: any, datepicker: MatDatepicker<any>) {
+    const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
+    this.selectedMonth = formattedMonth + "-01";
+    datepicker.close(); // Close picker after selection
   }
 
 }

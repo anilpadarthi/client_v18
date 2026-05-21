@@ -1,3 +1,5 @@
+
+
 .inline-edit {
   display: flex;
   align-items: center;
@@ -20,4 +22,62 @@
 .compact-field .mdc-notched-outline__notch,
 .compact-field .mdc-notched-outline__trailing {
   border-width: 1px;
+}
+
+
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  button {
+    margin-right: 8px;
+  }
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mb-3 {
+  margin-bottom: 12px;
+}
+
+.p-b-8 {
+  padding-bottom: 8px;
+}
+
+.p-b-16 {
+  padding-bottom: 16px;
+}
+
+.p-t-8 {
+  padding-top: 8px;
+}
+
+.table-max-scroll{
+  max-height: 45vh  !important;
+  overflow-y: auto;
+}
+
+.error-message{
+  color: red;
+  font-size: 14px;
 }

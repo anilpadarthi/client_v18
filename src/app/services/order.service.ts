@@ -119,6 +119,10 @@ export class OrderService {
     return this.http.get<any>(this.url + '/GetUnPaidOrders');
   }
 
+  getUnPaidOrderList(userId:any): Observable<any> {
+    return this.http.get<any>(this.url + '/GetUnPaidOrderList?userId=' + userId);
+  }
+
   updateBulkStatus(requestBody: any): Observable<any> {
     return this.http.post<Response>(this.url + "/UpdateBulkStatus", requestBody);
   }

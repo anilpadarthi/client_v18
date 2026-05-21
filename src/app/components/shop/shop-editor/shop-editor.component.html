@@ -151,7 +151,9 @@
                         <textarea matInput formControlName="comments" rows="5"></textarea>
                     </mat-form-field>
 
-                    <mat-checkbox class="col-lg-2" formControlName="isMobileShop">Mobile Shop</mat-checkbox>
+                    <mat-checkbox class="col-lg-4" formControlName="isMobileShop">Mobile Shop</mat-checkbox>
+                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassCommissionCheque">Bypass Commission Cheque</mat-checkbox>
+                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassBonusRedemption">Bypass Bonus Redemption</mat-checkbox>
                     <div class="col-lg-10">
                         <button *ngIf="!hasPendingCommissionRequest" mat-flat-button color="primary" type="button" class="m-r-10"
                             [disabled]="hasPendingCommissionRequest" (click)="openCommissionTypeChangeDialog()">
@@ -203,7 +205,8 @@
 
                             <mat-form-field appearance="outline" class="col-lg-3">
                                 <mat-label>Contact Number </mat-label>
-                                <input matInput required placeholder="Contact Number" formControlName='contactNumber'
+                                <input matInput required placeholder="Contact Number" inputmode="numeric" maxlength="20" formControlName='contactNumber'
+                                (input)="onInputChange($event)"
                                     id="{{'contactNumber'+i}}" />
                             </mat-form-field>
                             <button type="button" mat-flat-button color="warn"

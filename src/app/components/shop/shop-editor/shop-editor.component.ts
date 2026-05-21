@@ -91,6 +91,8 @@ export class ShopEditorComponent {
       shopContacts: this.fb.array([this.createChild()]),
       status: true,
       image: null as File | null,
+      byPassCommissionCheque: false,
+      byPassBonusRedemption: false,
     });
   }
 
@@ -226,6 +228,8 @@ export class ShopEditorComponent {
       formBody.append('isMobileShop', this.shopForm.getRawValue().isMobileShop);
       formBody.append('isTermsAndCondtions', this.shopForm.value.isTermsAndCondtions);
       formBody.append('status', this.shopForm.value.status ? '1' : '0');
+      formBody.append('byPassCommissionCheque', this.shopForm.getRawValue().byPassCommissionCheque || false);
+      formBody.append('byPassBonusRedemption', this.shopForm.getRawValue().byPassBonusRedemption || false);
 
 
       // Handle array fields like shopContacts

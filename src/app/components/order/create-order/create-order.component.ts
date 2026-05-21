@@ -137,7 +137,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
     this.isLoading = true;
     if (this.requestType == 'COD') {
-      this.isVAT = true;
+      this.isVAT = false;
       this.minimumCartAmount = environment.codMinimumCartValue;
       this.shopId = id;
     }
@@ -449,7 +449,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         isValid = false;
       }
     }
-    else {
+    else if (this.selectedPaymentMethodId != 6) {
       if (this.netTotal < this.minimumCartAmount) {
         this.toasterService.showMessage("You cannot place order, minimum cart value should be £ 50.00 pounds.");
         isValid = false;

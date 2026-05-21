@@ -1,0 +1,23 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title>Configuration</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row">
+
+            <mat-form-field appearance="outline" class="w-100 col-lg-3">
+                <mat-label>Select a Cheque cut off day</mat-label>
+                <mat-select [(ngModel)]="chequeCutOffDay" placeholder="Select Cheque cutt off day">
+                    <mat-option *ngFor="let item of chequestRequestCutOffDate" [value]="item">
+                        <span>{{ item }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button color="warn" class="m-r-10" (click)="onCancel();">Cancel</button>
+            <button mat-raised-button color="primary" type="button" (click)="onSave()">
+                Save
+            </button>
+        </div>
+    </mat-card-content>
+</mat-card>

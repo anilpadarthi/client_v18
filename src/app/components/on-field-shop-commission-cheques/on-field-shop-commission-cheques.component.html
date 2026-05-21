@@ -5,7 +5,54 @@
 </h2>
 
 <mat-dialog-content>
-  <div *ngIf="commissionChequeList.length > 0" class="table-responsive table-max-scroll example-container">
+  <!-- Add New Cheque Section -->
+  <div *ngIf="!isAddingNewCheque" class="p-t-16 text-right">
+    <button mat-raised-button color="primary" (click)="addNewCheque()" *ngIf="canEditChequeNumber" class="mb-3">
+      <mat-icon>add</mat-icon>
+      Add New Cheque
+    </button>
+  </div>
+
+  <!-- Add New Cheque Form -->
+  <div *ngIf="isAddingNewCheque" class="p-t-16 mat-card">
+    <h3 class="p-b-8">Add New Cheque</h3>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Cheque Number</mat-label>
+        <input matInput [(ngModel)]="chequeNumber" placeholder="Enter cheque number">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Commission Month</mat-label>
+          <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+          <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
+          <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">
+          </mat-datepicker>
+        </mat-form-field>     
+         <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Amount</mat-label>
+            <input matInput [(ngModel)]="amount" type="number" />
+        </mat-form-field>
+    </div>
+    <div>
+      <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
+    </div>
+
+    <div class="text-right">
+      <button mat-raised-button color="primary" (click)="saveNewCheque()" class="mr-8">
+        <mat-icon>check</mat-icon>
+        Save
+      </button>
+      <button mat-raised-button color="warn" (click)="cancelAddCheque()">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Cheque List Table -->
+  <div *ngIf="commissionChequeList.length > 0 && !isAddingNewCheque" class="table-responsive table-max-scroll example-container">
     <table mat-table [dataSource]="commissionChequeList" class="w-100 custom-table">
 
       <ng-container matColumnDef="CommissionMonth">

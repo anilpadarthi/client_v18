@@ -97,6 +97,11 @@
                         <input matInput formControlName="displayOrder" />
                     </mat-form-field>
 
+                     <mat-form-field appearance="outline" class="col-lg-3">
+                        <mat-label>Low Stock Alert Qty</mat-label>
+                        <input matInput formControlName="lowStockAlert" />
+                    </mat-form-field>
+
                     <mat-form-field appearance="outline" class="col-lg-12">
                         <mat-label>Description</mat-label>
                         <textarea matInput formControlName="description" rows="5"></textarea>
@@ -116,7 +121,7 @@
         </mat-card>
 
         <!-- Section: Pricing -->
-        <mat-card class="cardWithShadow theme-card section-card m-t-16">
+        <mat-card class="cardWithShadow theme-card section-card m-t-16 hide">
             <mat-card-title class="section-title">Pricing Structure</mat-card-title>
             <mat-card-content>
 

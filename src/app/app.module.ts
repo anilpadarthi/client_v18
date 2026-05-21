@@ -162,6 +162,10 @@ registerLocaleData(localeGb, 'en-GB');
 import { SupplierReportComponent } from './components/management/supplier-report/supplier-report.component';
 import { UnPaidOrderListComponent } from './components/order/un-paid-order-list/un-paid-order-list.component';
 import  {LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
+import { AccessoriesOutstandingReportComponent } from './components/management/accessories-outstanding-report/accessories-outstanding-report.component';
+import { ConfigurationComponent } from './components/management/configuration/configuration.component';
+
+
 
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -300,7 +304,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SupplierReportComponent,
     UnPaidOrdersComponent,
     UnPaidOrderListComponent,
-    LowStockReportComponent
+    LowStockReportComponent,
+    AccessoriesOutstandingReportComponent,
+    ConfigurationComponent
   ],
   imports: [
     BrowserModule,

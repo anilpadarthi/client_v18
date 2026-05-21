@@ -195,11 +195,11 @@
   </div>
   <div *ngIf="action == 'CommissionWallet'">
     <app-on-field-shop-wallet [selectedShopId]="selectedShopId" [walletType]="action"
-      [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+      [refreshValue]="refreshCounter" [shopDetails]="shopAddressDetails"></app-on-field-shop-wallet>
   </div>
   <div *ngIf="action == 'BonusWallet'">
     <app-on-field-shop-wallet [selectedShopId]="selectedShopId" [walletType]="action"
-      [refreshValue]="refreshCounter"></app-on-field-shop-wallet>
+      [refreshValue]="refreshCounter" [shopDetails]="shopAddressDetails"></app-on-field-shop-wallet>
   </div>
 
 </div>

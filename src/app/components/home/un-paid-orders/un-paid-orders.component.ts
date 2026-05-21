@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrderService } from '../../../services/order.service';
 import { OutstandingBalanceDialogComponent } from '../outstanding-balance-dialog/outstanding-balance-dialog.component';
 import { WebstorgeService } from '../../../services/web-storage.service';
+import { PopupTableComponent } from '../../common/popup-table/popup-table.component';
 
 @Component({
   selector: 'app-un-paid-orders',
@@ -19,25 +20,27 @@ export class UnPaidOrdersComponent implements OnInit {
     'balanceAmount',
   ];
   userRole: string | null = null;
-  
+
   constructor(private orderService: OrderService, private dialog: MatDialog, private webstorgeService: WebstorgeService) {
 
     this.userRole = this.webstorgeService.getUserRole();
   }
 
   ngOnInit(): void {
-    this.orderService.getUnPaidOrders().subscribe((res) => {
-      this.unPaidOrderList = res.data;
+    if (this.userRole != 'Retailer') {
+      this.orderService.getUnPaidOrders().subscribe((res) => {
+        this.unPaidOrderList = res.data;
 
-      this.outstandingBalance = this.unPaidOrderList.reduce(
-        (sum, order) => sum + (order.balanceAmount || 0),
-        0
-      );     
+        this.outstandingBalance = this.unPaidOrderList.reduce(
+          (sum, order) => sum + (order.balanceAmount || 0),
+          0
+        );
 
-      if (this.outstandingBalance > 0) {
-        this.openOutstandingBalanceDialog();
-      }
-    });
+        if (this.outstandingBalance > 0) {
+          this.openOutstandingBalanceDialog();
+        }
+      });
+    }
   }
 
   openOutstandingBalanceDialog(): void {
@@ -50,5 +53,18 @@ export class UnPaidOrdersComponent implements OnInit {
       },
       disableClose: true,
     });
+  }
+
+  viewAgentBalanceHistory(userId: any): void {
+
+    this.orderService.getUnPaidOrderList(userId).subscribe((res) => {
+          var data = {
+            result: res.data,
+            headerName: 'Order History'
+          }
+          this.dialog.open(PopupTableComponent, {
+            data
+          });
+        });
   }
 }

@@ -25,7 +25,7 @@
         </td>
 
         <td mat-footer-cell *matFooterCellDef
-          [ngClass]="{'center': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
+          [ngClass]="{'center total-amt': column !== 'Name', 'sticky-column': stickyColumns.includes(column)}">
           {{ getTotal(column) }}
         </td>
       </ng-container>

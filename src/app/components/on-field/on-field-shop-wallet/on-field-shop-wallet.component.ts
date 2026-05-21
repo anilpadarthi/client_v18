@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OnFieldShopWalletHistoryComponent } from '../on-field-shop-wallet-history/on-field-shop-wallet-history.component';
-
+import { ToasterService } from '../../../services/toaster.service';
 
 @Component({
   selector: 'app-on-field-shop-wallet',
@@ -16,6 +16,7 @@ import { OnFieldShopWalletHistoryComponent } from '../on-field-shop-wallet-histo
 export class OnFieldShopWalletComponent implements OnInit {
 
   @Input() selectedShopId!: number;
+  @Input() shopDetails!: any;
   @Input() walletType!: string;
   @Input() refreshValue!: number;
   commissionAmount = 0.00;
@@ -32,6 +33,7 @@ export class OnFieldShopWalletComponent implements OnInit {
     private dialog: MatDialog,
     private onFieldService: OnFieldService,
     private webstorgeService: WebstorgeService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +89,11 @@ export class OnFieldShopWalletComponent implements OnInit {
   }
 
   openShoppingPage(type: any): void {
-
+    if(this.shopDetails?.byPassBonusRedemption) {
+       this.toasterService.showMessage('Bonus redemption is bypassed for this shop.');
+       return;
+    }
+    
     const fullPath = this.router.serializeUrl(
       this.router.createUrlTree([`accessories/create-order/${this.selectedShopId}/${type}`])
     );

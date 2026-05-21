@@ -44,7 +44,7 @@ export class PaySlipComponent implements OnInit {
   userRole: any;
   loggedInUserId: any;
   kpi1Target = 0;
-  kp1AccesoriesTarget = 0.00;
+  kpiAccesoriesTarget = 0.00;
   kpi1Percentage = 0.00;
   bonus = 0.00;
   userFilterCtrl: FormControl = new FormControl();
@@ -52,10 +52,13 @@ export class PaySlipComponent implements OnInit {
   filteredUsers: any[] = [];
   filteredManagers: any[] = [];
   selectedUserRole = '';
+  commissionBasedOnCollectedAmount = false;
+  commissionBasedOnCutoffDate = false;
+  isDisplayConfiguration = false;
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
-  displayedColumns2: string[] = ['saleType', 'saleAmount', 'collectedAmount','beforeCutOffDateCollectedAmount', 'rate', 'total'];
+  displayedColumns2: string[] = ['saleType', 'saleAmount', 'collectedAmount', 'beforeCutOffDateCollectedAmount', 'rate', 'total'];
   displayedColumns3: string[] = ['type', 'comments', 'date', 'amount', 'action'];
 
   constructor(
@@ -139,7 +142,7 @@ export class PaySlipComponent implements OnInit {
       this.instantAndVodafoneVoxiList = [];
       this.salaryTransactions = [];
       this.salaryDetails = [];
-      
+
       this.reportService.getSalaryReport(requestBody).subscribe((res) => {
         if (res.data != null && res.statusCode == 200) {
           this.simCommissionDetails = res.data.salarySimCommissionDetailsModel;
@@ -157,11 +160,14 @@ export class PaySlipComponent implements OnInit {
           this.totalAccessoriesCommission = this.accessoriesCommisssionDetails.reduce((sum: any, item: any) => sum + item.total, 0);
           this.totalSalaryInAdvance = this.salaryTransactions.reduce((sum: any, item: any) => sum + item.amount, 0);
           this.kpi1Target = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1Target : 0;
-          //this.kp1AccesoriesTarget = this.accessoriesCommisssionDetails.length > 0 ? this.accessoriesCommisssionDetails[0].kpI1Target : 0.00;
+          this.kpiAccesoriesTarget = this.accessoriesCommisssionDetails.length > 0 ? this.accessoriesCommisssionDetails[0].kpiAccesoriesTarget : 0.00;
           this.kpi1Percentage = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].kpI1AchivedPercentage : 0.00;
           this.bonus = this.simCommissionDetails.length > 0 ? this.simCommissionDetails[0].bonus : 0;
         }
       });
+
+      // Load commission configuration
+      this.loadCommissionConfiguration();
     }
     else {
       this.toasterService.showMessage('Please select Month and user to view the payslip.');
@@ -183,6 +189,7 @@ export class PaySlipComponent implements OnInit {
 
 
   onFilter(): void {
+    this.isDisplayConfiguration = true;
     this.loadData();
   }
 
@@ -196,6 +203,9 @@ export class PaySlipComponent implements OnInit {
     this.instantAndVodafoneVoxiList = [];
     this.salaryTransactions = [];
     this.salaryDetails = [];
+    this.commissionBasedOnCollectedAmount = false;
+    this.commissionBasedOnCutoffDate = false;
+    this.isDisplayConfiguration = false;
   }
 
   addTransaction(): void {
@@ -261,6 +271,82 @@ export class PaySlipComponent implements OnInit {
   userRoleChanged(): void {
     this.selectedAgentId = 0;
     this.selectedManagerId = 0;
+  }
+
+  onCommissionTypeChange(type: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm Commission Configuration',
+        message: `Are you sure you want to generate commissions based on ${type === 'collected' ? 'Collected Amount' : 'Cutoff Date Collected Amount'}? This will save the configuration to the database.`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        // Uncheck the other checkbox
+        if (type === 'collected') {
+          this.commissionBasedOnCutoffDate = false;
+        } else {
+          this.commissionBasedOnCollectedAmount = false;
+        }
+        // Save configuration to database
+        this.saveCommissionConfiguration(type);
+      } else {
+        // Revert the checkbox
+        if (type === 'collected') {
+          this.commissionBasedOnCollectedAmount = false;
+        } else {
+          this.commissionBasedOnCutoffDate = false;
+        }
+      }
+    });
+  }
+
+  saveCommissionConfiguration(type: string): void {
+    const requestBody = {
+      // Add other necessary fields like userId, month, etc.
+      userId: this.selectedAgentId || this.selectedManagerId,
+      isCommissionBasedOnCollectedAmount: this.commissionBasedOnCollectedAmount,
+      isCommissionBasedOnCutoffDate: this.commissionBasedOnCutoffDate,
+      payslipDate: this.selectedMonth
+    };
+
+    // Assuming we add a method to management service
+    this.managementService.saveCommissionConfiguration(requestBody).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage('Commission configuration saved successfully');
+        // Perhaps reload data or generate commissions
+        this.loadData();
+      } else {
+        this.toasterService.showMessage(res.data || 'Failed to save configuration');
+        // Revert checkbox
+        if (type === 'collected') {
+          this.commissionBasedOnCollectedAmount = false;
+        } else {
+          this.commissionBasedOnCutoffDate = false;
+        }
+      }
+    });
+  }
+
+  loadCommissionConfiguration(): void {
+    const requestBody = {
+      userId: this.selectedAgentId || this.selectedManagerId,
+      payslipDate: this.selectedMonth
+    };
+
+    this.managementService.getCommissionConfiguration(requestBody).subscribe((res) => {
+      if (res.statusCode == 200 && res.data) {
+        const config = res.data;
+        this.commissionBasedOnCollectedAmount = config.isCommissionBasedOnCollectedAmount;
+        this.commissionBasedOnCutoffDate = config.isCommissionBasedOnCutoffDate;
+      } else {
+        // Default to false or handle error
+        this.commissionBasedOnCollectedAmount = false;
+        this.commissionBasedOnCutoffDate = false;
+      }
+    });
   }
 
 }

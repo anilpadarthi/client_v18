@@ -56,6 +56,7 @@ export class ProductEditorComponent {
       sellingPrice: [null, Validators.required],
       commissionToAgent: [null, [Validators.required]],
       commissionToManager: [null, [Validators.required]],
+      lowStockAlert: [null],
       //colourList: [[]],
       //sizeList: [[]],
       status: true,
@@ -199,6 +200,7 @@ export class ProductEditorComponent {
       formBody.append('status', (this.productForm.value.status ?? false) ? '1' : '0');
       formBody.append('commissionToAgent', this.productForm.value.commissionToAgent);
       formBody.append('commissionToManager', this.productForm.value.commissionToManager);
+      formBody.append('lowStockAlert', this.productForm.value.lowStockAlert ?? 0);
 
       if (this.productForm.value.productImage) {
         formBody.append('productImageFile', this.productForm.value.productImage);

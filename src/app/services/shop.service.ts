@@ -93,6 +93,10 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url + `/DeleteShopCommissionCheque?sno=${sno}`);
   }
 
+  createShopCommissionCheque(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/CreateShopCommissionCheque', requestBody);
+  }
+
   globalShopSearch(searchText: any): Observable<ICommonResponse> {
     return this.http.get<ICommonResponse>(this.url + `/GlobalShopSearch?searchText=${searchText}`);
   }

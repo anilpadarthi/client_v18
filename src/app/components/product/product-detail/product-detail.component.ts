@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
+
 export class ProductDetailComponent implements OnInit, OnChanges {
   @Input() selectedProduct!: any;
   @Output() notifyParent = new EventEmitter<any>();
@@ -15,14 +16,17 @@ export class ProductDetailComponent implements OnInit, OnChanges {
   hasPriceStructure = false;
   lowestPrice: any;
   totalQuantity: number = 0;
+  totalActualBundlePrice: number = 0;
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
-  bundleItemColumns: string[] = ['ProductId', 'Name', 'qty']
+  bundleItemColumns: string[] = ['ProductId', 'Name', 'Qty', 'Price', 'TotalPrice'];
 
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {
+  }
 
   selectImage(img: string) {
+
   }
 
 
@@ -54,6 +58,7 @@ export class ProductDetailComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.selectedProduct) {
       this.totalQuantity = this.selectedProduct.bundleItems?.reduce((acc: number, item: any) => acc + (item.quantity ?? 0), 0) || 0;
+      this.totalActualBundlePrice = this.selectedProduct.bundleItems?.reduce((acc: number, item: any) => acc + ((item.quantity ?? 0) * (item.price ?? 0)), 0) || 0;
     }
 
     if (this.selectedProduct) {

@@ -290,6 +290,16 @@ mat-expansion-panel {
     font-size: 12px !important;
 }
 
+.sticky-table tfoot td {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 9;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+    font-weight: bold;
+}
+
 .custom-snackbar {
     background-color: #4caf50;
     /* Green background */
@@ -796,6 +806,10 @@ ngx-mat-select-search {
     padding: 0;
     background: transparent;
     box-shadow: none;
+}
+
+.mat-mdc-dialog-title{
+    background-color: lightcoral !important;
 }
 
 /* Optional: Reduce font and spacing on small screens */

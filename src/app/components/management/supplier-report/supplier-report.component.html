@@ -32,94 +32,153 @@
                 </div>
             </div>
 
-            <p *ngIf="activationList?.length > 0" class="info-msg">** accounts are calculated from 1st of the Month to end of the Month **
+            <p *ngIf="mergedDataSource?.length > 0" class="info-msg">** accounts are calculated from 1st of the Month to
+                end of the Month **
             </p>
-            <div *ngIf="activationList?.length > 0" class="table-responsive table-max-scroll example-container">
-                <table mat-table [dataSource]="activationList" class="w-100 custom-table">
+            <div *ngIf="mergedDataSource?.length > 0"
+                class="table-responsive table-scroll example-container">
 
-                    <ng-container matColumnDef="SupplierName" sticky>
-                        <th mat-header-cell *matHeaderCellDef>Supplier</th>
-                        <td mat-cell *matCellDef="let element">                           
-                            {{ element.supplierName }}
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
+                <table class="w-100 sticky-table custom-table">
 
-                    <ng-container matColumnDef="SupplierAccountName" sticky>
-                        <th mat-header-cell *matHeaderCellDef>Account</th>
-                        <td mat-cell *matCellDef="let element">                           
-                            {{ element.supplierAccountName }}
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
+                    <!-- ========================= -->
+                    <!-- HEADER -->
+                    <!-- ========================= -->
 
-                    <ng-container matColumnDef="SupplierId" sticky>
-                        <th mat-header-cell *matHeaderCellDef>SupplierID</th>
-                        <td mat-cell *matCellDef="let element">                           
-                            {{ element.supplierId }}
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef>Total</td>
-                    </ng-container>
-                    
+                    <thead>
 
-                    <ng-container matColumnDef="EE">
-                        <th mat-header-cell *matHeaderCellDef>EE</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.ee ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ eeSum }}</td>
-                    </ng-container>
+                        <!-- TOP HEADER -->
+                        <tr>
 
-                    <ng-container matColumnDef="THREE">
-                        <th mat-header-cell *matHeaderCellDef>THREE</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.three ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ threeSum }}</td>
-                    </ng-container>
+                            <th rowspan="2">Supplier</th>
+                            <th rowspan="2">Account</th>
+                            <th rowspan="2">Code</th>
 
-                    <ng-container matColumnDef="O2">
-                        <th mat-header-cell *matHeaderCellDef>O2</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.o2 ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center"> {{ o2Sum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="GIFFGAFF">
-                        <th mat-header-cell *matHeaderCellDef>GIFFGAFF</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.giffgaff ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ gifgafSum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="LEBARA">
-                        <th mat-header-cell *matHeaderCellDef>LEBARA</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.lebara ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ lebaraSum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="VODAFONE">
-                        <th mat-header-cell *matHeaderCellDef>VODAFONE</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.vodafone ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ vodafoneSum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="VOXI">
-                        <th mat-header-cell *matHeaderCellDef>VOXI</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.voxi ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ voxiSum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="SMARTY">
-                        <th mat-header-cell *matHeaderCellDef>SMARTY</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.smarty ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ smartySum }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="TOTAL">
-                        <th mat-header-cell *matHeaderCellDef>TOTAL</th>
-                        <td mat-cell *matCellDef="let element" class="center">{{ element.total ?? 0 }}</td>
-                        <td mat-footer-cell *matFooterCellDef class="center">{{ totalSum }}</td>
-                    </ng-container>
+                            <th *ngFor="let network of networkColumns" colspan="2" class="text-center">
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                                {{ network }}
+
+                            </th>
+
+                            <th colspan="2" class="text-center">
+                                TOTAL
+                            </th>
+
+                        </tr>
+
+                        <!-- SUB HEADER -->
+                        <tr>
+
+                            <ng-container *ngFor="let network of networkColumns">
+
+                                <th class="text-center">
+                                    Upl.
+                                </th>
+
+                                <th class="text-center">
+                                    Act.
+                                </th>
+
+                            </ng-container>
+
+                            <th class="text-center">
+                                Upl.
+                            </th>
+
+                            <th class="text-center">
+                                Act.
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <!-- ========================= -->
+                    <!-- BODY -->
+                    <!-- ========================= -->
+
+                    <tbody>
+
+                        <tr *ngFor="let row of mergedDataSource">
+
+                            <!-- Supplier -->
+                            <td>
+                                {{ row.SupplierName }}
+                            </td>
+
+                            <!-- Account -->
+                            <td>
+                                {{ row.AccountName }}
+                            </td>
+
+                            <!-- Code -->
+                            <td>
+                                {{ row.SupplierCode }}
+                            </td>
+
+                            <!-- Dynamic Networks -->
+                            <ng-container *ngFor="let network of networkColumns">
+
+                                <!-- Uploaded -->
+                                <td class="text-center">
+
+                                    {{ row[network + '_Uploaded'] || 0 }}
+
+                                </td>
+
+                                <!-- Activated -->
+                                <td class="text-center">
+
+                                    {{ row[network + '_Activated'] || 0 }}
+
+                                </td>
+
+                            </ng-container>
+
+                            <!-- TOTAL UPLOADED -->
+                            <td class="text-center fw-bold">
+
+                                {{ row.TotalUploaded }}
+
+                            </td>
+
+                            <!-- TOTAL ACTIVATED -->
+                            <td class="text-center fw-bold">
+
+                                {{ row.TotalActivated }}
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot *ngIf="mergedDataSource?.length > 0">
+                        <tr class="">
+                            <td colspan="3" class="text-center fw-bold">Grand Total</td>
+
+                            <ng-container *ngFor="let network of networkColumns">
+                                <td class="text-center fw-bold">
+                                    {{ footerTotals[network + '_Uploaded'] || 0 }}
+                                </td>
+                                <td class="text-center fw-bold">
+                                    {{ footerTotals[network + '_Activated'] || 0 }}
+                                </td>
+                            </ng-container>
+
+                            <td class="text-center fw-bold">
+                                {{ footerTotals.TotalUploaded || 0 }}
+                            </td>
+                            <td class="text-center fw-bold">
+                                {{ footerTotals.TotalActivated || 0 }}
+                            </td>
+                        </tr>
+                    </tfoot>
+
                 </table>
+
             </div>
-            <div class="zero-records p-b-8" *ngIf="activationList?.length == 0">
+            <div class="zero-records p-b-8" *ngIf="mergedDataSource?.length == 0">
                 <img src="/assets/images/landingpage/background/no-records.svg" />
                 <span>No records found</span>
             </div>
-
 
         </mat-card-content>
     </mat-card>

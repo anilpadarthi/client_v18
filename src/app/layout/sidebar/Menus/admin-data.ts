@@ -87,7 +87,7 @@ export const AdminItems: NavItem[] = [
         iconName: 'arrow_right',
         route: 'products',
       },
-       {
+      {
         displayName: 'Mix Match Group',
         iconName: 'arrow_right',
         route: 'mix-match-groups',
@@ -129,7 +129,7 @@ export const AdminItems: NavItem[] = [
         displayName: 'KPI Targets',
         iconName: 'arrow_right',
         route: 'report/kpi-target',
-      },      
+      },
       {
         displayName: 'Area Commissions',
         iconName: 'arrow_right',
@@ -223,6 +223,16 @@ export const AdminItems: NavItem[] = [
         displayName: 'Commission Cheque Withdraw',
         iconName: 'arrow_right',
         route: 'management/commission-cheque-withdraw',
+      },
+      {
+        displayName: 'Outstanding Report',
+        iconName: 'arrow_right',
+        route: 'management/accessories-outstanding-report',
+      },
+      {
+        displayName: 'Configuration',
+        iconName: 'arrow_right',
+        route: 'management/configuration',
       },
       {
         displayName: 'Commission Cheque Status',

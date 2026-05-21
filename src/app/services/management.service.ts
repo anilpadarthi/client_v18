@@ -36,6 +36,24 @@ export class ManagementService {
         return this.http.get<ICommonResponse>(this.url + `/DeleteUserSalaryTransaction?userSalaryTransactionID=${id}`);
     }
 
+    saveCommissionConfiguration(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/SaveCommissionConfiguration', requestBody);
+    }
 
+    saveConfiguration(chequeCutOffDay: any): Observable<ICommonResponse> {
+        return this.http.get<ICommonResponse>(this.url + '/SaveConfiguration?chequeCutOffDay=' + chequeCutOffDay);
+    }
+
+     getConfiguration(): Observable<ICommonResponse> {
+        return this.http.get<ICommonResponse>(this.url + '/GetConfiguration');
+    }
+
+    getCommissionConfiguration(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/GetCommissionConfiguration', requestBody);
+    }
+
+    outStandingAccessoriesReport(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/OutStandingAccessoriesReport', requestBody);
+    }
 
 }

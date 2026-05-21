@@ -76,6 +76,8 @@ import { ShopportalComponent } from './components/shopportal/shopportal.componen
 import { MessageCenterComponent } from './components/reports/message-center/message-center.component';
 import { SupplierReportComponent } from './components/management/supplier-report/supplier-report.component';
 import { LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
+import { AccessoriesOutstandingReportComponent } from './components/management/accessories-outstanding-report/accessories-outstanding-report.component';
+import { ConfigurationComponent } from './components/management/configuration/configuration.component';
 
 
 
@@ -166,6 +168,8 @@ const routes: Routes = [
       { path: 'commission-cheque-status', component: CommissionChequeStatusComponent },
       { path: 'management/bank-cheques', component: ExpensesFormComponent },
       { path: 'management/commission-cheque-withdraw', component: ChequeWithdrawnReportComponent },
+      { path: 'management/accessories-outstanding-report', component: AccessoriesOutstandingReportComponent },
+      { path: 'management/configuration', component: ConfigurationComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
 
