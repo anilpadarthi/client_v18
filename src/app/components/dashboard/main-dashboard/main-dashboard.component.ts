@@ -28,6 +28,7 @@ export class MainDashboardComponent implements OnInit {
   assignedCount = 0;
   activationCount = 0;
   instantActivationCount = 0;
+  spamActivationCount = 0;
   filterId: any = null;
   filterType: any = null;
   refreshCounter = 0;
@@ -54,9 +55,10 @@ export class MainDashboardComponent implements OnInit {
     this.filterId = loggedInUserId;
     this.filterType = userRole;
     this.selectedMonth = this.getCurrentMonthString();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isAdmin = true;
       this.dashboardViewMode = 'Admin'
+      this.filterType = 'SuperAdmin';
       this.getAgentLookup();
       this.getManagerLookup();
     }
@@ -133,6 +135,7 @@ export class MainDashboardComponent implements OnInit {
         this.givenCount = res.data[0].givenToShopCount;
         this.activationCount = res.data[0].activationCount;
         this.instantActivationCount = res.data[0].instantActivationCount;
+        this.spamActivationCount = res.data[0].spamCount;
       }
     });
   }
@@ -159,7 +162,7 @@ export class MainDashboardComponent implements OnInit {
         let loggedInUserId = this.webstorgeService.getUserInfo().userId;
         this.filterId = loggedInUserId;
         this.filterType = userRole;
-        if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+        if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
           this.isAdmin = true;
           this.dashboardViewMode = 'Admin'
         }

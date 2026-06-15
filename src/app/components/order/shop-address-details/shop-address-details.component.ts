@@ -71,6 +71,8 @@ export class ShopAddressDetailsComponent {
           this.toasterService.showMessage("Updated successfully.");
           this.dialogRef.close({
             updated: true,
+            addressLine1: this.shopDetailsForm.get('addressLine1')?.value,
+            postCode: this.shopDetailsForm.get('postCode')?.value,
           });
         }
         else {

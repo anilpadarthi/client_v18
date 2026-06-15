@@ -56,23 +56,31 @@
                 <td mat-cell *matCellDef="let element">
                     {{ element.productName }}
                 </td>
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+                    Total
+                </td>
             </ng-container>
             <ng-container matColumnDef="productCode">
                 <th mat-header-cell *matHeaderCellDef>Code</th>
                 <td mat-cell *matCellDef="let element">
                     {{ element.productCode }}
                 </td>
+                <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
             <ng-container matColumnDef="sellingPrice">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Price</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                     £{{ element.salePrice | number: '1.2-2' }}
                 </td>
+                <td mat-footer-cell *matFooterCellDef class="text-center"></td>
             </ng-container>
             <ng-container matColumnDef="quantity">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Quantity</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                     {{ element.qty }}
+                </td>
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+                    {{ totalQuantity }}
                 </td>
             </ng-container>
             <ng-container matColumnDef="amount">
@@ -80,9 +88,13 @@
                 <td mat-cell *matCellDef="let element" class="text-center">
                     <span *ngIf="element.isBundleProduct == 0">£{{ (element.qty * element.salePrice) | number: '1.2-2' }}</span>
                 </td>
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+                    £{{ totalItemAmount | number: '1.2-2' }}
+                </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
         </table>
     </div>
 
@@ -90,7 +102,7 @@
         <h2 class="summary-title">Order Summary</h2>
 
         <div class="summary-row">
-            <div class="label">Sub Total:</div>
+            <div class="label">Item Total:</div>
             <div class="value">£{{ subTotal | number : "1.2-2" }}</div>
         </div>
         <div class="summary-row">

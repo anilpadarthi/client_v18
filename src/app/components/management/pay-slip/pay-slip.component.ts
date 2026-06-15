@@ -22,6 +22,7 @@ export class PaySlipComponent implements OnInit {
   selectedMonth: string | null = null;
   selectedAgentId = 0;
   selectedManagerId = 0;
+  selectedOperationalManagerId = 0;
   totalSalaryInAdvance = 0.00;
   totalSalary = 0.00;
   totalActivations = 0;
@@ -34,6 +35,7 @@ export class PaySlipComponent implements OnInit {
   totalAccessoriesCommission = 0.00;
   userLookup: any = [];
   managerLookup: any = [];
+  operationalManagerLookup: any = [];
   accessoriesCommisssionDetails: any = [];
   simCommissionDetails: any = [];
   instantAndVodafoneVoxiList: any = [];
@@ -75,10 +77,11 @@ export class PaySlipComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       this.getAgentLookup();
       this.getManagerLookup();
+      this.getOperationalManagerLookup();
     }
     else if (this.userRole == 'Manager') {
       this.isManager = true;
@@ -128,13 +131,19 @@ export class PaySlipComponent implements OnInit {
     });
   }
 
+   getOperationalManagerLookup() {
+    this.lookupService.getOperationalManagers().subscribe((res) => {
+      this.operationalManagerLookup = res.data;
+    });
+  }
+
   loadData(): void {
     if (this.selectedMonth && this.selectedUserRole != ''
-      && (this.selectedManagerId != 0 || this.selectedAgentId != 0)) {
+      && (this.selectedManagerId != 0 || this.selectedAgentId != 0 || this.selectedOperationalManagerId != 0)) {
       const requestBody = {
         fromDate: this.selectedMonth,
-        filterType: this.selectedAgentId != 0 ? 'Agent' : 'Manager',
-        filterId: this.selectedAgentId != 0 ? this.selectedAgentId : this.selectedManagerId,
+        filterType: this.selectedAgentId != 0 ? 'Agent' : this.selectedManagerId != 0 ? 'Manager' : 'OperationalManager',
+        filterId: this.selectedAgentId != 0 ? this.selectedAgentId : this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedOperationalManagerId,
       };
 
       this.accessoriesCommisssionDetails = [];
@@ -197,6 +206,7 @@ export class PaySlipComponent implements OnInit {
     this.selectedMonth = null;
     this.selectedAgentId = 0;
     this.selectedManagerId = 0;
+    this.selectedOperationalManagerId = 0;
     this.selectedUserRole = '';
     this.accessoriesCommisssionDetails = [];
     this.simCommissionDetails = [];
@@ -209,10 +219,10 @@ export class PaySlipComponent implements OnInit {
   }
 
   addTransaction(): void {
-    if ((this.selectedManagerId != 0 || this.selectedAgentId != 0)
+    if ((this.selectedManagerId != 0 || this.selectedAgentId != 0 || this.selectedOperationalManagerId != 0)
       && this.selectedMonth) {
       var data = {
-        userId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId,
+        userId: this.selectedManagerId != 0 ? this.selectedManagerId : this.selectedAgentId != 0 ? this.selectedAgentId : this.selectedOperationalManagerId,
         transactionDate: this.selectedMonth,
         amount: 0
       }
@@ -271,6 +281,7 @@ export class PaySlipComponent implements OnInit {
   userRoleChanged(): void {
     this.selectedAgentId = 0;
     this.selectedManagerId = 0;
+    this.selectedOperationalManagerId = 0;
   }
 
   onCommissionTypeChange(type: string): void {

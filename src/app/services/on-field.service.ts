@@ -17,6 +17,10 @@ export class OnFieldService {
         return this.http.post<ICommonResponse>(this.url + '/OnFieldActivationList', requestBody);
     }
 
+    onFieldSpamActivationList(requestBody: any): Observable<any> {
+        return this.http.post<ICommonResponse>(this.url + '/OnFieldSpamActivationList', requestBody);
+    }
+
     onFieldCommissionList(requestBody: any): Observable<ICommonResponse> {
         return this.http.post<ICommonResponse>(this.url + '/OnFieldCommissionList', requestBody);
     }

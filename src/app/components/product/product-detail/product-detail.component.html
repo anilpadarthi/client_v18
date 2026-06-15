@@ -1,14 +1,32 @@
 <mat-card class="cardWithShadow">
   <div class="product-container" *ngIf="selectedProduct!=null">
-    <!-- Left Section: Product Images -->
+    <!-- Left Section: Product Images Carousel -->
     <div class="product-images">
-      <img *ngIf="selectedProduct.productImage" [src]="selectedProduct.productImage" class="main-image"
-        alt="Image Preview" />
+      <div class="carousel-wrapper" *ngIf="imageList.length > 0">
+        <img [src]="selectedImageUrl" class="main-image" alt="Image Preview" (click)="openFullscreenImage(selectedImageUrl)" />
+        
+        <!-- Carousel Navigation -->
+        <div class="carousel-controls">
+          <button mat-icon-button (click)="previousImage()" [disabled]="imageList.length <= 1" class="carousel-btn carousel-btn-prev">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span class="carousel-indicator">{{ imageList.indexOf(selectedImageUrl) + 1 }} / {{ imageList.length }}</span>
+          <button mat-icon-button (click)="nextImage()" [disabled]="imageList.length <= 1" class="carousel-btn carousel-btn-next">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
 
-      <!-- <div class="thumbnail-container">
-      <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" [class.selected]="img === product.image"
-        (click)="selectImage(img)" />
-    </div> -->
+        <!-- Thumbnail strip -->
+        <div class="thumbnail-container" *ngIf="imageList.length > 1">
+          <img *ngFor="let img of imageList; let i = index" [src]="img" class="thumbnail" 
+            [class.selected]="img === selectedImageUrl" (click)="selectImage(img)" [alt]="'Image ' + (i + 1)" />
+        </div>
+      </div>
+
+      <!-- Fallback when no images -->
+      <div *ngIf="imageList.length === 0" class="no-image">
+        <img src="/assets/images/profile/user-1.jpg" class="main-image" alt="No Image Available" />
+      </div>
     </div>
 
     <!-- Right Section: Product Info -->
@@ -114,3 +132,13 @@
     </div>
   </div>
 </mat-card>
+
+<!-- Fullscreen Image Modal -->
+<div class="fullscreen-modal-overlay" *ngIf="isFullscreenOpen" (click)="closeFullscreenImage()">
+  <div class="fullscreen-modal-content" (click)="$event.stopPropagation()">
+    <button mat-icon-button class="close-btn" (click)="closeFullscreenImage()" title="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+    <img [src]="fullscreenImageUrl" class="fullscreen-image" alt="Full Image View" />
+  </div>
+</div>

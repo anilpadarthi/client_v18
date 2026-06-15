@@ -66,8 +66,9 @@ export class LayoutComponent implements OnInit {
         case 4: this.navItems = AgentItems; break;
         case 5: this.navItems = HRItems; break;
         case 6: this.navItems = WarehouseItems; break;
-        case 7: this.navItems = RetailerItems; break;
-        case 8: this.navItems = CallCenterItems; break;
+        case 7: this.navItems = CallCenterItems; break;
+        case 8: this.navItems = AdminItems; break;
+        case 9: this.navItems = RetailerItems; break;
         default: this.navItems = navItems; break;
       }
 

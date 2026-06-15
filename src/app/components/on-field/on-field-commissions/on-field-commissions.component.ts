@@ -52,7 +52,7 @@ export class OnFieldCommissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' ) {
       this.isAdmin = true;
     }
     if (this.selectedShopId > 0) {

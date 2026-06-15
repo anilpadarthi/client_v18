@@ -45,7 +45,7 @@ export class OnFieldShopCommissionChequesComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.canEditChequeNumber = true;
     }
     if (this._data.shopId > 0) {

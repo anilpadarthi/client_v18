@@ -72,7 +72,7 @@ export class OnFieldShopOrderListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.hasVATInvoiceAccess = true;
     }
     this.loadData();

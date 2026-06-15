@@ -74,6 +74,10 @@ export class LookupService {
     return this.http.get<any>(this.url + "/Managers");
   }
 
+  getOperationalManagers(): Observable<any> {
+    return this.http.get<any>(this.url + "/OperationalManagers");
+   }
+
   getAreas(): Observable<ICommonResponse> {
     return this.http.get<ICommonResponse>(this.url + "/Areas");
   }

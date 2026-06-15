@@ -85,11 +85,11 @@ export class MonthlyActivationReportComponent implements OnInit {
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole == 'Manager') {
       this.isAdmin = true;
     }
 
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole == 'Manager') {
       this.isDisplay = true;
       this.getAgentLookup();
       this.getManagerLookup();

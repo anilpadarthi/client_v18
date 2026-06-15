@@ -52,7 +52,7 @@ export class ShopListComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isAdmin = true;
       this.loadData();
     }

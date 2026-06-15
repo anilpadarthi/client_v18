@@ -41,7 +41,7 @@ export class OnFieldShopWalletComponent implements OnInit {
       this.loadData();
     }
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'Manager') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole == 'Manager') {
       this.isDisplayInstantBonus = true;
      
     }

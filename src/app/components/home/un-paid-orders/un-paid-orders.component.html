@@ -11,7 +11,7 @@
 </div>
 
 <div class="table-responsive table-max-scroll example-container" *ngIf="userRole === 'Admin' 
-|| userRole == 'SuperAdmin' || userRole==='Manager'">
+|| userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole==='Manager'">
     <table mat-table [dataSource]=" unPaidOrderList" class="w-100 custom-table">
         <ng-container matColumnDef="userName">
             <th mat-header-cell *matHeaderCellDef>Agent</th>

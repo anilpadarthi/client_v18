@@ -39,7 +39,7 @@ export class OrderPaymentHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == "CallCenter") {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole == "CallCenter") {
       this.canDeletePayment = true;
     }
     this.loadData();

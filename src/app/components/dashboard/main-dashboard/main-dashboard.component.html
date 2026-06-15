@@ -46,7 +46,7 @@
       </div>
       <p class="info-msg m-t-10">Accounts are calculated from 26th to 25th</p>
       <div class="row">
-        <div class="col-lg-3 col-sm-6 col-xs-3 col-12">
+        <div class="col-lg-2 col-sm-6 col-xs-3 col-12">
           <mat-card class="shadow-none text-center link accounts-cards">
             <mat-card-content>
               <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
@@ -100,7 +100,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-lg-3 col-sm-6 col-xs-3 col-12">
+        <div class="col-lg-2 col-sm-6 col-xs-3 col-12">
           <mat-card class="shadow-none text-center accounts-cards link">
             <mat-card-content>
               <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
@@ -109,10 +109,28 @@
               </div>
               <div class="info">
                 <h4>
-                  Instant Act.
+                  Instant
                 </h4>
                 <h2>
                   {{ instantActivationCount }}
+                </h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-xs-3 col-12">
+          <mat-card class="shadow-none text-center accounts-cards link">
+            <mat-card-content>
+              <!-- <img src="/assets/images/svgs/account-balance.svg" alt="users" width="40" class="rounded-circle" /> -->
+              <div class="icon">
+                <span class="material-symbols-outlined">touch_triple</span>
+              </div>
+              <div class="info">
+                <h4>
+                  Spam
+                </h4>
+                <h2>
+                  {{ spamActivationCount }}
                 </h2>
               </div>
             </mat-card-content>

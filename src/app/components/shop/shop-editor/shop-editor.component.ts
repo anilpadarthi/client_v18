@@ -55,7 +55,7 @@ export class ShopEditorComponent {
     ) {
 
     let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isAdmin = true;
     }
     this.shopId = this.route.snapshot.paramMap.get('id');

@@ -60,10 +60,14 @@ export class ProductEditorComponent {
       //colourList: [[]],
       //sizeList: [[]],
       status: true,
-      productImage: null as File | null,
       productPrices: this.fb.array([])
     });
   }
+
+  productImages: File[] = [];
+  productImagePreviews: string[] = [];
+  existingProductImages: any[] = [];
+  deletedImageIds: number[] = [];
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id');
@@ -147,9 +151,15 @@ export class ProductEditorComponent {
 
         //   status: res.data.product?.status
         // });
-        if (res.data.product?.productImage) {
-          this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
-        }
+        if (res.data.productImages && res.data.productImages.length > 0) {
+          this.existingProductImages = res.data.productImages.map((image: any) => ({
+            id: image.productImageId,
+            url: environment.backend.host + '/' + image.image,
+          }));
+          //this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
+        }      
+        
+        
         if (res.data.product?.categoryId) {
           this.getSubCategoryLookup(res.data.product?.categoryId);
         }
@@ -202,8 +212,21 @@ export class ProductEditorComponent {
       formBody.append('commissionToManager', this.productForm.value.commissionToManager);
       formBody.append('lowStockAlert', this.productForm.value.lowStockAlert ?? 0);
 
-      if (this.productForm.value.productImage) {
-        formBody.append('productImageFile', this.productForm.value.productImage);
+
+      if (this.productImages.length) {
+        if (this.productImages.length === 1) {
+          formBody.append('productImageFile', this.productImages[0]);
+        }
+        this.productImages.forEach((file) => {
+          formBody.append('Images', file);
+        });
+      }
+
+      // Add deleted image IDs as an array
+      if (this.deletedImageIds.length > 0) {
+        this.deletedImageIds.forEach((imageId) => {
+          formBody.append('deletedImageIds[]', imageId.toString());
+        });
       }
 
       if (this.productForm.value.productPrices && Array.isArray(this.productForm.value.productPrices)) {
@@ -246,12 +269,40 @@ export class ProductEditorComponent {
   }
 
   imageUpload(event: any) {
-    var file = event.target.files[0];
-    this.productForm.patchValue({ productImage: file });
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]); // read file as data url
-    reader.onload = (event) => { // called once readAsDataURL is completed
-      this.productImagePreview = event?.target?.result;
+    if (!event.target.files?.length) {
+      return;
+    }
+
+    const files = Array.from(event.target.files) as File[];
+    files.forEach((file) => {
+      if (!file.type.startsWith('image/')) {
+        return;
+      }
+      this.productImages.push(file);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (loadEvent: any) => {
+        if (loadEvent?.target?.result) {
+          this.productImagePreviews.push(loadEvent.target.result as string);
+        }
+      };
+    });
+  }
+
+  removeImage(index: number, isExisting: boolean = false) {
+    debugger;
+    if (isExisting && this.existingProductImages[index]) {
+      // Track deleted existing image ID
+      const deletedImage = this.existingProductImages[index];
+      if (deletedImage.id && !this.deletedImageIds.includes(deletedImage.id)) {
+        this.deletedImageIds.push(deletedImage.id);
+      }
+      this.existingProductImages.splice(index, 1);
+    } else {
+      // Remove new image upload
+      this.productImages.splice(index, 1);
+      this.productImagePreviews.splice(index, 1);
     }
   }
 

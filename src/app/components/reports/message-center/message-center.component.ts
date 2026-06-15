@@ -42,7 +42,7 @@ export class MessageCenterComponent implements OnInit {
 
     this.defaultValueAccessor();
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'Manager') {
       this.getAgentLookup();
     }
 
@@ -97,7 +97,8 @@ export class MessageCenterComponent implements OnInit {
   defaultValueAccessor(): void {
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' 
+      || this.userRole == 'OperationalManager' || this.userRole == 'Manager') {
       this.isAdminOrManager = true;
     }
     else if (this.userRole == 'Agent') {

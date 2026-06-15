@@ -17,16 +17,29 @@ export class ProductDetailComponent implements OnInit, OnChanges {
   lowestPrice: any;
   totalQuantity: number = 0;
   totalActualBundlePrice: number = 0;
+  imageList: string[] = [];
+  selectedImageUrl: string = '';
+  isFullscreenOpen: boolean = false;
+  fullscreenImageUrl: string = '';
 
   displayedColumns: string[] = ['fromQty', 'toQty', 'salePrice'];
   bundleItemColumns: string[] = ['ProductId', 'Name', 'Qty', 'Price', 'TotalPrice'];
 
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService) {}
+
+  selectImage(img: string): void {
+    this.selectedImageUrl = img;
   }
 
-  selectImage(img: string) {
+  openFullscreenImage(img: string): void {
+    this.fullscreenImageUrl = img;
+    this.isFullscreenOpen = true;
+  }
 
+  closeFullscreenImage(): void {
+    this.isFullscreenOpen = false;
+    this.fullscreenImageUrl = '';
   }
 
 
@@ -59,11 +72,64 @@ export class ProductDetailComponent implements OnInit, OnChanges {
     if (this.selectedProduct) {
       this.totalQuantity = this.selectedProduct.bundleItems?.reduce((acc: number, item: any) => acc + (item.quantity ?? 0), 0) || 0;
       this.totalActualBundlePrice = this.selectedProduct.bundleItems?.reduce((acc: number, item: any) => acc + ((item.quantity ?? 0) * (item.price ?? 0)), 0) || 0;
+      this.buildImageCarousel();
     }
 
     if (this.selectedProduct) {
       this.selectedProduct.qty = null;
     }
+  }
+
+  private buildImageCarousel(): void {
+    if (!this.selectedProduct) {
+      this.imageList = [];
+      this.selectedImageUrl = '';
+      return;
+    }
+
+    if (Array.isArray(this.selectedProduct.productImages) && this.selectedProduct.productImages.length > 0) {
+      this.imageList = this.selectedProduct.productImages
+        .map((img: any) => {
+          if (!img) {
+            return '';
+          }
+          if (typeof img === 'string') {
+            return img;
+          }
+          if (img.image) {
+            return img.image.startsWith('http') ? img.image : `${environment.backend.host}/${img.image}`;
+          }
+          if (img.url) {
+            return img.url;
+          }
+          return '';
+        })
+        .filter((url: string) => !!url);
+    } else if (this.selectedProduct.productImage) {
+      this.imageList = [this.selectedProduct.productImage];
+    } else {
+      this.imageList = [];
+    }
+
+    this.selectedImageUrl = this.imageList.length > 0 ? this.imageList[0] : '';
+  }
+
+  previousImage(): void {
+    if (!this.selectedImageUrl || this.imageList.length <= 1) {
+      return;
+    }
+    const currentIndex = this.imageList.indexOf(this.selectedImageUrl);
+    const prevIndex = currentIndex > 0 ? currentIndex - 1 : this.imageList.length - 1;
+    this.selectedImageUrl = this.imageList[prevIndex];
+  }
+
+  nextImage(): void {
+    if (!this.selectedImageUrl || this.imageList.length <= 1) {
+      return;
+    }
+    const currentIndex = this.imageList.indexOf(this.selectedImageUrl);
+    const nextIndex = currentIndex < this.imageList.length - 1 ? currentIndex + 1 : 0;
+    this.selectedImageUrl = this.imageList[nextIndex];
   }
 
   goBack() {

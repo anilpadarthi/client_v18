@@ -57,6 +57,7 @@ export class UserEditorComponent {
       locality: [''],
       isMcomAccess: false,
       isLeapAccess: true,
+      isSponsor: false,
       status: true,
       userImage: null as File | null,
       userDocuments: this.fb.array([]),
@@ -139,6 +140,7 @@ export class UserEditorComponent {
       formBody.append('userRoleId', this.userForm.value.userRoleId?.toString());
       formBody.append('isMcomAccess', this.userForm.value.isMcomAccess);
       formBody.append('isLeapAccess', this.userForm.value.isLeapAccess);
+      formBody.append('isSponsor', this.userForm.value.isSponsor);
       formBody.append('status', this.userForm.value.status ? '1' : '0');
       formBody.append('userImageFile', this.userForm.value.userImage);
       formBody.append('userSalarySettings[salaryBasis]', this.userForm.value.userSalarySettings.salaryBasis);

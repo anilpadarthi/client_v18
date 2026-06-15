@@ -37,7 +37,7 @@ export class OnFieldSpamActivationsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.selectedShopId > 0) {
-      //this.loadData();
+      this.loadData();
     }
   }
 
@@ -51,7 +51,7 @@ export class OnFieldSpamActivationsComponent implements OnInit {
       fromDate: dates.fromDate,
       toDate: dates.toDate
     };
-    this.onFieldService.onFieldActivationList(request).subscribe((res) => {
+    this.onFieldService.onFieldSpamActivationList(request).subscribe((res) => {
       this.isLoading = false;
       if (res.data) {
         let result = res.data;
@@ -70,7 +70,7 @@ export class OnFieldSpamActivationsComponent implements OnInit {
     }
 
     if (changes['selectedShopId'] || changes['refreshValue']) {
-      //this.loadData();
+      this.loadData();
     }
   }
 

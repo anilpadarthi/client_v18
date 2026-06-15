@@ -58,11 +58,11 @@ export class MonthlyAccessoriesCommissioinPercentReportComponent implements OnIn
   ngOnInit(): void {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isAdmin = true;
     }
 
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isDisplay = true;
       this.getManagerLookup();
     }

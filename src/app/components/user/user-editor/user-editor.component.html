@@ -2,9 +2,6 @@
   <h1>{{ userId != null ? 'Edit User' : 'Create User' }}</h1>
   <span class="page-title__info"></span>
 
-
-
-
   <form [formGroup]="userForm" (ngSubmit)="onSave()">
     <mat-card class="cardWithShadow theme-card section-card">
       <mat-card-title class="section-title">Basic Details</mat-card-title>
@@ -103,6 +100,8 @@
               <mat-option value="Retail Sales Executive">Retail Sales Executive</mat-option>
             </mat-select>
           </mat-form-field>
+          
+          <mat-checkbox class="col-lg-4" formControlName="isSponsor">Sponsorship</mat-checkbox>
 
           <mat-form-field appearance="outline" class="col-lg-12">
             <mat-label>Address</mat-label>

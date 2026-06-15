@@ -108,7 +108,7 @@ export class AgentSimOrderComponent implements OnInit, AfterViewInit {
     this.isMainView = true;
     this.isDisplayProductDetails = false;
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
-      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImages?.[0]?.image);
       this.products = res.data;
       this.products?.forEach(e => e.salePrice = e.productPrices[0].salePrice);
     });

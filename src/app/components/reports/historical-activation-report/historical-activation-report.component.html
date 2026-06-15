@@ -67,7 +67,7 @@
         <div class="col-sm-12 col-lg-6 space-between-buttons">
           <button mat-flat-button color="primary" (click)="onFilter()">Submit</button>
           <button mat-flat-button color="primary" (click)="onClear()">Clear</button>
-          <button mat-flat-button color="primary" (click)="downloadDailyActivationList()" *ngIf="isAdmin">
+          <button mat-flat-button color="primary" class="download-btn" (click)="downloadDailyActivationList()" *ngIf="isAdmin">
             <mat-icon>download</mat-icon> Download
           </button>
         </div>

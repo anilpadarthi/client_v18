@@ -101,7 +101,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
     this.userRole = this.webstorgeService.getUserRole();
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager') {
       this.isAdmin = true;
     }
     this.orderService.getShoppingPageDetails().subscribe((res) => {
@@ -149,7 +149,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isMainView = true;
     this.isDisplayProductDetails = false;
     this.orderService.getProductList(categoryId, subCategoryId).subscribe((res) => {
-      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImages?.[0]?.image);
       this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;
@@ -229,45 +229,41 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
   }
 
   updateSalePrices() {
-    // 1. Calculate total qty per group
-    const groupTotals: Record<number, number> = {};
-
+    // Ensure quantities and prices are numeric and recalculate line totals for every item
     this.cartItems?.forEach(item => {
-      if (item.mixMatchGroupId) {
-        const groupId = item.mixMatchGroupId ?? 0;
-        groupTotals[groupId] = (groupTotals[groupId] || 0) + item.qty;
-      }
-    });
+      item.qty = Number(item.qty || 0);
 
-    this.cartItems?.forEach(item => {
-      if (item.mixMatchGroupId) {
-        let totalGroupQty = this.cartItems
+      if (item.mixMatchGroupId != null) {
+        const totalGroupQty = this.cartItems
           .filter(x => x.mixMatchGroupId === item.mixMatchGroupId)
-          .reduce((sum, x) => sum + x.qty, 0);
+          .reduce((sum, x) => sum + Number(x.qty || 0), 0);
 
-        let prodPrice = item.productPrices.filter((f: any) => totalGroupQty >= f.fromQty && totalGroupQty <= f.toQty);
-        if (prodPrice != null && prodPrice.length > 0) {
-          item.salePrice = prodPrice[0].salePrice;
+        const prodPrice = (item.productPrices || []).filter((f: any) => totalGroupQty >= f.fromQty && totalGroupQty <= f.toQty);
+        if (prodPrice && prodPrice.length > 0) {
+          item.salePrice = Number(prodPrice[0].salePrice);
+        } else {
+          item.salePrice = Number(item.productPrices?.[item.productPrices.length - 1]?.salePrice || item.salePrice || 0);
         }
-        else {
-          item.salePrice = item.productPrices[item.productPrices.length - 1].salePrice;
-        }
-        item.netAmount = Number(item.qty) * item.salePrice;
-        item.vatAmount = (item.netAmount * this.vatPercentage) / 100;
+      } else {
+        item.salePrice = Number(item.salePrice || item.productPrices?.[0]?.salePrice || 0);
       }
+
+      item.netAmount = Number((item.qty * item.salePrice) || 0);
+      item.vatAmount = Number(((item.netAmount * this.vatPercentage) / 100) || 0);
     });
   }
 
   updateCalculations() {
     this.updateSalePrices();
     this.subTotal = 0;
-    this.netTotal = this.cartItems?.reduce((total, product) => total + product.netAmount, 0) || 0;
+    this.netTotal = this.cartItems?.reduce((total, product) => total + Number(product.netAmount || 0), 0) || 0;
+    this.netTotal = Number(this.netTotal.toFixed(2));
 
-    this.discountAmount = (this.netTotal * this.discountPercentage) / 100;
-    this.totalVatAmount = (this.netTotal - this.discountAmount) * this.vatPercentage / 100;
-    this.subTotal = this.netTotal + this.totalVatAmount;
-    this.grandTotalWithVAT = (this.netTotal + this.totalVatAmount + this.deliveryCharges) - this.discountAmount;
-    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges - this.discountAmount;
+    this.discountAmount = Number(((this.netTotal * this.discountPercentage) / 100).toFixed(2));
+    this.totalVatAmount = Number(((this.netTotal + Number(this.deliveryCharges || 0) - this.discountAmount) * this.vatPercentage / 100).toFixed(2));
+    this.subTotal = Number((this.netTotal + this.totalVatAmount).toFixed(2));
+    this.grandTotalWithVAT = Number(((this.netTotal + this.totalVatAmount + Number(this.deliveryCharges || 0)) - this.discountAmount).toFixed(2));
+    this.grandTotalWithOutVAT = Number((this.netTotal + Number(this.deliveryCharges || 0) - this.discountAmount).toFixed(2));
     this.grandTotal = this.grandTotalWithVAT;
     this.saveCartToSession();
   }
@@ -376,7 +372,7 @@ export class EditOrderComponent implements OnInit, AfterViewInit {
     this.isMainView = true;
     this.isDisplayProductDetails = false;
     this.orderService.loadNewArrivals().subscribe((res) => {
-      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImage);
+      res.data?.forEach((e: any) => e.productImage = environment.backend.host + '/' + e.productImages?.[0]?.image);
       this.products = res.data.filter((s: any) => s.isOutOfStock != true);
       this.products?.forEach(e => {
         e.salePrice = e.productPrices[0].salePrice;

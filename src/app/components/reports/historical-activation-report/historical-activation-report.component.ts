@@ -64,7 +64,7 @@ export class HistoricalActivationReportComponent implements OnInit {
     let userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isDisplay = true;
       this.isAdmin = true;
       this.getAgentLookup();

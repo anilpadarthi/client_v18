@@ -21,6 +21,7 @@
               <mat-option value="">-Select-</mat-option>
               <mat-option value="Agent">Agent</mat-option>
               <mat-option value="Manager">Manager</mat-option>
+              <mat-option *ngIf="userRole == 'SuperAdmin'" value="OperationalManager">Operational Manager</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -47,6 +48,17 @@
               </ngx-mat-select-search>
               <mat-option [value]="0">All</mat-option>
               <mat-option *ngFor="let item of filteredUsers" [value]="item.id">
+                <span>{{ item.id }} - {{ item.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+         <div class="col-sm-3" *ngIf="selectedUserRole == 'OperationalManager'">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Operational Manager</mat-label>
+            <mat-select [(ngModel)]="selectedOperationalManagerId" placeholder="Select Operational Manager">              
+              <mat-option [value]="0">All</mat-option>
+              <mat-option *ngFor="let item of operationalManagerLookup" [value]="item.id">
                 <span>{{ item.id }} - {{ item.name }}</span>
               </mat-option>
             </mat-select>
@@ -308,7 +320,6 @@
                 </a>
               </td>
             </ng-container>
-
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns3; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>

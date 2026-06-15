@@ -58,7 +58,7 @@ export class OrderDetailsComponent implements OnInit {
 
       this.userRole = this.webstorgeService.getUserRole();
       let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-      if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin') {
+      if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' ) {
         this.isAdmin = true;
       }
       else if (this.userRole == 'WareHouse') {
@@ -118,6 +118,20 @@ export class OrderDetailsComponent implements OnInit {
         this.subTotal += product.qty * product.salePrice;
       }
     });
+  }
+
+  get totalQuantity(): number {
+    return this.orderItems?.filter((product: any) => product.isBundle == 0)
+      .reduce((sum, product: any) => sum + (product.qty || 0), 0) ?? 0;
+  }
+
+  get totalItemAmount(): number {
+    return this.orderItems?.reduce((sum, product: any) => {
+      if (product.isBundleProduct === 0) {
+        return sum + (product.qty || 0) * (product.salePrice || 0);
+      }
+      return sum;
+    }, 0) ?? 0;
   }
 
   close(): void {

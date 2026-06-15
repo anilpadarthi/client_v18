@@ -114,7 +114,7 @@ export class OrderListComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       //this.loadOutstandingMetrics();
     }
@@ -195,13 +195,13 @@ export class OrderListComponent implements OnInit {
       this.filteredAreas = res.data;
     });
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'Manager' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'Manager' || this.userRole == 'CallCenter' || this.isWareHouseKeeper) {
       this.lookupService.getAgents().subscribe((res) => {
         this.agentLookup = res.data;
         this.filteredUsers = res.data;
       });
     }
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter' || this.isWareHouseKeeper) {
       this.lookupService.getManagers().subscribe((res) => {
         this.managerLookup = res.data;
         this.filteredManagers = res.data;
@@ -313,7 +313,7 @@ export class OrderListComponent implements OnInit {
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       //this.loadOutstandingMetrics();
     }

@@ -8,14 +8,36 @@
             <mat-card-title class="section-title">Basic Details</mat-card-title>
             <mat-card-content>
                 <div class="row">
-                    <div class="col-lg-12 d-flex align-items-center m-b-16">
-                        <label style="margin-right:1em">Product Image:</label>
-                        <img *ngIf="productImagePreview" [src]="productImagePreview" class="rounded-image"
-                            alt="Image Preview" />
-                        <button mat-flat-button color="primary" class="m-l-16 input-file-button">
-                            <input type="file" accept="image/*" (change)="imageUpload($event)" />
-                        </button>
+                    <div class="col-lg-12 m-b-16">
+                    <label style="margin-right:1em">Product Images:</label>
+                    <div class="image-preview-container">
+                        <!-- Display existing images -->
+                        <div *ngFor="let image of existingProductImages; let i = index" class="image-thumb-wrapper">
+                            <img [src]="image.url" class="rounded-image image-thumb" [alt]="'Existing Image ' + (i + 1)" />
+                            <button mat-icon-button color="warn" type="button" (click)="removeImage(i, true)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                        
+                        <!-- Display new image previews -->
+                        <div *ngFor="let preview of productImagePreviews; let i = index" class="image-thumb-wrapper">
+                            <img [src]="preview" class="rounded-image image-thumb" [alt]="'Image Preview ' + (i + 1)" />
+                            <button mat-icon-button color="warn" type="button" (click)="removeImage(i, false)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+
+                        <!-- Fallback to single main image if no other images -->
+                        <ng-container *ngIf="existingProductImages.length === 0 && productImagePreviews.length === 0">
+                            <img *ngIf="productImagePreview" [src]="productImagePreview" class="rounded-image"
+                                alt="Product Main Image" />
+                        </ng-container>
                     </div>
+                    <button mat-flat-button color="primary" class="m-t-8 input-file-button" type="button">
+                        <input type="file" multiple accept="image/*" (change)="imageUpload($event)" />
+                        Select Images
+                    </button>
+                </div>
                 </div>
 
                 <div class="row">
@@ -68,7 +90,7 @@
                             <mat-option [value]="null">-Select-</mat-option>
                             <mat-option [value]="2.50">2.5%</mat-option>
                             <mat-option [value]="5.00">5%</mat-option>
-                            <mat-option [value]="8.00">Other</mat-option>
+                            <mat-option [value]="8.00">Threshold</mat-option>
                         </mat-select>
                     </mat-form-field>
 

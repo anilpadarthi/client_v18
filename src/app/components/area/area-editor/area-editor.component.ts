@@ -38,7 +38,7 @@ export class AreaEditorComponent {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
     }
     this.areaId = this.route.snapshot.paramMap.get('id');
