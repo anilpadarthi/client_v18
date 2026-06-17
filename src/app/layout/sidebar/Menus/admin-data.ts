@@ -278,6 +278,12 @@ export const AdminItems: NavItem[] = [
   },
 
   {
+    displayName: 'Commission Requests',
+    iconName: 'lock_reset',
+    route: 'commission-requests',
+  },
+
+  {
     displayName: 'Change Password',
     iconName: 'lock_reset',
     route: 'change-password',

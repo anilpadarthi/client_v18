@@ -1,0 +1,13 @@
+.deny-form {
+  padding: 0;
+
+  mat-form-field {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}

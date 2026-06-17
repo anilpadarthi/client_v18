@@ -164,7 +164,9 @@ import { UnPaidOrderListComponent } from './components/order/un-paid-order-list/
 import  {LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
 import { AccessoriesOutstandingReportComponent } from './components/management/accessories-outstanding-report/accessories-outstanding-report.component';
 import { ConfigurationComponent } from './components/management/configuration/configuration.component';
-
+import {CommissionRequestsComponent} from './components/commission-requests/commission-requests.component';
+import { DenyRemarksDialogComponent } from './components/common/deny-remarks-dialog/deny-remarks-dialog.component';
+import { ApproveCommissionDialogComponent } from './components/common/approve-commission-dialog/approve-commission-dialog.component';
 
 
 // Factory function for the loader
@@ -306,7 +308,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     UnPaidOrderListComponent,
     LowStockReportComponent,
     AccessoriesOutstandingReportComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    CommissionRequestsComponent,
+    DenyRemarksDialogComponent,
+    ApproveCommissionDialogComponent
   ],
   imports: [
     BrowserModule,

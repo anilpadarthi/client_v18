@@ -1,0 +1,30 @@
+<h2 mat-dialog-title class="modal-header-title">
+  Approve Commission Request
+  <button mat-dialog-close class="modal-header-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <p class="m-b-16">
+    Please choose the commission approval period for <strong>{{ data.shopName }}</strong>.
+  </p>
+  <div class="approval-date-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>From Month</mat-label>
+      <input matInput [(ngModel)]="selectedFromMonth" [matDatepicker]="fromDatePicker" placeholder="Choose a month" readonly>
+      <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromDatePicker startView="multi-year" (yearSelected)="chosenYearHandler($event)" (monthSelected)="chosenFromMonthHandler($event, fromDatePicker)" panelClass="month-picker"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>To Month</mat-label>
+      <input matInput [(ngModel)]="selectedToMonth" [matDatepicker]="toDatePicker" placeholder="Choose a month" readonly>
+      <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #toDatePicker startView="multi-year" (yearSelected)="chosenYearHandler($event)" (monthSelected)="chosenToMonthHandler($event, toDatePicker)" panelClass="month-picker"></mat-datepicker>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onApprove()" [disabled]="!canApprove">Approve</button>
+</mat-dialog-actions>

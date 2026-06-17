@@ -57,13 +57,6 @@ export class OrderDetailsComponent implements OnInit {
     if (data.orderDetails) {
 
       this.userRole = this.webstorgeService.getUserRole();
-      let loggedInUserId = this.webstorgeService.getUserInfo().userId;
-      if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' ) {
-        this.isAdmin = true;
-      }
-      else if (this.userRole == 'WareHouse') {
-        this.isWareHouseKeeper = true;
-      }
 
       this.orderItems = data.orderDetails.items;
       this.header = data.headerName;
@@ -84,6 +77,14 @@ export class OrderDetailsComponent implements OnInit {
       this.vatAmount = data.orderDetails.vatAmount;
       this.isVAT = data.orderDetails.isVAT == '1' ? true : false;
       this.grandTotal = this.isVAT ? this.grandTotalWithVAT : this.grandTotalWithOutVAT;
+
+       if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' ) {
+        this.isAdmin = true;
+      }
+      else if (this.userRole == 'WareHouse') {
+        this.isWareHouseKeeper = true;
+      }
+
       this.updateCalculations();
     }
   }
@@ -142,6 +143,11 @@ export class OrderDetailsComponent implements OnInit {
     this.selectedStatusId = 11;
     this.updateOrder();
 
+  }
+
+  markAsShipped(): void {
+    this.selectedStatusId = 2;
+    this.updateOrder();
   }
 
   markCCA(): void {

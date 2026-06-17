@@ -39,6 +39,7 @@ export class ShopEditorComponent {
   areaFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
   hasPendingCommissionRequest = false;
+  hasMobilShopCommission = false;
 
   constructor
     (
@@ -83,7 +84,7 @@ export class ShopEditorComponent {
       latitude: [{ value: '', disabled: true }],
       longitude: [{ value: '', disabled: true }],
       comments: [''],
-      isMobileShop: [{ value: false, disabled: true }],
+      isMobileShop: [{ value: false, disabled: this.shopId ? true : false }],
       agreementFrom: [null],
       agreementTo: [null],
       agreementNotes: [null],
@@ -180,6 +181,7 @@ export class ShopEditorComponent {
     if (this.shopId) {
       this.shopService.getShop(this.shopId).subscribe((res) => {
         this.shopForm.patchValue(res.data.shop);
+        this.hasMobilShopCommission = res.data.shop.isMobileShop;
         this.shopForm.get('agreementFrom')?.setValue(res.data.shopAgreement?.fromDate);
         this.shopForm.get('agreementTo')?.setValue(res.data.shopAgreement?.toDate);
         this.shopForm.get('agreementNotes')?.setValue(res.data.shopAgreement?.agreementNotes);
@@ -411,7 +413,20 @@ export class ShopEditorComponent {
     }
   }
 
+  requestToMobileShopCommissionChange() {
+
+    this.shopService.commissionChangeRequest(this.shopId).subscribe((res) => {
+      if (res.statusCode == 201) {
+        this.toasterService.showMessage("Commission type change request submitted successfully");
+        this.checkPendingCommissionRequest();
+      } else {
+        this.toasterService.showMessage(res.message || "Failed to submit request");
+      }
+    });
+  }
+
   openCommissionTypeChangeDialog() {
+
     const dialogRef = this.dialog.open(CommissionTypeChangeDialogComponent, {
       width: '400px',
       data: { shopId: this.shopId }

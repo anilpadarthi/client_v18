@@ -78,6 +78,7 @@ import { SupplierReportComponent } from './components/management/supplier-report
 import { LowStockReportComponent } from './components/management/low-stock-report/low-stock-report.component';
 import { AccessoriesOutstandingReportComponent } from './components/management/accessories-outstanding-report/accessories-outstanding-report.component';
 import { ConfigurationComponent } from './components/management/configuration/configuration.component';
+import { CommissionRequestsComponent } from './components/commission-requests/commission-requests.component';
 
 
 
@@ -185,6 +186,7 @@ const routes: Routes = [
       { path: 'digitalId', component: DigitalIdComponent },
 
       { path: 'chat', component: GroupChatComponent },
+      { path: 'commission-requests', component: CommissionRequestsComponent },
 
 
 

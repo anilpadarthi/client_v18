@@ -99,6 +99,12 @@ export const AgentItems: NavItem[] = [
     route: 'commission-cheque-status',
   },
 
+   {
+    displayName: 'Commission Requests',
+    iconName: 'lock_reset',
+    route: 'commission-requests',
+  },
+
   {
     displayName: 'Your Digital ID',
     iconName: 'chat',

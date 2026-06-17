@@ -113,5 +113,16 @@ export class ShopService {
     return this.http.get<ICommonResponse>(this.url + `/GetPendingCommissionTypeChangeRequests?shopId=${shopId}`);
   }
 
+  commissionChangeRequest(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/CommissionChangeRequest?shopId=${shopId}`);
+  }
+
+  pendingCommissionChangeRequests(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/PendingCommissionChangeRequests', requestBody);
+  }
+
+  updateCommissionChangeRequest(requestBody: any): Observable<ICommonResponse> {
+    return this.http.post<ICommonResponse>(this.url + '/UpdateCommissionChangeRequest', requestBody);
+  }
 
 }

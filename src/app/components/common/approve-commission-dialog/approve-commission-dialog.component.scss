@@ -1,0 +1,15 @@
+.approval-date-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .approval-date-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -5,7 +5,7 @@
 </h2>
 <mat-dialog-content>
 
-    <div class="row m-t-15" *ngIf="isAdmin || isWareHouseKeeper">
+    <div class="row m-t-15" *ngIf="isAdmin">
         <mat-form-field appearance="outline" class="col-lg-3 col-xs-12">
             <mat-label>Status</mat-label>
             <mat-select [(ngModel)]="selectedStatusId">
@@ -39,11 +39,15 @@
         </mat-form-field>
     </div>
     <div class="row col-lg-12 m-t-10">
-        <button *ngIf="isAdmin || isWareHouseKeeper" mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
+        <button *ngIf="isAdmin" mat-flat-button color="primary" (click)="updateOrder()" class="card-container-right">
             Update
         </button>
 
-        <button *ngIf="this.userRole == 'Agent'" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
+        <button *ngIf="isWareHouseKeeper && (selectedStatusId == 1 || selectedStatusId == 10)" mat-flat-button color="primary" (click)="markAsShipped()" class="card-container-right">
+            Mark as Shipped
+        </button>    
+
+        <button *ngIf="this.userRole == 'Agent' && (selectedStatusId == 1 || selectedStatusId == 2 )" mat-flat-button color="primary" (click)="markDelivered()" class="card-container-right">
             Mark as Delivered
         </button>       
     </div>

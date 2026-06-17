@@ -1,0 +1,40 @@
+<h2 mat-dialog-title class="modal-header-title">
+  Deny Commission Request
+  <button mat-dialog-close class="modal-header-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="remarksForm" class="deny-form m-t-16">
+    <p class="m-b-16">
+      Are you sure you want to deny the commission request for <strong>{{ data.shopName }}</strong>?
+    </p>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Remarks</mat-label>
+      <textarea
+        matInput
+        formControlName="remarks"
+        rows="4"
+        placeholder="Please provide reasons for denying this request"
+        required
+      ></textarea>
+      <mat-error *ngIf="remarksControl?.hasError('required')">
+        Remarks are required
+      </mat-error>
+      <mat-error *ngIf="remarksControl?.hasError('minlength')">
+        Remarks must be at least 5 characters
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="onSubmit()"
+    [disabled]="!remarksForm.valid"
+  >
+    Deny
+  </button>
+</mat-dialog-actions>

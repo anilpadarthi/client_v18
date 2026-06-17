@@ -133,6 +133,12 @@ export const ManagerItems: NavItem[] = [
     route: 'commission-cheque-status',
   },
 
+   {
+    displayName: 'Commission Requests',
+    iconName: 'lock_reset',
+    route: 'commission-requests',
+  },
+
   {
     displayName: 'Change Password',
     iconName: 'lock_reset',

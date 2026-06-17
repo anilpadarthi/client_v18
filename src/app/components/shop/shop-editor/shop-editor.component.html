@@ -134,8 +134,8 @@
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Delivery Instructions</mat-label>
                         <textarea matInput formControlName="deliveryInstructions" rows="5"></textarea>
-                    </mat-form-field>                 
-                    
+                    </mat-form-field>
+
 
                     <mat-form-field appearance="outline" class="col-lg-6">
                         <mat-label>Latitude</mat-label>
@@ -152,14 +152,18 @@
                     </mat-form-field>
 
                     <mat-checkbox class="col-lg-4" formControlName="isMobileShop">Mobile Shop</mat-checkbox>
-                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassCommissionCheque">Bypass Commission Cheque</mat-checkbox>
-                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassBonusRedemption">Bypass Bonus Redemption</mat-checkbox>
+                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassCommissionCheque">Bypass
+                        Commission Cheque</mat-checkbox>
+                    <mat-checkbox class="col-lg-4" *ngIf="isAdmin" formControlName="byPassBonusRedemption">Bypass Bonus
+                        Redemption</mat-checkbox>
                     <div class="col-lg-10">
-                        <button *ngIf="!hasPendingCommissionRequest" mat-flat-button color="primary" type="button" class="m-r-10"
-                            [disabled]="hasPendingCommissionRequest" (click)="openCommissionTypeChangeDialog()">
-                            <mat-icon>request_page</mat-icon> Commission Type Change Request
+                        <button *ngIf=" !hasMobilShopCommission && !hasPendingCommissionRequest && shopId" mat-flat-button color="primary" type="button"
+                            class="m-r-10"
+                            (click)="requestToMobileShopCommissionChange()">
+                             Request Mobile Shop Commission
                         </button>
-                        <p *ngIf="hasPendingCommissionRequest" class="warning-text"> (*) A commission change request is already in progress.</p>
+                        <p *ngIf="hasPendingCommissionRequest && shopId" class="warning-text"> (*) A commission change request is under review.
+                            </p>
                     </div>
 
                 </div>
@@ -205,8 +209,8 @@
 
                             <mat-form-field appearance="outline" class="col-lg-3">
                                 <mat-label>Contact Number </mat-label>
-                                <input matInput required placeholder="Contact Number" inputmode="numeric" maxlength="20" formControlName='contactNumber'
-                                (input)="onInputChange($event)"
+                                <input matInput required placeholder="Contact Number" inputmode="numeric" maxlength="20"
+                                    formControlName='contactNumber' (input)="onInputChange($event)"
                                     id="{{'contactNumber'+i}}" />
                             </mat-form-field>
                             <button type="button" mat-flat-button color="warn"
