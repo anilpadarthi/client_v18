@@ -56,4 +56,9 @@ export class CommissionStatementService {
   hideBonus(shopCommissionHistoryId: number, isDisplayBonus: any): Observable<any> {
     return this.http.get<any>(this.url + "/HideBonus?shopCommissionHistoryId=" + shopCommissionHistoryId + '&isDisplayBonus=' + isDisplayBonus);
   }
+
+  bulkOrders(): void {
+    const url = this.url + '/DownloadBulkOrd';
+    return this.exportService.downloadPDF(url, 'Bulk_Orders.pdf');
+  }
 }

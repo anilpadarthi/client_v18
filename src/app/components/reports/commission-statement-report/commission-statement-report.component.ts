@@ -64,7 +64,7 @@ export class CommissionStatementReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-   
+
     this.getAreaLookup();
     this.getAgentLookup();
 
@@ -92,7 +92,7 @@ export class CommissionStatementReportComponent implements OnInit {
       `${item.oldId} - ${item.name}`.toLowerCase().includes(search)
     );
   }
-  
+
   private filterUsers() {
     const search = this.userFilterCtrl.value?.toLowerCase() || '';
     this.filteredUsers = this.userLookup.filter((item: any) =>
@@ -155,7 +155,7 @@ export class CommissionStatementReportComponent implements OnInit {
     this.selectedUserId = null;
     this.filterMode = 'All';
     this.commissionList = [];
-  }  
+  }
 
   downloadCommissionStatement(shopId: number, fromDate: string): void {
     this.commissionStatementService.downloadCommissionStatement(shopId, fromDate);
@@ -181,8 +181,8 @@ export class CommissionStatementReportComponent implements OnInit {
     });
   }
 
-  exportToExcel(): void {    
-     if(this.monthDate && this.filterExcelMode){
+  exportToExcel(): void {
+    if (this.monthDate && this.filterExcelMode) {
       this.toasterService.showMessage("Downloading...");
       this.commissionStatementService.exportCommissionChequeExcel(this.filterExcelMode, this.monthDate);
     }
@@ -216,6 +216,11 @@ export class CommissionStatementReportComponent implements OnInit {
     const formattedMonth = moment(normalizedMonth).format('YYYY-MM'); // Example format: 2025-03
     this.toMonth = formattedMonth + "-01";
     datepicker.close(); // Close picker after selection
+  }
+
+  bulkOrders(): void {
+    this.commissionStatementService.bulkOrders();
+
   }
 
 }
