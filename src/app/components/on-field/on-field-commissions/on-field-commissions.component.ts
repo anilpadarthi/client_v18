@@ -148,6 +148,17 @@ export class OnFieldCommissionsComponent implements OnInit {
     return { fromDate, toDate };
   }
 
+
+  changeToMobileCommission(shopId: number, fromDate: string): void {
+    this.commissionStatementService.changeToMobileCommission(shopId, fromDate).subscribe((res) => {
+      if (res.statusCode == 200) {
+        this.toasterService.showMessage("Successfully changed to Mobile Commission.");
+      } else {
+        this.toasterService.showMessage(res.data);
+      }
+    });
+  }
+
  
 
 

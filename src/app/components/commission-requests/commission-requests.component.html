@@ -4,20 +4,18 @@
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
             <div class="row space-between-buttons">
-                <div class="col-lg-3">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-select [(ngModel)]="selectedAreaId" placeholder="Select Area"
-                            (selectionChange)="areaChange()">
-                            <ngx-mat-select-search [formControl]="areaFilterCtrl" placeholderLabel="Search here..."
-                                noEntriesFoundLabel="No matching found">
-                            </ngx-mat-select-search>
-                            <mat-option [value]="0">All</mat-option>
-                            <mat-option *ngFor="let item of filteredAreas" [value]="item.id">
-                                <span>{{ item.id }} - {{ item.name }}</span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="outline" class="w-100 col-lg-3" *ngIf="!isAgent">
+                    <mat-select [(ngModel)]="selectedAgentId" placeholder="Select Agent"
+                        (selectionChange)="agentChange()">
+                        <ngx-mat-select-search [formControl]="agentFilterCtrl" placeholderLabel="Search here..."
+                            noEntriesFoundLabel="No matching found">
+                        </ngx-mat-select-search>
+                        <mat-option [value]="0">All</mat-option>
+                        <mat-option *ngFor="let item of filteredAgents" [value]="item.id">
+                            <span>{{ item.id }} - {{ item.name }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-2">
                     <mat-label>Status </mat-label>
                     <mat-select [(ngModel)]="selectedStatus" (selectionChange)="loadData()">
@@ -71,7 +69,8 @@
 
                     <ng-container matColumnDef="fromDate">
                         <th mat-header-cell *matHeaderCellDef>From Date</th>
-                        <td mat-cell *matCellDef="let element">{{ element.effectiveFromDate | date: 'dd/MM/yyyy' || '-' }}
+                        <td mat-cell *matCellDef="let element">{{ element.effectiveFromDate | date: 'dd/MM/yyyy' || '-'
+                            }}
                         </td>
                     </ng-container>
 
@@ -98,17 +97,20 @@
                     <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef>Actions</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
-                            <ng-container *ngIf="!isAgent" >
-                                <button mat-button color="primary" *ngIf="element.status != 'Reviewed'" (click)="onReview(element)" title="Review">
+                            <ng-container *ngIf="!isAgent">
+                                <button mat-button color="primary" *ngIf="element.status != 'Reviewed'"
+                                    (click)="onReview(element)" title="Review">
                                     <mat-icon>check_circle</mat-icon> Review
                                 </button>
-                                <button mat-button color="accent" *ngIf="isAdmin && element.status != 'Approved'" (click)="onApprove(element)" title="Approve">
+                                <button mat-button color="accent" *ngIf="isAdmin && element.status != 'Approved'"
+                                    (click)="onApprove(element)" title="Approve">
                                     <mat-icon>thumb_up</mat-icon> Approve
                                 </button>
-                                <button mat-button color="warn" *ngIf="element.status != 'Denied'" (click)="onDeny(element)" title="Deny">
+                                <button mat-button color="warn" *ngIf="element.status != 'Denied'"
+                                    (click)="onDeny(element)" title="Deny">
                                     <mat-icon>thumb_down</mat-icon> Deny
                                 </button>
-                            </ng-container>                            
+                            </ng-container>
                         </td>
                     </ng-container>
 

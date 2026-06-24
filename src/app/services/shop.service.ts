@@ -125,4 +125,8 @@ export class ShopService {
     return this.http.post<ICommonResponse>(this.url + '/UpdateCommissionChangeRequest', requestBody);
   }
 
+   getShopCommissionTypeHistory(shopId: number): Observable<ICommonResponse> {
+    return this.http.get<ICommonResponse>(this.url + `/GetShopCommissionTypeHistory?shopId=${shopId}`);
+  }
+
 }

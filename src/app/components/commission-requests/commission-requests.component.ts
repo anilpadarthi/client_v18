@@ -26,13 +26,13 @@ export class CommissionRequestsComponent {
   totalCount = 0;
   shopList: any[] = [];
   searchText!: string | null;
-  selectedAreaId!: number | null;
+  selectedAgentId!: number | null;
   selectedStatus: string = '';
-  areaLookup: any = [];
+  agentLookup: any = [];
   isAdmin = false;
   isLoading = false;
-  areaFilterCtrl: FormControl = new FormControl();
-  filteredAreas: any[] = [];
+  agentFilterCtrl: FormControl = new FormControl();
+  filteredAgents: any[] = [];
   defaultStatusFilters: string[] = ['Hold', 'Review'];
   isAgent = false;
 
@@ -73,28 +73,28 @@ export class CommissionRequestsComponent {
       this.selectedStatus = 'Hold';
       this.loadData();
     }
-    this.getAreaLookup();
-    this.areaFilterCtrl.valueChanges.subscribe(() => {
-      this.filterAreas();
+    this.getAgentLookup();
+    this.agentFilterCtrl.valueChanges.subscribe(() => {
+      this.filterAgents();
     });
   }
 
 
-  private filterAreas() {
-    const search = this.areaFilterCtrl.value?.toLowerCase() || '';
-    this.filteredAreas = this.areaLookup.filter((item: any) =>
+  private filterAgents() {
+    const search = this.agentFilterCtrl.value?.toLowerCase() || '';
+    this.filteredAgents = this.agentLookup.filter((item: any) =>
       `${item.oldId} - ${item.id} - ${item.name}`.toLowerCase().includes(search)
     );
   }
 
-  getAreaLookup() {
-    this.lookupService.getAreas().subscribe((res) => {
-      this.areaLookup = res.data;
-      this.filteredAreas = res.data;
+  getAgentLookup() {
+    this.lookupService.getAgents().subscribe((res) => {
+      this.agentLookup = res.data;
+      this.filteredAgents = res.data;
     });
   }
 
-  areaChange() {
+  agentChange() {
     this.loadData();
   }
 
@@ -104,7 +104,7 @@ export class CommissionRequestsComponent {
     const request = {
       pageNo: this.pageNo + 1,
       pageSize: this.pageSize,
-      areaId: this.selectedAreaId,
+      id: this.selectedAgentId,
       status: this.selectedStatus || ''
     };
 
@@ -135,8 +135,8 @@ export class CommissionRequestsComponent {
   onReset(): void {
     this.pageNo = 0;
     this.searchText = null;
-    this.selectedAreaId = null;
-     let userRole = this.webstorgeService.getUserRole();
+    this.selectedAgentId = null;
+    let userRole = this.webstorgeService.getUserRole();
     if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
       this.isAdmin = true;
       this.selectedStatus = 'Reviewed';
@@ -148,36 +148,42 @@ export class CommissionRequestsComponent {
   }
 
   onApprove(element: any): void {
-    const dialogRef = this.dialog.open(ApproveCommissionDialogComponent, {
-      width: '520px',
-      data: { shopName: element.shopName }
-    });
+    let commissionTypeHistory: any[] = [];
+    this.shopService.getShopCommissionTypeHistory(element.shopId).subscribe(
+      (res) => {
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.isLoading = true;
-        const request = {
-          commissionChangeRequestId: element.commissionChangeRequestId,
-          shopId: element.shopId,
-          status: 1,
-          fromDate: result.fromDate,
-          toDate: result.toDate,
-          remarks: 'Approved with selected period'
-        };
 
-        this.shopService.updateCommissionChangeRequest(request).subscribe(
-          (res) => {
-            this.isLoading = false;
-            this.toasterService.showMessage('Request approved successfully');
-            this.loadData();
-          },
-          (error) => {
-            this.isLoading = false;
-            this.toasterService.showMessage('Failed to approve request');
+        const dialogRef = this.dialog.open(ApproveCommissionDialogComponent, {
+          width: '520px',
+          data: { shopName: element.shopName, shopId: element.shopId, commissionTypeHistory: res.data }
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.isLoading = true;
+            const request = {
+              commissionChangeRequestId: element.commissionChangeRequestId,
+              shopId: element.shopId,
+              status: 1,
+              fromDate: result.fromDate,
+              toDate: result.toDate,
+              remarks: 'Approved with selected period'
+            };
+
+            this.shopService.updateCommissionChangeRequest(request).subscribe(
+              (res) => {
+                this.isLoading = false;
+                this.toasterService.showMessage('Request approved successfully');
+                this.loadData();
+              },
+              (error) => {
+                this.isLoading = false;
+                this.toasterService.showMessage('Failed to approve request');
+              }
+            );
           }
-        );
-      }
-    });
+        });
+      });
   }
 
   onReview(element: any): void {
@@ -215,34 +221,39 @@ export class CommissionRequestsComponent {
   }
 
   onDeny(element: any): void {
-    const dialogRef = this.dialog.open(DenyRemarksDialogComponent, {
-      width: '500px',
-      data: { shopName: element.shopName }
-    });
+    let commissionTypeHistory: any[] = [];
+    this.shopService.getShopCommissionTypeHistory(element.shopId).subscribe(
+      (res) => {
 
-    dialogRef.afterClosed().subscribe((remarks) => {
-      if (remarks) {
-        this.isLoading = true;
-        const request = {
-          commissionChangeRequestId: element.commissionChangeRequestId,
-          shopId: element.shopId,
-          status: 4,
-          remarks: remarks
-        };
+        const dialogRef = this.dialog.open(DenyRemarksDialogComponent, {
+          width: '500px',
+          data: { shopName: element.shopName, shopId: element.shopId, commissionTypeHistory: res.data }
+        });
 
-        this.shopService.updateCommissionChangeRequest(request).subscribe(
-          (res) => {
-            this.isLoading = false;
-            this.toasterService.showMessage('Request denied successfully');
-            this.loadData();
-          },
-          (error) => {
-            this.isLoading = false;
-            this.toasterService.showMessage('Failed to deny request');
+        dialogRef.afterClosed().subscribe((remarks) => {
+          if (remarks) {
+            this.isLoading = true;
+            const request = {
+              commissionChangeRequestId: element.commissionChangeRequestId,
+              shopId: element.shopId,
+              status: 4,
+              remarks: remarks
+            };
+
+            this.shopService.updateCommissionChangeRequest(request).subscribe(
+              (res) => {
+                this.isLoading = false;
+                this.toasterService.showMessage('Request denied successfully');
+                this.loadData();
+              },
+              (error) => {
+                this.isLoading = false;
+                this.toasterService.showMessage('Failed to deny request');
+              }
+            );
           }
-        );
-      }
-    });
+        });
+      });
   }
 
   isReviewStatus(status: string): boolean {

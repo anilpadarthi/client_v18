@@ -61,4 +61,11 @@ export class CommissionStatementService {
     const url = this.url + '/DownloadBulkOrd';
     return this.exportService.downloadPDF(url, 'Bulk_Orders.pdf');
   }
+
+  changeToMobileCommission(shopId: number, fromDate: string): Observable<any> {
+    let url = this.url + '/ChangeToMobileCommission?shopId=' + shopId + '&fromDate=' + fromDate;
+    return this.http.get<any>(url);
+  }
+
+
 }

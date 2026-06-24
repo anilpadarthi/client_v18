@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+
 @Component({
   selector: 'app-deny-remarks-dialog',
   templateUrl: './deny-remarks-dialog.component.html',
@@ -10,15 +11,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class DenyRemarksDialogComponent {
   remarksForm: FormGroup;
 
+  displayedColumns: string[] = [
+    'fromDate',
+    'toDate',
+    'type'
+  ];
+  commissionTypeHistory: any[] = [];
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { shopName: string },
+    @Inject(MAT_DIALOG_DATA) public data: { shopName: string, shopId: number, commissionTypeHistory?: any[] },
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<DenyRemarksDialogComponent>
   ) {
     this.remarksForm = this.fb.group({
-      remarks: ['', [Validators.required, Validators.minLength(5)]]
+      remarks: ['', [Validators.required, Validators.minLength(2)]]
     });
+    this.commissionTypeHistory = data?.commissionTypeHistory || [];
+    console.log('commissionTypeHistory:', this.commissionTypeHistory);
+
   }
+
+
 
   onCancel(): void {
     this.dialogRef.close();
