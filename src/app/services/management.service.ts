@@ -44,7 +44,7 @@ export class ManagementService {
         return this.http.get<ICommonResponse>(this.url + '/SaveConfiguration?chequeCutOffDay=' + chequeCutOffDay);
     }
 
-     getConfiguration(): Observable<ICommonResponse> {
+    getConfiguration(): Observable<ICommonResponse> {
         return this.http.get<ICommonResponse>(this.url + '/GetConfiguration');
     }
 
@@ -54,6 +54,10 @@ export class ManagementService {
 
     outStandingAccessoriesReport(requestBody: any): Observable<ICommonResponse> {
         return this.http.post<ICommonResponse>(this.url + '/OutStandingAccessoriesReport', requestBody);
+    }
+
+    downloadReports(requestBody: any): Observable<ICommonResponse> {
+        return this.http.post<ICommonResponse>(this.url + '/DownloadReports', requestBody);
     }
 
 }

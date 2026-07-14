@@ -85,7 +85,7 @@
           <button mat-menu-item (click)="downloadCommissionStatement(element.shopId,element.commissionDate)">
             Download
           </button>
-          <button mat-menu-item (click)="changeToMobileCommission(element.shopId,element.commissionDate)">
+          <button *ngIf="isAdmin" mat-menu-item (click)="changeToMobileCommission(element.shopId,element.commissionDate)">
             Change to Mobile Commission
           </button>
         </mat-menu>

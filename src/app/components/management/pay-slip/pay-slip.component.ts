@@ -57,6 +57,7 @@ export class PaySlipComponent implements OnInit {
   commissionBasedOnCollectedAmount = false;
   commissionBasedOnCutoffDate = false;
   isDisplayConfiguration = false;
+  commissionRulesTooltip = '';
 
   displayedColumns: string[] = ['type', 'workingDays', 'salaryRate', 'total'];
   displayedColumns1: string[] = ['NetworkName', 'ActivationCount', 'Rate', 'Total'];
@@ -76,6 +77,10 @@ export class PaySlipComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
     this.loggedInUserId = this.webstorgeService.getUserInfo().userId;
+
+    this.commissionRulesTooltip = `In Standard mode, commission is payable only if KPI achievement exceeds 70% and all eligible sales are collected before the cut-off date.
+Threshold products use KPI-based commission rates instead of the product commission percentage.
+Sponsor agents receive 50% of the applicable commission rate`
 
     if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
@@ -131,7 +136,7 @@ export class PaySlipComponent implements OnInit {
     });
   }
 
-   getOperationalManagerLookup() {
+  getOperationalManagerLookup() {
     this.lookupService.getOperationalManagers().subscribe((res) => {
       this.operationalManagerLookup = res.data;
     });

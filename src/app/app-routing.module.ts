@@ -79,6 +79,7 @@ import { LowStockReportComponent } from './components/management/low-stock-repor
 import { AccessoriesOutstandingReportComponent } from './components/management/accessories-outstanding-report/accessories-outstanding-report.component';
 import { ConfigurationComponent } from './components/management/configuration/configuration.component';
 import { CommissionRequestsComponent } from './components/commission-requests/commission-requests.component';
+import { DownloadReportsComponent } from './components/management/download-reports/download-reports.component';
 
 
 
@@ -171,6 +172,7 @@ const routes: Routes = [
       { path: 'management/commission-cheque-withdraw', component: ChequeWithdrawnReportComponent },
       { path: 'management/accessories-outstanding-report', component: AccessoriesOutstandingReportComponent },
       { path: 'management/configuration', component: ConfigurationComponent },
+      { path: 'management/download-reports', component: DownloadReportsComponent },
       { path: 'profile/edit', component: EditUserProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
 

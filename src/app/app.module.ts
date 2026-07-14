@@ -167,6 +167,7 @@ import { ConfigurationComponent } from './components/management/configuration/co
 import {CommissionRequestsComponent} from './components/commission-requests/commission-requests.component';
 import { DenyRemarksDialogComponent } from './components/common/deny-remarks-dialog/deny-remarks-dialog.component';
 import { ApproveCommissionDialogComponent } from './components/common/approve-commission-dialog/approve-commission-dialog.component';
+import { DownloadReportsComponent } from './components/management/download-reports/download-reports.component';
 
 
 // Factory function for the loader
@@ -311,7 +312,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ConfigurationComponent,
     CommissionRequestsComponent,
     DenyRemarksDialogComponent,
-    ApproveCommissionDialogComponent
+    ApproveCommissionDialogComponent,
+    DownloadReportsComponent
   ],
   imports: [
     BrowserModule,

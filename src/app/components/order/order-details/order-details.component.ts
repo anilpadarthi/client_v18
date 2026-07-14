@@ -39,8 +39,8 @@ export class OrderDetailsComponent implements OnInit {
   grandTotalWithOutVAT = 0.00;
 
   displayedColumns: string[] = [
-    'productName',
     'productCode',
+    'productName',   
     'sellingPrice',
     'quantity',
     'amount',
@@ -83,6 +83,7 @@ export class OrderDetailsComponent implements OnInit {
       }
       else if (this.userRole == 'WareHouse') {
         this.isWareHouseKeeper = true;
+        this.statusLookup = this.statusLookup.filter((f: any) => f.name == "Cancelled" || f.name == "Shipped");
       }
 
       this.updateCalculations();
@@ -147,6 +148,11 @@ export class OrderDetailsComponent implements OnInit {
 
   markAsShipped(): void {
     this.selectedStatusId = 2;
+    this.updateOrder();
+  }
+
+   markAsCancelled(): void {
+    this.selectedStatusId = 3;
     this.updateOrder();
   }
 

@@ -230,6 +230,11 @@ export const AdminItems: NavItem[] = [
         route: 'management/accessories-outstanding-report',
       },
       {
+        displayName: 'Download Reports',
+        iconName: 'arrow_right',
+        route: 'management/download-reports',
+      },
+      {
         displayName: 'Configuration',
         iconName: 'arrow_right',
         route: 'management/configuration',

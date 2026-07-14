@@ -114,14 +114,29 @@
             <td>Previous Month</td>
             <td>Current Month</td>
             <td>KPI Target</td>
-            <td>(%)</td>
+            <!-- <td>(%)</td>
             <td>Acc.</td>
             <td>Rate</td>
             <td>Diff</td>
-            <td>Comm.</td>
+            <td>Comm.</td> -->
           </tr>
           <tr>
-            <td rowspan="4">
+             <td>
+              {{accessoriesList[0].name }}
+            </td>
+            <td >
+              £{{accessoriesList[0].prevMonth | number : "1.2-2" }}
+            </td>
+            <td >
+              £{{accessoriesList[0].currentMonth | number : "1.2-2" }}
+            </td>
+            <td >
+              £{{accessoriesList[0].target | number : "1.2-2" }}
+            </td>
+          </tr>
+
+          <!--<tr>
+             <td rowspan="4">
               {{accessoriesList[0].name }}
             </td>
             <td rowspan="4">
@@ -145,7 +160,7 @@
             <td style="background-color:yellow;"> £{{accessoriesList[0].total | number : "1.2-2" }}
             </td>
           </tr>
-          <tr>
+           <tr>
             <td style="background-color:lightgreen;"> {{accessoriesList[1].percentage }}
             </td>
             <td style="background-color:lightgreen;"> £{{accessoriesList[1].acc | number : "1.2-2" }}
@@ -183,7 +198,7 @@
             </td>
             <td style="background-color:salmon;"> £{{accessoriesList[3].total | number : "1.2-2"}}
             </td>
-          </tr>
+          </tr> -->
 
         </tbody>
       </table>

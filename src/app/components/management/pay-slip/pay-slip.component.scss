@@ -55,3 +55,26 @@ h3 {
     padding: 10px;
     border-radius: 4px;
 }
+
+.info-icon {
+    cursor: pointer;
+    color: #1976d2;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #1565c0;
+    }
+}
+
+.multiline-tooltip {
+  white-space: pre-line !important;
+  max-width: 100% !important;
+  line-height: 1.6;
+  font-size: 13px;
+}

@@ -165,6 +165,7 @@ export class MainDashboardComponent implements OnInit {
         if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager') {
           this.isAdmin = true;
           this.dashboardViewMode = 'Admin'
+          this.filterType = 'SuperAdmin';
         }
         else if (userRole == 'Manager') {
           this.isManager = true;

@@ -21,7 +21,7 @@
 <mat-sidenav-container class="mainWrapper">
 
     <!-- Sidebar -->
-    <mat-sidenav mode="side" opened class="sidebarNav">
+    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidebarNav">
 
         <mat-nav-list>
             <a mat-list-item

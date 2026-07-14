@@ -15,7 +15,7 @@
                         (monthSelected)="choseFromMonthHandler($event, fromPicker)" panelClass="month-picker">
                     </mat-datepicker>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-3">
+                <mat-form-field appearance="outline" class="col-lg-3" *ngIf="filterMode === 'History'">
                     <mat-label>To Month</mat-label>
                     <input matInput [(ngModel)]="toMonth" [matDatepicker]="toPicker" placeholder="Choose a Month" />
                     <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
