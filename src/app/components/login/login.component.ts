@@ -140,4 +140,17 @@ export class LoginComponent {
     this.router.navigate(['/retailer/login']);
   }
 
+
+  forgotPassword(): void {
+  // Navigate to forgot password page
+  // Example:
+  // this.router.navigate(['/authentication/forgot-password']);
+}
+
+contactSupport(): void {
+  // Open support page / modal
+  // Example:
+  // this.router.navigate(['/support']);
+}
+
 }

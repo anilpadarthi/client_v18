@@ -38,6 +38,7 @@ export class KpiTargetReportComponent implements OnInit {
 
   displayedColumns: string[] = [
     'NAME',
+    'ManagerName',
     'PrevMonth',
     'KPI1',
     'KPI1Achieved',

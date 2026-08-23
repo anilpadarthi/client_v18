@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ShopService } from '../../../services/shop.service';
 import { LookupService } from '../../../services/lookup.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,19 +63,19 @@ export class ShopEditorComponent {
 
     this.shopForm = this.fb.group({
       shopId: 0,
-      areaId: [{ value: '', disabled: !this.isAdmin && this.shopId }, [Validators.required]],
+      areaId: ['', [Validators.required]],
       searchAddress: [''],
       postCode: ['', [Validators.required]],
       shopName: ['', [Validators.required]],
       vatNumber: [''],
       password: [''],
       topupSystemId: [''],
-      city: [''],
+      city: ['', [Validators.required]],
       shopOwnerName: ['', [Validators.required]],
       shopEmail: ['', [Validators.required, Validators.email]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
-      shopPhone: ['', [Validators.required]],
+      shopPhone: ['+44', [Validators.required, Validators.pattern(/^\+44\d{10,}$/)]],
       paymentMode: [''],
       payableName: [''],
       competitor: [''],
@@ -102,6 +102,14 @@ export class ShopEditorComponent {
     if (this.selectedShopId) {
       this.shopId = this.selectedShopId;
     }
+    // Disable area selection only for non-admins when editing an existing shop.
+    const areaControl = this.shopForm.get('areaId');
+    if (!this.isAdmin && this.shopId) {
+      areaControl?.disable();
+    } else {
+      areaControl?.enable();
+    }
+    
     this.getAreaRoleLookup();
     this.shopImagePreview = '/assets/images/profile/user-1.jpg';
     this.getShopDetails();
@@ -181,6 +189,7 @@ export class ShopEditorComponent {
     if (this.shopId) {
       this.shopService.getShop(this.shopId).subscribe((res) => {
         this.shopForm.patchValue(res.data.shop);
+        this.shopForm.get('shopPhone')?.setValue(this.normalizeUkPhoneNumber(res.data.shop.shopPhone));
         this.hasMobilShopCommission = res.data.shop.isMobileShop;
         this.shopForm.get('agreementFrom')?.setValue(res.data.shopAgreement?.fromDate);
         this.shopForm.get('agreementTo')?.setValue(res.data.shopAgreement?.toDate);
@@ -209,7 +218,7 @@ export class ShopEditorComponent {
       formBody.append('shopId', this.shopId != null ? this.shopId : 0);
       formBody.append('shopName', this.shopForm.value.shopName);
       formBody.append('postCode', this.shopForm.value.postCode);
-      formBody.append('areaId', this.shopForm.value.areaId);
+      formBody.append('areaId', this.shopForm.getRawValue().areaId);
       formBody.append('shopOwnerName', this.shopForm.value.shopOwnerName);
       formBody.append('shopEmail', this.shopForm.value.shopEmail);
       formBody.append('shopPhone', this.shopForm.value.shopPhone);
@@ -314,8 +323,8 @@ export class ShopEditorComponent {
       shopContactId: contactData.shopContactId,
       contactType: [contactData.contactType, [Validators.required]],
       contactName: [contactData.contactName, Validators.required],
-      contactEmail: [contactData.contactEmail, Validators.required],
-      contactNumber: [contactData.contactNumber, Validators.required],
+      contactEmail: [contactData.contactEmail, [Validators.required, Validators.email]],
+      contactNumber: [this.normalizeUkPhoneNumber(contactData.contactNumber), [Validators.required, Validators.pattern(/^\+44\d{10,}$/)]],
     });
   }
 
@@ -324,8 +333,8 @@ export class ShopEditorComponent {
       shopContactId: 0,
       contactType: ['', [Validators.required]],
       contactName: ['', Validators.required],
-      contactEmail: ['', Validators.required],
-      contactNumber: ['', Validators.required],
+      contactEmail: ['', [Validators.required, Validators.email]],
+      contactNumber: ['+44', [Validators.required, Validators.pattern(/^\+44\d{10,}$/)]],
     });
   }
 
@@ -399,8 +408,33 @@ export class ShopEditorComponent {
     });
   }
 
-  onInputChange(event: any) {
-    event.target.value = event.target.value.replace(/[^0-9]/g, '');
+  onPhoneInput(event: Event, control: AbstractControl | null): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '');
+    const nationalNumber = digits.startsWith('44')
+      ? digits.slice(2)
+      : digits.startsWith('0')
+        ? digits.slice(1)
+        : digits;
+    const formattedNumber = `+44${nationalNumber}`;
+
+    input.value = formattedNumber;
+    control?.setValue(formattedNumber, { emitEvent: false });
+  }
+
+  private normalizeUkPhoneNumber(value: string | null | undefined): string {
+    if (!value) {
+      return '+44';
+    }
+
+    const digits = value.replace(/\D/g, '');
+    const nationalNumber = digits.startsWith('44')
+      ? digits.slice(2)
+      : digits.startsWith('0')
+        ? digits.slice(1)
+        : digits;
+
+    return `+44${nationalNumber}`;
   }
 
   checkPendingCommissionRequest() {

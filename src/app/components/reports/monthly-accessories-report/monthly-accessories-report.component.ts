@@ -126,7 +126,8 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
       if (res.data?.length > 0) {
         let result = res.data;
         result.forEach((e: any) => {
-          e.total = e.cod + e.bt + e.free + e.bonus + e.ac + e.saleOrReturn  + e.mc;
+          const saleOrReturn = e.saleOrReturn ?? e.sellOrReturn ?? 0;
+          e.total = (Number(e.cod) || 0) + (Number(e.bt) || 0) + (Number(e.free) || 0) + (Number(e.bonus) || 0) + (Number(e.ac) || 0) + (Number(saleOrReturn) || 0) + (Number(e.mc) || 0);
         });
         this.activationList = result;
       }
@@ -174,6 +175,15 @@ export class MonthlyAccessoriesReportComponent implements OnInit {
     });
   }
 
+  getTotal(column: string): any {
+    if (column == 'userId') {
+      return "";
+    }
+    else if (column == 'userName') {
+      return "Total";
+    }
+    return this.activationList.reduce((sum: any, item: any) => sum + Number(item[column]), 0)
+  }
 
 
 }

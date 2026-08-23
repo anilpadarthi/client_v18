@@ -14,6 +14,7 @@ import { OnFieldShopCommissionChequesComponent } from '../on-field-shop-commissi
 import { ActivatedRoute } from '@angular/router';
 import { WebstorgeService } from '../../services/web-storage.service';
 import { OutstandingBalanceDialogComponent } from '../home/outstanding-balance-dialog/outstanding-balance-dialog.component';
+import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-on-field',
@@ -225,6 +226,24 @@ export class OnFieldComponent implements OnInit {
     this.onActionClicked(type);
   }
 
+  openVATInvoiceSection() {
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: 'Are you sure you want to open in VAT Invoice Section?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.onOrderHistory('OrderList', 'yes');
+      }
+    });
+
+  }
+
 
   onActionClicked(type: any) {
     if (this.selectedShopId == null) {
@@ -233,11 +252,10 @@ export class OnFieldComponent implements OnInit {
     else {
       if (this.shopAddressDetails
         && this.shopAddressDetails?.addressLine1 != null
-        && this.shopAddressDetails.postCode != null      
+        && this.shopAddressDetails.postCode != null
         && this.shopAddressDetails?.addressLine1 != ''
         && this.shopAddressDetails?.postCode != ''
-      ) 
-      {
+      ) {
         this.action = type;
         this.isMainSection = false;
       }
@@ -297,7 +315,7 @@ export class OnFieldComponent implements OnInit {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
     else {
-     const fullPath = this.router.serializeUrl(
+      const fullPath = this.router.serializeUrl(
         this.router.createUrlTree([`retailer/shopportal/${this.selectedShopId}`])
       );
       window.open(fullPath, '_blank');

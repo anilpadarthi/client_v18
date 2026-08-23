@@ -69,13 +69,25 @@
 
                     <mat-form-field appearance="outline" class="col-lg-3">
                         <mat-label>Shop Email</mat-label>
-                        <input matInput formControlName="shopEmail" />
+                        <input matInput type="email" formControlName="shopEmail" />
+                        <mat-error *ngIf="shopForm.get('shopEmail')?.hasError('required')">
+                            Shop email is required
+                        </mat-error>
+                        <mat-error *ngIf="shopForm.get('shopEmail')?.hasError('email')">
+                            Enter a valid email address
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-lg-3">
                         <mat-label>Shop Phone</mat-label>
-                        <input matInput formControlName="shopPhone" inputmode="numeric" maxlength="20"
-                            (input)="onInputChange($event)" />
+                        <input matInput formControlName="shopPhone" type="tel" inputmode="numeric" maxlength="20"
+                            (input)="onPhoneInput($event, shopForm.get('shopPhone'))" />
+                        <mat-error *ngIf="shopForm.get('shopPhone')?.hasError('required')">
+                            Shop phone is required
+                        </mat-error>
+                        <mat-error *ngIf="shopForm.get('shopPhone')?.hasError('pattern')">
+                            Enter at least 10 digits after +44
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-lg-3">
@@ -203,15 +215,27 @@
 
                             <mat-form-field appearance="outline" class="col-lg-3">
                                 <mat-label>Contact Email </mat-label>
-                                <input matInput required placeholder="Contact Email" formControlName='contactEmail'
+                                <input matInput type="email" required placeholder="Contact Email" formControlName='contactEmail'
                                     id="{{'contactEmail'+i}}" />
+                                <mat-error *ngIf="contact.get('contactEmail')?.hasError('required')">
+                                    Contact email is required
+                                </mat-error>
+                                <mat-error *ngIf="contact.get('contactEmail')?.hasError('email')">
+                                    Enter a valid email address
+                                </mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" class="col-lg-3">
                                 <mat-label>Contact Number </mat-label>
-                                <input matInput required placeholder="Contact Number" inputmode="numeric" maxlength="20"
-                                    formControlName='contactNumber' (input)="onInputChange($event)"
+                                <input matInput type="tel" required placeholder="Contact Number" inputmode="numeric" maxlength="20"
+                                    formControlName='contactNumber' (input)="onPhoneInput($event, contact.get('contactNumber'))"
                                     id="{{'contactNumber'+i}}" />
+                                <mat-error *ngIf="contact.get('contactNumber')?.hasError('required')">
+                                    Contact number is required
+                                </mat-error>
+                                <mat-error *ngIf="contact.get('contactNumber')?.hasError('pattern')">
+                                    Enter at least 10 digits after +44
+                                </mat-error>
                             </mat-form-field>
                             <button type="button" mat-flat-button color="warn"
                                 (click)="removeContact(i);">Remove</button>

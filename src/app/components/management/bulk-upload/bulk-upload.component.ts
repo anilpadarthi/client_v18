@@ -89,4 +89,12 @@ export class BulkUploadComponent {
     this.bulkUploadService.downloadTargetFile(requestBody);
   }
 
+  downloadTemplate(): void {
+    if( this.importFileType == '') {
+      this.toasterService.showMessage('Please select import file type to download template.');
+      return;
+    }
+    this.bulkUploadService.downloadTemplate(this.importFileType);
+  }
+
 }

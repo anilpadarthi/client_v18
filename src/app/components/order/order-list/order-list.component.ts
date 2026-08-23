@@ -13,6 +13,7 @@ import { OrderPaymentEditorComponent } from '../order-payment-editor/order-payme
 import { OrderPaymentHistoryComponent } from '../order-payment-history/order-payment-history.component';
 import { FormControl } from '@angular/forms';
 import { cleanDate } from '../../../helpers/utils';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-order-list',
@@ -309,11 +310,11 @@ export class OrderListComponent implements OnInit {
     this.trackNumberSearch = null;
     this.isVat = false;
     this.isShowOutstandingMetrics = false;
-    
+
     this.userRole = this.webstorgeService.getUserRole();
     let loggedInUserId = this.webstorgeService.getUserInfo().userId;
 
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'CallCenter') {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'CallCenter') {
       this.isAdmin = true;
       //this.loadOutstandingMetrics();
     }
@@ -413,15 +414,41 @@ export class OrderListComponent implements OnInit {
   }
 
   sendEmail(orderId: number, isVAT: boolean): void {
-    this.orderService.sendInvoice(orderId, isVAT).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage('Email sent successfully.');
-      }
-      else {
-        this.toasterService.showMessage(res.message);
-        //this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
-      }
-    });
+
+    if (isVAT) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '400px',
+        data: {
+          title: 'Confirm?',
+          message: 'Are you sure you want to send email with VAT Invoice?',
+        },
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'confirm') {
+          this.orderService.sendInvoice(orderId, isVAT).subscribe((res) => {
+            if (res.statusCode == 200) {
+              this.toasterService.showMessage('Email sent successfully.');
+            }
+            else {
+              this.toasterService.showMessage(res.message);
+              //this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
+            }
+          });
+        }
+      });
+    }
+    else {
+      this.orderService.sendInvoice(orderId, isVAT).subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.toasterService.showMessage('Email sent successfully.');
+        }
+        else {
+          this.toasterService.showMessage(res.message);
+          //this.toasterService.showMessage('Some thing went wrong, while sending an Email.');
+        }
+      });
+    }
   }
 
   addPayment(item: any): void {
@@ -475,7 +502,7 @@ export class OrderListComponent implements OnInit {
 
   onExport(): void {
 
-    if(this.selectedFromDate == null || this.selectedToDate == null){
+    if (this.selectedFromDate == null || this.selectedToDate == null) {
       this.toasterService.showMessage("Please select both From Date and To Date to export the orders.");
       return;
     }
@@ -510,7 +537,7 @@ export class OrderListComponent implements OnInit {
   updateOrder(orderId: any, orderStatusId: number): void {
     const requestBody = {
       OrderId: orderId,
-      OrderStatusId: orderStatusId,      
+      OrderStatusId: orderStatusId,
     };
 
     this.orderService.updateStatus(requestBody).subscribe((res) => {

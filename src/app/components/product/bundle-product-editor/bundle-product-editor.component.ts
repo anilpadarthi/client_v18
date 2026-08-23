@@ -147,8 +147,8 @@ export class BundleProductEditorComponent {
 
         //   status: res.data.product?.status
         // });
-        if (res.data.product?.productImage) {
-          this.productImagePreview = environment.backend.host + '/' + res.data.product?.productImage;
+       if (res.data.productImages && res.data.productImages.length > 0) {
+          this.productImagePreview = environment.backend.host + '/' + res.data.productImages[res.data.productImages.length-1].image;
         }
         if (res.data.product?.categoryId) {
           this.getSubCategoryLookup(res.data.product?.categoryId);
@@ -204,6 +204,7 @@ export class BundleProductEditorComponent {
 
       if (this.productForm.value.productImage) {
         formBody.append('productImageFile', this.productForm.value.productImage);
+         formBody.append('Images', this.productForm.value.productImage);
       }
 
       if (this.productForm.value.bundleItems && Array.isArray(this.productForm.value.bundleItems)) {

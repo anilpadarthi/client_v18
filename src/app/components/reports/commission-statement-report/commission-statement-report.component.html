@@ -64,6 +64,7 @@
                     <mat-select [(ngModel)]="filterMode">
                       <mat-option value="All">All</mat-option>
                       <mat-option value="OptedForCheque">Opted For Cheque</mat-option>
+                      <mat-option value="NotOptedForCheque">Not Opted For Cheque</mat-option>
                       <mat-option value="History">History</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -114,6 +115,7 @@
                     <mat-select [(ngModel)]="filterExcelMode">
                       <mat-option value="All">All</mat-option>
                       <mat-option value="OptedForCheque">Opted For Cheque</mat-option>
+                      <mat-option value="NotOptedForCheque">Not Opted For Cheque</mat-option>
                     </mat-select>
                 </mat-form-field>
                   <button  mat-flat-button color="primary" (click)="exportToExcel()">Download Excel

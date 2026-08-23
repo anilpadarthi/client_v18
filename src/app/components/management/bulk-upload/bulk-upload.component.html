@@ -4,7 +4,7 @@
     <mat-card class="cardWithShadow theme-card">
         <mat-card-content>
             <div class="row">
-                <mat-form-field appearance="outline" class="col-lg-3">
+                <mat-form-field appearance="outline" class="col-lg-4">
                     <mat-label>Import File Type</mat-label>
                     <mat-select [(ngModel)]="importFileType">
                         <mat-option value=''>--Select--</mat-option>
@@ -19,18 +19,21 @@
                         <mat-option value="BankChequeWithdraw">Bank Cheques Withdraw</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-3">
+                <mat-form-field appearance="outline" class="col-lg-4">
                     <mat-label>Date</mat-label>
                     <input matInput [matDatepicker]="datePicker" [(ngModel)]="selectedDate" />
                     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
                 </mat-form-field>
-                <div class="col-lg-6 space-between-buttons">
+                <div class="col-lg-12 space-between-buttons">
                     <button mat-flat-button color="primary" class="input-file-button">
                         <input id="fileUpload" type="file" accept=".xlsx" (change)="onFileChange($event)" />
                     </button>
                     <button mat-flat-button color="primary" class="green-btn" (click)="uploadFile()">
                         <mat-icon>upload</mat-icon> Upload
+                    </button>
+                    <button mat-flat-button color="primary" class="green-btn" (click)="downloadTemplate()">
+                        <mat-icon>download</mat-icon> Download Template
                     </button>
                     <button mat-flat-button color="primary" class="download-btn" *ngIf="importFileType === 'Target'"
                         (click)="downloadTargetFile()">

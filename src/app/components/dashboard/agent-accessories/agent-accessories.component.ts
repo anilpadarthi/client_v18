@@ -66,6 +66,10 @@ export class AgentAccessoriesComponent implements OnInit {
         });
         this.activationList = res.data;
       }
+      else {
+        this.activationList = [];
+      }
+
       this.isLoading = false;
     });
   }

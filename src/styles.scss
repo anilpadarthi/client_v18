@@ -204,6 +204,13 @@ mat-panel-title {
     font-size: 16px !important;
 }
 
+.confirm-dialog-message {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    padding-top: 10px !important;
+}
+
 .theme-card {
     margin-bottom: 20px !important;
 }
@@ -735,6 +742,7 @@ html {
                     color: #262A2D;
                     margin: 5px 0 0;
                 }
+
                 h4 {
                     font-size: 14px;
                     color: #797979;
@@ -764,7 +772,7 @@ html {
     margin: 0 10px;
 }
 
-.no-padding{
+.no-padding {
     padding: 0px !important;
 }
 
@@ -808,7 +816,7 @@ ngx-mat-select-search {
     box-shadow: none;
 }
 
-.mat-mdc-dialog-title{
+.mat-mdc-dialog-title {
     background-color: lightcoral !important;
 }
 

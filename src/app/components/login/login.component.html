@@ -1,4 +1,4 @@
-<div class="blank-layout-container justify-content-center login-container">
+<!-- <div class="blank-layout-container justify-content-center login-container">
   <div class="position-relative row w-100 h-100">
     <div class="col-lg-7 col-xl-12 bg-gredient" *ngIf="!isMobile">
 
@@ -20,10 +20,8 @@
                   <input matInput formControlName="email" />
                   <mat-icon class="material-symbols-outlined" matSuffix>mail</mat-icon>
                   <mat-error *ngIf="hasError('email', 'required')">This field is required</mat-error>
-                  <!-- <mat-error *ngIf="hasError('email', 'email')">Email is not valid</mat-error> -->
                 </mat-form-field>
 
-                <!-- password -->
                 <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block m-t-10">Password</mat-label>
                 <mat-form-field class="w-100">
                   <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
@@ -43,7 +41,6 @@
                 </button>
 
 
-                <!-- input -->
               </form>
               <button mat-flat-button class="w-100 primary-btn  retailerLogin m-t-30"
                 (click)="retailerLogin()">
@@ -56,4 +53,194 @@
       </div>
     </div>
   </div>
+</div> -->
+
+<div class="login-page">
+
+  <!-- ================= LEFT BRAND PANEL ================= -->
+  <section class="brand-panel" *ngIf="!isMobile"> <img src="./assets/images/login/leap-login-left.png"
+      alt="Leap Telecom" class="brand-image" /> </section>
+
+  <section class="brand-panel" *ngIf="isMobile"> <img src="./assets/images/login/leap-mobile-login-left.png"
+      alt="Leap Telecom" class="brand-image" /> 
+    
+  </section>
+
+
+  <!-- ================= RIGHT LOGIN PANEL ================= -->
+  <section class="login-panel">
+
+
+
+
+    <div class="login-content">
+
+      <!-- Mobile Logo -->
+      <div class="mobile-logo" *ngIf="isMobile">
+
+        <img src="./assets/images/logos/logo.png" alt="Leap" />
+
+      </div>
+
+
+      <!-- Heading -->
+      <div class="login-heading">
+
+        <h2>
+          Welcome Back! <span>👋</span>
+        </h2>
+
+        <p>
+          Sign in to your Leap account
+        </p>
+
+      </div>
+
+
+      <!-- ================= FORM ================= -->
+
+      <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+
+        <!-- Username -->
+        <div class="form-group">
+
+          <label>
+            Username or Email
+          </label>
+
+          <mat-form-field appearance="outline" class="full-width">
+
+            <mat-icon matPrefix class="input-icon">
+              person_outline
+            </mat-icon>
+
+            <input matInput type="text" formControlName="email" placeholder="Enter your username"
+              autocomplete="username" />
+
+            <mat-error *ngIf="hasError('email', 'required')">
+              Username or email is required
+            </mat-error>
+
+          </mat-form-field>
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label>
+            Password
+          </label>
+
+          <mat-form-field appearance="outline" class="full-width">
+
+            <mat-icon matPrefix class="input-icon">
+              lock_outline
+            </mat-icon>
+
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+              placeholder="Enter your password" autocomplete="current-password" />
+
+            <button mat-icon-button matSuffix type="button" aria-label="Toggle password visibility"
+              (click)="togglePasswordVisibility()">
+
+              <mat-icon>
+                {{ hidePassword ? 'visibility_off' : 'visibility' }}
+              </mat-icon>
+
+            </button>
+
+            <mat-error *ngIf="hasError('password', 'required')">
+              Password is required
+            </mat-error>
+
+            <mat-error *ngIf="hasError('password', 'minlength')">
+              Password is not valid
+            </mat-error>
+
+          </mat-form-field>
+
+        </div>
+
+
+        <!-- Remember / Forgot -->
+        <div class="login-options">
+
+          <label class="remember-me">
+
+            <input type="checkbox" formControlName="rememberMe" />
+
+            <span class="custom-checkbox"></span>
+
+            <span>
+              Remember me
+            </span>
+
+          </label>
+
+          <button type="button" class="forgot-password">
+            Forgot Password?
+          </button>
+
+        </div>
+
+
+        <!-- Error -->
+        <div class="login-error" *ngIf="!isValidLogin">
+
+          <mat-icon>error_outline</mat-icon>
+
+          <span>
+            Invalid username or password
+          </span>
+
+        </div>
+
+
+        <!-- Sign In -->
+        <button mat-flat-button type="submit" class="signin-button" [disabled]="!loginForm.valid">
+
+          <mat-icon>
+            login
+          </mat-icon>
+
+          <span>
+            Sign In
+          </span>
+
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="login-footer">
+
+      <div class="support">
+
+        <span>
+          Need help?
+        </span>
+
+        <button type="button" (click)="contactSupport()">
+          Contact our support team
+        </button>
+
+        <mat-icon>
+          headset_mic
+        </mat-icon>
+
+      </div>
+
+      <p>
+        © 2026 Leap Telecom. All rights reserved.
+      </p>
+
+    </div>
+
+  </section>
+
 </div>

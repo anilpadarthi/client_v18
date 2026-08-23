@@ -13,6 +13,7 @@ import { PopupTableComponent } from '../../common/popup-table/popup-table.compon
 import { OrderDetailsComponent } from '../../order/order-details/order-details.component';
 import { OrderPaymentEditorComponent } from '../../order/order-payment-editor/order-payment-editor.component';
 import { OrderPaymentHistoryComponent } from '../../order/order-payment-history/order-payment-history.component';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -221,12 +222,25 @@ export class OnFieldShopOrderListComponent implements OnInit {
   }
 
   sendEmail(orderId: number): void {
-    this.orderService.sendInvoice(orderId, true).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage('Email sent successfully.');
-      }
-      else {
-        this.toasterService.showMessage('Something went wrong');
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: 'Are you sure you want to send email with VAT Invoice?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.orderService.sendInvoice(orderId, true).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage('Email sent successfully.');
+          }
+          else {
+            this.toasterService.showMessage('Something went wrong');
+          }
+        });
       }
     });
   }

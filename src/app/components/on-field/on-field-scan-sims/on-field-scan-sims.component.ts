@@ -26,7 +26,7 @@ export class OnFieldScanSimsComponent {
     'STATUS'
   ];
   dataSource: any = null;
-  totalData: any =null;
+  totalData: any = null;
   invalidSims = '';
   alredyGiven = '';
 
@@ -58,7 +58,23 @@ export class OnFieldScanSimsComponent {
   }
 
   proceedToScanSims(): void {
-    const imeiList = this.searchText != null ? this.searchText.trim().toLowerCase().split('\n') : null;
+    const imeiList = this.searchText != null
+      ? this.searchText.trim().toLowerCase().split(/[,\n]+/).map((x: any) => x.trim()).filter((x: any) => x)
+      : null;
+
+    if (imeiList) {
+      const invalidValues = imeiList.filter((x: any) => {
+        const value = x.trim();
+        return value !== '' && !/^\d+$/.test(value);
+      });
+
+      if (invalidValues.length > 0) {
+        this.toasterService.showMessage(`Special characters found: ${invalidValues.join(', ')}`);
+        return;
+      }
+    }
+
+
     let isValidSims = true;
     if (this.isLebaraSims) {
       isValidSims = this.validateLebaraSims();

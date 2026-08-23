@@ -33,7 +33,7 @@
             <mat-select formControlName="commissionId" (selectionChange)="onChequeNumberChange($event)" required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availableCommissionChequeNumbers" [value]="item.id">
-                    <span>{{item.id}} -  £ {{ item.name | number: '1.2-2' }}</span>
+                    <span>{{item.commissionDate  | date:'MMM yy'}} -  £ {{ item.name | number: '1.2-2' }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -44,7 +44,7 @@
                 required>
                 <mat-option [value]="null">-Select-</mat-option>
                 <mat-option *ngFor="let item of availablePhysicalCommissionChequeNumbers" [value]="item.id">
-                    <span>{{item.referenceNumber}} -  £ {{ item.name | number: '1.2-2' }}</span>
+                    <span>{{item.referenceNumber}} - {{item.commissionDate | date:'MMM yy'}} -  £ {{ item.name | number: '1.2-2' }}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>

@@ -20,4 +20,9 @@ export class BulkUploadService {
     downloadTargetFile(requestBody: any): void {
         return this.exportService.exportToExcel(this.url + '/DownloadTargetData', requestBody, 'KPI_Targets');
     }
+
+    downloadTemplate(importFileType: any): void {
+        let url = this.url + '/DownloadTemplate?importFileType=' + importFileType;
+        return this.exportService.downloadExcel(url, importFileType + '_Template');
+    }
 }
