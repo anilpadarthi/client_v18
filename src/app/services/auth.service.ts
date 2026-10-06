@@ -112,6 +112,10 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.url}/retailerLogin`, credentials);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.url}/forgotPassword`, { email });
+  }
+
   getUserFromToken() {
     const token = this.getAccessToken();
     if (!token) return null;

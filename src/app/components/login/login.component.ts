@@ -5,7 +5,9 @@ import { AuthService } from '../../services/auth.service';
 import { GeolocationService } from '../../services/geolocation.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../environments/environment';
+import { ForgotPasswordDialogComponent } from './forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +29,7 @@ export class LoginComponent {
     private authService: AuthService,
     private toasterService: ToasterService,
     private geolocationService: GeolocationService,
+    private dialog: MatDialog,
   ) {
     this.checkScreenSize();
   }
@@ -39,7 +42,8 @@ export class LoginComponent {
   ngOnInit() {
     this.loginForm = new FormGroup({
       email: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required, Validators.minLength(4)])
+      password: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      rememberMe: new FormControl(false)
     });
     this.fetchLocation();
   }
@@ -142,10 +146,14 @@ export class LoginComponent {
 
 
   forgotPassword(): void {
-  // Navigate to forgot password page
-  // Example:
-  // this.router.navigate(['/authentication/forgot-password']);
-}
+    this.dialog.open(ForgotPasswordDialogComponent, {
+      width: '420px',
+      maxWidth: '90vw',
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'forgot-password-dialog-panel'
+    });
+  }
 
 contactSupport(): void {
   // Open support page / modal

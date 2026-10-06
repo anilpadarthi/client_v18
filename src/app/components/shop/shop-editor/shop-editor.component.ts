@@ -72,7 +72,7 @@ export class ShopEditorComponent {
       topupSystemId: [''],
       city: ['', [Validators.required]],
       shopOwnerName: ['', [Validators.required]],
-      shopEmail: ['', [Validators.required, Validators.email]],
+      shopEmail: ['', [Validators.required, Validators.email, Validators.pattern(/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/)]],
       addressLine1: ['', [Validators.required]],
       addressLine2: [''],
       shopPhone: ['+44', [Validators.required, Validators.pattern(/^\+44\d{10,}$/)]],
@@ -109,7 +109,7 @@ export class ShopEditorComponent {
     } else {
       areaControl?.enable();
     }
-    
+
     this.getAreaRoleLookup();
     this.shopImagePreview = '/assets/images/profile/user-1.jpg';
     this.getShopDetails();
@@ -213,6 +213,12 @@ export class ShopEditorComponent {
   }
 
   onSave() {
+    if (this.shopForm.invalid) {
+      this.shopForm.markAllAsTouched();
+      this.toasterService.showMessage('Please correct the highlighted validation errors before saving.');
+      return;
+    }
+
     if (this.shopForm.valid) {
       const formBody = new FormData();
       formBody.append('shopId', this.shopId != null ? this.shopId : 0);

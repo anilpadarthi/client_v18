@@ -168,7 +168,7 @@ import {CommissionRequestsComponent} from './components/commission-requests/comm
 import { DenyRemarksDialogComponent } from './components/common/deny-remarks-dialog/deny-remarks-dialog.component';
 import { ApproveCommissionDialogComponent } from './components/common/approve-commission-dialog/approve-commission-dialog.component';
 import { DownloadReportsComponent } from './components/management/download-reports/download-reports.component';
-
+import { ForgotPasswordDialogComponent } from './components/login/forgot-password-dialog/forgot-password-dialog.component';
 
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -313,7 +313,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CommissionRequestsComponent,
     DenyRemarksDialogComponent,
     ApproveCommissionDialogComponent,
-    DownloadReportsComponent
+    DownloadReportsComponent,
+    ForgotPasswordDialogComponent
   ],
   imports: [
     BrowserModule,

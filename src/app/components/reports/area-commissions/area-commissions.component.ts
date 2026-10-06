@@ -8,7 +8,7 @@ import moment from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormControl } from '@angular/forms';
-
+import { WebstorgeService } from '../../../services/web-storage.service';
 
 @Component({
   selector: 'app-area-commissions',
@@ -26,6 +26,7 @@ export class AreaCommissionsComponent implements OnInit {
   commissionList: any = [];
   isLoading = false;
   isAdmin = false;
+  isSuperAdmin = false;
   areaFilterCtrl: FormControl = new FormControl();
   filteredAreas: any[] = [];
 
@@ -47,10 +48,13 @@ export class AreaCommissionsComponent implements OnInit {
     private commissionStatementService: CommissionStatementService,
     private lookupService: LookupService,
     private toasterService: ToasterService,
+    private webstorgeService: WebstorgeService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    let userRole = this.webstorgeService.getUserRole();
+    this.isSuperAdmin = userRole === 'SuperAdmin';
     this.getAreaLookup();
     this.areaFilterCtrl.valueChanges.subscribe(() => {
       this.filterAreas();
