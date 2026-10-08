@@ -22,6 +22,7 @@ export class OrderPaymentHistoryComponent implements OnInit {
     'collectedStatus',
     'collectedBy',
     'comments',
+    'modifiedDate',
     'action',
   ];
   orderId = 0;
