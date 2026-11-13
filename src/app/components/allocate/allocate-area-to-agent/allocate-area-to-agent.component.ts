@@ -166,7 +166,8 @@ export class AllocateAreaToAgentComponent implements OnInit {
     this.areaService.viewAreaAllocationHistory(areaId).subscribe((res) => {
       var data = {
         result: res.data,
-        headerName: 'Area Allocation History'
+        headerName: 'Area Allocation History',
+        showTime: false
       }
       this.dialog.open(PopupTableComponent, {
         data

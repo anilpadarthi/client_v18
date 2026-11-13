@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common';
 import { WebstorgeService } from '../../../services/web-storage.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { CommissionStatementService } from '../../../services/commissionStatement.service';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -44,6 +46,7 @@ export class OnFieldCommissionsComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    public dialog: MatDialog,
     private onFieldService: OnFieldService,
     private webstorgeService: WebstorgeService,
     private toasterService: ToasterService,
@@ -52,7 +55,7 @@ export class OnFieldCommissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.webstorgeService.getUserRole();
-    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' ) {
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager') {
       this.isAdmin = true;
     }
     if (this.selectedShopId > 0) {
@@ -63,7 +66,7 @@ export class OnFieldCommissionsComponent implements OnInit {
 
   loadData(): void {
     this.isLoading = true;
-     const dates = this.getReportDates();
+    const dates = this.getReportDates();
     const request = {
       shopId: this.selectedShopId,
       isInstantActivation: false,
@@ -150,16 +153,25 @@ export class OnFieldCommissionsComponent implements OnInit {
 
 
   changeToMobileCommission(shopId: number, fromDate: string): void {
-    this.commissionStatementService.changeToMobileCommission(shopId, fromDate).subscribe((res) => {
-      if (res.statusCode == 200) {
-        this.toasterService.showMessage("Successfully changed to Mobile Commission.");
-      } else {
-        this.toasterService.showMessage(res.data);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm?',
+        message: 'Are you sure you want to change the commission tier for this month?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.commissionStatementService.changeToMobileCommission(shopId, fromDate).subscribe((res) => {
+          if (res.statusCode == 200) {
+            this.toasterService.showMessage("Successfully changed to Mobile Commission.");
+          } else {
+            this.toasterService.showMessage(res.data);
+          }
+        });
       }
     });
   }
-
- 
-
 
 }

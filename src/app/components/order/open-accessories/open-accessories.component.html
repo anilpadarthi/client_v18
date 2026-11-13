@@ -58,7 +58,7 @@
         <div *ngIf="isMainView">
             <!-- Categories -->
             <div class="row" *ngIf="isDisplayCatgories">
-                <div class="col-sm-6 col-lg-3">
+                <div class="col-sm-6 col-lg-3 col-xs-6 ">
                     <mat-card class="productcard overflow-hidden" (click)="loadNewArrivals()">
                         <img src="/assets/images/logos/NewArrivals.jpg" alt="imgSrc" class="w-100 product-image"
                             mat-card-image />
@@ -67,7 +67,7 @@
                         </h3>
                     </mat-card>
                 </div>
-                <div class="col-sm-6 col-lg-3" *ngFor="let item of categories">
+                <div class="col-sm-6 col-lg-3 col-xs-6 " *ngFor="let item of categories">
                     <mat-card class="productcard overflow-hidden" (click)="loadSubCategories(item)">
                         <img src="{{ item.image }}" alt="imgSrc" class="w-100 product-image" mat-card-image />
                         <h3 class="product-title">

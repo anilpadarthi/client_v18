@@ -36,6 +36,15 @@ export class AllocateAgentConfirmDialogComponent {
   }
 
   transferAgents(): void {
+     if (!this.selectedMonth) {
+            this.toasterService.showMessage('Please select a month before proceeding.');
+            return;
+        }
+         if (!this.selectedManagerIdForTransfer) {
+            this.toasterService.showMessage('Please select a manager before proceeding.');
+            return;
+        }
+
     const requestBody = {
       managerId: this.selectedManagerIdForTransfer,
       fromDate: this.selectedMonth,

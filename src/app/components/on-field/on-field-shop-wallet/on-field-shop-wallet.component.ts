@@ -26,6 +26,7 @@ export class OnFieldShopWalletComponent implements OnInit {
   hasViewWalletHistory = false;
   private isFirstChange = true;
   isLoading = false;
+  userRole: string | null = null;
 
   constructor(
     public datePipe: DatePipe,
@@ -40,10 +41,10 @@ export class OnFieldShopWalletComponent implements OnInit {
     if (this.selectedShopId > 0) {
       this.loadData();
     }
-    let userRole = this.webstorgeService.getUserRole();
-    if (userRole == 'Admin' || userRole == 'SuperAdmin' || userRole == 'OperationalManager' || userRole == 'Manager') {
+    this.userRole = this.webstorgeService.getUserRole();
+    if (this.userRole == 'Admin' || this.userRole == 'SuperAdmin' || this.userRole == 'OperationalManager' || this.userRole == 'Manager') {
       this.isDisplayInstantBonus = true;
-     
+
     }
   }
 
@@ -77,23 +78,21 @@ export class OnFieldShopWalletComponent implements OnInit {
 
 
   openShopWalletHistoryDialog(walletType: string): void {
-  
-      const data = {
-        shopId: this.selectedShopId,
-        walletType: walletType,
-      };
-      const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
-        data
-      });
-    
+    const data = {
+      shopId: this.selectedShopId,
+      walletType: walletType,
+    };
+    const dialogRef = this.dialog.open(OnFieldShopWalletHistoryComponent, {
+      data
+    });
   }
 
   openShoppingPage(type: any): void {
-    if(this.shopDetails?.byPassBonusRedemption) {
-       this.toasterService.showMessage('Bonus redemption is bypassed for this shop.');
-       return;
+    if (this.shopDetails?.byPassBonusRedemption && this.userRole != 'SuperAdmin') {
+      this.toasterService.showMessage('Bonus redemption is bypassed for this shop.');
+      return;
     }
-    
+
     const fullPath = this.router.serializeUrl(
       this.router.createUrlTree([`accessories/create-order/${this.selectedShopId}/${type}`])
     );

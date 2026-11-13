@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-popup-table',
@@ -13,12 +12,13 @@ export class PopupTableComponent {
   displayedColumns: string[] = [];
   stickyColumns: string[] = ['Id', 'Name'];
   header = '';
+  showTime = true;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private datePipe: DatePipe
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.header = data.headerName;
+    this.showTime = data.showTime ?? true;
     if (data.result.length > 0) {
       this.displayedColumns = Object.keys(data.result[0]);
       this.dataSource = data.result;
@@ -44,11 +44,5 @@ export class PopupTableComponent {
   convertToDate(value: any): Date {
     return new Date(value);
   }
-
-  // Apply date format to a column
-  // formatDate(value: any): string {
-  //   return this.isDate(value) ? this.datePipe.transform(value, 'yyyy-MM-dd') : value;
-  // }
-
 
 }

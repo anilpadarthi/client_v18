@@ -193,7 +193,8 @@ export class AllocateAgentToManagerComponent implements OnInit {
     this.userService.viewUserAllocationHistory(userId).subscribe((res) => {
       var data = {
         result: res.data,
-        headerName: 'Agent Allocation History'
+        headerName: 'Agent Allocation History',
+        showTime: false
       }
       this.dialog.open(PopupTableComponent, {
         data

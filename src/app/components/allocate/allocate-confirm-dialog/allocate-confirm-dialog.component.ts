@@ -36,6 +36,15 @@ export class AllocateConfirmDialogComponent {
     }
 
     transferAreas(): void {
+        if (!this.selectedMonth) {
+            this.toasterService.showMessage('Please select a month before proceeding.');
+            return;
+        }
+         if (!this.selectedAgentIdForTransfer) {
+            this.toasterService.showMessage('Please select an agent before proceeding.');
+            return;
+        }
+
         const requestBody = {
             agentId: this.selectedAgentIdForTransfer,
             fromDate: this.selectedMonth,

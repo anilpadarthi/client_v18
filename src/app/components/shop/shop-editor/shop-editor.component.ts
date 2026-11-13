@@ -94,6 +94,7 @@ export class ShopEditorComponent {
       image: null as File | null,
       byPassCommissionCheque: false,
       byPassBonusRedemption: false,
+      agentName: [''],
     });
   }
 
@@ -194,6 +195,7 @@ export class ShopEditorComponent {
         this.shopForm.get('agreementFrom')?.setValue(res.data.shopAgreement?.fromDate);
         this.shopForm.get('agreementTo')?.setValue(res.data.shopAgreement?.toDate);
         this.shopForm.get('agreementNotes')?.setValue(res.data.shopAgreement?.agreementNotes);
+        this.shopForm.get('agentName')?.setValue(res.data.agentName);
         if (res.data?.shop?.image) {
           this.shopImagePreview = environment.backend.host + '/' + res.data?.shop?.image;
         }

@@ -9,7 +9,7 @@
     <div class="m-t-10">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Choose a Month</mat-label>
-            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" />
+            <input matInput [(ngModel)]="selectedMonth" [matDatepicker]="monthPicker" placeholder="Choose a Month" required />
             <mat-datepicker-toggle matIconSuffix [for]="monthPicker"></mat-datepicker-toggle>
             <mat-datepicker #monthPicker startView="year" (yearSelected)="chosenYearHandler($event)"
                 (monthSelected)="chosenMonthHandler($event, monthPicker)" panelClass="month-picker">

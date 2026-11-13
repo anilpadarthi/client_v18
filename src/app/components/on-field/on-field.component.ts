@@ -249,6 +249,10 @@ export class OnFieldComponent implements OnInit {
     if (this.selectedShopId == null) {
       this.toasterService.showMessage('Please select any shop before to proceed.');
     }
+    else  if (this.shopAddressDetails?.byPassBonusRedemption && this.userRole != 'SuperAdmin' && type == 'BonusWallet') {
+      this.toasterService.showMessage('Bonus redemption is bypassed for this shop.');
+      return;
+    }
     else {
       if (this.shopAddressDetails
         && this.shopAddressDetails?.addressLine1 != null
