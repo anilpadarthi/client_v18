@@ -19,6 +19,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    const isPasswordResetRequest = req.url.toLowerCase().includes('api/passwordreset/');
 
     if (!req.url.startsWith('https://postcodes.io') && !req.url.startsWith('https://api.getAddress.io')) {
 
@@ -26,7 +27,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
         url: `${environment.backend.host}/${req.url}`
       });
 
-       const accessToken = this.authService.getAccessToken();
+      const accessToken = isPasswordResetRequest ? null : this.authService.getAccessToken();
       if (accessToken) {
         req = req.clone({
           setHeaders: {
@@ -42,7 +43,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
             responseType: 'blob',
           });
         }
-      } else {
+      } else if (!isPasswordResetRequest) {
         this.router.navigate(['/signin']);
       }
     }
@@ -59,7 +60,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
         const elapsed = Date.now() - started;
        
         //this.spinner.hide();
-        if (error.status == 401) {
+        if (error.status == 401 && !isPasswordResetRequest) {
           this.router.navigate(['/signin']);
         } else {
           //   this.snackBar.open(error.message, '×', {

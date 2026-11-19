@@ -30,8 +30,10 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Don't attempt refresh or logout for authentication endpoints (login, retailerLogin)
-          const isAuthEndpoint = req.url.includes('/login') || req.url.includes('/retailerLogin');
+          // Public password-reset requests must not trigger session refresh or logout.
+          const isAuthEndpoint = req.url.includes('/login') ||
+            req.url.includes('/retailerLogin') ||
+            req.url.toLowerCase().includes('/api/passwordreset/');
           if (isAuthEndpoint) {
             return throwError(() => error);
           }

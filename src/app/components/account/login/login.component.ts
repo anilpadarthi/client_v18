@@ -1,12 +1,12 @@
 
 import { Component, HostListener } from '@angular/core';
-import { ToasterService } from '../../services/toaster.service';
-import { AuthService } from '../../services/auth.service';
-import { GeolocationService } from '../../services/geolocation.service';
+import { ToasterService } from '../../../services/toaster.service';
+import { AuthService } from '../../../services/auth.service';
+import { GeolocationService } from '../../../services/geolocation.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { ForgotPasswordDialogComponent } from './forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
@@ -147,11 +147,12 @@ export class LoginComponent {
 
   forgotPassword(): void {
     this.dialog.open(ForgotPasswordDialogComponent, {
-      width: '420px',
+      width: '600px',
       maxWidth: '90vw',
       disableClose: true,
       autoFocus: false,
-      panelClass: 'forgot-password-dialog-panel'
+      panelClass: 'forgot-password-dialog-panel',
+      data: { mode: 'agent' }
     });
   }
 

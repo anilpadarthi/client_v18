@@ -1,8 +1,10 @@
 import { Component, HostListener } from '@angular/core';
-import { ToasterService } from '../../../services/toaster.service';
-import { AuthService } from '../../../services/auth.service';
+import { ToasterService } from '../../../../services/toaster.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ForgotPasswordDialogComponent } from '../forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
   selector: 'app-retailer-login',
@@ -19,9 +21,11 @@ export class RetailerLoginComponent {
   isMobile = false;
 
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private authService: AuthService,
     private toasterService: ToasterService,
+    private dialog: MatDialog,
   ) {
     this.checkScreenSize();
   }
@@ -78,5 +82,16 @@ export class RetailerLoginComponent {
 
   AgentLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  forgotPassword(): void {
+    this.dialog.open(ForgotPasswordDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'forgot-password-dialog-panel',
+      data: { mode: 'retailer' }
+    });
   }
 }

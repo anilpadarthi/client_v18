@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RetailerLoginComponent } from './components/login/retailer-login/retailer-login.component';
+import { LoginComponent } from './components/account/login/login.component';
+import { RetailerLoginComponent } from './components/account/login/retailer-login/retailer-login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AreaListComponent } from './components/area/area-list/area-list.component';
 import { AreaEditorComponent } from './components/area/area-editor/area-editor.component';
@@ -80,6 +80,7 @@ import { AccessoriesOutstandingReportComponent } from './components/management/a
 import { ConfigurationComponent } from './components/management/configuration/configuration.component';
 import { CommissionRequestsComponent } from './components/commission-requests/commission-requests.component';
 import { DownloadReportsComponent } from './components/management/download-reports/download-reports.component';
+import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 
 
 
@@ -213,6 +214,9 @@ const routes: Routes = [
   { path: 'accessories/sim-request', component: AgentSimOrderComponent, canActivate: [AuthGuard], },
   { path: 'accessories/list', component: OpenAccessoriesComponent, canActivate: [AuthGuard], },
   { path: 'retailer/accessories/create-order/:id/:type', component: CreateOrderComponent, canActivate: [AuthGuard], },
+
+  { path: 'passwordreset/verify', component: ResetPasswordComponent },
+  { path: 'resetpassword', component: ResetPasswordComponent },
 
 
   { path: '**', redirectTo: '/login' }

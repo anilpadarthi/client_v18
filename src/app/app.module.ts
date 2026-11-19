@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RetailerLoginComponent } from './components/login/retailer-login/retailer-login.component';
+import { LoginComponent } from './components/account/login/login.component';
+import { RetailerLoginComponent } from './components/account/login/retailer-login/retailer-login.component';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -168,7 +168,8 @@ import {CommissionRequestsComponent} from './components/commission-requests/comm
 import { DenyRemarksDialogComponent } from './components/common/deny-remarks-dialog/deny-remarks-dialog.component';
 import { ApproveCommissionDialogComponent } from './components/common/approve-commission-dialog/approve-commission-dialog.component';
 import { DownloadReportsComponent } from './components/management/download-reports/download-reports.component';
-import { ForgotPasswordDialogComponent } from './components/login/forgot-password-dialog/forgot-password-dialog.component';
+import { ForgotPasswordDialogComponent } from './components/account/login/forgot-password-dialog/forgot-password-dialog.component';
+import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 
 // Factory function for the loader
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -314,7 +315,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DenyRemarksDialogComponent,
     ApproveCommissionDialogComponent,
     DownloadReportsComponent,
-    ForgotPasswordDialogComponent
+    ForgotPasswordDialogComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
